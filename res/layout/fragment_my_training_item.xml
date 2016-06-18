@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/course_img_width"
+    android:layout_height="@dimen/course_img_height"
+    android:layout_gravity="center_horizontal" >
+    <ImageView 
+        android:id="@+id/course_img"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+    <!-- 蒙版 -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/course_img_mask">
+    </TextView>
+    
+    <Button
+        android:id="@+id/btn_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/course_addbtn_margin_top" />
+    <TextView 
+        android:id="@+id/course_empty_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/course_empty_text_margin_top"
+        android:layout_centerHorizontal="true"
+        android:text="@string/course_empty_text"
+        android:textColor="@color/white"/>
+    
+	<RelativeLayout
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content" >
+	    <ImageView 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"/>
+	    <TextView 
+	        android:layout_marginTop="@dimen/course_progress_text_margin_top"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="进行中"
+	        android:textSize="@dimen/course_progress_text_size"
+	        android:textColor="@color/white"/>
+	</RelativeLayout> 
+	
+	<TextView 
+	    android:id="@+id/excellent_course_text"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentRight="true"
+	    android:text="@string/excellent_course"
+	    android:textColor="@color/white"
+	    android:textSize="@dimen/course_excellent_text_size"/>
+	
+</RelativeLayout>

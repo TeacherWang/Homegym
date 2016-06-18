@@ -12,5 +12,8 @@
     <string name="gym">综合训练器</string>
     <string name="training">训练</string>
     <string name="me">我</string>
+    <string name="course_empty_text">改变从现在开始，赶快加入吧！</string>
+    <string name="excellent_course">精品课程</string>
+    <string name="recommended_courses">推荐课程</string>
     
 </resources>

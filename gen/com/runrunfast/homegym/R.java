@@ -17,6 +17,8 @@ public final class R {
         public static final int actionbar_unselect_text_color=0x7f040007;
         public static final int bottom_text_disable_color=0x7f04000b;
         public static final int bottom_text_enable_color=0x7f04000a;
+        public static final int course_img_mask=0x7f04000e;
+        public static final int divider_1=0x7f04000c;
         public static final int home_bg_color=0x7f040009;
         public static final int login_text=0x7f040006;
         /**  注册界面 
@@ -24,6 +26,8 @@ public final class R {
  登录界面 
          */
         public static final int login_text_bg=0x7f040005;
+        public static final int my_course_bg=0x7f04000d;
+        public static final int recommended_course_text_color=0x7f04000f;
         public static final int start_login_bg=0x7f040003;
         /**  启动界面 
          */
@@ -44,14 +48,25 @@ public final class R {
          would include 7" and 10" devices in landscape (~960dp and ~1280dp respectively).
     
          */
-        public static final int activity_horizontal_margin=0x7f05000d;
+        public static final int activity_horizontal_margin=0x7f050018;
         public static final int bottom_height=0x7f05000b;
         public static final int bottom_padding_top=0x7f05000a;
         public static final int bottom_text_size=0x7f05000c;
+        public static final int course_addbtn_margin_top=0x7f050012;
+        public static final int course_empty_text_margin_top=0x7f050013;
+        public static final int course_excellent_text_size=0x7f050016;
+        public static final int course_img_height=0x7f050011;
+        public static final int course_img_width=0x7f050010;
+        public static final int course_progress_text_margin_top=0x7f050015;
+        public static final int course_progress_text_size=0x7f050014;
+        public static final int course_recommended_layout_size=0x7f050017;
         public static final int login_text_bg_height=0x7f050005;
         /**  注册界面 
          */
         public static final int login_text_bg_width=0x7f050004;
+        public static final int my_course_margin_top=0x7f05000d;
+        public static final int my_course_padding_left_right=0x7f05000f;
+        public static final int my_course_padding_top_bottom=0x7f05000e;
         /**  登录界面 
          */
         public static final int reg_log_text_size=0x7f050006;
@@ -78,18 +93,22 @@ public final class R {
         public static final int tab_icon_me_disabale=0x7f02000c;
     }
     public static final class id {
-        public static final int actionbar_left_btn=0x7f08000b;
-        public static final int actionbar_right_btn=0x7f08000c;
-        public static final int actionbar_select_layout=0x7f08000e;
-        public static final int actionbar_select_left_btn=0x7f08000f;
-        public static final int actionbar_select_right_btn=0x7f080010;
-        public static final int actionbar_title=0x7f08000d;
-        public static final int bottom_me_img=0x7f080015;
-        public static final int bottom_me_layout=0x7f080014;
-        public static final int bottom_me_text=0x7f080016;
-        public static final int bottom_training_img=0x7f080012;
-        public static final int bottom_training_layout=0x7f080011;
-        public static final int bottom_training_text=0x7f080013;
+        public static final int actionbar_left_btn=0x7f08000f;
+        public static final int actionbar_right_btn=0x7f080010;
+        public static final int actionbar_select_layout=0x7f080012;
+        public static final int actionbar_select_left_btn=0x7f080013;
+        public static final int actionbar_select_right_btn=0x7f080014;
+        public static final int actionbar_title=0x7f080011;
+        public static final int bottom_me_img=0x7f080019;
+        public static final int bottom_me_layout=0x7f080018;
+        public static final int bottom_me_text=0x7f08001a;
+        public static final int bottom_training_img=0x7f080016;
+        public static final int bottom_training_layout=0x7f080015;
+        public static final int bottom_training_text=0x7f080017;
+        public static final int btn_add=0x7f08000c;
+        public static final int course_empty_text=0x7f08000d;
+        public static final int course_img=0x7f08000b;
+        public static final int excellent_course_text=0x7f08000e;
         public static final int home_actionbar=0x7f080000;
         public static final int home_bottom=0x7f080001;
         public static final int home_content_layout=0x7f080002;
@@ -109,16 +128,21 @@ public final class R {
         public static final int activity_record=0x7f030003;
         public static final int activity_register=0x7f030004;
         public static final int activity_start=0x7f030005;
-        public static final int home_actionbar=0x7f030006;
-        public static final int home_bottom=0x7f030007;
+        public static final int fragment_my_training=0x7f030006;
+        public static final int fragment_my_training_item=0x7f030007;
+        public static final int home_actionbar=0x7f030008;
+        public static final int home_bottom=0x7f030009;
     }
     public static final class string {
         public static final int all_course=0x7f060004;
         public static final int app_name=0x7f060000;
+        public static final int course_empty_text=0x7f060008;
+        public static final int excellent_course=0x7f060009;
         public static final int gym=0x7f060005;
         public static final int login=0x7f060002;
         public static final int me=0x7f060007;
         public static final int my_training=0x7f060003;
+        public static final int recommended_courses=0x7f06000a;
         public static final int register=0x7f060001;
         public static final int training=0x7f060006;
     }

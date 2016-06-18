@@ -21,4 +21,17 @@
 	<dimen name="bottom_height">48dp</dimen>
 	<dimen name="bottom_text_size">11sp</dimen>
 	
+	<dimen name="my_course_margin_top">5dp</dimen>
+	<dimen name="my_course_padding_top_bottom">8dp</dimen>
+	<dimen name="my_course_padding_left_right">4dp</dimen>
+	
+	<dimen name="course_img_width">352dp</dimen>
+	<dimen name="course_img_height">142dp</dimen>
+	<dimen name="course_addbtn_margin_top">30dp</dimen>
+	<dimen name="course_empty_text_margin_top">93dp</dimen>
+	<dimen name="course_progress_text_size">11sp</dimen>
+	<dimen name="course_progress_text_margin_top">9dp</dimen>
+	<dimen name="course_excellent_text_size">13sp</dimen>
+	<dimen name="course_recommended_layout_size">39dp</dimen>
+	
 </resources>

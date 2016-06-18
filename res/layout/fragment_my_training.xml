@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    <TextView 
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/divider_1"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/my_course_margin_top"
+        android:paddingTop="@dimen/my_course_padding_top_bottom"
+        android:paddingBottom="@dimen/my_course_padding_top_bottom"
+        android:paddingLeft="@dimen/my_course_padding_left_right"
+        android:paddingRight="@dimen/my_course_padding_left_right"
+        android:background="@color/my_course_bg" >
+<!--         <ListView -->
+<!-- 	        android:id="@+id/my_course_listview" -->
+<!-- 	        android:layout_width="match_parent" -->
+<!-- 	        android:layout_height="wrap_content" > -->
+<!--     	</ListView> -->
+    </RelativeLayout>
+    
+    <!-- 推荐课程头 -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/course_recommended_layout_size" >
+        <ImageView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"/>
+        <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/recommended_courses"
+            android:textColor="@color/recommended_course_text_color"/>
+    </RelativeLayout>
+    
+</LinearLayout>

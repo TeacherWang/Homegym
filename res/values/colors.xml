@@ -24,4 +24,9 @@
     <color name="bottom_text_enable_color">#231815</color>
     <color name="bottom_text_disable_color">#918b8a</color>
     
+    <color name="divider_1">#cccccc</color>
+    <color name="my_course_bg">#f6f6f6</color>
+    <color name="course_img_mask">#4d000000</color>
+    <color name="recommended_course_text_color">#231815</color>
+    
 </resources>
