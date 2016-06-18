@@ -1,7 +1,24 @@
 <resources>
-
-    <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
-
+	<!-- 启动界面 -->
+	<dimen name="start_bottom_height">64dp</dimen>
+    <dimen name="start_text_size">16sp</dimen>
+	<dimen name="start_indicator_bootom">20dp</dimen>
+	<dimen name="start_indicator_img_divider">4dp</dimen>
+	
+	<!-- 注册界面 -->
+	<dimen name="login_text_bg_width">64dp</dimen>
+	<dimen name="login_text_bg_height">48dp</dimen>
+	
+	<!-- 登录界面 -->
+	<dimen name="reg_log_text_size">18sp</dimen>
+	
+	<!-- 主界面 -->
+	<dimen name="actionbar_height">48dp</dimen>
+	<dimen name="actionbar_left_img_margin_leftright">16dp</dimen>
+	<dimen name="actionbar_text_size">16sp</dimen>
+	
+	<dimen name="bottom_padding_top">2dp</dimen>
+	<dimen name="bottom_height">48dp</dimen>
+	<dimen name="bottom_text_size">11sp</dimen>
+	
 </resources>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+	<TextView 
+	    android:id="@+id/login_text"
+	    android:layout_width="@dimen/login_text_bg_width"
+	    android:layout_height="@dimen/login_text_bg_height"
+	    android:text="@string/login"
+	    android:textColor="@color/login_text"
+	    android:textSize="@dimen/reg_log_text_size"
+	    android:gravity="center"
+	    android:layout_centerHorizontal="true"
+	    android:background="@color/login_text_bg"
+	    android:onClick="onClick"/>
+    
+</RelativeLayout>

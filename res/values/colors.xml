@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <color name="transparent">#00000000</color>
+    <color name="white">#ffffff</color>
+    
+    <!-- 启动界面 -->
+    <color name="start_register_bg">#636363</color>
+    <color name="start_login_bg">#1f1f1f</color>
+    <color name="start_text_color">#ffffff</color>
+    
+    <!-- 注册界面 -->
+<!--     <color name=""></color> -->
+    
+    <!-- 登录界面 -->
+    <color name="login_text_bg">#262626</color>
+    <color name="login_text">#ffffff</color>
+    
+    <!-- 主界面 -->
+    <color name="actionbar_unselect_text_color">#231815</color>
+    <color name="actionbar_select_text_color">#ffffff</color>
+    <color name="home_bg_color">#eeeeee</color>
+    
+    <color name="bottom_text_enable_color">#231815</color>
+    <color name="bottom_text_disable_color">#918b8a</color>
+    
+</resources>
