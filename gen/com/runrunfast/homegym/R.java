@@ -78,41 +78,57 @@ public final class R {
         public static final int start_text_size=0x7f050001;
     }
     public static final class drawable {
-        public static final int ic_launcher=0x7f020000;
-        public static final int nav_back=0x7f020001;
-        public static final int nav_bluetooth=0x7f020002;
-        public static final int nav_record=0x7f020003;
-        public static final int nav_select_left=0x7f020004;
-        public static final int nav_select_right=0x7f020005;
-        public static final int nav_selection_box=0x7f020006;
-        public static final int start_indicator_big=0x7f020007;
-        public static final int start_indicator_small=0x7f020008;
-        public static final int tab_icon_exercis=0x7f020009;
-        public static final int tab_icon_exercise_disable=0x7f02000a;
-        public static final int tab_icon_me=0x7f02000b;
-        public static final int tab_icon_me_disabale=0x7f02000c;
+        public static final int home_add=0x7f020000;
+        public static final int home_icon_add=0x7f020001;
+        public static final int home_recommend=0x7f020002;
+        public static final int home_state_finish=0x7f020003;
+        public static final int home_state_going=0x7f020004;
+        public static final int home_state_high_quality=0x7f020005;
+        public static final int home_state_new=0x7f020006;
+        public static final int ic_launcher=0x7f020007;
+        public static final int list_img1=0x7f020008;
+        public static final int list_img2=0x7f020009;
+        public static final int list_img3=0x7f02000a;
+        public static final int nav_back=0x7f02000b;
+        public static final int nav_bluetooth=0x7f02000c;
+        public static final int nav_record=0x7f02000d;
+        public static final int nav_select_left=0x7f02000e;
+        public static final int nav_select_right=0x7f02000f;
+        public static final int nav_selection_box=0x7f020010;
+        public static final int start_indicator_big=0x7f020011;
+        public static final int start_indicator_small=0x7f020012;
+        public static final int tab_icon_exercis=0x7f020013;
+        public static final int tab_icon_exercise_disable=0x7f020014;
+        public static final int tab_icon_me=0x7f020015;
+        public static final int tab_icon_me_disabale=0x7f020016;
     }
     public static final class id {
-        public static final int actionbar_left_btn=0x7f08000f;
-        public static final int actionbar_right_btn=0x7f080010;
-        public static final int actionbar_select_layout=0x7f080012;
-        public static final int actionbar_select_left_btn=0x7f080013;
-        public static final int actionbar_select_right_btn=0x7f080014;
-        public static final int actionbar_title=0x7f080011;
-        public static final int bottom_me_img=0x7f080019;
-        public static final int bottom_me_layout=0x7f080018;
-        public static final int bottom_me_text=0x7f08001a;
-        public static final int bottom_training_img=0x7f080016;
-        public static final int bottom_training_layout=0x7f080015;
-        public static final int bottom_training_text=0x7f080017;
-        public static final int btn_add=0x7f08000c;
-        public static final int course_empty_text=0x7f08000d;
-        public static final int course_img=0x7f08000b;
-        public static final int excellent_course_text=0x7f08000e;
+        public static final int actionbar_left_btn=0x7f080014;
+        public static final int actionbar_right_btn=0x7f080015;
+        public static final int actionbar_select_layout=0x7f080017;
+        public static final int actionbar_select_left_btn=0x7f080018;
+        public static final int actionbar_select_right_btn=0x7f080019;
+        public static final int actionbar_title=0x7f080016;
+        public static final int bottom_content_layout=0x7f08001a;
+        public static final int bottom_me_img=0x7f08001f;
+        public static final int bottom_me_layout=0x7f08001e;
+        public static final int bottom_me_text=0x7f080020;
+        public static final int bottom_training_img=0x7f08001c;
+        public static final int bottom_training_layout=0x7f08001b;
+        public static final int bottom_training_text=0x7f08001d;
+        public static final int btn_add=0x7f08000f;
+        public static final int course_empty_text=0x7f080010;
+        public static final int course_img=0x7f08000e;
+        public static final int course_new_img=0x7f080011;
+        public static final int course_progress_img=0x7f080012;
+        public static final int course_recommed_listview=0x7f08000d;
+        public static final int course_recommend_layout=0x7f08000c;
+        public static final int excellent_course_text=0x7f080013;
         public static final int home_actionbar=0x7f080000;
         public static final int home_bottom=0x7f080001;
         public static final int home_content_layout=0x7f080002;
         public static final int login_text=0x7f080003;
+        public static final int my_course_listview=0x7f08000b;
         public static final int start_bottom_layout=0x7f080004;
         public static final int start_indicator1=0x7f080008;
         public static final int start_indicator2=0x7f080009;
@@ -137,6 +153,8 @@ public final class R {
         public static final int all_course=0x7f060004;
         public static final int app_name=0x7f060000;
         public static final int course_empty_text=0x7f060008;
+        public static final int course_progress_ing=0x7f06000b;
+        public static final int course_rest_day=0x7f06000c;
         public static final int excellent_course=0x7f060009;
         public static final int gym=0x7f060005;
         public static final int login=0x7f060002;
@@ -145,6 +163,7 @@ public final class R {
         public static final int recommended_courses=0x7f06000a;
         public static final int register=0x7f060001;
         public static final int training=0x7f060006;
+        public static final int trainnig_record=0x7f06000d;
     }
     public static final class style {
         /** 

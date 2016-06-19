@@ -17,15 +17,16 @@
         android:paddingLeft="@dimen/my_course_padding_left_right"
         android:paddingRight="@dimen/my_course_padding_left_right"
         android:background="@color/my_course_bg" >
-<!--         <ListView -->
-<!-- 	        android:id="@+id/my_course_listview" -->
-<!-- 	        android:layout_width="match_parent" -->
-<!-- 	        android:layout_height="wrap_content" > -->
-<!--     	</ListView> -->
+        <ListView
+	        android:id="@+id/my_course_listview"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content" >
+    	</ListView>
     </RelativeLayout>
     
     <!-- 推荐课程头 -->
     <RelativeLayout
+        android:id="@+id/course_recommend_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/course_recommended_layout_size" >
         <ImageView 
@@ -39,5 +40,15 @@
             android:text="@string/recommended_courses"
             android:textColor="@color/recommended_course_text_color"/>
     </RelativeLayout>
+    
+    <ListView
+        android:id="@+id/course_recommed_listview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/my_course_padding_top_bottom"
+        android:paddingLeft="@dimen/my_course_padding_left_right"
+        android:paddingRight="@dimen/my_course_padding_left_right"
+        android:background="@color/my_course_bg" >
+  	</ListView>
     
 </LinearLayout>

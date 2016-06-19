@@ -2,51 +2,64 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/bottom_height"
-    android:paddingTop="@dimen/bottom_padding_top"
     android:background="@color/white"
-    android:orientation="horizontal" >
+    android:orientation="vertical" >
+    
+    <TextView 
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/divider_1"/>
+    
     <LinearLayout
-        android:id="@+id/bottom_training_layout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:onClick="onClick"
-        android:gravity="center_horizontal"
-        android:orientation="vertical" >
-        <ImageView 
-            android:id="@+id/bottom_training_img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/tab_icon_exercis"/>
-        <TextView 
-            android:id="@+id/bottom_training_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/training"
-            android:textSize="@dimen/bottom_text_size"
-            android:textColor="@color/bottom_text_enable_color"/>
+        android:id="@+id/bottom_content_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="@dimen/bottom_padding_top"
+        android:orientation="horizontal" >
+        <LinearLayout
+	        android:id="@+id/bottom_training_layout"
+	        android:layout_width="0dp"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:onClick="onClick"
+	        android:gravity="center_horizontal"
+	        android:orientation="vertical" >
+	        <ImageView 
+	            android:id="@+id/bottom_training_img"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:background="@drawable/tab_icon_exercis"/>
+	        <TextView 
+	            android:id="@+id/bottom_training_text"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/training"
+	            android:textSize="@dimen/bottom_text_size"
+	            android:textColor="@color/bottom_text_enable_color"/>
+	    </LinearLayout>
+	
+	    <LinearLayout
+	        android:id="@+id/bottom_me_layout"
+	        android:layout_width="0dp"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:onClick="onClick"
+	        android:gravity="center_horizontal"
+	        android:orientation="vertical" >
+	        <ImageView 
+	            android:id="@+id/bottom_me_img"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:background="@drawable/tab_icon_me_disabale"/>
+	        <TextView 
+	            android:id="@+id/bottom_me_text"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/me"
+	            android:textSize="@dimen/bottom_text_size"
+	            android:textColor="@color/bottom_text_disable_color"/>
+	    </LinearLayout>
     </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/bottom_me_layout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:onClick="onClick"
-        android:gravity="center_horizontal"
-        android:orientation="vertical" >
-        <ImageView 
-            android:id="@+id/bottom_me_img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/tab_icon_me_disabale"/>
-        <TextView 
-            android:id="@+id/bottom_me_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/me"
-            android:textSize="@dimen/bottom_text_size"
-            android:textColor="@color/bottom_text_disable_color"/>
-    </LinearLayout>
+    
     
 </LinearLayout>
