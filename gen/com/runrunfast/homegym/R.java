@@ -37,6 +37,12 @@ public final class R {
         public static final int white=0x7f040001;
     }
     public static final class dimen {
+        public static final int account_headimg_margin_top=0x7f05001d;
+        /**  我 
+         */
+        public static final int account_headimg_size=0x7f05001c;
+        public static final int account_name_margin_top=0x7f05001f;
+        public static final int account_name_size=0x7f05001e;
         /**  主界面 
          */
         public static final int actionbar_height=0x7f050007;
@@ -48,17 +54,21 @@ public final class R {
          would include 7" and 10" devices in landscape (~960dp and ~1280dp respectively).
     
          */
-        public static final int activity_horizontal_margin=0x7f050018;
+        public static final int activity_horizontal_margin=0x7f050020;
         public static final int bottom_height=0x7f05000b;
         public static final int bottom_padding_top=0x7f05000a;
         public static final int bottom_text_size=0x7f05000c;
         public static final int course_addbtn_margin_top=0x7f050012;
+        public static final int course_divider_1px=0x7f05001a;
+        public static final int course_divider_5dp=0x7f05001b;
         public static final int course_empty_text_margin_top=0x7f050013;
         public static final int course_excellent_text_size=0x7f050016;
         public static final int course_img_height=0x7f050011;
         public static final int course_img_width=0x7f050010;
+        public static final int course_listview_divider_height=0x7f050019;
         public static final int course_progress_text_margin_top=0x7f050015;
         public static final int course_progress_text_size=0x7f050014;
+        public static final int course_recommended_img_margin_left_right=0x7f050018;
         public static final int course_recommended_layout_size=0x7f050017;
         public static final int login_text_bg_height=0x7f050005;
         /**  注册界面 
@@ -103,32 +113,37 @@ public final class R {
         public static final int tab_icon_me_disabale=0x7f020016;
     }
     public static final class id {
-        public static final int actionbar_left_btn=0x7f080014;
-        public static final int actionbar_right_btn=0x7f080015;
-        public static final int actionbar_select_layout=0x7f080017;
-        public static final int actionbar_select_left_btn=0x7f080018;
-        public static final int actionbar_select_right_btn=0x7f080019;
-        public static final int actionbar_title=0x7f080016;
-        public static final int bottom_content_layout=0x7f08001a;
-        public static final int bottom_me_img=0x7f08001f;
-        public static final int bottom_me_layout=0x7f08001e;
-        public static final int bottom_me_text=0x7f080020;
-        public static final int bottom_training_img=0x7f08001c;
-        public static final int bottom_training_layout=0x7f08001b;
-        public static final int bottom_training_text=0x7f08001d;
-        public static final int btn_add=0x7f08000f;
-        public static final int course_empty_text=0x7f080010;
-        public static final int course_img=0x7f08000e;
-        public static final int course_new_img=0x7f080011;
-        public static final int course_progress_img=0x7f080012;
-        public static final int course_recommed_listview=0x7f08000d;
-        public static final int course_recommend_layout=0x7f08000c;
-        public static final int excellent_course_text=0x7f080013;
+        public static final int account_head_img=0x7f08000c;
+        public static final int account_name_text=0x7f08000d;
+        public static final int actionbar_left_btn=0x7f080019;
+        public static final int actionbar_right_btn=0x7f08001a;
+        public static final int actionbar_select_layout=0x7f08001c;
+        public static final int actionbar_select_left_btn=0x7f08001d;
+        public static final int actionbar_select_right_btn=0x7f08001e;
+        public static final int actionbar_title=0x7f08001b;
+        public static final int all_courses_listview=0x7f08000b;
+        public static final int bottom_content_layout=0x7f08001f;
+        public static final int bottom_me_img=0x7f080024;
+        public static final int bottom_me_layout=0x7f080023;
+        public static final int bottom_me_text=0x7f080025;
+        public static final int bottom_training_img=0x7f080021;
+        public static final int bottom_training_layout=0x7f080020;
+        public static final int bottom_training_text=0x7f080022;
+        public static final int btn_add=0x7f080013;
+        public static final int course_empty_text=0x7f080014;
+        public static final int course_img=0x7f080012;
+        public static final int course_new_img=0x7f080015;
+        public static final int course_progress_img=0x7f080016;
+        public static final int course_progress_text=0x7f080017;
+        public static final int course_recommed_img=0x7f080010;
+        public static final int course_recommed_listview=0x7f080011;
+        public static final int course_recommend_layout=0x7f08000f;
+        public static final int excellent_course_text=0x7f080018;
         public static final int home_actionbar=0x7f080000;
         public static final int home_bottom=0x7f080001;
         public static final int home_content_layout=0x7f080002;
         public static final int login_text=0x7f080003;
-        public static final int my_course_listview=0x7f08000b;
+        public static final int my_course_listview=0x7f08000e;
         public static final int start_bottom_layout=0x7f080004;
         public static final int start_indicator1=0x7f080008;
         public static final int start_indicator2=0x7f080009;
@@ -144,10 +159,12 @@ public final class R {
         public static final int activity_record=0x7f030003;
         public static final int activity_register=0x7f030004;
         public static final int activity_start=0x7f030005;
-        public static final int fragment_my_training=0x7f030006;
-        public static final int fragment_my_training_item=0x7f030007;
-        public static final int home_actionbar=0x7f030008;
-        public static final int home_bottom=0x7f030009;
+        public static final int fragment_all_courses=0x7f030006;
+        public static final int fragment_me=0x7f030007;
+        public static final int fragment_my_training=0x7f030008;
+        public static final int fragment_my_training_item=0x7f030009;
+        public static final int home_actionbar=0x7f03000a;
+        public static final int home_bottom=0x7f03000b;
     }
     public static final class string {
         public static final int all_course=0x7f060004;

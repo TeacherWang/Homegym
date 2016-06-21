@@ -5,7 +5,7 @@
     android:orientation="vertical" >
     <TextView 
         android:layout_width="match_parent"
-        android:layout_height="1px"
+        android:layout_height="@dimen/course_divider_1px"
         android:background="@color/divider_1"/>
 
     <RelativeLayout
@@ -24,18 +24,28 @@
     	</ListView>
     </RelativeLayout>
     
+    <TextView 
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/course_divider_5dp"/>
+    
     <!-- 推荐课程头 -->
     <RelativeLayout
         android:id="@+id/course_recommend_layout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/course_recommended_layout_size" >
+        android:layout_height="@dimen/course_recommended_layout_size"
+        android:background="@color/my_course_bg" >
         <ImageView 
+            android:id="@+id/course_recommed_img"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"/>
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/course_recommended_img_margin_left_right"
+            android:layout_marginRight="@dimen/course_recommended_img_margin_left_right"
+            android:background="@drawable/home_recommend"/>
         <TextView 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/course_recommed_img"
             android:layout_centerVertical="true"
             android:text="@string/recommended_courses"
             android:textColor="@color/recommended_course_text_color"/>
@@ -45,9 +55,11 @@
         android:id="@+id/course_recommed_listview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/my_course_padding_top_bottom"
+        android:paddingBottom="@dimen/my_course_padding_top_bottom"
         android:paddingLeft="@dimen/my_course_padding_left_right"
         android:paddingRight="@dimen/my_course_padding_left_right"
+        android:divider="@color/my_course_bg"
+        android:dividerHeight="@dimen/course_listview_divider_height"
         android:background="@color/my_course_bg" >
   	</ListView>
     

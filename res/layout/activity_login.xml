@@ -13,6 +13,7 @@
 	    android:gravity="center"
 	    android:layout_centerHorizontal="true"
 	    android:background="@color/login_text_bg"
-	    android:onClick="onClick"/>
+	    android:onClick="onClick"
+	    android:clickable="true"/>
     
 </RelativeLayout>

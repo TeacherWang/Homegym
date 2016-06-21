@@ -1,10 +1,11 @@
 package com.runrunfast.homegym.home;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -13,9 +14,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.runrunfast.homegym.R;
+import com.runrunfast.homegym.home.fragments.AllCoursesFragment;
+import com.runrunfast.homegym.home.fragments.MeFragment;
+import com.runrunfast.homegym.home.fragments.MyTrainingFragment;
 
-public class HomeActivity extends Activity{
+public class HomeActivity extends FragmentActivity{
 	private final String TAG = "HomeActivity";
+	
+	private static final int PAGE_COUNT = 3;
+	private static final int FRAGMENT_MY_TRAINING = 0;
+	private static final int FRAGMENT_ALL_COURSES = 1;
+	private static final int FRAGMENT_ME		  = 2;
+	
+	private int mTrainingType = FRAGMENT_MY_TRAINING; // 默认训练界面的我的训练
 	
 	private Resources mResources;
 	private TextView tvTitle;
@@ -25,14 +36,14 @@ public class HomeActivity extends Activity{
 	private TextView tvTaining, tvMe;
 	private FrameLayout mFrameLayout;
 	
-	private FragmentManager mFragmentManager;
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
 		mResources = getResources();
 		initView();
+		
+		switchFragment(FRAGMENT_MY_TRAINING);
 	}
 	
 	private void initView() {
@@ -82,8 +93,17 @@ public class HomeActivity extends Activity{
 			break;
 		}
 	}
-
+	
+	private void switchFragment(int tabPosition) {
+		Fragment fragment = (Fragment) mFragmentPagerAdapter.instantiateItem(mFrameLayout, tabPosition);
+		mFragmentPagerAdapter.setPrimaryItem(mFrameLayout, FRAGMENT_MY_TRAINING, fragment);
+		mFragmentPagerAdapter.finishUpdate(mFrameLayout);
+	}
+	
 	private void handleClickBottomTraining() {
+		switchFragment(FRAGMENT_MY_TRAINING);
+		mTrainingType = FRAGMENT_MY_TRAINING;
+		
 		changeTainingViewEnable();
 		
 		tvTitle.setVisibility(View.INVISIBLE);
@@ -91,6 +111,8 @@ public class HomeActivity extends Activity{
 	}
 	
 	private void handleClickBottomMe() {
+		switchFragment(FRAGMENT_ME);
+		
 		changeMeViewEnable();
 		
 		tvTitle.setVisibility(View.VISIBLE);
@@ -119,6 +141,9 @@ public class HomeActivity extends Activity{
 	}
 
 	private void handleClickAllCourse() {
+		switchFragment(FRAGMENT_ALL_COURSES);
+		mTrainingType = FRAGMENT_ALL_COURSES;
+		
 		btnSelectRight.setTextColor(mResources.getColor(R.color.actionbar_select_text_color));
 		btnSelectRight.setBackgroundResource(R.drawable.nav_select_right);
 		
@@ -127,6 +152,9 @@ public class HomeActivity extends Activity{
 	}
 
 	private void handleClickMyTraining() {
+		switchFragment(FRAGMENT_MY_TRAINING);
+		mTrainingType = FRAGMENT_MY_TRAINING;
+		
 		btnSelectLeft.setTextColor(mResources.getColor(R.color.actionbar_select_text_color));
 		btnSelectLeft.setBackgroundResource(R.drawable.nav_select_left);
 		
@@ -145,5 +173,30 @@ public class HomeActivity extends Activity{
 		Intent intent = new Intent(this, BtDeviceActivity.class);
 		startActivity(intent);
 	}
+	
+	FragmentPagerAdapter mFragmentPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
+
+		@Override
+		public Fragment getItem(int position) {
+			switch (position) {
+			case FRAGMENT_MY_TRAINING:
+				return new MyTrainingFragment();
+
+			case FRAGMENT_ALL_COURSES:
+				return new AllCoursesFragment();
+
+			case FRAGMENT_ME:
+				return new MeFragment();
+
+			default:
+				return new MyTrainingFragment();
+			}
+		}
+
+		@Override
+		public int getCount() {
+			return PAGE_COUNT;
+		}
+	};
 	
 }

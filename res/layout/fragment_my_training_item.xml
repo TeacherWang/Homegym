@@ -47,6 +47,7 @@
 	        android:layout_height="wrap_content"
 	        android:background="@drawable/home_state_going"/>
 	    <TextView 
+	        android:id="@+id/course_progress_text"
 	        android:layout_marginTop="@dimen/course_progress_text_margin_top"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"

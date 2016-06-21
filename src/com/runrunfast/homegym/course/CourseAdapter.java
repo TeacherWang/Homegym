@@ -45,7 +45,20 @@ public class CourseAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ViewHolder viewHolder = null;
-		convertView = getViewHolder(convertView);
+		if (convertView == null) {
+			viewHolder = new ViewHolder();
+			convertView = mInflater.inflate(R.layout.fragment_my_training_item, null);
+			viewHolder.courseImg = (ImageView)convertView.findViewById(R.id.course_img);
+			viewHolder.btnAdd = (Button)convertView.findViewById(R.id.btn_add);
+			viewHolder.courseNewImg = (ImageView)convertView.findViewById(R.id.course_new_img);
+			viewHolder.courseProgressImg = (ImageView)convertView.findViewById(R.id.course_progress_img);
+			viewHolder.tvProgress = (TextView)convertView.findViewById(R.id.course_progress_text);
+			viewHolder.tvCourseQuality = (TextView)convertView.findViewById(R.id.excellent_course_text);
+			
+			convertView.setTag(viewHolder);
+		} else {
+			viewHolder = (ViewHolder) convertView.getTag();
+		}
 		
 		CourseInfo courseInfo = mCourseList.get(position);
 		if(courseInfo.isMyCourse){
@@ -61,6 +74,8 @@ public class CourseAdapter extends BaseAdapter {
 		if(courseInfo.isNew){
 			viewHolder.courseNewImg.setVisibility(View.VISIBLE);
 		}
+		viewHolder.courseProgressImg.setVisibility(View.INVISIBLE);
+		viewHolder.tvProgress.setVisibility(View.INVISIBLE);
 	}
 
 	/**
@@ -73,6 +88,7 @@ public class CourseAdapter extends BaseAdapter {
 			viewHolder.btnAdd.setVisibility(View.VISIBLE);
 			viewHolder.courseNewImg.setVisibility(View.INVISIBLE);
 			viewHolder.courseProgressImg.setVisibility(View.INVISIBLE);
+			viewHolder.tvProgress.setVisibility(View.INVISIBLE);
 			viewHolder.tvCourseQuality.setVisibility(View.INVISIBLE);
 			return;
 		}
@@ -89,6 +105,7 @@ public class CourseAdapter extends BaseAdapter {
 	}
 
 	private void setCourseProgress(ViewHolder viewHolder, int progerssType) {
+		viewHolder.courseProgressImg.setVisibility(View.VISIBLE);
 		switch (progerssType) {
 		case CourseInfo.PROGRESS_ING:
 			viewHolder.courseProgressImg.setBackgroundResource(R.drawable.home_state_going);
@@ -103,24 +120,6 @@ public class CourseAdapter extends BaseAdapter {
 		default:
 			break;
 		}
-	}
-
-	private View getViewHolder(View convertView) {
-		ViewHolder viewHolder;
-		if (convertView == null) {
-			viewHolder = new ViewHolder();
-			convertView = mInflater.inflate(R.layout.fragment_my_training_item, null);
-			viewHolder.courseImg = (ImageView)convertView.findViewById(R.id.course_img);
-			viewHolder.btnAdd = (Button)convertView.findViewById(R.id.btn_add);
-			viewHolder.courseNewImg = (ImageView)convertView.findViewById(R.id.course_new_img);
-			viewHolder.courseProgressImg = (ImageView)convertView.findViewById(R.id.course_progress_img);
-			viewHolder.tvCourseQuality = (TextView)convertView.findViewById(R.id.excellent_course_text);
-			
-			convertView.setTag(viewHolder);
-		} else {
-			viewHolder = (ViewHolder) convertView.getTag();
-		}
-		return convertView;
 	}
 
 	private class ViewHolder {

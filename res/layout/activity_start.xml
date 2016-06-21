@@ -19,7 +19,8 @@
             android:textColor="@color/start_text_color"
             android:textSize="@dimen/start_text_size"
             android:gravity="center"
-            android:onClick="onClick"/>
+            android:onClick="onClick"
+            android:clickable="true"/>
         <TextView 
             android:id="@+id/start_login"
             android:layout_width="0dp"
@@ -30,7 +31,8 @@
             android:textColor="@color/start_text_color"
             android:textSize="@dimen/start_text_size"
             android:gravity="center"
-            android:onClick="onClick"/>
+            android:onClick="onClick"
+            android:clickable="true"/>
     </LinearLayout>
     <RelativeLayout
         android:layout_above="@id/start_bottom_layout"

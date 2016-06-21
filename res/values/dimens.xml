@@ -33,5 +33,15 @@
 	<dimen name="course_progress_text_margin_top">9dp</dimen>
 	<dimen name="course_excellent_text_size">13sp</dimen>
 	<dimen name="course_recommended_layout_size">39dp</dimen>
+	<dimen name="course_recommended_img_margin_left_right">12dp</dimen>
+	<dimen name="course_listview_divider_height">4dp</dimen>
+	<dimen name="course_divider_1px">1px</dimen>
+	<dimen name="course_divider_5dp">5dp</dimen>
+	
+	<!-- 我 -->
+	<dimen name="account_headimg_size">64dp</dimen>
+	<dimen name="account_headimg_margin_top">20dp</dimen>
+	<dimen name="account_name_size">20sp</dimen>
+	<dimen name="account_name_margin_top">20dp</dimen>
 	
 </resources>
