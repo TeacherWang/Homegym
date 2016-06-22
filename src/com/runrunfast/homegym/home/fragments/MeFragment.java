@@ -16,7 +16,15 @@ public class MeFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater,
 			@Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-		rootView = inflater.inflate(R.layout.activity_btdevice, container, false);
+		rootView = inflater.inflate(R.layout.fragment_me, container, false);
 		return rootView;
+	}
+	
+	// 不要删除，切换fragment用到
+    @Override
+	public void setMenuVisibility(boolean menuVisible) {
+		super.setMenuVisibility(menuVisible);
+		if (this.getView() != null)
+			this.getView().setVisibility(menuVisible ? View.VISIBLE : View.GONE);
 	}
 }

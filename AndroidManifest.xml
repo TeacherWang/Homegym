@@ -38,6 +38,13 @@
             android:screenOrientation="portrait" >
         </activity> 
         
+		<activity
+            android:name=".start.ResetPwdActivity"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:configChanges="keyboard|keyboardHidden|orientation"
+            android:screenOrientation="portrait" >
+        </activity> 
+        
         <activity
             android:name=".home.HomeActivity"
             android:theme="@android:style/Theme.NoTitleBar"

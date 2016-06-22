@@ -101,8 +101,11 @@ public class HomeActivity extends FragmentActivity{
 	}
 	
 	private void handleClickBottomTraining() {
-		switchFragment(FRAGMENT_MY_TRAINING);
-		mTrainingType = FRAGMENT_MY_TRAINING;
+		if(mTrainingType == FRAGMENT_MY_TRAINING){
+			switchFragment(FRAGMENT_MY_TRAINING);
+		}else{
+			switchFragment(FRAGMENT_ALL_COURSES);
+		}
 		
 		changeTainingViewEnable();
 		

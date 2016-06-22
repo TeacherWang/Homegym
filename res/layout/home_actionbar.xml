@@ -58,4 +58,12 @@
             android:textColor="@color/actionbar_unselect_text_color"/>
     </LinearLayout>
     
+    <TextView 
+        android:id="@+id/home_actionbar_divider"
+        android:layout_below="@id/home_actionbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/course_divider_1px"
+        android:layout_alignParentBottom="true"
+        android:background="@color/divider_1"/>
+    
 </RelativeLayout>

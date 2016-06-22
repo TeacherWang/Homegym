@@ -67,4 +67,13 @@ public class MyTrainingFragment extends Fragment{
 		mMyCourseListView = (ListView)rootView.findViewById(R.id.my_course_listview);
 		mRecommedCourseListView = (ListView)rootView.findViewById(R.id.course_recommed_listview);
 	}
+	
+	// 不要删除，切换fragment用到
+    @Override
+	public void setMenuVisibility(boolean menuVisible) {
+		super.setMenuVisibility(menuVisible);
+		if (this.getView() != null)
+			this.getView().setVisibility(menuVisible ? View.VISIBLE : View.GONE);
+	}
+    
 }

@@ -19,4 +19,17 @@
     <string name="course_rest_day">休息日</string>
     <string name="trainnig_record">训练记录</string>
     
+    <string name="enter_phone_num">请输入您的手机号码</string>
+    <string name="enter_pwd">请输入登录密码</string>
+	<string name="fogot_pwd">忘记密码？</string>
+	<string name="enter_correct_phone_num">请输入正确的手机号</string>
+	<string name="account_unregister">账号未注册</string>
+	<string name="enter_verificationcode">请输入手机验证码</string>
+	<string name="get_verificationcode">点击获取验证码</string>
+	<string name="had_account">已有账号</string>
+	<string name="register_finish">完成注册</string>
+	<string name="enter_new_pwd">请输入新密码</string>
+	<string name="reset_pwd">重置密码</string>
+	
+    
 </resources>
