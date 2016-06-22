@@ -1,6 +1,7 @@
 /.settings
 /bin
 /gen
+**.class
 *.class
 *.classpath
 *.apk
