@@ -27,7 +27,9 @@
         android:id="@+id/actionbar_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"/>
+        android:layout_centerInParent="true"
+        android:textSize="@dimen/actionbar_title_size"
+        android:textColor="@color/action_bar_title_text_color"/>
     
     <LinearLayout
         android:id="@+id/actionbar_select_layout"

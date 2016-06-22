@@ -29,8 +29,15 @@
     <color name="bottom_text_disable_color">#918b8a</color>
     
     <color name="divider_1">#cccccc</color>
+    <color name="divider_bt">#e5e5e5</color>
     <color name="my_course_bg">#f6f6f6</color>
     <color name="course_img_mask">#4d000000</color>
     <color name="recommended_course_text_color">#231815</color>
+    
+    <color name="action_bar_title_text_color">#231815</color>
+    
+    <color name="bt_had_paired_text_color">#666666</color>
+    
+    <color name="bt_device_connected_color">#009944</color>
     
 </resources>

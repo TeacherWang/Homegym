@@ -24,7 +24,7 @@ public class BtDeviceActivity extends Activity {
 	}
 
 	private void initData() {
-		tvTitle.setText(R.string.gym);
+		tvTitle.setText(R.string.bluetooth);
 	}
 
 	private void initView() {

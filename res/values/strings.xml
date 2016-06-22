@@ -31,5 +31,9 @@
 	<string name="enter_new_pwd">请输入新密码</string>
 	<string name="reset_pwd">重置密码</string>
 	
+	<string name="bluetooth">蓝牙</string>
+	<string name="bt_had_paired">已适配</string>
+	<string name="bt_connected">已连接</string>
+	<string name="bt_cancel">取消绑定并连接新设备</string>
     
 </resources>

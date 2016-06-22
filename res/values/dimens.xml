@@ -33,6 +33,7 @@
 	<dimen name="actionbar_height">48dp</dimen>
 	<dimen name="actionbar_left_img_margin_leftright">16dp</dimen>
 	<dimen name="actionbar_text_size">16sp</dimen>
+	<dimen name="actionbar_title_size">18sp</dimen>
 	
 	<dimen name="bottom_padding_top">2dp</dimen>
 	<dimen name="bottom_height">48dp</dimen>
@@ -60,5 +61,15 @@
 	<dimen name="account_headimg_margin_top">20dp</dimen>
 	<dimen name="account_name_size">20sp</dimen>
 	<dimen name="account_name_margin_top">20dp</dimen>
+	
+	<dimen name="bt_had_paired_height">38dp</dimen>
+	<dimen name="bt_had_paired_text_size">15sp</dimen>
+	<dimen name="bt_had_paired_text_margin_left">15dp</dimen>
+	<dimen name="bt_paired_device_bg_height">48dp</dimen>
+	<dimen name="bt_paired_device_connect_text_size">14sp</dimen>
+	<dimen name="bt_cancel_pair_btn_width">180dp</dimen>
+	<dimen name="bt_cancel_pair_btn_height">64dp</dimen>
+	<dimen name="bt_cancel_pair_btn_margin_top">60dp</dimen>
+	<dimen name="bt_cancel_pair_text_size">14sp</dimen>
 	
 </resources>
