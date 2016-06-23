@@ -79,5 +79,8 @@
 	<dimen name="dialog_content_text_height">93dp</dimen>
 	<dimen name="dialog_btn_text_size">15sp</dimen>
 	<dimen name="dialog_corner_radius">4dp</dimen>
+	<dimen name="dialog_content_text_size">17sp</dimen>
+	
+	<!-- record -->
 	
 </resources>

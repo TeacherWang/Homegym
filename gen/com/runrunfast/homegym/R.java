@@ -21,13 +21,13 @@ public final class R {
         public static final int bt_device_connected_color=0x7f040018;
         public static final int bt_had_paired_text_color=0x7f040017;
         public static final int course_img_mask=0x7f040014;
-        public static final int dialog_bg=0x7f040019;
-        public static final int dialog_btn_cancel_color_normal=0x7f04001a;
-        public static final int dialog_btn_cancel_color_pressed=0x7f04001b;
-        public static final int dialog_btn_cancel_text_color=0x7f04001e;
-        public static final int dialog_btn_confirm_color_normal=0x7f04001c;
-        public static final int dialog_btn_confirm_color_pressed=0x7f04001d;
-        public static final int dialog_btn_confirm_text_color=0x7f04001f;
+        public static final int dialog_btn_cancel_color_normal=0x7f040019;
+        public static final int dialog_btn_cancel_color_pressed=0x7f04001a;
+        public static final int dialog_btn_cancel_text_color=0x7f04001d;
+        public static final int dialog_btn_confirm_color_normal=0x7f04001b;
+        public static final int dialog_btn_confirm_color_pressed=0x7f04001c;
+        public static final int dialog_btn_confirm_text_color=0x7f04001e;
+        public static final int dialog_content_text_color=0x7f04001f;
         public static final int divider_1=0x7f040011;
         public static final int divider_bt=0x7f040012;
         public static final int had_account_text_color=0x7f040007;
@@ -71,7 +71,7 @@ public final class R {
          would include 7" and 10" devices in landscape (~960dp and ~1280dp respectively).
     
          */
-        public static final int activity_horizontal_margin=0x7f050040;
+        public static final int activity_horizontal_margin=0x7f050041;
         public static final int bottom_height=0x7f05001c;
         public static final int bottom_padding_top=0x7f05001b;
         public static final int bottom_text_size=0x7f05001d;
@@ -99,6 +99,7 @@ public final class R {
         public static final int dialog_btn_height=0x7f05003c;
         public static final int dialog_btn_text_size=0x7f05003e;
         public static final int dialog_content_text_height=0x7f05003d;
+        public static final int dialog_content_text_size=0x7f050040;
         public static final int dialog_corner_radius=0x7f05003f;
         public static final int dialog_height=0x7f05003b;
         /**  dialog 
@@ -142,31 +143,30 @@ public final class R {
         public static final int dialog_bg_round_corner_rect=0x7f020001;
         public static final int dialog_btn_cancel_selector=0x7f020002;
         public static final int dialog_btn_confirm_selector=0x7f020003;
-        public static final int dialog_cancel_btn_round_corner_rect=0x7f020004;
-        public static final int dialog_content_text_round_corner_rect=0x7f020005;
-        public static final int home_add=0x7f020006;
-        public static final int home_icon_add=0x7f020007;
-        public static final int home_recommend=0x7f020008;
-        public static final int home_state_finish=0x7f020009;
-        public static final int home_state_going=0x7f02000a;
-        public static final int home_state_high_quality=0x7f02000b;
-        public static final int home_state_new=0x7f02000c;
-        public static final int ic_launcher=0x7f02000d;
-        public static final int list_img1=0x7f02000e;
-        public static final int list_img2=0x7f02000f;
-        public static final int list_img3=0x7f020010;
-        public static final int nav_back=0x7f020011;
-        public static final int nav_bluetooth=0x7f020012;
-        public static final int nav_record=0x7f020013;
-        public static final int nav_select_left=0x7f020014;
-        public static final int nav_select_right=0x7f020015;
-        public static final int nav_selection_box=0x7f020016;
-        public static final int start_indicator_big=0x7f020017;
-        public static final int start_indicator_small=0x7f020018;
-        public static final int tab_icon_exercis=0x7f020019;
-        public static final int tab_icon_exercise_disable=0x7f02001a;
-        public static final int tab_icon_me=0x7f02001b;
-        public static final int tab_icon_me_disabale=0x7f02001c;
+        public static final int dialog_content_text_round_corner_rect=0x7f020004;
+        public static final int home_add=0x7f020005;
+        public static final int home_icon_add=0x7f020006;
+        public static final int home_recommend=0x7f020007;
+        public static final int home_state_finish=0x7f020008;
+        public static final int home_state_going=0x7f020009;
+        public static final int home_state_high_quality=0x7f02000a;
+        public static final int home_state_new=0x7f02000b;
+        public static final int ic_launcher=0x7f02000c;
+        public static final int list_img1=0x7f02000d;
+        public static final int list_img2=0x7f02000e;
+        public static final int list_img3=0x7f02000f;
+        public static final int nav_back=0x7f020010;
+        public static final int nav_bluetooth=0x7f020011;
+        public static final int nav_record=0x7f020012;
+        public static final int nav_select_left=0x7f020013;
+        public static final int nav_select_right=0x7f020014;
+        public static final int nav_selection_box=0x7f020015;
+        public static final int start_indicator_big=0x7f020016;
+        public static final int start_indicator_small=0x7f020017;
+        public static final int tab_icon_exercis=0x7f020018;
+        public static final int tab_icon_exercise_disable=0x7f020019;
+        public static final int tab_icon_me=0x7f02001a;
+        public static final int tab_icon_me_disabale=0x7f02001b;
     }
     public static final class id {
         public static final int account_head_img=0x7f08002c;
@@ -264,6 +264,7 @@ public final class R {
         public static final int account_unregister=0x7f060012;
         public static final int all_course=0x7f060004;
         public static final int app_name=0x7f060000;
+        public static final int ask_unbind=0x7f06001f;
         public static final int bluetooth=0x7f060019;
         public static final int bt_cancel=0x7f06001c;
         public static final int bt_connected=0x7f06001b;
@@ -284,12 +285,14 @@ public final class R {
         public static final int login=0x7f060002;
         public static final int me=0x7f060007;
         public static final int my_training=0x7f060003;
+        public static final int no=0x7f06001e;
         public static final int recommended_courses=0x7f06000a;
         public static final int register=0x7f060001;
         public static final int register_finish=0x7f060016;
         public static final int reset_pwd=0x7f060018;
         public static final int training=0x7f060006;
         public static final int trainnig_record=0x7f06000d;
+        public static final int yes=0x7f06001d;
     }
     public static final class style {
         /** 
@@ -318,5 +321,6 @@ public final class R {
  All customizations that are NOT specific to a particular API-level can go here. 
          */
         public static final int AppTheme=0x7f070001;
+        public static final int MyDialogStyle=0x7f070002;
     }
 }

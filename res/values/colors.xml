@@ -40,7 +40,6 @@
     
     <color name="bt_device_connected_color">#009944</color>
     
-    <color name="dialog_bg">#4d000000</color>
     <color name="dialog_btn_cancel_color_normal">#dcdcdc</color>
     <color name="dialog_btn_cancel_color_pressed">#b5b5b5</color>
     
@@ -49,5 +48,6 @@
     
     <color name="dialog_btn_cancel_text_color">#666666</color>
     <color name="dialog_btn_confirm_text_color">#ffffff</color>
+    <color name="dialog_content_text_color">#231815</color>
     
 </resources>

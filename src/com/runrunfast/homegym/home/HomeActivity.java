@@ -52,6 +52,9 @@ public class HomeActivity extends FragmentActivity{
 		selectView = (View)findViewById(R.id.actionbar_select_layout);
 		selectView.setVisibility(View.VISIBLE);
 		
+		findViewById(R.id.actionbar_left_btn).setBackgroundResource(R.drawable.nav_bluetooth);
+		findViewById(R.id.actionbar_right_btn).setBackgroundResource(R.drawable.nav_record);
+		
 		btnSelectLeft = (Button)selectView.findViewById(R.id.actionbar_select_left_btn);
 		btnSelectRight = (Button)selectView.findViewById(R.id.actionbar_select_right_btn);
 		

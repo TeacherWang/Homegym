@@ -71,7 +71,7 @@
         
         <activity
             android:name=".widget.DialogActivity"
-            android:theme="@android:style/Theme.NoTitleBar"
+            android:theme="@style/MyDialogStyle"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:screenOrientation="portrait" >
             

@@ -10,8 +10,7 @@
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:onClick="onClick"
-        android:layout_marginLeft="@dimen/actionbar_left_img_margin_leftright"
-        android:background="@drawable/nav_bluetooth" />
+        android:layout_marginLeft="@dimen/actionbar_left_img_margin_leftright" />
 
     <Button 
         android:id="@+id/actionbar_right_btn"
@@ -21,7 +20,7 @@
         android:layout_centerVertical="true"
         android:onClick="onClick"
         android:layout_marginRight="@dimen/actionbar_left_img_margin_leftright"
-        android:background="@drawable/nav_record" />
+        android:background="@null" />
     
     <TextView 
         android:id="@+id/actionbar_title"
