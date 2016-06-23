@@ -1,6 +1,7 @@
 package com.runrunfast.homegym.start;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.runrunfast.homegym.R;
+import com.runrunfast.homegym.widget.DialogActivity;
 
 public class RegisterActivity extends Activity implements OnClickListener{
 	
@@ -77,6 +79,7 @@ public class RegisterActivity extends Activity implements OnClickListener{
 	}
 
 	private void handleClickRegisterFinish() {
-		
+		Intent intent = new Intent(this, DialogActivity.class);
+		startActivity(intent);
 	}
 }

@@ -72,4 +72,12 @@
 	<dimen name="bt_cancel_pair_btn_margin_top">66dp</dimen>
 	<dimen name="bt_cancel_pair_text_size">15sp</dimen>
 	
+	<!-- dialog -->
+	<dimen name="dialog_width">250dp</dimen>
+	<dimen name="dialog_height">140dp</dimen>
+	<dimen name="dialog_btn_height">47dp</dimen>
+	<dimen name="dialog_content_text_height">93dp</dimen>
+	<dimen name="dialog_btn_text_size">15sp</dimen>
+	<dimen name="dialog_corner_radius">4dp</dimen>
+	
 </resources>

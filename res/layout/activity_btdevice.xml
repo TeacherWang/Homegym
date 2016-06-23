@@ -83,6 +83,6 @@
         android:text="@string/bt_cancel"
         android:textColor="@color/white"
         android:textSize="@dimen/bt_cancel_pair_text_size"
-        android:background="@drawable/round_corner_rect"/>
+        android:background="@drawable/bt_unbind_round_corner_rect"/>
     
 </RelativeLayout>
