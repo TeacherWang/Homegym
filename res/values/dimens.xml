@@ -68,8 +68,8 @@
 	<dimen name="bt_paired_device_bg_height">48dp</dimen>
 	<dimen name="bt_paired_device_connect_text_size">14sp</dimen>
 	<dimen name="bt_cancel_pair_btn_width">180dp</dimen>
-	<dimen name="bt_cancel_pair_btn_height">64dp</dimen>
-	<dimen name="bt_cancel_pair_btn_margin_top">60dp</dimen>
-	<dimen name="bt_cancel_pair_text_size">14sp</dimen>
+	<dimen name="bt_cancel_pair_btn_height">44dp</dimen>
+	<dimen name="bt_cancel_pair_btn_margin_top">66dp</dimen>
+	<dimen name="bt_cancel_pair_text_size">15sp</dimen>
 	
 </resources>
