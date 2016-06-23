@@ -31,7 +31,7 @@
 	
 	<!-- 主界面 -->
 	<dimen name="actionbar_height">48dp</dimen>
-	<dimen name="actionbar_left_img_margin_leftright">16dp</dimen>
+	<dimen name="actionbar_left_img_margin_leftright">4dp</dimen>
 	<dimen name="actionbar_text_size">16sp</dimen>
 	<dimen name="actionbar_title_size">18sp</dimen>
 	
