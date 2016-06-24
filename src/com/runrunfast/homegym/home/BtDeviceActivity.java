@@ -7,10 +7,16 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.runrunfast.homegym.R;
+import com.runrunfast.homegym.BtDevice.BtDeviceAdapter;
+import com.runrunfast.homegym.BtDevice.BtInfo;
 import com.runrunfast.homegym.widget.DialogActivity;
+
+import java.util.ArrayList;
 
 public class BtDeviceActivity extends Activity{
 	private final String TAG = "BtDeviceActivity";
@@ -19,6 +25,11 @@ public class BtDeviceActivity extends Activity{
 	
 	private TextView tvTitle;
 	private Button btnBack, btnUnbind;
+	private ListView mDeviceListView;
+	private LinearLayout llBtAllDevicesLayout;
+	
+	private BtDeviceAdapter mBtDeviceAdapter;
+	private ArrayList<BtInfo> mBtInfoList;
 	
 	private Resources mResources;
 	@Override
@@ -35,6 +46,26 @@ public class BtDeviceActivity extends Activity{
 
 	private void initData() {
 		tvTitle.setText(R.string.bluetooth);
+		
+		mBtInfoList = new ArrayList<BtInfo>();
+		
+		BtInfo btInfo1 = new BtInfo();
+		btInfo1.btName = "设备1";
+		btInfo1.btAddress = "aaa";
+		mBtInfoList.add(btInfo1);
+		
+		BtInfo btInfo2 = new BtInfo();
+		btInfo2.btName = "设备2";
+		btInfo2.btAddress = "bbb";
+		mBtInfoList.add(btInfo2);
+		
+		BtInfo btInfo3 = new BtInfo();
+		btInfo3.btName = "设备3";
+		btInfo3.btAddress = "ccc";
+		mBtInfoList.add(btInfo3);
+		
+		mBtDeviceAdapter = new BtDeviceAdapter(this, mBtInfoList);
+		mDeviceListView.setAdapter(mBtDeviceAdapter);
 	}
 
 	private void initView() {
@@ -42,6 +73,10 @@ public class BtDeviceActivity extends Activity{
 		findViewById(R.id.actionbar_left_btn).setBackgroundResource(R.drawable.nav_back);
 		
 		btnUnbind = (Button)findViewById(R.id.btn_cancel_pair);
+		
+		mDeviceListView = (ListView)findViewById(R.id.bt_device_listview);
+		
+		llBtAllDevicesLayout = (LinearLayout)findViewById(R.id.bt_all_devices_layout);
 	}
 	
 	public void onClick(View view){

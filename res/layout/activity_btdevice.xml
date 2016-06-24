@@ -43,7 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/bt_had_paired_text_margin_left"
-            android:textSize="@dimen/bt_had_paired_text_size"
+            android:textSize="@dimen/bt_device_name_text_size"
             android:textColor="@color/bt_had_paired_text_color" />
         
         <TextView
@@ -58,20 +58,45 @@
             android:textColor="@color/bt_device_connected_color" />
     </RelativeLayout>
     
-    <TextView 
+    <View 
         android:id="@+id/bt_paired_device_divider"
         android:layout_below="@id/bt_paired_device_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/course_divider_1px"
         android:background="@color/divider_bt" />
     
-    <ListView
-        android:id="@+id/bt_device_listview"
+    <LinearLayout
+        android:id="@+id/bt_all_devices_layout"
         android:layout_below="@id/bt_paired_device_divider"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/bt_all_device_margin_top"
+        android:orientation="vertical" >
+        <TextView 
+        	android:id="@+id/bt_all_device_text"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:layout_marginLeft="@dimen/bt_all_devcei_text_margin_left"
+        	android:text="@string/bt_all_devices"
+        	android:textSize="@dimen/bt_all_device_text_size"
+        	android:textColor="@color/bt_all_devices_text_color"/>
         
-    </ListView>
+        <View 
+	        android:id="@+id/bt_all_device_divider"
+	        android:layout_width="match_parent"
+	        android:layout_height="@dimen/course_divider_1px"
+	        android:layout_marginTop="@dimen/bt_all_devcei_text_margin_left"
+	        android:background="@color/divider_all_courses" />
+        
+        <ListView
+	        android:id="@+id/bt_device_listview"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:divider="@color/divider_bt"
+        	android:dividerHeight="@dimen/bt_listview_divider_height" >
+	    </ListView>
+	    
+    </LinearLayout>
     
     <Button 
         android:id="@+id/btn_cancel_pair"

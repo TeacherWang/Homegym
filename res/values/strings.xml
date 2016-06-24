@@ -38,5 +38,7 @@
 	<string name="yes">是</string>
 	<string name="no">否</string>
 	<string name="ask_unbind">是否解绑本设备</string>
+	
+	<string name="bt_all_devices">全部设备</string>
     
 </resources>

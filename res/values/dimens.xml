@@ -83,4 +83,13 @@
 	
 	<!-- record -->
 	
+	<!-- 蓝牙界面 -->
+	<dimen name="bt_all_device_text_size">15sp</dimen>
+	<dimen name="bt_all_device_margin_top">55dp</dimen>
+	<dimen name="bt_all_devcei_text_margin_left">15dp</dimen>
+	<dimen name="bt_listview_divider_height">1px</dimen>
+	<dimen name="bt_item_height">48dp</dimen>
+	<dimen name="bt_device_name_text_size">17sp</dimen>
+	<dimen name="bt_device_name_margin_left">15dp</dimen>
+	
 </resources>
