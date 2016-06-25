@@ -176,12 +176,13 @@ public final class R {
         public static final int nav_select_left=0x7f020013;
         public static final int nav_select_right=0x7f020014;
         public static final int nav_selection_box=0x7f020015;
-        public static final int start_indicator_big=0x7f020016;
-        public static final int start_indicator_small=0x7f020017;
-        public static final int tab_icon_exercis=0x7f020018;
-        public static final int tab_icon_exercise_disable=0x7f020019;
-        public static final int tab_icon_me=0x7f02001a;
-        public static final int tab_icon_me_disabale=0x7f02001b;
+        public static final int record_share=0x7f020016;
+        public static final int start_indicator_big=0x7f020017;
+        public static final int start_indicator_small=0x7f020018;
+        public static final int tab_icon_exercis=0x7f020019;
+        public static final int tab_icon_exercise_disable=0x7f02001a;
+        public static final int tab_icon_me=0x7f02001b;
+        public static final int tab_icon_me_disabale=0x7f02001c;
     }
     public static final class id {
         public static final int account_head_img=0x7f08002f;
