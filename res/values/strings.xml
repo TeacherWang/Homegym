@@ -43,4 +43,8 @@
 	<string name="bt_last_connected_no">无</string>
 	<string name="ask_open_bt">是否为您开启蓝牙</string>
     
+	<string name="month">月</string>
+	<string name="year">年</string>
+	<string name="total">总</string>
+	
 </resources>

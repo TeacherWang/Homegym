@@ -82,6 +82,10 @@
 	<dimen name="dialog_content_text_size">17sp</dimen>
 	
 	<!-- record -->
+	<dimen name="record_time_margin_top">10dp</dimen>
+	<dimen name="record_selection_box_width">268dp</dimen>
+	<dimen name="record_selection_box_height">28dp</dimen>
+	<dimen name="record_selection_box_text_size">17sp</dimen>
 	
 	<!-- 蓝牙界面 -->
 	<dimen name="bt_all_device_text_size">15sp</dimen>

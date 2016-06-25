@@ -47,6 +47,7 @@ public final class R {
         public static final int login_text_bg=0x7f040009;
         public static final int my_course_bg=0x7f040015;
         public static final int recommended_course_text_color=0x7f040017;
+        public static final int record_selectbox_time_normal=0x7f040024;
         public static final int register_text_color=0x7f04000c;
         public static final int start_login_bg=0x7f040004;
         /**  启动界面 
@@ -75,28 +76,27 @@ public final class R {
          would include 7" and 10" devices in landscape (~960dp and ~1280dp respectively).
     
          */
-        public static final int activity_horizontal_margin=0x7f050049;
+        public static final int activity_horizontal_margin=0x7f05004d;
         public static final int bottom_height=0x7f05001c;
         public static final int bottom_padding_top=0x7f05001b;
         public static final int bottom_text_size=0x7f05001d;
-        public static final int bt_all_devcei_text_margin_bottom=0x7f050044;
-        public static final int bt_all_devcei_text_margin_left=0x7f050043;
-        public static final int bt_all_device_margin_top=0x7f050042;
-        /**  record 
- 蓝牙界面 
+        public static final int bt_all_devcei_text_margin_bottom=0x7f050048;
+        public static final int bt_all_devcei_text_margin_left=0x7f050047;
+        public static final int bt_all_device_margin_top=0x7f050046;
+        /**  蓝牙界面 
          */
-        public static final int bt_all_device_text_size=0x7f050041;
+        public static final int bt_all_device_text_size=0x7f050045;
         public static final int bt_cancel_pair_btn_height=0x7f050037;
         public static final int bt_cancel_pair_btn_margin_top=0x7f050038;
         public static final int bt_cancel_pair_btn_width=0x7f050036;
         public static final int bt_cancel_pair_text_size=0x7f050039;
-        public static final int bt_device_name_margin_left=0x7f050048;
-        public static final int bt_device_name_text_size=0x7f050047;
+        public static final int bt_device_name_margin_left=0x7f05004c;
+        public static final int bt_device_name_text_size=0x7f05004b;
         public static final int bt_had_paired_height=0x7f050031;
         public static final int bt_had_paired_text_margin_left=0x7f050033;
         public static final int bt_had_paired_text_size=0x7f050032;
-        public static final int bt_item_height=0x7f050046;
-        public static final int bt_listview_divider_height=0x7f050045;
+        public static final int bt_item_height=0x7f05004a;
+        public static final int bt_listview_divider_height=0x7f050049;
         public static final int bt_paired_device_bg_height=0x7f050034;
         public static final int bt_paired_device_connect_text_size=0x7f050035;
         public static final int course_addbtn_margin_top=0x7f050023;
@@ -141,6 +141,12 @@ public final class R {
         public static final int my_course_margin_top=0x7f05001e;
         public static final int my_course_padding_left_right=0x7f050020;
         public static final int my_course_padding_top_bottom=0x7f05001f;
+        public static final int record_selection_box_height=0x7f050043;
+        public static final int record_selection_box_text_size=0x7f050044;
+        public static final int record_selection_box_width=0x7f050042;
+        /**  record 
+         */
+        public static final int record_time_margin_top=0x7f050041;
         /**  登录界面 
          */
         public static final int reg_log_text_size=0x7f05000c;
@@ -176,90 +182,99 @@ public final class R {
         public static final int nav_select_left=0x7f020013;
         public static final int nav_select_right=0x7f020014;
         public static final int nav_selection_box=0x7f020015;
-        public static final int record_share=0x7f020016;
-        public static final int start_indicator_big=0x7f020017;
-        public static final int start_indicator_small=0x7f020018;
-        public static final int tab_icon_exercis=0x7f020019;
-        public static final int tab_icon_exercise_disable=0x7f02001a;
-        public static final int tab_icon_me=0x7f02001b;
-        public static final int tab_icon_me_disabale=0x7f02001c;
+        public static final int record_select_1=0x7f020016;
+        public static final int record_select_2=0x7f020017;
+        public static final int record_select_3=0x7f020018;
+        public static final int record_selection_box=0x7f020019;
+        public static final int record_share=0x7f02001a;
+        public static final int start_indicator_big=0x7f02001b;
+        public static final int start_indicator_small=0x7f02001c;
+        public static final int tab_icon_exercis=0x7f02001d;
+        public static final int tab_icon_exercise_disable=0x7f02001e;
+        public static final int tab_icon_me=0x7f02001f;
+        public static final int tab_icon_me_disabale=0x7f020020;
     }
     public static final class id {
-        public static final int account_head_img=0x7f08002f;
-        public static final int account_name_text=0x7f080030;
-        public static final int actionbar_left_btn=0x7f08003c;
-        public static final int actionbar_right_btn=0x7f08003d;
-        public static final int actionbar_select_layout=0x7f08003f;
-        public static final int actionbar_select_left_btn=0x7f080040;
-        public static final int actionbar_select_right_btn=0x7f080041;
-        public static final int actionbar_title=0x7f08003e;
-        public static final int all_courses_listview=0x7f08002e;
-        public static final int bottom_content_layout=0x7f080043;
-        public static final int bottom_me_img=0x7f080048;
-        public static final int bottom_me_layout=0x7f080047;
-        public static final int bottom_me_text=0x7f080049;
-        public static final int bottom_training_img=0x7f080045;
-        public static final int bottom_training_layout=0x7f080044;
-        public static final int bottom_training_text=0x7f080046;
+        public static final int account_head_img=0x7f080034;
+        public static final int account_name_text=0x7f080035;
+        public static final int actionbar_left_btn=0x7f080041;
+        public static final int actionbar_right_btn=0x7f080042;
+        public static final int actionbar_select_layout=0x7f080044;
+        public static final int actionbar_select_left_btn=0x7f080045;
+        public static final int actionbar_select_right_btn=0x7f080046;
+        public static final int actionbar_title=0x7f080043;
+        public static final int all_courses_listview=0x7f080033;
+        public static final int bottom_content_layout=0x7f080048;
+        public static final int bottom_me_img=0x7f08004d;
+        public static final int bottom_me_layout=0x7f08004c;
+        public static final int bottom_me_text=0x7f08004e;
+        public static final int bottom_training_img=0x7f08004a;
+        public static final int bottom_training_layout=0x7f080049;
+        public static final int bottom_training_text=0x7f08004b;
         public static final int bt_all_device_divider=0x7f080009;
         public static final int bt_all_device_text=0x7f080008;
         public static final int bt_all_devices_layout=0x7f080007;
         public static final int bt_device_divider=0x7f080003;
         public static final int bt_device_home_actionbar=0x7f080000;
-        public static final int bt_device_item_name_text=0x7f08002d;
+        public static final int bt_device_item_name_text=0x7f080032;
         public static final int bt_device_listview=0x7f08000a;
         public static final int bt_had_paired_layout=0x7f080001;
         public static final int bt_had_paired_text=0x7f080002;
         public static final int bt_paired_device=0x7f080005;
         public static final int bt_paired_device_divider=0x7f080006;
         public static final int bt_paired_device_layout=0x7f080004;
-        public static final int btn_add=0x7f080036;
+        public static final int btn_add=0x7f08003b;
         public static final int btn_cancel_pair=0x7f08000b;
         public static final int btn_login=0x7f08001a;
-        public static final int btn_register_finish=0x7f080023;
-        public static final int course_empty_text=0x7f080037;
-        public static final int course_img=0x7f080035;
-        public static final int course_new_img=0x7f080038;
-        public static final int course_progress_img=0x7f080039;
-        public static final int course_progress_text=0x7f08003a;
-        public static final int course_recommed_img=0x7f080033;
-        public static final int course_recommed_listview=0x7f080034;
-        public static final int course_recommend_layout=0x7f080032;
+        public static final int btn_register_finish=0x7f080028;
+        public static final int course_empty_text=0x7f08003c;
+        public static final int course_img=0x7f08003a;
+        public static final int course_new_img=0x7f08003d;
+        public static final int course_progress_img=0x7f08003e;
+        public static final int course_progress_text=0x7f08003f;
+        public static final int course_recommed_img=0x7f080038;
+        public static final int course_recommed_listview=0x7f080039;
+        public static final int course_recommend_layout=0x7f080037;
         public static final int dialog_cancel=0x7f08000d;
         public static final int dialog_confirm=0x7f08000e;
         public static final int dialog_content_text=0x7f08000c;
         public static final int et_phone_num=0x7f080015;
         public static final int et_psw=0x7f080016;
-        public static final int et_psw_sign=0x7f080022;
-        public static final int et_verificationCode_sign=0x7f08001f;
-        public static final int excellent_course_text=0x7f08003b;
+        public static final int et_psw_sign=0x7f080027;
+        public static final int et_verificationCode_sign=0x7f080024;
+        public static final int excellent_course_text=0x7f080040;
         public static final int home_actionbar=0x7f08000f;
-        public static final int home_actionbar_divider=0x7f080042;
+        public static final int home_actionbar_divider=0x7f080047;
         public static final int home_bottom=0x7f080010;
         public static final int home_content_layout=0x7f080011;
-        public static final int iv_getVrificationCode=0x7f080020;
-        public static final int iv_yanzhengma=0x7f08001e;
+        public static final int iv_getVrificationCode=0x7f080025;
+        public static final int iv_yanzhengma=0x7f080023;
         public static final int ll_login1=0x7f080014;
         public static final int login_action_bar=0x7f080012;
-        public static final int login_back_img=0x7f08004a;
+        public static final int login_back_img=0x7f08004f;
         public static final int login_logo_img=0x7f080013;
-        public static final int login_title_text=0x7f08004b;
-        public static final int my_course_listview=0x7f080031;
+        public static final int login_title_text=0x7f080050;
+        public static final int my_course_listview=0x7f080036;
         public static final int pb_login=0x7f08001c;
-        public static final int register_action_bar=0x7f08001d;
+        public static final int record_selection_box_layout=0x7f08001d;
+        public static final int record_selection_month=0x7f08001f;
+        public static final int record_selection_total=0x7f080021;
+        public static final int record_selection_which_layout=0x7f08001e;
+        public static final int record_selection_year=0x7f080020;
+        public static final int register_action_bar=0x7f080022;
         public static final int register_layout=0x7f080017;
-        public static final int reset_action_bar=0x7f080025;
+        public static final int reset_action_bar=0x7f08002a;
         public static final int rl_pb_login=0x7f08001b;
-        public static final int start_bottom_layout=0x7f080026;
-        public static final int start_indicator1=0x7f08002a;
-        public static final int start_indicator2=0x7f08002b;
-        public static final int start_indicator3=0x7f08002c;
-        public static final int start_login=0x7f080028;
-        public static final int start_register=0x7f080027;
-        public static final int start_view_pager=0x7f080029;
-        public static final int tv_exist_acount=0x7f080024;
+        public static final int start_bottom_layout=0x7f08002b;
+        public static final int start_indicator1=0x7f08002f;
+        public static final int start_indicator2=0x7f080030;
+        public static final int start_indicator3=0x7f080031;
+        public static final int start_login=0x7f08002d;
+        public static final int start_register=0x7f08002c;
+        public static final int start_view_pager=0x7f08002e;
+        public static final int tv_exist_acount=0x7f080029;
         public static final int tv_forget_pwd=0x7f080019;
-        public static final int tv_get_verificationcode=0x7f080021;
+        public static final int tv_get_verificationcode=0x7f080026;
         public static final int tv_register=0x7f080018;
     }
     public static final class layout {
@@ -307,14 +322,17 @@ public final class R {
         public static final int had_account=0x7f060015;
         public static final int login=0x7f060002;
         public static final int me=0x7f060007;
+        public static final int month=0x7f060023;
         public static final int my_training=0x7f060003;
         public static final int no=0x7f06001e;
         public static final int recommended_courses=0x7f06000a;
         public static final int register=0x7f060001;
         public static final int register_finish=0x7f060016;
         public static final int reset_pwd=0x7f060018;
+        public static final int total=0x7f060025;
         public static final int training=0x7f060006;
         public static final int trainnig_record=0x7f06000d;
+        public static final int year=0x7f060024;
         public static final int yes=0x7f06001d;
     }
     public static final class style {
