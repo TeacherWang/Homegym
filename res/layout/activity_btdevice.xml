@@ -46,16 +46,16 @@
             android:textSize="@dimen/bt_device_name_text_size"
             android:textColor="@color/bt_had_paired_text_color" />
         
-        <TextView
-            android:id="@+id/bt_paired_device_connect"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/bt_had_paired_text_margin_left"
-            android:text="@string/bt_connected"
-            android:textSize="@dimen/bt_paired_device_connect_text_size"
-            android:textColor="@color/bt_device_connected_color" />
+<!--         <TextView -->
+<!--             android:id="@+id/bt_paired_device_connect" -->
+<!--             android:layout_width="wrap_content" -->
+<!--             android:layout_height="wrap_content" -->
+<!--             android:layout_centerVertical="true" -->
+<!--             android:layout_alignParentRight="true" -->
+<!--             android:layout_marginRight="@dimen/bt_had_paired_text_margin_left" -->
+<!--             android:text="@string/bt_connected" -->
+<!--             android:textSize="@dimen/bt_paired_device_connect_text_size" -->
+<!--             android:textColor="@color/bt_device_connected_color" /> -->
     </RelativeLayout>
     
     <View 
@@ -85,7 +85,7 @@
 	        android:id="@+id/bt_all_device_divider"
 	        android:layout_width="match_parent"
 	        android:layout_height="@dimen/course_divider_1px"
-	        android:layout_marginTop="@dimen/bt_all_devcei_text_margin_left"
+	        android:layout_marginTop="@dimen/bt_all_devcei_text_margin_bottom"
 	        android:background="@color/divider_all_courses" />
         
         <ListView

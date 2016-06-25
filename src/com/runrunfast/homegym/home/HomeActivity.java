@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.runrunfast.homegym.R;
+import com.runrunfast.homegym.BtDevice.BtDeviceActivity;
 import com.runrunfast.homegym.home.fragments.AllCoursesFragment;
 import com.runrunfast.homegym.home.fragments.MeFragment;
 import com.runrunfast.homegym.home.fragments.MyTrainingFragment;
@@ -175,7 +176,7 @@ public class HomeActivity extends FragmentActivity{
 	}
 
 	private void handleClickBt() {
-		Log.d(TAG, "handleClickRecord");
+		Log.d(TAG, "handleClickBt");
 		Intent intent = new Intent(this, BtDeviceActivity.class);
 		startActivity(intent);
 	}

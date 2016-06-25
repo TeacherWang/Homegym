@@ -39,4 +39,12 @@ public class SharedPreferenceUtils {
 		
 		return btInfo;
 	}
+	
+	public static void removeLastConnectedBt(Context context){
+		SharedPreferences preferences = context.getSharedPreferences(SP_LAST_CONNECTED_BT, Context.MODE_PRIVATE);
+		Editor editor = preferences.edit();
+		editor.clear();
+		editor.commit();
+	}
+	
 }

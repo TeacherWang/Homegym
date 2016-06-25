@@ -53,5 +53,6 @@
     <color name="dialog_content_text_color">#231815</color>
     
     <color name="bt_all_devices_text_color">#666666</color>
+    <color name="bt_all_devices_item_bg_color">#f6f6f6</color>
     
 </resources>

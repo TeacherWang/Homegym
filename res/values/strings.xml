@@ -40,5 +40,7 @@
 	<string name="ask_unbind">是否解绑本设备</string>
 	
 	<string name="bt_all_devices">全部设备</string>
+	<string name="bt_last_connected_no">无</string>
+	<string name="ask_open_bt">是否为您开启蓝牙</string>
     
 </resources>
