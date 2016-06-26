@@ -72,6 +72,10 @@ public class RecordActivity extends Activity implements OnClickListener{
 	}
 
 	private void selectTotal() {
+		tvSelectMonth.setTextColor(getResources().getColor(R.color.record_selectbox_time_normal));
+		tvSelectYear.setTextColor(getResources().getColor(R.color.record_selectbox_time_normal));
+		tvSelectTotal.setTextColor(getResources().getColor(R.color.white));
+		
 		rlSelectionWhichLayout.removeAllViews();
 		ImageView img = new ImageView(this);
 		img.setBackgroundResource(R.drawable.record_select_3);
@@ -82,6 +86,10 @@ public class RecordActivity extends Activity implements OnClickListener{
 	}
 
 	private void selectYear() {
+		tvSelectMonth.setTextColor(getResources().getColor(R.color.record_selectbox_time_normal));
+		tvSelectYear.setTextColor(getResources().getColor(R.color.white));
+		tvSelectTotal.setTextColor(getResources().getColor(R.color.record_selectbox_time_normal));
+		
 		rlSelectionWhichLayout.removeAllViews();
 		ImageView img = new ImageView(this);
 		img.setBackgroundResource(R.drawable.record_select_2);
@@ -94,6 +102,10 @@ public class RecordActivity extends Activity implements OnClickListener{
 	}
 
 	private void selectMonth() {
+		tvSelectMonth.setTextColor(getResources().getColor(R.color.white));
+		tvSelectYear.setTextColor(getResources().getColor(R.color.record_selectbox_time_normal));
+		tvSelectTotal.setTextColor(getResources().getColor(R.color.record_selectbox_time_normal));
+		
 		rlSelectionWhichLayout.removeAllViews();
 		ImageView img = new ImageView(this);
 		img.setBackgroundResource(R.drawable.record_select_1);

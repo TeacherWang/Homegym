@@ -52,7 +52,14 @@
                 android:textSize="@dimen/record_selection_box_text_size"
                 android:text="@string/total"/>
         </LinearLayout>
-        
     </RelativeLayout>
+    
+    <FrameLayout
+        android:id="@+id/record_content_framelayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/record_content_margin_top" >
+        
+    </FrameLayout>
 
 </LinearLayout>

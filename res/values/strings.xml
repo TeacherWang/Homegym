@@ -46,5 +46,15 @@
 	<string name="month">月</string>
 	<string name="year">年</string>
 	<string name="total">总</string>
+	<string name="record_total_consume">您已累计训练消耗</string>
+	<string name="kcal">kcal</string>
+	<string name="record_total_time">累计时长</string>
+	<string name="record_total_finish_days">累计完成</string>
+	<string name="record_total_days">累计天数</string>
+	<string name="record_total_train_count">共训练</string>
+	<string name="hour">小时</string>
+	<string name="count">次</string>
+	<string name="day">天</string>
+	<string name="record_total_equal">相当于消耗掉</string>
 	
 </resources>

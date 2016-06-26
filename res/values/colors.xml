@@ -57,4 +57,9 @@
     
     <color name="record_selectbox_time_normal">#231815</color>
     
+    <color name="record_total_consume_text_color">#333333</color>
+    <color name="record_total_consume_number_color">#009944</color>
+    <color name="record_total_consume_kcal_unit_color">#666666</color>
+    <color name="record_total_equal_text_color">#231815</color>
+    
 </resources>

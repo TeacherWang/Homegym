@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/record_total_content_margin_left"
+            android:layout_marginTop="@dimen/record_total_consume_margin_top"
+            android:text="@string/record_total_consume"
+            android:textColor="@color/record_total_consume_text_color"
+            android:textSize="@dimen/record_total_consume_text_size" />
+        <TextView 
+            android:id="@+id/record_total_consume_number_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="686"
+            android:textColor="@color/record_total_consume_number_color"
+            android:textSize="@dimen/record_total_consume_number_size"
+            android:textStyle="bold"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/record_total_consume_number_margin_top"/>
+        <TextView 
+            android:layout_toRightOf="@id/record_total_consume_number_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="70dp"
+            android:text="@string/kcal"
+            android:textSize="@dimen/record_total_consume_unit_text_size"
+            android:textColor="@color/record_total_consume_kcal_unit_color"/>
+    </RelativeLayout>
+
+    <View 
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginLeft="@dimen/record_total_content_margin_left"
+        android:layout_marginRight="@dimen/record_total_content_margin_left"/>
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/record_total_finish_content_height"
+        android:layout_marginLeft="@dimen/record_total_content_margin_left"
+        android:layout_marginRight="@dimen/record_total_content_margin_left"
+        android:orientation="horizontal" >
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_gravity="center_horizontal" >
+            <TextView 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="@string/record_total_time"
+                android:textSize="@dimen/record_total_finish_text_size"
+                android:textColor="@color/record_total_consume_text_color"/>
+            <TextView 
+                android:id="@+id/record_total_finish_time_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="136"
+                android:textSize="@dimen/record_total_finish_number_size"
+                android:textColor="@color/black"/>
+            <TextView 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="@string/hour"
+                android:textSize="@dimen/record_total_finish_unit_size"
+                android:textColor="@color/record_total_consume_text_color"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="@dimen/record_total_finish_unit_margin_bottom"/>
+        </RelativeLayout>
+        
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_gravity="center_horizontal" >
+            <TextView 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="@string/record_total_time"
+                android:textSize="@dimen/record_total_finish_text_size"
+                android:textColor="@color/record_total_consume_text_color"/>
+            <TextView 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="136"
+                android:textSize="@dimen/record_total_finish_number_size"
+                android:textColor="@color/black"/>
+            <TextView 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="@string/hour"
+                android:textSize="@dimen/record_total_finish_unit_size"
+                android:textColor="@color/record_total_consume_text_color"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="@dimen/record_total_finish_unit_margin_bottom"/>
+        </RelativeLayout>
+        
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_gravity="center_horizontal" >
+            <TextView 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="@string/record_total_time"
+                android:textSize="@dimen/record_total_finish_text_size"
+                android:textColor="@color/record_total_consume_text_color"/>
+            <TextView 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="136"
+                android:textSize="@dimen/record_total_finish_number_size"
+                android:textColor="@color/black"/>
+            <TextView 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="@string/hour"
+                android:textSize="@dimen/record_total_finish_unit_size"
+                android:textColor="@color/record_total_consume_text_color"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="@dimen/record_total_finish_unit_margin_bottom"/>
+        </RelativeLayout>
+        
+    </LinearLayout>
+</LinearLayout>
