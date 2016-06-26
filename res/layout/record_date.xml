@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/record_detail_date_height"
+        android:layout_marginLeft="@dimen/record_date_margin_left" >
+        <TextView 
+	        android:id="@+id/record_date"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_centerVertical="true"
+	        android:text="2016-5-1"
+	        android:textSize="@dimen/record_date_size"
+	        android:textColor="@color/record_date_color"/>
+    </RelativeLayout>
+    
+	<RelativeLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="@dimen/record_detail_course_height"
+	    android:layout_marginLeft="@dimen/record_date_margin_left"
+	    android:layout_marginRight="@dimen/record_detail_course_margin_right" >
+	    <TextView 
+	        android:id="@+id/record_course_name"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_centerVertical="true"
+	        android:text="21天增肌计划"
+	        android:textSize="@dimen/record_course_name_size"
+	        android:textColor="@color/black"/>
+	    
+	    <TextView 
+	        android:id="@+id/record_course_consume_text"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_centerVertical="true"
+	        android:layout_alignParentRight="true"
+	        android:text="00:30:48"
+	        android:textSize="@dimen/record_date_size"
+	        android:textColor="@color/record_detail_time_color"/>
+	</RelativeLayout>
+	
+	<View 
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/record_total_divider"/>
+	
+</LinearLayout>

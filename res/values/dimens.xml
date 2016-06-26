@@ -81,6 +81,16 @@
 	<dimen name="dialog_corner_radius">4dp</dimen>
 	<dimen name="dialog_content_text_size">17sp</dimen>
 	
+	<!-- 蓝牙界面 -->
+	<dimen name="bt_all_device_text_size">15sp</dimen>
+	<dimen name="bt_all_device_margin_top">55dp</dimen>
+	<dimen name="bt_all_devcei_text_margin_left">15dp</dimen>
+	<dimen name="bt_all_devcei_text_margin_bottom">12dp</dimen>
+	<dimen name="bt_listview_divider_height">1px</dimen>
+	<dimen name="bt_item_height">48dp</dimen>
+	<dimen name="bt_device_name_text_size">17sp</dimen>
+	<dimen name="bt_device_name_margin_left">15dp</dimen>
+	
 	<!-- record -->
 	<dimen name="record_time_margin_top">10dp</dimen>
 	<dimen name="record_selection_box_width">268dp</dimen>
@@ -119,14 +129,19 @@
 	<dimen name="record_detail_time_size">12sp</dimen>
 	<dimen name="record_detail_time_result_margin_right">6dp</dimen>
 	
-	<!-- 蓝牙界面 -->
-	<dimen name="bt_all_device_text_size">15sp</dimen>
-	<dimen name="bt_all_device_margin_top">55dp</dimen>
-	<dimen name="bt_all_devcei_text_margin_left">15dp</dimen>
-	<dimen name="bt_all_devcei_text_margin_bottom">12dp</dimen>
-	<dimen name="bt_listview_divider_height">1px</dimen>
-	<dimen name="bt_item_height">48dp</dimen>
-	<dimen name="bt_device_name_text_size">17sp</dimen>
-	<dimen name="bt_device_name_margin_left">15dp</dimen>
+	<dimen name="record_date_size">12sp</dimen>
+	<dimen name="record_date_margin_left">12dp</dimen>
+	<dimen name="record_course_name_size">16sp</dimen>
+	<dimen name="record_detail_date_height">21dp</dimen>
+	<dimen name="record_detail_course_height">33dp</dimen>
+	<dimen name="record_detail_course_margin_right">14dp</dimen>
+	<dimen name="record_detail_train_height">40dp</dimen>
+	<dimen name="record_detail_train_margin_left">40dp</dimen>
+	<dimen name="record_detail_train_img_margin_left">7dp</dimen>
+	<dimen name="record_detail_train_img_margin_right">16dp</dimen>
+	<dimen name="record_detail_train_kcal_margin_right">15dp</dimen>
+	<dimen name="record_detail_train_grounp_count_margin_right">104dp</dimen>
+	<dimen name="record_detail_train_name_size">16sp</dimen>
+	<dimen name="record_detail_train_group_count">15sp</dimen>
 	
 </resources>

@@ -66,4 +66,7 @@
     <color name="record_detail_text_color">#231815</color>
     <color name="record_detail_time_color">#333333</color>
     <color name="record_detail_time_result_color">#cd3106</color>
+    
+    <color name="record_date_color">#291818</color>
+    
 </resources>

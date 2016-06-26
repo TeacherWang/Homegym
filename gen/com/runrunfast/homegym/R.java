@@ -8,329 +8,519 @@
 package com.runrunfast.homegym;
 
 public final class R {
+    public static final class anim {
+        public static final int slide_in_from_bottom=0x7f040000;
+        public static final int slide_in_from_top=0x7f040001;
+        public static final int slide_out_to_bottom=0x7f040002;
+        public static final int slide_out_to_top=0x7f040003;
+    }
     public static final class attr {
+        /**  BELOW HERE ARE DEPRECEATED. DO NOT USE. 
+         <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+         */
+        public static final int ptrAdapterViewBackground=0x7f010010;
+        /**  Style of Animation should be used displayed when pulling. 
+         <p>Must be one or more (separated by '|') of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>rotate</code></td><td>0x0</td><td></td></tr>
+<tr><td><code>flip</code></td><td>0x1</td><td></td></tr>
+</table>
+         */
+        public static final int ptrAnimationStyle=0x7f01000c;
+        /**  Drawable to use as Loading Indicator. Changes both Header and Footer. 
+         <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int ptrDrawable=0x7f010006;
+        /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int ptrDrawableBottom=0x7f010012;
+        /**  Drawable to use as Loading Indicator in the Footer View. Overrides value set in ptrDrawable. 
+         <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int ptrDrawableEnd=0x7f010008;
+        /**  Drawable to use as Loading Indicator in the Header View. Overrides value set in ptrDrawable. 
+         <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int ptrDrawableStart=0x7f010007;
+        /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int ptrDrawableTop=0x7f010011;
+        /**  A drawable to use as the background of the Header and Footer Loading Views 
+         <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+         */
+        public static final int ptrHeaderBackground=0x7f010001;
+        /**  Text Color of the Header and Footer Loading Views Sub Header 
+         <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+         */
+        public static final int ptrHeaderSubTextColor=0x7f010003;
+        /**  Base text color, typeface, size, and style for Header and Footer Loading Views 
+         <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int ptrHeaderTextAppearance=0x7f01000a;
+        /**  Text Color of the Header and Footer Loading Views 
+         <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+         */
+        public static final int ptrHeaderTextColor=0x7f010002;
+        /** 
+        	Whether PullToRefreshListView has it's extras enabled. This allows the user to be 
+        	able to scroll while refreshing, and behaves better. It acheives this by adding
+        	Header and/or Footer Views to the ListView.
+        
+         <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a boolean value, either "<code>true</code>" or "<code>false</code>".
+         */
+        public static final int ptrListViewExtrasEnabled=0x7f01000e;
+        /**  Mode of Pull-to-Refresh that should be used 
+         <p>Must be one or more (separated by '|') of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>disabled</code></td><td>0x0</td><td></td></tr>
+<tr><td><code>pullFromStart</code></td><td>0x1</td><td></td></tr>
+<tr><td><code>pullFromEnd</code></td><td>0x2</td><td></td></tr>
+<tr><td><code>both</code></td><td>0x3</td><td></td></tr>
+<tr><td><code>manualOnly</code></td><td>0x4</td><td></td></tr>
+<tr><td><code>pullDownFromTop</code></td><td>0x1</td><td> These last two are depreacted </td></tr>
+<tr><td><code>pullUpFromBottom</code></td><td>0x2</td><td></td></tr>
+</table>
+         */
+        public static final int ptrMode=0x7f010004;
+        /**  Whether Android's built-in Over Scroll should be utilised for Pull-to-Refresh. 
+         <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a boolean value, either "<code>true</code>" or "<code>false</code>".
+         */
+        public static final int ptrOverScroll=0x7f010009;
+        /**  A drawable to use as the background of the Refreshable View 
+         <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+         */
+        public static final int ptrRefreshableViewBackground=0x7f010000;
+        /** 
+        	Whether the Drawable should be continually rotated as you pull. This only
+        	takes effect when using the 'Rotate' Animation Style.
+        
+         <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a boolean value, either "<code>true</code>" or "<code>false</code>".
+         */
+        public static final int ptrRotateDrawableWhilePulling=0x7f01000f;
+        /**  Whether the user can scroll while the View is Refreshing 
+         <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a boolean value, either "<code>true</code>" or "<code>false</code>".
+         */
+        public static final int ptrScrollingWhileRefreshingEnabled=0x7f01000d;
+        /**  Whether the Indicator overlay(s) should be used 
+         <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a boolean value, either "<code>true</code>" or "<code>false</code>".
+         */
+        public static final int ptrShowIndicator=0x7f010005;
+        /**  Base text color, typeface, size, and style for Header and Footer Loading Views Sub Header 
+         <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int ptrSubHeaderTextAppearance=0x7f01000b;
     }
     public static final class color {
-        public static final int action_bar_title_text_color=0x7f040018;
-        public static final int actionbar_select_text_color=0x7f04000e;
+        public static final int action_bar_title_text_color=0x7f080018;
+        public static final int actionbar_select_text_color=0x7f08000e;
         /**  主界面 
          */
-        public static final int actionbar_unselect_text_color=0x7f04000d;
-        public static final int black=0x7f040002;
-        public static final int bottom_text_disable_color=0x7f040011;
-        public static final int bottom_text_enable_color=0x7f040010;
-        public static final int bt_all_devices_item_bg_color=0x7f040023;
-        public static final int bt_all_devices_text_color=0x7f040022;
-        public static final int bt_device_connected_color=0x7f04001a;
-        public static final int bt_had_paired_text_color=0x7f040019;
-        public static final int course_img_mask=0x7f040016;
-        public static final int dialog_btn_cancel_color_normal=0x7f04001b;
-        public static final int dialog_btn_cancel_color_pressed=0x7f04001c;
-        public static final int dialog_btn_cancel_text_color=0x7f04001f;
-        public static final int dialog_btn_confirm_color_normal=0x7f04001d;
-        public static final int dialog_btn_confirm_color_pressed=0x7f04001e;
-        public static final int dialog_btn_confirm_text_color=0x7f040020;
-        public static final int dialog_content_text_color=0x7f040021;
-        public static final int divider_1=0x7f040012;
-        public static final int divider_all_courses=0x7f040014;
-        public static final int divider_bt=0x7f040013;
-        public static final int had_account_text_color=0x7f040008;
-        public static final int home_bg_color=0x7f04000f;
+        public static final int actionbar_unselect_text_color=0x7f08000d;
+        public static final int black=0x7f080002;
+        public static final int bottom_text_disable_color=0x7f080011;
+        public static final int bottom_text_enable_color=0x7f080010;
+        public static final int bt_all_devices_item_bg_color=0x7f080023;
+        public static final int bt_all_devices_text_color=0x7f080022;
+        public static final int bt_device_connected_color=0x7f08001a;
+        public static final int bt_had_paired_text_color=0x7f080019;
+        public static final int course_img_mask=0x7f080016;
+        public static final int dialog_btn_cancel_color_normal=0x7f08001b;
+        public static final int dialog_btn_cancel_color_pressed=0x7f08001c;
+        public static final int dialog_btn_cancel_text_color=0x7f08001f;
+        public static final int dialog_btn_confirm_color_normal=0x7f08001d;
+        public static final int dialog_btn_confirm_color_pressed=0x7f08001e;
+        public static final int dialog_btn_confirm_text_color=0x7f080020;
+        public static final int dialog_content_text_color=0x7f080021;
+        public static final int divider_1=0x7f080012;
+        public static final int divider_all_courses=0x7f080014;
+        public static final int divider_bt=0x7f080013;
+        public static final int had_account_text_color=0x7f080008;
+        public static final int home_bg_color=0x7f08000f;
         /**  注册界面 
          */
-        public static final int login_action_bar_bg=0x7f040006;
-        public static final int login_action_bar_title_color=0x7f040007;
-        public static final int login_num_text_color=0x7f04000b;
-        public static final int login_text=0x7f04000a;
+        public static final int login_action_bar_bg=0x7f080006;
+        public static final int login_action_bar_title_color=0x7f080007;
+        public static final int login_num_text_color=0x7f08000b;
+        public static final int login_text=0x7f08000a;
         /**  登录界面 
          */
-        public static final int login_text_bg=0x7f040009;
-        public static final int my_course_bg=0x7f040015;
-        public static final int recommended_course_text_color=0x7f040017;
-        public static final int record_detail_layout_bg=0x7f04002a;
-        public static final int record_detail_text_color=0x7f04002b;
-        public static final int record_detail_time_color=0x7f04002c;
-        public static final int record_detail_time_result_color=0x7f04002d;
-        public static final int record_selectbox_time_normal=0x7f040024;
-        public static final int record_total_consume_kcal_unit_color=0x7f040027;
-        public static final int record_total_consume_number_color=0x7f040026;
-        public static final int record_total_consume_text_color=0x7f040025;
-        public static final int record_total_divider=0x7f040029;
-        public static final int record_total_equal_text_color=0x7f040028;
-        public static final int register_text_color=0x7f04000c;
-        public static final int start_login_bg=0x7f040004;
+        public static final int login_text_bg=0x7f080009;
+        public static final int my_course_bg=0x7f080015;
+        public static final int recommended_course_text_color=0x7f080017;
+        public static final int record_date_color=0x7f08002e;
+        public static final int record_detail_layout_bg=0x7f08002a;
+        public static final int record_detail_text_color=0x7f08002b;
+        public static final int record_detail_time_color=0x7f08002c;
+        public static final int record_detail_time_result_color=0x7f08002d;
+        public static final int record_selectbox_time_normal=0x7f080024;
+        public static final int record_total_consume_kcal_unit_color=0x7f080027;
+        public static final int record_total_consume_number_color=0x7f080026;
+        public static final int record_total_consume_text_color=0x7f080025;
+        public static final int record_total_divider=0x7f080029;
+        public static final int record_total_equal_text_color=0x7f080028;
+        public static final int register_text_color=0x7f08000c;
+        public static final int start_login_bg=0x7f080004;
         /**  启动界面 
          */
-        public static final int start_register_bg=0x7f040003;
-        public static final int start_text_color=0x7f040005;
-        public static final int transparent=0x7f040000;
-        public static final int white=0x7f040001;
+        public static final int start_register_bg=0x7f080003;
+        public static final int start_text_color=0x7f080005;
+        public static final int transparent=0x7f080000;
+        public static final int white=0x7f080001;
     }
     public static final class dimen {
-        public static final int account_headimg_margin_top=0x7f05002e;
+        public static final int account_headimg_margin_top=0x7f060033;
         /**  我 
          */
-        public static final int account_headimg_size=0x7f05002d;
-        public static final int account_name_margin_top=0x7f050030;
-        public static final int account_name_size=0x7f05002f;
+        public static final int account_headimg_size=0x7f060032;
+        public static final int account_name_margin_top=0x7f060035;
+        public static final int account_name_size=0x7f060034;
         /**  主界面 
          */
-        public static final int actionbar_height=0x7f050017;
-        public static final int actionbar_left_img_margin_leftright=0x7f050018;
-        public static final int actionbar_text_size=0x7f050019;
-        public static final int actionbar_title_size=0x7f05001a;
+        public static final int actionbar_height=0x7f06001c;
+        public static final int actionbar_left_img_margin_leftright=0x7f06001d;
+        public static final int actionbar_text_size=0x7f06001e;
+        public static final int actionbar_title_size=0x7f06001f;
         /** 
          Example customization of dimensions originally defined in res/values/dimens.xml
          (such as screen margins) for screens with more than 820dp of available width. This
          would include 7" and 10" devices in landscape (~960dp and ~1280dp respectively).
     
          */
-        public static final int activity_horizontal_margin=0x7f05006c;
-        public static final int bottom_height=0x7f05001c;
-        public static final int bottom_padding_top=0x7f05001b;
-        public static final int bottom_text_size=0x7f05001d;
-        public static final int bt_all_devcei_text_margin_bottom=0x7f050067;
-        public static final int bt_all_devcei_text_margin_left=0x7f050066;
-        public static final int bt_all_device_margin_top=0x7f050065;
+        public static final int activity_horizontal_margin=0x7f06007d;
+        public static final int bottom_height=0x7f060021;
+        public static final int bottom_padding_top=0x7f060020;
+        public static final int bottom_text_size=0x7f060022;
+        public static final int bt_all_devcei_text_margin_bottom=0x7f060049;
+        public static final int bt_all_devcei_text_margin_left=0x7f060048;
+        public static final int bt_all_device_margin_top=0x7f060047;
         /**  蓝牙界面 
          */
-        public static final int bt_all_device_text_size=0x7f050064;
-        public static final int bt_cancel_pair_btn_height=0x7f050037;
-        public static final int bt_cancel_pair_btn_margin_top=0x7f050038;
-        public static final int bt_cancel_pair_btn_width=0x7f050036;
-        public static final int bt_cancel_pair_text_size=0x7f050039;
-        public static final int bt_device_name_margin_left=0x7f05006b;
-        public static final int bt_device_name_text_size=0x7f05006a;
-        public static final int bt_had_paired_height=0x7f050031;
-        public static final int bt_had_paired_text_margin_left=0x7f050033;
-        public static final int bt_had_paired_text_size=0x7f050032;
-        public static final int bt_item_height=0x7f050069;
-        public static final int bt_listview_divider_height=0x7f050068;
-        public static final int bt_paired_device_bg_height=0x7f050034;
-        public static final int bt_paired_device_connect_text_size=0x7f050035;
-        public static final int course_addbtn_margin_top=0x7f050023;
-        public static final int course_divider_1px=0x7f05002b;
-        public static final int course_divider_5dp=0x7f05002c;
-        public static final int course_empty_text_margin_top=0x7f050024;
-        public static final int course_excellent_text_size=0x7f050027;
-        public static final int course_img_height=0x7f050022;
-        public static final int course_img_width=0x7f050021;
-        public static final int course_listview_divider_height=0x7f05002a;
-        public static final int course_progress_text_margin_top=0x7f050026;
-        public static final int course_progress_text_size=0x7f050025;
-        public static final int course_recommended_img_margin_left_right=0x7f050029;
-        public static final int course_recommended_layout_size=0x7f050028;
-        public static final int dialog_btn_height=0x7f05003c;
-        public static final int dialog_btn_text_size=0x7f05003e;
-        public static final int dialog_content_text_height=0x7f05003d;
-        public static final int dialog_content_text_size=0x7f050040;
-        public static final int dialog_corner_radius=0x7f05003f;
-        public static final int dialog_height=0x7f05003b;
+        public static final int bt_all_device_text_size=0x7f060046;
+        public static final int bt_cancel_pair_btn_height=0x7f06003c;
+        public static final int bt_cancel_pair_btn_margin_top=0x7f06003d;
+        public static final int bt_cancel_pair_btn_width=0x7f06003b;
+        public static final int bt_cancel_pair_text_size=0x7f06003e;
+        public static final int bt_device_name_margin_left=0x7f06004d;
+        public static final int bt_device_name_text_size=0x7f06004c;
+        public static final int bt_had_paired_height=0x7f060036;
+        public static final int bt_had_paired_text_margin_left=0x7f060038;
+        public static final int bt_had_paired_text_size=0x7f060037;
+        public static final int bt_item_height=0x7f06004b;
+        public static final int bt_listview_divider_height=0x7f06004a;
+        public static final int bt_paired_device_bg_height=0x7f060039;
+        public static final int bt_paired_device_connect_text_size=0x7f06003a;
+        public static final int course_addbtn_margin_top=0x7f060028;
+        public static final int course_divider_1px=0x7f060030;
+        public static final int course_divider_5dp=0x7f060031;
+        public static final int course_empty_text_margin_top=0x7f060029;
+        public static final int course_excellent_text_size=0x7f06002c;
+        public static final int course_img_height=0x7f060027;
+        public static final int course_img_width=0x7f060026;
+        public static final int course_listview_divider_height=0x7f06002f;
+        public static final int course_progress_text_margin_top=0x7f06002b;
+        public static final int course_progress_text_size=0x7f06002a;
+        public static final int course_recommended_img_margin_left_right=0x7f06002e;
+        public static final int course_recommended_layout_size=0x7f06002d;
+        public static final int dialog_btn_height=0x7f060041;
+        public static final int dialog_btn_text_size=0x7f060043;
+        public static final int dialog_content_text_height=0x7f060042;
+        public static final int dialog_content_text_size=0x7f060045;
+        public static final int dialog_corner_radius=0x7f060044;
+        public static final int dialog_height=0x7f060040;
         /**  dialog 
          */
-        public static final int dialog_width=0x7f05003a;
-        public static final int had_account_margin_right=0x7f05000a;
-        public static final int had_account_text_size=0x7f05000b;
-        public static final int login_action_bar_height=0x7f050006;
-        public static final int login_action_bar_title_size=0x7f050007;
-        public static final int login_btn_height=0x7f050014;
-        public static final int login_btn_margin_top=0x7f050015;
-        public static final int login_btn_width=0x7f050013;
-        public static final int login_num_img_margin_size=0x7f05000e;
-        public static final int login_num_margin_left=0x7f05000f;
-        public static final int login_num_size=0x7f050010;
-        public static final int login_register_forgot_pwd_margin_left_right=0x7f050012;
-        public static final int login_register_text_size=0x7f050011;
-        public static final int login_text_bg_height=0x7f050005;
+        public static final int dialog_width=0x7f06003f;
+        public static final int had_account_margin_right=0x7f06000f;
+        public static final int had_account_text_size=0x7f060010;
+        public static final int header_footer_left_right_padding=0x7f060003;
+        public static final int header_footer_top_bottom_padding=0x7f060004;
+        public static final int indicator_corner_radius=0x7f060001;
+        public static final int indicator_internal_padding=0x7f060002;
+        public static final int indicator_right_padding=0x7f060000;
+        public static final int login_action_bar_height=0x7f06000b;
+        public static final int login_action_bar_title_size=0x7f06000c;
+        public static final int login_btn_height=0x7f060019;
+        public static final int login_btn_margin_top=0x7f06001a;
+        public static final int login_btn_width=0x7f060018;
+        public static final int login_num_img_margin_size=0x7f060013;
+        public static final int login_num_margin_left=0x7f060014;
+        public static final int login_num_size=0x7f060015;
+        public static final int login_register_forgot_pwd_margin_left_right=0x7f060017;
+        public static final int login_register_text_size=0x7f060016;
+        public static final int login_text_bg_height=0x7f06000a;
         /**  注册界面 
          */
-        public static final int login_text_bg_width=0x7f050004;
-        public static final int login_text_size=0x7f050016;
-        public static final int logo_margin_bottom=0x7f05000d;
-        public static final int my_course_margin_top=0x7f05001e;
-        public static final int my_course_padding_left_right=0x7f050020;
-        public static final int my_course_padding_top_bottom=0x7f05001f;
-        public static final int record_content_margin_top=0x7f050045;
-        public static final int record_detail_text_margin_left=0x7f050061;
-        public static final int record_detail_text_size=0x7f050060;
-        public static final int record_detail_time_result_margin_right=0x7f050063;
-        public static final int record_detail_time_size=0x7f050062;
-        public static final int record_month_year_detail_img_margin_left=0x7f05005f;
-        public static final int record_month_year_detail_layout=0x7f05005e;
-        public static final int record_month_year_margin_top=0x7f05005d;
-        public static final int record_month_year_text_size=0x7f05005c;
-        public static final int record_selection_box_height=0x7f050043;
-        public static final int record_selection_box_text_size=0x7f050044;
-        public static final int record_selection_box_width=0x7f050042;
+        public static final int login_text_bg_width=0x7f060009;
+        public static final int login_text_size=0x7f06001b;
+        public static final int logo_margin_bottom=0x7f060012;
+        public static final int my_course_margin_top=0x7f060023;
+        public static final int my_course_padding_left_right=0x7f060025;
+        public static final int my_course_padding_top_bottom=0x7f060024;
+        public static final int record_content_margin_top=0x7f060052;
+        public static final int record_course_name_size=0x7f060073;
+        public static final int record_date_margin_left=0x7f060072;
+        public static final int record_date_size=0x7f060071;
+        public static final int record_detail_course_height=0x7f060075;
+        public static final int record_detail_course_margin_right=0x7f060076;
+        public static final int record_detail_date_height=0x7f060074;
+        public static final int record_detail_text_margin_left=0x7f06006e;
+        public static final int record_detail_text_size=0x7f06006d;
+        public static final int record_detail_time_result_margin_right=0x7f060070;
+        public static final int record_detail_time_size=0x7f06006f;
+        public static final int record_detail_train_grounp_count_margin_right=0x7f06007c;
+        public static final int record_detail_train_height=0x7f060077;
+        public static final int record_detail_train_img_margin_left=0x7f060079;
+        public static final int record_detail_train_img_margin_right=0x7f06007a;
+        public static final int record_detail_train_kcal_margin_right=0x7f06007b;
+        public static final int record_detail_train_margin_left=0x7f060078;
+        public static final int record_month_year_detail_img_margin_left=0x7f06006c;
+        public static final int record_month_year_detail_layout=0x7f06006b;
+        public static final int record_month_year_margin_top=0x7f06006a;
+        public static final int record_month_year_text_size=0x7f060069;
+        public static final int record_selection_box_height=0x7f060050;
+        public static final int record_selection_box_text_size=0x7f060051;
+        public static final int record_selection_box_width=0x7f06004f;
         /**  record 
          */
-        public static final int record_time_margin_top=0x7f050041;
-        public static final int record_total_consume_margin_top=0x7f050050;
-        public static final int record_total_consume_number_margin_top=0x7f050052;
-        public static final int record_total_consume_number_size=0x7f050047;
-        public static final int record_total_consume_text_size=0x7f050046;
-        public static final int record_total_consume_unit_text_size=0x7f050048;
-        public static final int record_total_content_margin=0x7f050051;
-        public static final int record_total_divider_margin_top=0x7f050053;
-        public static final int record_total_equal_img_height=0x7f05005a;
-        public static final int record_total_equal_img_margin_bottom=0x7f05005b;
-        public static final int record_total_equal_img_margin_top=0x7f050056;
-        public static final int record_total_equal_img_width=0x7f050059;
-        public static final int record_total_equal_margin_top=0x7f050054;
-        public static final int record_total_equal_result_text_size=0x7f050058;
-        public static final int record_total_equal_text_margin_left=0x7f050055;
-        public static final int record_total_equal_text_size=0x7f05004f;
-        public static final int record_total_finish_content_height=0x7f050049;
-        public static final int record_total_finish_number_size=0x7f05004c;
-        public static final int record_total_finish_text_margin_top=0x7f05004b;
-        public static final int record_total_finish_text_size=0x7f05004a;
-        public static final int record_total_finish_unit_margin_bottom=0x7f05004e;
-        public static final int record_total_finish_unit_size=0x7f05004d;
-        public static final int record_total_train_count_text_margin_top=0x7f050057;
+        public static final int record_time_margin_top=0x7f06004e;
+        public static final int record_total_consume_margin_top=0x7f06005d;
+        public static final int record_total_consume_number_margin_top=0x7f06005f;
+        public static final int record_total_consume_number_size=0x7f060054;
+        public static final int record_total_consume_text_size=0x7f060053;
+        public static final int record_total_consume_unit_text_size=0x7f060055;
+        public static final int record_total_content_margin=0x7f06005e;
+        public static final int record_total_divider_margin_top=0x7f060060;
+        public static final int record_total_equal_img_height=0x7f060067;
+        public static final int record_total_equal_img_margin_bottom=0x7f060068;
+        public static final int record_total_equal_img_margin_top=0x7f060063;
+        public static final int record_total_equal_img_width=0x7f060066;
+        public static final int record_total_equal_margin_top=0x7f060061;
+        public static final int record_total_equal_result_text_size=0x7f060065;
+        public static final int record_total_equal_text_margin_left=0x7f060062;
+        public static final int record_total_equal_text_size=0x7f06005c;
+        public static final int record_total_finish_content_height=0x7f060056;
+        public static final int record_total_finish_number_size=0x7f060059;
+        public static final int record_total_finish_text_margin_top=0x7f060058;
+        public static final int record_total_finish_text_size=0x7f060057;
+        public static final int record_total_finish_unit_margin_bottom=0x7f06005b;
+        public static final int record_total_finish_unit_size=0x7f06005a;
+        public static final int record_total_train_count_text_margin_top=0x7f060064;
         /**  登录界面 
          */
-        public static final int reg_log_text_size=0x7f05000c;
-        public static final int register_content_margin_top=0x7f050008;
-        public static final int register_finish_text_size=0x7f050009;
+        public static final int reg_log_text_size=0x7f060011;
+        public static final int register_content_margin_top=0x7f06000d;
+        public static final int register_finish_text_size=0x7f06000e;
         /**  启动界面 
          */
-        public static final int start_bottom_height=0x7f050000;
-        public static final int start_indicator_bootom=0x7f050002;
-        public static final int start_indicator_img_divider=0x7f050003;
-        public static final int start_text_size=0x7f050001;
+        public static final int start_bottom_height=0x7f060005;
+        public static final int start_indicator_bootom=0x7f060007;
+        public static final int start_indicator_img_divider=0x7f060008;
+        public static final int start_text_size=0x7f060006;
     }
     public static final class drawable {
         public static final int bt_unbind_round_corner_rect=0x7f020000;
-        public static final int dialog_bg_round_corner_rect=0x7f020001;
-        public static final int dialog_btn_cancel_selector=0x7f020002;
-        public static final int dialog_btn_confirm_selector=0x7f020003;
-        public static final int dialog_content_text_round_corner_rect=0x7f020004;
-        public static final int hamburger=0x7f020005;
-        public static final int home_add=0x7f020006;
-        public static final int home_icon_add=0x7f020007;
-        public static final int home_recommend=0x7f020008;
-        public static final int home_state_finish=0x7f020009;
-        public static final int home_state_going=0x7f02000a;
-        public static final int home_state_high_quality=0x7f02000b;
-        public static final int home_state_new=0x7f02000c;
-        public static final int ic_launcher=0x7f02000d;
-        public static final int list_img1=0x7f02000e;
-        public static final int list_img2=0x7f02000f;
-        public static final int list_img3=0x7f020010;
-        public static final int nav_back=0x7f020011;
-        public static final int nav_bluetooth=0x7f020012;
-        public static final int nav_record=0x7f020013;
-        public static final int nav_select_left=0x7f020014;
-        public static final int nav_select_right=0x7f020015;
-        public static final int nav_selection_box=0x7f020016;
-        public static final int record_left=0x7f020017;
-        public static final int record_right=0x7f020018;
-        public static final int record_select_1=0x7f020019;
-        public static final int record_select_2=0x7f02001a;
-        public static final int record_select_3=0x7f02001b;
-        public static final int record_selection_box=0x7f02001c;
-        public static final int record_share=0x7f02001d;
-        public static final int start_indicator_big=0x7f02001e;
-        public static final int start_indicator_small=0x7f02001f;
-        public static final int tab_icon_exercis=0x7f020020;
-        public static final int tab_icon_exercise_disable=0x7f020021;
-        public static final int tab_icon_me=0x7f020022;
-        public static final int tab_icon_me_disabale=0x7f020023;
+        public static final int default_ptr_flip=0x7f020001;
+        public static final int default_ptr_rotate=0x7f020002;
+        public static final int dialog_bg_round_corner_rect=0x7f020003;
+        public static final int dialog_btn_cancel_selector=0x7f020004;
+        public static final int dialog_btn_confirm_selector=0x7f020005;
+        public static final int dialog_content_text_round_corner_rect=0x7f020006;
+        public static final int hamburger=0x7f020007;
+        public static final int home_add=0x7f020008;
+        public static final int home_icon_add=0x7f020009;
+        public static final int home_recommend=0x7f02000a;
+        public static final int home_state_finish=0x7f02000b;
+        public static final int home_state_going=0x7f02000c;
+        public static final int home_state_high_quality=0x7f02000d;
+        public static final int home_state_new=0x7f02000e;
+        public static final int ic_launcher=0x7f02000f;
+        public static final int indicator_arrow=0x7f020010;
+        public static final int indicator_bg_bottom=0x7f020011;
+        public static final int indicator_bg_top=0x7f020012;
+        public static final int list_img1=0x7f020013;
+        public static final int list_img2=0x7f020014;
+        public static final int list_img3=0x7f020015;
+        public static final int nav_back=0x7f020016;
+        public static final int nav_bluetooth=0x7f020017;
+        public static final int nav_record=0x7f020018;
+        public static final int nav_select_left=0x7f020019;
+        public static final int nav_select_right=0x7f02001a;
+        public static final int nav_selection_box=0x7f02001b;
+        public static final int record_action1=0x7f02001c;
+        public static final int record_action2=0x7f02001d;
+        public static final int record_action3=0x7f02001e;
+        public static final int record_action4=0x7f02001f;
+        public static final int record_left=0x7f020020;
+        public static final int record_right=0x7f020021;
+        public static final int record_select_1=0x7f020022;
+        public static final int record_select_2=0x7f020023;
+        public static final int record_select_3=0x7f020024;
+        public static final int record_selection_box=0x7f020025;
+        public static final int record_share=0x7f020026;
+        public static final int start_indicator_big=0x7f020027;
+        public static final int start_indicator_small=0x7f020028;
+        public static final int tab_icon_exercis=0x7f020029;
+        public static final int tab_icon_exercise_disable=0x7f02002a;
+        public static final int tab_icon_me=0x7f02002b;
+        public static final int tab_icon_me_disabale=0x7f02002c;
     }
     public static final class id {
-        public static final int account_head_img=0x7f080035;
-        public static final int account_name_text=0x7f080036;
-        public static final int actionbar_left_btn=0x7f08004a;
-        public static final int actionbar_right_btn=0x7f08004b;
-        public static final int actionbar_select_layout=0x7f08004d;
-        public static final int actionbar_select_left_btn=0x7f08004e;
-        public static final int actionbar_select_right_btn=0x7f08004f;
-        public static final int actionbar_title=0x7f08004c;
-        public static final int all_courses_listview=0x7f080034;
-        public static final int bottom_content_layout=0x7f080051;
-        public static final int bottom_me_img=0x7f080056;
-        public static final int bottom_me_layout=0x7f080055;
-        public static final int bottom_me_text=0x7f080057;
-        public static final int bottom_training_img=0x7f080053;
-        public static final int bottom_training_layout=0x7f080052;
-        public static final int bottom_training_text=0x7f080054;
-        public static final int bt_all_device_divider=0x7f080009;
-        public static final int bt_all_device_text=0x7f080008;
-        public static final int bt_all_devices_layout=0x7f080007;
-        public static final int bt_device_divider=0x7f080003;
-        public static final int bt_device_home_actionbar=0x7f080000;
-        public static final int bt_device_item_name_text=0x7f080033;
-        public static final int bt_device_listview=0x7f08000a;
-        public static final int bt_had_paired_layout=0x7f080001;
-        public static final int bt_had_paired_text=0x7f080002;
-        public static final int bt_paired_device=0x7f080005;
-        public static final int bt_paired_device_divider=0x7f080006;
-        public static final int bt_paired_device_layout=0x7f080004;
-        public static final int btn_add=0x7f08003c;
-        public static final int btn_cancel_pair=0x7f08000b;
-        public static final int btn_login=0x7f08001a;
-        public static final int btn_record_add=0x7f08005b;
-        public static final int btn_record_reduce=0x7f08005c;
-        public static final int btn_register_finish=0x7f080029;
-        public static final int course_empty_text=0x7f08003d;
-        public static final int course_img=0x7f08003b;
-        public static final int course_new_img=0x7f08003e;
-        public static final int course_progress_img=0x7f08003f;
-        public static final int course_progress_text=0x7f080040;
-        public static final int course_recommed_img=0x7f080039;
-        public static final int course_recommed_listview=0x7f08003a;
-        public static final int course_recommend_layout=0x7f080038;
-        public static final int detail_img=0x7f080042;
-        public static final int dialog_cancel=0x7f08000d;
-        public static final int dialog_confirm=0x7f08000e;
-        public static final int dialog_content_text=0x7f08000c;
-        public static final int et_phone_num=0x7f080015;
-        public static final int et_psw=0x7f080016;
-        public static final int et_psw_sign=0x7f080028;
-        public static final int et_verificationCode_sign=0x7f080025;
-        public static final int excellent_course_text=0x7f080041;
-        public static final int home_actionbar=0x7f08000f;
-        public static final int home_actionbar_divider=0x7f080050;
-        public static final int home_bottom=0x7f080010;
-        public static final int home_content_layout=0x7f080011;
-        public static final int iv_getVrificationCode=0x7f080026;
-        public static final int iv_yanzhengma=0x7f080024;
-        public static final int ll_login1=0x7f080014;
-        public static final int login_action_bar=0x7f080012;
-        public static final int login_back_img=0x7f080058;
-        public static final int login_logo_img=0x7f080013;
-        public static final int login_title_text=0x7f080059;
-        public static final int my_course_listview=0x7f080037;
-        public static final int pb_login=0x7f08001c;
-        public static final int record_content_framelayout=0x7f080022;
-        public static final int record_detail_time_result_text=0x7f080044;
-        public static final int record_detail_time_text=0x7f080043;
-        public static final int record_selection_box_layout=0x7f08001d;
-        public static final int record_selection_month=0x7f08001f;
-        public static final int record_selection_total=0x7f080021;
-        public static final int record_selection_which_layout=0x7f08001e;
-        public static final int record_selection_year=0x7f080020;
-        public static final int record_total_consume_number_text=0x7f080045;
-        public static final int record_total_equal_img=0x7f080048;
-        public static final int record_total_equal_result_text=0x7f080049;
-        public static final int record_total_finish_time_text=0x7f080046;
-        public static final int record_total_train_total_count=0x7f080047;
-        public static final int register_action_bar=0x7f080023;
-        public static final int register_layout=0x7f080017;
-        public static final int reset_action_bar=0x7f08002b;
-        public static final int rl_pb_login=0x7f08001b;
-        public static final int start_bottom_layout=0x7f08002c;
-        public static final int start_indicator1=0x7f080030;
-        public static final int start_indicator2=0x7f080031;
-        public static final int start_indicator3=0x7f080032;
-        public static final int start_login=0x7f08002e;
-        public static final int start_register=0x7f08002d;
-        public static final int start_view_pager=0x7f08002f;
-        public static final int tv_exist_acount=0x7f08002a;
-        public static final int tv_forget_pwd=0x7f080019;
-        public static final int tv_get_verificationcode=0x7f080027;
-        public static final int tv_record_month_year=0x7f08005a;
-        public static final int tv_register=0x7f080018;
+        public static final int account_head_img=0x7f050041;
+        public static final int account_name_text=0x7f050042;
+        public static final int actionbar_left_btn=0x7f050057;
+        public static final int actionbar_right_btn=0x7f050058;
+        public static final int actionbar_select_layout=0x7f05005a;
+        public static final int actionbar_select_left_btn=0x7f05005b;
+        public static final int actionbar_select_right_btn=0x7f05005c;
+        public static final int actionbar_title=0x7f050059;
+        public static final int all_courses_listview=0x7f050040;
+        public static final int both=0x7f050003;
+        public static final int bottom_content_layout=0x7f05005e;
+        public static final int bottom_me_img=0x7f050063;
+        public static final int bottom_me_layout=0x7f050062;
+        public static final int bottom_me_text=0x7f050064;
+        public static final int bottom_training_img=0x7f050060;
+        public static final int bottom_training_layout=0x7f05005f;
+        public static final int bottom_training_text=0x7f050061;
+        public static final int bt_all_device_divider=0x7f050015;
+        public static final int bt_all_device_text=0x7f050014;
+        public static final int bt_all_devices_layout=0x7f050013;
+        public static final int bt_device_divider=0x7f05000f;
+        public static final int bt_device_home_actionbar=0x7f05000c;
+        public static final int bt_device_item_name_text=0x7f05003f;
+        public static final int bt_device_listview=0x7f050016;
+        public static final int bt_had_paired_layout=0x7f05000d;
+        public static final int bt_had_paired_text=0x7f05000e;
+        public static final int bt_paired_device=0x7f050011;
+        public static final int bt_paired_device_divider=0x7f050012;
+        public static final int bt_paired_device_layout=0x7f050010;
+        public static final int btn_add=0x7f050048;
+        public static final int btn_cancel_pair=0x7f050017;
+        public static final int btn_login=0x7f050026;
+        public static final int btn_record_add=0x7f050068;
+        public static final int btn_record_reduce=0x7f050069;
+        public static final int btn_register_finish=0x7f050035;
+        public static final int course_empty_text=0x7f050049;
+        public static final int course_img=0x7f050047;
+        public static final int course_new_img=0x7f05004a;
+        public static final int course_progress_img=0x7f05004b;
+        public static final int course_progress_text=0x7f05004c;
+        public static final int course_recommed_img=0x7f050045;
+        public static final int course_recommed_listview=0x7f050046;
+        public static final int course_recommend_layout=0x7f050044;
+        public static final int detail_img=0x7f05004e;
+        public static final int dialog_cancel=0x7f050019;
+        public static final int dialog_confirm=0x7f05001a;
+        public static final int dialog_content_text=0x7f050018;
+        public static final int disabled=0x7f050000;
+        public static final int et_phone_num=0x7f050021;
+        public static final int et_psw=0x7f050022;
+        public static final int et_psw_sign=0x7f050034;
+        public static final int et_verificationCode_sign=0x7f050031;
+        public static final int excellent_course_text=0x7f05004d;
+        public static final int fl_inner=0x7f05006a;
+        public static final int flip=0x7f050008;
+        public static final int gridview=0x7f050009;
+        public static final int home_actionbar=0x7f05001b;
+        public static final int home_actionbar_divider=0x7f05005d;
+        public static final int home_bottom=0x7f05001c;
+        public static final int home_content_layout=0x7f05001d;
+        public static final int iv_getVrificationCode=0x7f050032;
+        public static final int iv_yanzhengma=0x7f050030;
+        public static final int ll_login1=0x7f050020;
+        public static final int login_action_bar=0x7f05001e;
+        public static final int login_back_img=0x7f050065;
+        public static final int login_logo_img=0x7f05001f;
+        public static final int login_title_text=0x7f050066;
+        public static final int manualOnly=0x7f050004;
+        public static final int my_course_listview=0x7f050043;
+        public static final int pb_login=0x7f050028;
+        public static final int pullDownFromTop=0x7f050005;
+        public static final int pullFromEnd=0x7f050002;
+        public static final int pullFromStart=0x7f050001;
+        public static final int pullUpFromBottom=0x7f050006;
+        public static final int pull_to_refresh_image=0x7f05006b;
+        public static final int pull_to_refresh_progress=0x7f05006c;
+        public static final int pull_to_refresh_sub_text=0x7f05006e;
+        public static final int pull_to_refresh_text=0x7f05006d;
+        public static final int record_content_framelayout=0x7f05002e;
+        public static final int record_course_consume_text=0x7f050071;
+        public static final int record_course_head_layout=0x7f05006f;
+        public static final int record_course_name=0x7f050070;
+        public static final int record_date=0x7f050072;
+        public static final int record_detail_time_result_text=0x7f050050;
+        public static final int record_detail_time_text=0x7f05004f;
+        public static final int record_detail_train_img=0x7f050073;
+        public static final int record_month_pull_refresh_list=0x7f050051;
+        public static final int record_selection_box_layout=0x7f050029;
+        public static final int record_selection_month=0x7f05002b;
+        public static final int record_selection_total=0x7f05002d;
+        public static final int record_selection_which_layout=0x7f05002a;
+        public static final int record_selection_year=0x7f05002c;
+        public static final int record_total_consume_number_text=0x7f050052;
+        public static final int record_total_equal_img=0x7f050055;
+        public static final int record_total_equal_result_text=0x7f050056;
+        public static final int record_total_finish_time_text=0x7f050053;
+        public static final int record_total_train_total_count=0x7f050054;
+        public static final int register_action_bar=0x7f05002f;
+        public static final int register_layout=0x7f050023;
+        public static final int reset_action_bar=0x7f050037;
+        public static final int rl_pb_login=0x7f050027;
+        public static final int rotate=0x7f050007;
+        public static final int scrollview=0x7f05000b;
+        public static final int start_bottom_layout=0x7f050038;
+        public static final int start_indicator1=0x7f05003c;
+        public static final int start_indicator2=0x7f05003d;
+        public static final int start_indicator3=0x7f05003e;
+        public static final int start_login=0x7f05003a;
+        public static final int start_register=0x7f050039;
+        public static final int start_view_pager=0x7f05003b;
+        public static final int tv_exist_acount=0x7f050036;
+        public static final int tv_forget_pwd=0x7f050025;
+        public static final int tv_get_verificationcode=0x7f050033;
+        public static final int tv_record_month_year=0x7f050067;
+        public static final int tv_register=0x7f050024;
+        public static final int webview=0x7f05000a;
     }
     public static final class layout {
         public static final int activity_btdevice=0x7f030000;
@@ -353,57 +543,71 @@ public final class R {
         public static final int home_bottom=0x7f030011;
         public static final int login_action_bar=0x7f030012;
         public static final int month_year_change=0x7f030013;
+        public static final int pull_to_refresh_header_horizontal=0x7f030014;
+        public static final int pull_to_refresh_header_vertical=0x7f030015;
+        public static final int record_course=0x7f030016;
+        public static final int record_date=0x7f030017;
+        public static final int record_train=0x7f030018;
     }
     public static final class string {
-        public static final int account_unregister=0x7f060012;
-        public static final int all_course=0x7f060004;
-        public static final int app_name=0x7f060000;
-        public static final int ask_open_bt=0x7f060022;
-        public static final int ask_unbind=0x7f06001f;
-        public static final int bluetooth=0x7f060019;
-        public static final int bt_all_devices=0x7f060020;
-        public static final int bt_cancel=0x7f06001c;
-        public static final int bt_connected=0x7f06001b;
-        public static final int bt_had_paired=0x7f06001a;
-        public static final int bt_last_connected_no=0x7f060021;
-        public static final int count=0x7f06002d;
-        public static final int course_empty_text=0x7f060008;
-        public static final int course_progress_ing=0x7f06000b;
-        public static final int course_rest_day=0x7f06000c;
-        public static final int day=0x7f06002e;
-        public static final int detail_record=0x7f060030;
-        public static final int enter_correct_phone_num=0x7f060011;
-        public static final int enter_new_pwd=0x7f060017;
-        public static final int enter_phone_num=0x7f06000e;
-        public static final int enter_pwd=0x7f06000f;
-        public static final int enter_verificationcode=0x7f060013;
-        public static final int excellent_course=0x7f060009;
-        public static final int fogot_pwd=0x7f060010;
-        public static final int get_verificationcode=0x7f060014;
-        public static final int gym=0x7f060005;
-        public static final int had_account=0x7f060015;
-        public static final int hour=0x7f06002c;
-        public static final int kcal=0x7f060027;
-        public static final int login=0x7f060002;
-        public static final int me=0x7f060007;
-        public static final int month=0x7f060023;
-        public static final int my_training=0x7f060003;
-        public static final int no=0x7f06001e;
-        public static final int recommended_courses=0x7f06000a;
-        public static final int record_total_consume=0x7f060026;
-        public static final int record_total_days=0x7f06002a;
-        public static final int record_total_equal=0x7f06002f;
-        public static final int record_total_finish_days=0x7f060029;
-        public static final int record_total_time=0x7f060028;
-        public static final int record_total_train_count=0x7f06002b;
-        public static final int register=0x7f060001;
-        public static final int register_finish=0x7f060016;
-        public static final int reset_pwd=0x7f060018;
-        public static final int total=0x7f060025;
-        public static final int training=0x7f060006;
-        public static final int trainnig_record=0x7f06000d;
-        public static final int year=0x7f060024;
-        public static final int yes=0x7f06001d;
+        public static final int account_unregister=0x7f070018;
+        public static final int all_course=0x7f07000a;
+        public static final int app_name=0x7f070006;
+        public static final int ask_open_bt=0x7f070028;
+        public static final int ask_unbind=0x7f070025;
+        public static final int bluetooth=0x7f07001f;
+        public static final int bt_all_devices=0x7f070026;
+        public static final int bt_cancel=0x7f070022;
+        public static final int bt_connected=0x7f070021;
+        public static final int bt_had_paired=0x7f070020;
+        public static final int bt_last_connected_no=0x7f070027;
+        public static final int count=0x7f070033;
+        public static final int course_empty_text=0x7f07000e;
+        public static final int course_progress_ing=0x7f070011;
+        public static final int course_rest_day=0x7f070012;
+        public static final int day=0x7f070034;
+        public static final int detail_record=0x7f070036;
+        public static final int enter_correct_phone_num=0x7f070017;
+        public static final int enter_new_pwd=0x7f07001d;
+        public static final int enter_phone_num=0x7f070014;
+        public static final int enter_pwd=0x7f070015;
+        public static final int enter_verificationcode=0x7f070019;
+        public static final int excellent_course=0x7f07000f;
+        public static final int fogot_pwd=0x7f070016;
+        public static final int get_verificationcode=0x7f07001a;
+        public static final int gym=0x7f07000b;
+        public static final int had_account=0x7f07001b;
+        public static final int hour=0x7f070032;
+        public static final int kcal=0x7f07002d;
+        public static final int login=0x7f070008;
+        public static final int me=0x7f07000d;
+        public static final int month=0x7f070029;
+        public static final int my_training=0x7f070009;
+        public static final int no=0x7f070024;
+        /**  Just use standard Pull Down String when pulling up. These can be set for languages which require it 
+ Just use standard Pull Down String when pulling up. These can be set for languages which require it 
+         */
+        public static final int pull_to_refresh_from_bottom_pull_label=0x7f070003;
+        public static final int pull_to_refresh_from_bottom_refreshing_label=0x7f070005;
+        public static final int pull_to_refresh_from_bottom_release_label=0x7f070004;
+        public static final int pull_to_refresh_pull_label=0x7f070000;
+        public static final int pull_to_refresh_refreshing_label=0x7f070002;
+        public static final int pull_to_refresh_release_label=0x7f070001;
+        public static final int recommended_courses=0x7f070010;
+        public static final int record_total_consume=0x7f07002c;
+        public static final int record_total_days=0x7f070030;
+        public static final int record_total_equal=0x7f070035;
+        public static final int record_total_finish_days=0x7f07002f;
+        public static final int record_total_time=0x7f07002e;
+        public static final int record_total_train_count=0x7f070031;
+        public static final int register=0x7f070007;
+        public static final int register_finish=0x7f07001c;
+        public static final int reset_pwd=0x7f07001e;
+        public static final int total=0x7f07002b;
+        public static final int training=0x7f07000c;
+        public static final int trainnig_record=0x7f070013;
+        public static final int year=0x7f07002a;
+        public static final int yes=0x7f070023;
     }
     public static final class style {
         /** 
@@ -427,11 +631,333 @@ public final class R {
     
  API 14 theme customizations can go here. 
          */
-        public static final int AppBaseTheme=0x7f070000;
+        public static final int AppBaseTheme=0x7f090000;
         /**  Application theme. 
  All customizations that are NOT specific to a particular API-level can go here. 
          */
-        public static final int AppTheme=0x7f070001;
-        public static final int MyDialogStyle=0x7f070002;
+        public static final int AppTheme=0x7f090001;
+        public static final int MyDialogStyle=0x7f090002;
     }
+    public static final class styleable {
+        /** Attributes that can be used with a PullToRefresh.
+           <p>Includes the following attributes:</p>
+           <table>
+           <colgroup align="left" />
+           <colgroup align="left" />
+           <tr><th>Attribute</th><th>Description</th></tr>
+           <tr><td><code>{@link #PullToRefresh_ptrAdapterViewBackground com.runrunfast.homegym:ptrAdapterViewBackground}</code></td><td> BELOW HERE ARE DEPRECEATED.</td></tr>
+           <tr><td><code>{@link #PullToRefresh_ptrAnimationStyle com.runrunfast.homegym:ptrAnimationStyle}</code></td><td> Style of Animation should be used displayed when pulling.</td></tr>
+           <tr><td><code>{@link #PullToRefresh_ptrDrawable com.runrunfast.homegym:ptrDrawable}</code></td><td> Drawable to use as Loading Indicator.</td></tr>
+           <tr><td><code>{@link #PullToRefresh_ptrDrawableBottom com.runrunfast.homegym:ptrDrawableBottom}</code></td><td></td></tr>
+           <tr><td><code>{@link #PullToRefresh_ptrDrawableEnd com.runrunfast.homegym:ptrDrawableEnd}</code></td><td> Drawable to use as Loading Indicator in the Footer View.</td></tr>
+           <tr><td><code>{@link #PullToRefresh_ptrDrawableStart com.runrunfast.homegym:ptrDrawableStart}</code></td><td> Drawable to use as Loading Indicator in the Header View.</td></tr>
+           <tr><td><code>{@link #PullToRefresh_ptrDrawableTop com.runrunfast.homegym:ptrDrawableTop}</code></td><td></td></tr>
+           <tr><td><code>{@link #PullToRefresh_ptrHeaderBackground com.runrunfast.homegym:ptrHeaderBackground}</code></td><td> A drawable to use as the background of the Header and Footer Loading Views </td></tr>
+           <tr><td><code>{@link #PullToRefresh_ptrHeaderSubTextColor com.runrunfast.homegym:ptrHeaderSubTextColor}</code></td><td> Text Color of the Header and Footer Loading Views Sub Header </td></tr>
+           <tr><td><code>{@link #PullToRefresh_ptrHeaderTextAppearance com.runrunfast.homegym:ptrHeaderTextAppearance}</code></td><td> Base text color, typeface, size, and style for Header and Footer Loading Views </td></tr>
+           <tr><td><code>{@link #PullToRefresh_ptrHeaderTextColor com.runrunfast.homegym:ptrHeaderTextColor}</code></td><td> Text Color of the Header and Footer Loading Views </td></tr>
+           <tr><td><code>{@link #PullToRefresh_ptrListViewExtrasEnabled com.runrunfast.homegym:ptrListViewExtrasEnabled}</code></td><td>
+        	Whether PullToRefreshListView has it's extras enabled.</td></tr>
+           <tr><td><code>{@link #PullToRefresh_ptrMode com.runrunfast.homegym:ptrMode}</code></td><td> Mode of Pull-to-Refresh that should be used </td></tr>
+           <tr><td><code>{@link #PullToRefresh_ptrOverScroll com.runrunfast.homegym:ptrOverScroll}</code></td><td> Whether Android's built-in Over Scroll should be utilised for Pull-to-Refresh.</td></tr>
+           <tr><td><code>{@link #PullToRefresh_ptrRefreshableViewBackground com.runrunfast.homegym:ptrRefreshableViewBackground}</code></td><td> A drawable to use as the background of the Refreshable View </td></tr>
+           <tr><td><code>{@link #PullToRefresh_ptrRotateDrawableWhilePulling com.runrunfast.homegym:ptrRotateDrawableWhilePulling}</code></td><td>
+        	Whether the Drawable should be continually rotated as you pull.</td></tr>
+           <tr><td><code>{@link #PullToRefresh_ptrScrollingWhileRefreshingEnabled com.runrunfast.homegym:ptrScrollingWhileRefreshingEnabled}</code></td><td> Whether the user can scroll while the View is Refreshing </td></tr>
+           <tr><td><code>{@link #PullToRefresh_ptrShowIndicator com.runrunfast.homegym:ptrShowIndicator}</code></td><td> Whether the Indicator overlay(s) should be used </td></tr>
+           <tr><td><code>{@link #PullToRefresh_ptrSubHeaderTextAppearance com.runrunfast.homegym:ptrSubHeaderTextAppearance}</code></td><td> Base text color, typeface, size, and style for Header and Footer Loading Views Sub Header </td></tr>
+           </table>
+           @see #PullToRefresh_ptrAdapterViewBackground
+           @see #PullToRefresh_ptrAnimationStyle
+           @see #PullToRefresh_ptrDrawable
+           @see #PullToRefresh_ptrDrawableBottom
+           @see #PullToRefresh_ptrDrawableEnd
+           @see #PullToRefresh_ptrDrawableStart
+           @see #PullToRefresh_ptrDrawableTop
+           @see #PullToRefresh_ptrHeaderBackground
+           @see #PullToRefresh_ptrHeaderSubTextColor
+           @see #PullToRefresh_ptrHeaderTextAppearance
+           @see #PullToRefresh_ptrHeaderTextColor
+           @see #PullToRefresh_ptrListViewExtrasEnabled
+           @see #PullToRefresh_ptrMode
+           @see #PullToRefresh_ptrOverScroll
+           @see #PullToRefresh_ptrRefreshableViewBackground
+           @see #PullToRefresh_ptrRotateDrawableWhilePulling
+           @see #PullToRefresh_ptrScrollingWhileRefreshingEnabled
+           @see #PullToRefresh_ptrShowIndicator
+           @see #PullToRefresh_ptrSubHeaderTextAppearance
+         */
+        public static final int[] PullToRefresh = {
+            0x7f010000, 0x7f010001, 0x7f010002, 0x7f010003,
+            0x7f010004, 0x7f010005, 0x7f010006, 0x7f010007,
+            0x7f010008, 0x7f010009, 0x7f01000a, 0x7f01000b,
+            0x7f01000c, 0x7f01000d, 0x7f01000e, 0x7f01000f,
+            0x7f010010, 0x7f010011, 0x7f010012
+        };
+        /**
+          <p>
+          @attr description
+           BELOW HERE ARE DEPRECEATED. DO NOT USE. 
+
+
+          <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+          <p>This is a private symbol.
+          @attr name com.runrunfast.homegym:ptrAdapterViewBackground
+        */
+        public static final int PullToRefresh_ptrAdapterViewBackground = 16;
+        /**
+          <p>
+          @attr description
+           Style of Animation should be used displayed when pulling. 
+
+
+          <p>Must be one or more (separated by '|') of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>rotate</code></td><td>0x0</td><td></td></tr>
+<tr><td><code>flip</code></td><td>0x1</td><td></td></tr>
+</table>
+          <p>This is a private symbol.
+          @attr name com.runrunfast.homegym:ptrAnimationStyle
+        */
+        public static final int PullToRefresh_ptrAnimationStyle = 12;
+        /**
+          <p>
+          @attr description
+           Drawable to use as Loading Indicator. Changes both Header and Footer. 
+
+
+          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+          <p>This is a private symbol.
+          @attr name com.runrunfast.homegym:ptrDrawable
+        */
+        public static final int PullToRefresh_ptrDrawable = 6;
+        /**
+          <p>This symbol is the offset where the {@link com.runrunfast.homegym.R.attr#ptrDrawableBottom}
+          attribute's value can be found in the {@link #PullToRefresh} array.
+
+
+          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+          @attr name com.runrunfast.homegym:ptrDrawableBottom
+        */
+        public static final int PullToRefresh_ptrDrawableBottom = 18;
+        /**
+          <p>
+          @attr description
+           Drawable to use as Loading Indicator in the Footer View. Overrides value set in ptrDrawable. 
+
+
+          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+          <p>This is a private symbol.
+          @attr name com.runrunfast.homegym:ptrDrawableEnd
+        */
+        public static final int PullToRefresh_ptrDrawableEnd = 8;
+        /**
+          <p>
+          @attr description
+           Drawable to use as Loading Indicator in the Header View. Overrides value set in ptrDrawable. 
+
+
+          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+          <p>This is a private symbol.
+          @attr name com.runrunfast.homegym:ptrDrawableStart
+        */
+        public static final int PullToRefresh_ptrDrawableStart = 7;
+        /**
+          <p>This symbol is the offset where the {@link com.runrunfast.homegym.R.attr#ptrDrawableTop}
+          attribute's value can be found in the {@link #PullToRefresh} array.
+
+
+          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+          @attr name com.runrunfast.homegym:ptrDrawableTop
+        */
+        public static final int PullToRefresh_ptrDrawableTop = 17;
+        /**
+          <p>
+          @attr description
+           A drawable to use as the background of the Header and Footer Loading Views 
+
+
+          <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+          <p>This is a private symbol.
+          @attr name com.runrunfast.homegym:ptrHeaderBackground
+        */
+        public static final int PullToRefresh_ptrHeaderBackground = 1;
+        /**
+          <p>
+          @attr description
+           Text Color of the Header and Footer Loading Views Sub Header 
+
+
+          <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+          <p>This is a private symbol.
+          @attr name com.runrunfast.homegym:ptrHeaderSubTextColor
+        */
+        public static final int PullToRefresh_ptrHeaderSubTextColor = 3;
+        /**
+          <p>
+          @attr description
+           Base text color, typeface, size, and style for Header and Footer Loading Views 
+
+
+          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+          <p>This is a private symbol.
+          @attr name com.runrunfast.homegym:ptrHeaderTextAppearance
+        */
+        public static final int PullToRefresh_ptrHeaderTextAppearance = 10;
+        /**
+          <p>
+          @attr description
+           Text Color of the Header and Footer Loading Views 
+
+
+          <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+          <p>This is a private symbol.
+          @attr name com.runrunfast.homegym:ptrHeaderTextColor
+        */
+        public static final int PullToRefresh_ptrHeaderTextColor = 2;
+        /**
+          <p>
+          @attr description
+          
+        	Whether PullToRefreshListView has it's extras enabled. This allows the user to be 
+        	able to scroll while refreshing, and behaves better. It acheives this by adding
+        	Header and/or Footer Views to the ListView.
+        
+
+
+          <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a boolean value, either "<code>true</code>" or "<code>false</code>".
+          <p>This is a private symbol.
+          @attr name com.runrunfast.homegym:ptrListViewExtrasEnabled
+        */
+        public static final int PullToRefresh_ptrListViewExtrasEnabled = 14;
+        /**
+          <p>
+          @attr description
+           Mode of Pull-to-Refresh that should be used 
+
+
+          <p>Must be one or more (separated by '|') of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>disabled</code></td><td>0x0</td><td></td></tr>
+<tr><td><code>pullFromStart</code></td><td>0x1</td><td></td></tr>
+<tr><td><code>pullFromEnd</code></td><td>0x2</td><td></td></tr>
+<tr><td><code>both</code></td><td>0x3</td><td></td></tr>
+<tr><td><code>manualOnly</code></td><td>0x4</td><td></td></tr>
+<tr><td><code>pullDownFromTop</code></td><td>0x1</td><td> These last two are depreacted </td></tr>
+<tr><td><code>pullUpFromBottom</code></td><td>0x2</td><td></td></tr>
+</table>
+          <p>This is a private symbol.
+          @attr name com.runrunfast.homegym:ptrMode
+        */
+        public static final int PullToRefresh_ptrMode = 4;
+        /**
+          <p>
+          @attr description
+           Whether Android's built-in Over Scroll should be utilised for Pull-to-Refresh. 
+
+
+          <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a boolean value, either "<code>true</code>" or "<code>false</code>".
+          <p>This is a private symbol.
+          @attr name com.runrunfast.homegym:ptrOverScroll
+        */
+        public static final int PullToRefresh_ptrOverScroll = 9;
+        /**
+          <p>
+          @attr description
+           A drawable to use as the background of the Refreshable View 
+
+
+          <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+          <p>This is a private symbol.
+          @attr name com.runrunfast.homegym:ptrRefreshableViewBackground
+        */
+        public static final int PullToRefresh_ptrRefreshableViewBackground = 0;
+        /**
+          <p>
+          @attr description
+          
+        	Whether the Drawable should be continually rotated as you pull. This only
+        	takes effect when using the 'Rotate' Animation Style.
+        
+
+
+          <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a boolean value, either "<code>true</code>" or "<code>false</code>".
+          <p>This is a private symbol.
+          @attr name com.runrunfast.homegym:ptrRotateDrawableWhilePulling
+        */
+        public static final int PullToRefresh_ptrRotateDrawableWhilePulling = 15;
+        /**
+          <p>
+          @attr description
+           Whether the user can scroll while the View is Refreshing 
+
+
+          <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a boolean value, either "<code>true</code>" or "<code>false</code>".
+          <p>This is a private symbol.
+          @attr name com.runrunfast.homegym:ptrScrollingWhileRefreshingEnabled
+        */
+        public static final int PullToRefresh_ptrScrollingWhileRefreshingEnabled = 13;
+        /**
+          <p>
+          @attr description
+           Whether the Indicator overlay(s) should be used 
+
+
+          <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a boolean value, either "<code>true</code>" or "<code>false</code>".
+          <p>This is a private symbol.
+          @attr name com.runrunfast.homegym:ptrShowIndicator
+        */
+        public static final int PullToRefresh_ptrShowIndicator = 5;
+        /**
+          <p>
+          @attr description
+           Base text color, typeface, size, and style for Header and Footer Loading Views Sub Header 
+
+
+          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+          <p>This is a private symbol.
+          @attr name com.runrunfast.homegym:ptrSubHeaderTextAppearance
+        */
+        public static final int PullToRefresh_ptrSubHeaderTextAppearance = 11;
+    };
 }
