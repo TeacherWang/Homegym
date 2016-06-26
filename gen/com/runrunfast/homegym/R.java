@@ -226,7 +226,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
          would include 7" and 10" devices in landscape (~960dp and ~1280dp respectively).
     
          */
-        public static final int activity_horizontal_margin=0x7f06007d;
+        public static final int activity_horizontal_margin=0x7f06007f;
         public static final int bottom_height=0x7f060021;
         public static final int bottom_padding_top=0x7f060020;
         public static final int bottom_text_size=0x7f060022;
@@ -308,11 +308,13 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int record_detail_time_result_margin_right=0x7f060070;
         public static final int record_detail_time_size=0x7f06006f;
         public static final int record_detail_train_grounp_count_margin_right=0x7f06007c;
+        public static final int record_detail_train_group_count=0x7f06007e;
         public static final int record_detail_train_height=0x7f060077;
         public static final int record_detail_train_img_margin_left=0x7f060079;
         public static final int record_detail_train_img_margin_right=0x7f06007a;
         public static final int record_detail_train_kcal_margin_right=0x7f06007b;
         public static final int record_detail_train_margin_left=0x7f060078;
+        public static final int record_detail_train_name_size=0x7f06007d;
         public static final int record_month_year_detail_img_margin_left=0x7f06006c;
         public static final int record_month_year_detail_layout=0x7f06006b;
         public static final int record_month_year_margin_top=0x7f06006a;
@@ -358,22 +360,22 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int start_text_size=0x7f060006;
     }
     public static final class drawable {
-        public static final int bt_unbind_round_corner_rect=0x7f020000;
-        public static final int default_ptr_flip=0x7f020001;
-        public static final int default_ptr_rotate=0x7f020002;
-        public static final int dialog_bg_round_corner_rect=0x7f020003;
-        public static final int dialog_btn_cancel_selector=0x7f020004;
-        public static final int dialog_btn_confirm_selector=0x7f020005;
-        public static final int dialog_content_text_round_corner_rect=0x7f020006;
-        public static final int hamburger=0x7f020007;
-        public static final int home_add=0x7f020008;
-        public static final int home_icon_add=0x7f020009;
-        public static final int home_recommend=0x7f02000a;
-        public static final int home_state_finish=0x7f02000b;
-        public static final int home_state_going=0x7f02000c;
-        public static final int home_state_high_quality=0x7f02000d;
-        public static final int home_state_new=0x7f02000e;
-        public static final int ic_launcher=0x7f02000f;
+        public static final int android=0x7f020000;
+        public static final int bt_unbind_round_corner_rect=0x7f020001;
+        public static final int default_ptr_flip=0x7f020002;
+        public static final int default_ptr_rotate=0x7f020003;
+        public static final int dialog_bg_round_corner_rect=0x7f020004;
+        public static final int dialog_btn_cancel_selector=0x7f020005;
+        public static final int dialog_btn_confirm_selector=0x7f020006;
+        public static final int dialog_content_text_round_corner_rect=0x7f020007;
+        public static final int hamburger=0x7f020008;
+        public static final int home_add=0x7f020009;
+        public static final int home_icon_add=0x7f02000a;
+        public static final int home_recommend=0x7f02000b;
+        public static final int home_state_finish=0x7f02000c;
+        public static final int home_state_going=0x7f02000d;
+        public static final int home_state_high_quality=0x7f02000e;
+        public static final int home_state_new=0x7f02000f;
         public static final int indicator_arrow=0x7f020010;
         public static final int indicator_bg_bottom=0x7f020011;
         public static final int indicator_bg_top=0x7f020012;
@@ -490,7 +492,10 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int record_date=0x7f050072;
         public static final int record_detail_time_result_text=0x7f050050;
         public static final int record_detail_time_text=0x7f05004f;
+        public static final int record_detail_train_group_count_text=0x7f050075;
         public static final int record_detail_train_img=0x7f050073;
+        public static final int record_detail_train_kcal=0x7f050076;
+        public static final int record_detail_train_name=0x7f050074;
         public static final int record_month_pull_refresh_list=0x7f050051;
         public static final int record_selection_box_layout=0x7f050029;
         public static final int record_selection_month=0x7f05002b;

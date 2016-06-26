@@ -23,6 +23,7 @@
         android:textColor="@color/record_date_color" />
     
     <TextView 
+        android:id="@+id/record_detail_train_group_count_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
@@ -33,6 +34,7 @@
         android:textColor="@color/black"/>
     
     <TextView
+        android:id="@+id/record_detail_train_kcal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"

@@ -2,11 +2,15 @@ package com.runrunfast.homegym.record;
 
 import java.util.ArrayList;
 
+import com.runrunfast.homegym.R;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 public class RecordAdapter extends BaseAdapter {
 	private static final int LIST_SHOW_DATE 		= 0;
@@ -57,8 +61,71 @@ public class RecordAdapter extends BaseAdapter {
 	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
+		RecordDateViewHolder recordDateViewHolder = null;
+		RecordCourseViewHolder recordCourseViewHolder = null;
+		RecordTrainViewHolder recordTrainViewHolder = null;
+		int holderType = getItemViewType(position);
+		if(convertView == null){
+			switch (holderType) {
+			case LIST_SHOW_DATE:
+				convertView = mInflater.inflate(R.layout.record_date, null);
+				recordDateViewHolder = new RecordDateViewHolder();
+				
+				recordDateViewHolder.tvDate = (TextView)convertView.findViewById(R.id.record_date);
+				recordDateViewHolder.tvCourseName = (TextView)convertView.findViewById(R.id.record_course_name);
+				recordDateViewHolder.tvCourseConsumeTime = (TextView)convertView.findViewById(R.id.record_course_consume_text);
+				
+				convertView.setTag(recordDateViewHolder);
+				break;
+				
+			case LIST_SHOW_ONLY_COURSE:
+				convertView = mInflater.inflate(R.layout.record_course, null);
+				recordCourseViewHolder = new RecordCourseViewHolder();
+				
+				recordCourseViewHolder.tvCourseName = (TextView)convertView.findViewById(R.id.record_course_name);
+				recordCourseViewHolder.tvCourseConsumeTime = (TextView)convertView.findViewById(R.id.record_course_consume_text);
+				
+				convertView.setTag(recordCourseViewHolder);
+				break;
+				
+			case LIST_SHOW_ONLY_TRAIN:
+				convertView = mInflater.inflate(R.layout.record_train, null);
+				recordTrainViewHolder = new RecordTrainViewHolder();
+				
+				recordTrainViewHolder.ivTrain = (ImageView)convertView.findViewById(R.id.record_detail_train_img);
+				recordTrainViewHolder.tvTrainName = (TextView)convertView.findViewById(R.id.record_detail_train_name);
+				recordTrainViewHolder.tvTrainCount = (TextView)convertView.findViewById(R.id.record_detail_train_group_count_text);
+				recordTrainViewHolder.tvTrainKcal = (TextView)convertView.findViewById(R.id.record_detail_train_kcal);
+				
+				convertView.setTag(recordTrainViewHolder);
+				break;
+
+			default:
+				break;
+			}
+		}
+		
+		BaseRecordData baseRecordData = mBaseRecordDataList.get(position);
 		
 		return convertView;
+	}
+	
+	class RecordDateViewHolder{
+		TextView tvDate;
+		TextView tvCourseName;
+		TextView tvCourseConsumeTime;
+	}
+	
+	class RecordCourseViewHolder{
+		TextView tvCourseName;
+		TextView tvCourseConsumeTime;
+	}
+	
+	class RecordTrainViewHolder{
+		ImageView ivTrain;
+		TextView tvTrainName;
+		TextView tvTrainCount;
+		TextView tvTrainKcal;
 	}
 
 }
