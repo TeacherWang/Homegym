@@ -57,4 +57,7 @@
 	<string name="day">天</string>
 	<string name="record_total_equal">相当于消耗掉</string>
 	
+	<string name="detail_record">详细记录</string>
+<!-- 	<string name=""></string> -->
+	
 </resources>

@@ -61,5 +61,9 @@
     <color name="record_total_consume_number_color">#009944</color>
     <color name="record_total_consume_kcal_unit_color">#666666</color>
     <color name="record_total_equal_text_color">#231815</color>
-    
+    <color name="record_total_divider">#cccccc</color>
+    <color name="record_detail_layout_bg">#eeeeee</color>
+    <color name="record_detail_text_color">#231815</color>
+    <color name="record_detail_time_color">#333333</color>
+    <color name="record_detail_time_result_color">#cd3106</color>
 </resources>

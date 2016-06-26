@@ -92,18 +92,32 @@
 	<dimen name="record_total_consume_unit_text_size">18sp</dimen>
 	<dimen name="record_total_finish_content_height">89dp</dimen>
 	<dimen name="record_total_finish_text_size">14sp</dimen>
+	<dimen name="record_total_finish_text_margin_top">8dp</dimen>
 	<dimen name="record_total_finish_number_size">24sp</dimen>
 	<dimen name="record_total_finish_unit_size">12sp</dimen>
 	<dimen name="record_total_finish_unit_margin_bottom">11dp</dimen>
 	<dimen name="record_total_equal_text_size">15sp</dimen>
 	<dimen name="record_total_consume_margin_top">16dp</dimen>
-	<dimen name="record_total_content_margin_left">15dp</dimen>
+	<dimen name="record_total_content_margin">15dp</dimen>
 	<dimen name="record_total_consume_number_margin_top">57dp</dimen>
 	<dimen name="record_total_divider_margin_top">16dp</dimen>
 	<dimen name="record_total_equal_margin_top">32dp</dimen>
+	<dimen name="record_total_equal_text_margin_left">9dp</dimen>
 	<dimen name="record_total_equal_img_margin_top">80dp</dimen>
 	<dimen name="record_total_train_count_text_margin_top">15dp</dimen>
 	<dimen name="record_total_equal_result_text_size">15sp</dimen>
+	<dimen name="record_total_equal_img_width">250dp</dimen>
+	<dimen name="record_total_equal_img_height">175dp</dimen>
+	<dimen name="record_total_equal_img_margin_bottom">25dp</dimen>
+	
+	<dimen name="record_month_year_text_size">16sp</dimen>
+	<dimen name="record_month_year_margin_top">7dp</dimen>
+	<dimen name="record_month_year_detail_layout">30dp</dimen>
+	<dimen name="record_month_year_detail_img_margin_left">12dp</dimen>
+	<dimen name="record_detail_text_size">15sp</dimen>
+	<dimen name="record_detail_text_margin_left">7dp</dimen>
+	<dimen name="record_detail_time_size">12sp</dimen>
+	<dimen name="record_detail_time_result_margin_right">6dp</dimen>
 	
 	<!-- 蓝牙界面 -->
 	<dimen name="bt_all_device_text_size">15sp</dimen>

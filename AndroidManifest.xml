@@ -65,7 +65,7 @@
         </activity>  
         
         <activity
-            android:name=".home.RecordActivity"
+            android:name="com.runrunfast.homegym.record.RecordActivity"
             android:theme="@android:style/Theme.NoTitleBar"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:screenOrientation="portrait" >

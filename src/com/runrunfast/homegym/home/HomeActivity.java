@@ -18,6 +18,7 @@ import com.runrunfast.homegym.BtDevice.BtDeviceActivity;
 import com.runrunfast.homegym.home.fragments.AllCoursesFragment;
 import com.runrunfast.homegym.home.fragments.MeFragment;
 import com.runrunfast.homegym.home.fragments.MyTrainingFragment;
+import com.runrunfast.homegym.record.RecordActivity;
 
 public class HomeActivity extends FragmentActivity{
 	private final String TAG = "HomeActivity";
