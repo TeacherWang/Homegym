@@ -4,6 +4,7 @@
     <string name="app_name">Homegym</string>
 
     <string name="register">注册</string>
+    <string name="go_register">去注册</string>
     <string name="login">登录</string>
     
     <string name="my_training">我的训练</string>
@@ -19,12 +20,12 @@
     <string name="course_rest_day">休息日</string>
     <string name="trainnig_record">训练记录</string>
     
-    <string name="enter_phone_num">请输入您的手机号码</string>
+    <string name="enter_phone_num">请输入您的手机号</string>
     <string name="enter_pwd">请输入登录密码</string>
 	<string name="fogot_pwd">忘记密码？</string>
 	<string name="enter_correct_phone_num">请输入正确的手机号</string>
 	<string name="account_unregister">账号未注册</string>
-	<string name="enter_verificationcode">请输入手机验证码</string>
+	<string name="enter_verificationcode">请输入验证码</string>
 	<string name="get_verificationcode">点击获取验证码</string>
 	<string name="had_account">已有账号</string>
 	<string name="register_finish">完成注册</string>
@@ -38,6 +39,9 @@
 	<string name="yes">是</string>
 	<string name="no">否</string>
 	<string name="ask_unbind">是否解绑本设备</string>
+	
+	<string name="cancel">取消</string>
+	<string name="confirm">确认</string>
 	
 	<string name="bt_all_devices">全部设备</string>
 	<string name="bt_last_connected_no">无</string>
@@ -58,6 +62,11 @@
 	<string name="record_total_equal">相当于消耗掉</string>
 	
 	<string name="detail_record">详细记录</string>
-<!-- 	<string name=""></string> -->
+	<string name="account_personal_info">个人信息</string>
+	<string name="account_feedback">用户反馈</string>
+	<string name="account_about">关于</string>
+	<string name="account_exit">退出</string>
+	<string name="account_exit_or_not">您是否要退出本账号？</string>
+	
 	
 </resources>

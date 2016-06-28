@@ -42,8 +42,8 @@ public class LoginActivity extends Activity implements OnClickListener, TextWatc
 		btnLogin = (Button)findViewById(R.id.btn_login);
 		tvRegister = (TextView)findViewById(R.id.tv_register);
 		tvForgotPwd = (TextView)findViewById(R.id.tv_forget_pwd);
-		etPhoneNume = (EditText)findViewById(R.id.et_phone_num);
-		etPwd = (EditText)findViewById(R.id.et_psw);
+		etPhoneNume = (EditText)findViewById(R.id.login_num_edit);
+		etPwd = (EditText)findViewById(R.id.login_pwd_edit);
 		
 		btnLogin.setOnClickListener(this);
 		tvRegister.setOnClickListener(this);

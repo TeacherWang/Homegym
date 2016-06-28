@@ -11,12 +11,12 @@
     <color name="start_text_color">#ffffff</color>
     
     <!-- 注册界面 -->
-    <color name="login_action_bar_bg">#f1f1f1</color>
-    <color name="login_action_bar_title_color">#1f1f1f</color>
+    <color name="login_action_bar_bg">#231815</color>
+    <color name="login_action_bar_title_color">#ffffff</color>
     <color name="had_account_text_color">#A0A0A0</color>
     
     <!-- 登录界面 -->
-    <color name="login_text_bg">#262626</color>
+    <color name="login_num_bg">#f6f6f6</color>
     <color name="login_text">#ffffff</color>
     <color name="login_num_text_color">#747474</color>
     <color name="register_text_color">#A0A0A0</color>
@@ -68,5 +68,10 @@
     <color name="record_detail_time_result_color">#cd3106</color>
     
     <color name="record_date_color">#291818</color>
+    
+    <color name="account_finish_bg">#1affffff</color>
+    <color name="account_divider_color">#e5e5e5</color>
+    <color name="account_item_bg">#f6f6f6</color>
+    <color name="account_item_pressed_bg">#999999</color>
     
 </resources>

@@ -1,7 +1,5 @@
 package com.runrunfast.homegym.BtDevice;
 
-import java.util.ArrayList;
-
 import android.app.Activity;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
@@ -18,13 +16,13 @@ import android.widget.TextView;
 
 import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.BtDevice.BtDeviceMgr.BLEServiceListener;
+import com.runrunfast.homegym.utils.Const;
 import com.runrunfast.homegym.widget.DialogActivity;
+
+import java.util.ArrayList;
 
 public class BtDeviceActivity extends Activity{
 	private final String TAG = "BtDeviceActivity";
-	
-	private static final int REQ_CODE_OPEN_BT = 1;
-	private static final int REQ_CODE_UNBIND_BT = 2;
 	
 	private TextView tvTitle, tvPairedDevice;
 	private Button btnBack, btnUnbind;
@@ -158,7 +156,7 @@ public class BtDeviceActivity extends Activity{
 		intent.putExtra(DialogActivity.KEY_CONTENT, mResources.getString(R.string.ask_open_bt));
 		intent.putExtra(DialogActivity.KEY_CANCEL, mResources.getString(R.string.no));
 		intent.putExtra(DialogActivity.KEY_CONFIRM, mResources.getString(R.string.yes));
-		startActivityForResult(intent, REQ_CODE_OPEN_BT);
+		startActivityForResult(intent, Const.DIALOG_REQ_CODE_OPEN_BT);
 	}
 
 	private void initData() {
@@ -219,15 +217,15 @@ public class BtDeviceActivity extends Activity{
 		intent.putExtra(DialogActivity.KEY_CONTENT, mResources.getString(R.string.ask_unbind));
 		intent.putExtra(DialogActivity.KEY_CANCEL, mResources.getString(R.string.no));
 		intent.putExtra(DialogActivity.KEY_CONFIRM, mResources.getString(R.string.yes));
-		startActivityForResult(intent, REQ_CODE_UNBIND_BT);
+		startActivityForResult(intent, Const.DIALOG_REQ_CODE_UNBIND_BT);
 	}
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		Log.i(TAG, "resultCode = " + resultCode);
-		if(requestCode == REQ_CODE_UNBIND_BT){
+		if(requestCode == Const.DIALOG_REQ_CODE_UNBIND_BT){
 			handleUnbindDialogResult(resultCode);
-		}else if(requestCode == REQ_CODE_OPEN_BT){
+		}else if(requestCode == Const.DIALOG_REQ_CODE_OPEN_BT){
 			handleOpenBtDialogResult(resultCode);
 		}
 	}
