@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/home_bg_color"
+    android:orientation="vertical" >
+    
+    <include layout="@layout/home_actionbar"
+        android:id="@+id/home_actionbar"/>
+    
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/about_bg_height" />
+    
+    <TextView 
+        android:id="@+id/about_version_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/about_version_margin_top"
+        android:layout_gravity="center_horizontal"
+        android:text="版本1.01"
+        android:textSize="@dimen/about_version_text_size"
+        android:textColor="@color/about_version_text_color"/>
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/about_email_bg_height"
+        android:layout_marginTop="@dimen/about_email_margin_top"
+        android:background="@color/account_item_bg" >
+        <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/about_email_text_margin_left"
+            android:layout_centerVertical="true"
+            android:text="@string/email"
+            android:textSize="@dimen/about_email_text_size"
+            android:textColor="@color/about_version_text_color"/>
+        
+        <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/about_email_text_margin_left"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:text="@string/email_content"
+            android:textSize="@dimen/about_email_content_text_size"
+            android:textColor="@color/about_email_content_text_color"/>
+    </RelativeLayout>
+    
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/about_company_info_bottom" >
+        <TextView 
+            android:id="@+id/about_company_copyright_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="@dimen/about_company_info_divider"
+            android:text="@string/company_copyright"
+            android:textSize="@dimen/about_company_info_text_size"
+            android:textColor="@color/about_version_text_color" />
+        <TextView
+			android:layout_above="@id/about_company_copyright_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/company_name"
+            android:textSize="@dimen/about_company_info_text_size"
+            android:textColor="@color/about_version_text_color" />
+    </RelativeLayout>
+    
+</LinearLayout>

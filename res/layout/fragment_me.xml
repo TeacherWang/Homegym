@@ -225,6 +225,7 @@
 	    android:layout_marginTop="@dimen/account_item_divider"
 	    android:background="@color/account_divider_color" />
     <RelativeLayout
+        android:id="@+id/account_feedback_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/account_item_height"
         android:background="@color/account_item_bg" >
@@ -265,6 +266,7 @@
 	    android:layout_marginTop="@dimen/account_item_divider"
 	    android:background="@color/account_divider_color" />
     <RelativeLayout
+        android:id="@+id/account_about_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/account_item_height"
         android:background="@color/account_item_bg" >

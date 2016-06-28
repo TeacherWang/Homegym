@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/home_bg_color" >
+    
+    <include layout="@layout/home_actionbar"
+        android:id="@+id/home_actionbar"/>
+    
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/feedback_margin_top"
+        android:layout_marginLeft="@dimen/feedback_question_margin_left"
+        android:text="@string/feedback_enter_question"
+        android:textSize="@dimen/feedback_question_text_size"
+        android:textColor="@color/about_version_text_color" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/feedback_content_height"
+        android:layout_marginTop="@dimen/feedback_contact_content_margin_top"
+        android:layout_marginLeft="@dimen/feedback_contact_content_margin_top"
+        android:layout_marginRight="@dimen/feedback_contact_content_margin_top"
+        android:background="@color/my_course_bg" >
+        <EditText 
+            android:id="@+id/feedback_content_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/feedback_content_margin_left"
+            android:background="@null"
+            android:hint="@string/feedback_hint"
+            android:textSize="@dimen/feedback_content_text_size"
+            android:textColor="@color/black"/>
+    </RelativeLayout>
+    
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/feedback_margin_top"
+        android:layout_marginLeft="@dimen/feedback_question_margin_left"
+        android:text="@string/feedback_contact"
+        android:textSize="@dimen/feedback_question_text_size"
+        android:textColor="@color/about_version_text_color" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/feedback_contact_content_height"
+        android:layout_marginTop="@dimen/feedback_contact_content_margin_top"
+        android:layout_marginLeft="@dimen/feedback_contact_content_margin_top"
+        android:layout_marginRight="@dimen/feedback_contact_content_margin_top"
+        android:background="@color/my_course_bg" >
+        <EditText 
+	        android:id="@+id/feedback_contact_edit"
+	        android:layout_width="match_parent"
+	        android:layout_height="@dimen/feedback_contact_content_height"
+	        android:layout_marginLeft="@dimen/feedback_content_margin_left"
+	        android:hint="@string/feedback_contact_hint"
+	        android:textSize="@dimen/feedback_content_text_size"
+	        android:textColor="@color/black"
+	        android:singleLine="true"
+	        android:background="@color/my_course_bg"/>
+    </RelativeLayout>
+</LinearLayout>
