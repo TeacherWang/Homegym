@@ -13,8 +13,9 @@
 	<dimen name="login_action_bar_title_size">18sp</dimen>
 	<dimen name="register_content_margin_top">30dp</dimen>
 	<dimen name="register_finish_text_size">18sp</dimen>
-	<dimen name="had_account_margin_right">10dp</dimen>
+	<dimen name="had_account_margin_right">15dp</dimen>
 	<dimen name="had_account_text_size">14sp</dimen>
+	<dimen name="register_btn_margin_top">20dp</dimen>
 	
 	<dimen name="reset_margin_top">30dp</dimen>
 	<dimen name="get_verify_code_width">125dp</dimen>
@@ -44,6 +45,9 @@
 	<dimen name="login_btn_margin_left_right">30dp</dimen>
 	<dimen name="login_text_size">18sp</dimen>
 	
+	<dimen name="impr_presonal_head_bg_height">116dp</dimen>
+	<dimen name="impr_add_headimg_text_size">14sp</dimen>
+		
 	<!-- 主界面 -->
 	<dimen name="actionbar_height">48dp</dimen>
 	<dimen name="actionbar_left_img_margin_leftright">4dp</dimen>

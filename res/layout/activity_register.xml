@@ -8,143 +8,119 @@
     <include layout="@layout/login_action_bar"
         android:id="@+id/register_action_bar"/>
     
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/register_content_margin_top"
-        android:orientation="vertical" >
-
-        <LinearLayout
+    <RelativeLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="@dimen/login_item_height"
+	    android:layout_marginTop="@dimen/reset_margin_top"
+	    android:background="@color/login_num_bg" >
+        <ImageView 
+            android:id="@+id/login_num_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/login_item_img_margin"
+            android:background="@drawable/login_name"/>
+	    
+        <EditText
+            android:id="@+id/register_num_edit"
+            android:layout_toRightOf="@id/login_num_img"
+            android:layout_marginLeft="@dimen/login_item_edit_margin"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:orientation="horizontal" >
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/login_num_img_margin_size"
-                android:background="@drawable/nav_back" />
-
-            <EditText
-                android:id="@+id/et_phone_num"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/login_num_margin_left"
-                android:background="@null"
-                android:ems="13"
-                android:hint="@string/enter_phone_num"
-                android:inputType="number"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:textColor="@color/login_num_text_color"
-                android:textSize="@dimen/login_num_size" />
-        </LinearLayout>
-
-        <RelativeLayout
+            android:inputType="number"
+            android:hint="@string/enter_phone_num"
+            android:background="@color/transparent" />
+        
+	</RelativeLayout>
+	
+	<RelativeLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="@dimen/login_item_height"
+	    android:layout_marginTop="@dimen/login_item_margin_top"
+	    android:background="@color/login_num_bg" >
+        <ImageView 
+            android:id="@+id/login_pwd_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/login_item_img_margin"
+            android:background="@drawable/login_code"/>
+	    
+        <Button
+            android:id="@+id/btn_register_get_verfy_code"
+            android:layout_width="@dimen/get_verify_code_width"
+            android:layout_height="@dimen/get_verify_code_height"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/get_verify_code_margin"
+            android:text="@string/get_verificationcode"
+            android:textColor="@color/white"
+            android:textSize="@dimen/get_verify_code_size"
+            android:background="@drawable/bt_get_verify_code_round_corner_rect" />
+        <EditText
+            android:id="@+id/register_vevify_code_edit"
+            android:layout_toRightOf="@id/login_pwd_img"
+            android:layout_toLeftOf="@id/btn_register_get_verfy_code"
+            android:layout_marginLeft="@dimen/login_item_edit_margin"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1" >
+            android:inputType="textPassword"
+            android:hint="@string/enter_verificationcode"
+            android:background="@color/transparent" />
+        
+	</RelativeLayout>
 
-            <ImageView
-                android:id="@+id/iv_yanzhengma"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_margin="@dimen/login_num_img_margin_size"
-                android:background="@drawable/nav_back" />
-
-            <EditText
-                android:id="@+id/et_verificationCode_sign"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/login_num_margin_left"
-                android:layout_toRightOf="@+id/iv_yanzhengma"
-                android:background="@null"
-                android:ems="10"
-                android:gravity="center_vertical"
-                android:hint="@string/enter_verificationcode"
-                android:inputType="number"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:textColor="@color/login_num_text_color"
-                android:textSize="@dimen/login_num_size" />
-
-            <RelativeLayout
-                android:layout_width="128dp"
-                android:layout_height="39dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="5dp" >
-
-                <ImageView
-                    android:id="@+id/iv_getVrificationCode"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-                <TextView
-                    android:id="@+id/tv_get_verificationcode"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:text="@string/get_verificationcode"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/login_num_size" />
-            </RelativeLayout>
-        </RelativeLayout>
-
-        <LinearLayout
+    <RelativeLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="@dimen/login_item_height"
+	    android:layout_marginTop="@dimen/login_item_margin_top"
+	    android:background="@color/login_num_bg" >
+        <ImageView 
+            android:id="@+id/register_pwd_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/login_item_img_margin"
+            android:background="@drawable/login_code"/>
+	    
+        <EditText
+            android:id="@+id/register_pwd_edit"
+            android:layout_toRightOf="@id/register_pwd_img"
+            android:layout_marginLeft="@dimen/login_item_edit_margin"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:orientation="horizontal" >
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/login_num_img_margin_size"
-                android:background="@drawable/nav_back" />
-
-            <EditText
-                android:id="@+id/et_psw_sign"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:background="@null"
-                android:ems="13"
-                android:hint="@string/enter_pwd"
-                android:password="true"
-                android:singleLine="true"
-                android:textColor="@color/login_num_text_color"
-                android:textSize="@dimen/login_num_size" />
-        </LinearLayout>
-    </LinearLayout>
-
-
-    <Button
-        android:id="@+id/btn_register_finish"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/register_finish"
-        android:textColor="@color/white"
-        android:textSize="@dimen/register_finish_text_size" />
-
+            android:inputType="textPassword"
+            android:hint="@string/enter_pwd"
+            android:background="@color/transparent" />
+        
+	</RelativeLayout>
+    
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
         <TextView
-            android:id="@+id/tv_exist_acount"
+            android:id="@+id/register_exist_acount_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:padding="@dimen/had_account_margin_right"
+            android:layout_marginTop="@dimen/login_item_margin_top"
+            android:layout_marginRight="@dimen/had_account_margin_right"
             android:text="@string/had_account"
             android:textColor="@color/had_account_text_color"
             android:textSize="@dimen/had_account_text_size" />
     </RelativeLayout>
-
+    
+    <Button
+        android:id="@+id/btn_register_finish"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/login_btn_height"
+        android:layout_marginTop="@dimen/register_btn_margin_top"
+        android:layout_marginLeft="@dimen/login_btn_margin_left_right"
+        android:layout_marginRight="@dimen/login_btn_margin_left_right"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/register_finish"
+        android:textColor="@color/white"
+        android:textSize="@dimen/register_finish_text_size"
+        android:background="@drawable/bt_login_round_corner_rect" />
+    
 </LinearLayout>

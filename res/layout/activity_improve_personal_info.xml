@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/start_login_bg"
+    android:orientation="vertical" >
+
+    <include layout="@layout/login_action_bar"
+        android:id="@+id/register_action_bar"/>
+    
+    <RelativeLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="@dimen/impr_presonal_head_bg_height" >
+	    <RelativeLayout
+	        android:layout_width="@dimen/account_headimg_size"
+	        android:layout_height="@dimen/account_headimg_size"
+	        android:layout_centerInParent="true"
+	        android:background="@drawable/head_round_bg" >
+	        <TextView
+	            android:id="@+id/add_headimg_text"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_centerInParent="true"
+	            android:text="@string/add_headimg"
+	            android:textColor="@color/white"
+	            android:textSize="@dimen/impr_add_headimg_text_size" />
+	    </RelativeLayout>
+	    <com.runrunfast.homegym.widget.CircleMaskImageView
+	        android:id="@+id/impr_personal_head_img"
+	        android:layout_width="@dimen/account_headimg_size"
+	        android:layout_height="@dimen/account_headimg_size"
+	        android:layout_centerInParent="true" />
+    </RelativeLayout>
+    
+    <RelativeLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="@dimen/login_item_height"
+	    android:background="@color/login_num_bg" >
+        <ImageView 
+            android:id="@+id/nick_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/login_item_img_margin"
+            android:background="@drawable/login_name"/>
+	    
+        <TextView
+            android:id="@+id/rest_num_edit"
+            android:layout_toRightOf="@id/nick_img"
+            android:layout_marginLeft="@dimen/login_item_edit_margin"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:hint="@string/enter_phone_num"
+            android:background="@color/transparent" />
+        
+	</RelativeLayout>
+    
+    <Button
+        android:id="@+id/btn_impr_finish"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/login_btn_height"
+        android:layout_marginTop="@dimen/register_btn_margin_top"
+        android:layout_marginLeft="@dimen/login_btn_margin_left_right"
+        android:layout_marginRight="@dimen/login_btn_margin_left_right"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/impr_finish"
+        android:textColor="@color/white"
+        android:textSize="@dimen/register_finish_text_size"
+        android:background="@drawable/bt_login_round_corner_rect" />
+    
+</LinearLayout>

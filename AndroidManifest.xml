@@ -80,6 +80,14 @@
             
         </activity>
         
+        <activity
+            android:name=".start.ImprovePersonalInfoActivity"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:configChanges="keyboard|keyboardHidden|orientation"
+            android:screenOrientation="portrait" >
+            
+        </activity>
+        
         <service android:name="com.runrunfast.ble.BLEService" >
             
         </service>

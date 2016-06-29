@@ -6,6 +6,14 @@
     <string name="register">注册</string>
     <string name="go_register">去注册</string>
     <string name="login">登录</string>
+    <string name="improve_personal_info">完善个人信息</string>
+    <string name="add_headimg">添加头像</string>
+    <string name="impr_finish">完成进入</string>
+    <string name="input_nick">请输入昵称</string>
+    <string name="input_sex">请输入性别</string>
+    <string name="input_birth">请输入生日</string>
+    <string name="input_weight">请输入体重</string>
+    <string name="input_height">请输入身高</string>
     
     <string name="my_training">我的训练</string>
     <string name="all_course">全部课程</string>
@@ -31,6 +39,7 @@
 	<string name="register_finish">完成注册</string>
 	<string name="enter_new_pwd">请输入新密码</string>
 	<string name="reset_pwd">重置密码</string>
+	<string name="input_have_empty">输入为空</string>
 	
 	<string name="bluetooth">蓝牙</string>
 	<string name="bt_had_paired">已适配</string>

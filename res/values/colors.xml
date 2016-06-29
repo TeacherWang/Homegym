@@ -7,7 +7,7 @@
     
     <!-- 启动界面 -->
     <color name="start_register_bg">#636363</color>
-    <color name="start_login_bg">#f1f1f1</color>
+    <color name="start_login_bg">#eeeeee</color>
     <color name="start_text_color">#ffffff</color>
     
     <!-- 注册界面 -->
@@ -20,6 +20,8 @@
     <color name="login_text">#ffffff</color>
     <color name="login_num_text_color">#747474</color>
     <color name="register_text_color">#A0A0A0</color>
+    
+    <color name="impr_default_headimg_bg">#999999</color>
     
     <!-- 主界面 -->
     <color name="actionbar_unselect_text_color">#231815</color>
