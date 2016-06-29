@@ -76,6 +76,16 @@
 	<string name="account_about">关于</string>
 	<string name="account_exit">退出</string>
 	<string name="account_exit_or_not">您是否要退出本账号？</string>
-	
+	<string name="about">关于</string>
+	<string name="email">邮箱</string>
+	<string name="email_content">1232123213@163.com</string>
+	<string name="company_name">深圳21天健康科技有限公司</string>
+	<string name="company_copyright">2016 All Rights Reserved</string>
+	<string name="feedback">用户反馈</string>
+	<string name="feedback_enter_question">您想要反馈的问题</string>
+	<string name="feedback_contact">为方便沟通，请填写联系方式</string>
+	<string name="feedback_send">发送</string>
+	<string name="feedback_hint">请在此填写您遇到的问题和现象，或者您希望有什么新功能可以添加，我们会尽快给您反馈</string>
+	<string name="feedback_contact_hint">手机号/QQ号/邮箱</string>
 	
 </resources>

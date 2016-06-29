@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.runrunfast.homegym.R;
+import com.runrunfast.homegym.home.AboutActivity;
+import com.runrunfast.homegym.home.FeedbackActivity;
 import com.runrunfast.homegym.start.StartActivity;
 import com.runrunfast.homegym.utils.Const;
 import com.runrunfast.homegym.widget.DialogActivity;
@@ -20,7 +22,7 @@ import com.runrunfast.homegym.widget.DialogActivity;
 public class MeFragment extends Fragment implements OnClickListener{
 	private final String TAG = "MeFragment";
 	
-	private View rootView;
+	private View rootView, aboutView, feedbackView;
 	
 	private Resources mResources;
 	
@@ -41,6 +43,12 @@ public class MeFragment extends Fragment implements OnClickListener{
 	private void initView() {
 		btnExit = (Button)rootView.findViewById(R.id.btn_exit);
 		btnExit.setOnClickListener(this);
+		
+		aboutView = (View)rootView.findViewById(R.id.account_about_layout);
+		aboutView.setOnClickListener(this);
+		
+		feedbackView = (View)rootView.findViewById(R.id.account_feedback_layout);
+		feedbackView.setOnClickListener(this);
 	}
 
 	@Override
@@ -48,6 +56,14 @@ public class MeFragment extends Fragment implements OnClickListener{
 		switch (v.getId()) {
 		case R.id.btn_exit:
 			exitAccount();
+			break;
+			
+		case R.id.account_about_layout:
+			startActivity(new Intent(getActivity(), AboutActivity.class));
+			break;
+			
+		case R.id.account_feedback_layout:
+			startActivity(new Intent(getActivity(), FeedbackActivity.class));
 			break;
 
 		default:

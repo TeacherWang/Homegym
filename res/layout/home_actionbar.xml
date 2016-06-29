@@ -19,6 +19,7 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:onClick="onClick"
+        android:textSize="@dimen/feedback_send_text_size"
         android:layout_marginRight="@dimen/actionbar_left_img_margin_leftright"
         android:background="@null" />
     

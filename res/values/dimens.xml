@@ -152,10 +152,11 @@
 	<dimen name="record_total_consume_margin_top">16dp</dimen>
 	<dimen name="record_total_content_margin">15dp</dimen>
 	<dimen name="record_total_consume_number_margin_top">57dp</dimen>
+	<dimen name="record_total_consume_number_unit_margin_top">70dp</dimen>
 	<dimen name="record_total_divider_margin_top">16dp</dimen>
-	<dimen name="record_total_equal_margin_top">32dp</dimen>
+	<dimen name="record_total_equal_margin_top">6dp</dimen>
 	<dimen name="record_total_equal_text_margin_left">9dp</dimen>
-	<dimen name="record_total_equal_img_margin_top">80dp</dimen>
+	<dimen name="record_total_equal_img_margin_top">23dp</dimen>
 	<dimen name="record_total_train_count_text_margin_top">15dp</dimen>
 	<dimen name="record_total_equal_result_text_size">15sp</dimen>
 	<dimen name="record_total_equal_img_width">250dp</dimen>
@@ -185,5 +186,28 @@
 	<dimen name="record_detail_train_grounp_count_margin_right">104dp</dimen>
 	<dimen name="record_detail_train_name_size">16sp</dimen>
 	<dimen name="record_detail_train_group_count">15sp</dimen>
+	
+	<dimen name="about_bg_margin_top">10dp</dimen>
+	<dimen name="about_bg_height">150dp</dimen>
+	<dimen name="about_version_margin_top">15dp</dimen>
+	<dimen name="about_version_text_size">15sp</dimen>
+	<dimen name="about_email_margin_top">30dp</dimen>
+	<dimen name="about_email_text_margin_left">15dp</dimen>
+	<dimen name="about_email_text_size">16sp</dimen>
+	<dimen name="about_email_content_text_size">15sp</dimen>
+	<dimen name="about_company_info_bottom">20dp</dimen>
+	<dimen name="about_company_info_text_size">12sp</dimen>
+	<dimen name="about_company_info_divider">10dp</dimen>
+	<dimen name="about_email_bg_height">50dp</dimen>
+	
+	<dimen name="feedback_question_text_size">12sp</dimen>
+	<dimen name="feedback_content_text_size">14sp</dimen>
+	<dimen name="feedback_margin_top">10dp</dimen>
+	<dimen name="feedback_question_margin_left">12dp</dimen>
+	<dimen name="feedback_content_height">186dp</dimen>
+	<dimen name="feedback_content_margin_left">7dp</dimen>
+	<dimen name="feedback_contact_content_margin_top">5dp</dimen>
+	<dimen name="feedback_contact_content_height">45dp</dimen>
+	<dimen name="feedback_send_text_size">15sp</dimen>
 	
 </resources>
