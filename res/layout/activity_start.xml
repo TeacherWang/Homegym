@@ -1,7 +1,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@color/my_course_bg" >
+
+    <android.support.v4.view.ViewPager
+	     android:id="@+id/start_view_pager"
+	     android:layout_width="match_parent"
+	     android:layout_height="match_parent"/>
 
     <LinearLayout
         android:id="@+id/start_bottom_layout"
@@ -16,7 +22,7 @@
             android:layout_weight="1"
             android:background="@color/start_register_bg"
             android:text="@string/register"
-            android:textColor="@color/start_text_color"
+            android:textColor="@color/start_register_text_color"
             android:textSize="@dimen/start_text_size"
             android:gravity="center"
             android:onClick="onClick"
@@ -26,48 +32,13 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/start_login_bg"
+            android:background="@color/start_login_text_bg"
             android:text="@string/login"
-            android:textColor="@color/start_text_color"
+            android:textColor="@color/start_login_text_color"
             android:textSize="@dimen/start_text_size"
             android:gravity="center"
             android:onClick="onClick"
             android:clickable="true"/>
     </LinearLayout>
     
-    <RelativeLayout
-        android:layout_above="@id/start_bottom_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-        <android.support.v4.view.ViewPager
-	        android:id="@+id/start_view_pager"
-	        android:layout_width="match_parent"
-	        android:layout_height="match_parent"/>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="@dimen/start_indicator_bootom" >
-            <ImageView 
-                android:id="@+id/start_indicator1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/start_indicator_big"/>
-            <ImageView 
-                android:id="@+id/start_indicator2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/start_indicator_img_divider"
-                android:background="@drawable/start_indicator_small"/>
-            <ImageView 
-                android:id="@+id/start_indicator3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/start_indicator_img_divider"
-                android:background="@drawable/start_indicator_small"/>
-        </LinearLayout>
-    </RelativeLayout>
-
 </RelativeLayout>

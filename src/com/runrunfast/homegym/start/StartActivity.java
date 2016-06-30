@@ -7,9 +7,12 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.runrunfast.homegym.R;
 
@@ -18,13 +21,15 @@ import java.util.ArrayList;
 public class StartActivity extends Activity{
 	private final String TAG = "StartActivity";
 	
-	private static final int[] mImageIds = new int[] { R.drawable.home_state_finish,
-		R.drawable.home_state_going, R.drawable.home_state_high_quality };
-	private ArrayList<ImageView> mImageViewList;
+	private static final int[] mImageIds = new int[] { R.drawable.defoult_bg1,
+		R.drawable.defoult_bg2, R.drawable.defoult_bg3 };
+	private ArrayList<RelativeLayout> mRelativelayoutList;
 	
 	private ViewPager vpGuide;
 	
-	private ImageView ivPoint1, ivPoint2, ivPoint3;
+	private RelativeLayout mStartBgRelativeLayout1, mStartBgRelativeLayout2, mStartBgRelativeLayout3, mStartBgLayout1, mStartBgLayout2, mStartBgLayout3;
+	private ImageView ivPoint11, ivPoint12, ivPoint13, ivPoint21, ivPoint22, ivPoint23, ivPoint31, ivPoint32, ivPoint33;
+	private TextView tv11, tv12, tv21, tv22, tv31, tv32;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,23 +42,49 @@ public class StartActivity extends Activity{
 	}
 	
 	private void initData() {
-		mImageViewList = new ArrayList<ImageView>(); 
+		mRelativelayoutList = new ArrayList<RelativeLayout>(); 
 		
-		for(int i=0; i<3; i++){
-			ImageView image = new ImageView(this);
-			image.setBackgroundResource(mImageIds[i]);// 设置引导页背景
-			mImageViewList.add(image);
-		}
+		mRelativelayoutList.add(mStartBgRelativeLayout1);
+		mRelativelayoutList.add(mStartBgRelativeLayout2);
+		mRelativelayoutList.add(mStartBgRelativeLayout3);
 		
 		vpGuide.setAdapter(new GuideAdapter());
 		vpGuide.setOnPageChangeListener(new GuidePageListener());
+		
+		setIndicator(0);
 	}
 
 	private void initView() {
 		vpGuide = (ViewPager) findViewById(R.id.start_view_pager);
-		ivPoint1 = (ImageView)findViewById(R.id.start_indicator1);
-		ivPoint2 = (ImageView)findViewById(R.id.start_indicator2);
-		ivPoint3 = (ImageView)findViewById(R.id.start_indicator3);
+		
+		mStartBgRelativeLayout1 = (RelativeLayout)LayoutInflater.from(this).inflate(R.layout.start_bg, null);
+		mStartBgRelativeLayout2 = (RelativeLayout)LayoutInflater.from(this).inflate(R.layout.start_bg, null);
+		mStartBgRelativeLayout3 = (RelativeLayout)LayoutInflater.from(this).inflate(R.layout.start_bg, null);
+		
+		mStartBgLayout1 = (RelativeLayout)mStartBgRelativeLayout1.findViewById(R.id.start_bg);
+		mStartBgLayout2 = (RelativeLayout)mStartBgRelativeLayout2.findViewById(R.id.start_bg);
+		mStartBgLayout3 = (RelativeLayout)mStartBgRelativeLayout3.findViewById(R.id.start_bg);
+		
+		ivPoint11 = (ImageView)mStartBgRelativeLayout1.findViewById(R.id.start_indicator1);
+		ivPoint12 = (ImageView)mStartBgRelativeLayout1.findViewById(R.id.start_indicator2);
+		ivPoint13 = (ImageView)mStartBgRelativeLayout1.findViewById(R.id.start_indicator3);
+		
+		ivPoint21 = (ImageView)mStartBgRelativeLayout2.findViewById(R.id.start_indicator1);
+		ivPoint22 = (ImageView)mStartBgRelativeLayout2.findViewById(R.id.start_indicator2);
+		ivPoint23 = (ImageView)mStartBgRelativeLayout2.findViewById(R.id.start_indicator3);
+		
+		ivPoint31 = (ImageView)mStartBgRelativeLayout3.findViewById(R.id.start_indicator1);
+		ivPoint32 = (ImageView)mStartBgRelativeLayout3.findViewById(R.id.start_indicator2);
+		ivPoint33 = (ImageView)mStartBgRelativeLayout3.findViewById(R.id.start_indicator3);
+		
+		tv11 = (TextView)mStartBgRelativeLayout1.findViewById(R.id.start_text1);
+		tv12 = (TextView)mStartBgRelativeLayout1.findViewById(R.id.start_text2);
+		
+		tv21 = (TextView)mStartBgRelativeLayout2.findViewById(R.id.start_text1);
+		tv22 = (TextView)mStartBgRelativeLayout2.findViewById(R.id.start_text2);
+		
+		tv31 = (TextView)mStartBgRelativeLayout3.findViewById(R.id.start_text1);
+		tv32 = (TextView)mStartBgRelativeLayout3.findViewById(R.id.start_text2);
 	}
 
 	/**
@@ -74,8 +105,8 @@ public class StartActivity extends Activity{
 
 		@Override
 		public Object instantiateItem(ViewGroup container, int position) {
-			container.addView(mImageViewList.get(position));
-			return mImageViewList.get(position);
+			container.addView(mRelativelayoutList.get(position));
+			return mRelativelayoutList.get(position);
 		}
 
 		@Override
@@ -116,17 +147,26 @@ public class StartActivity extends Activity{
 	
 	public void setIndicator(int position) {
 		if(position == 0){
-			ivPoint1.setBackgroundResource(R.drawable.start_indicator_big);
-			ivPoint2.setBackgroundResource(R.drawable.start_indicator_small);
-			ivPoint3.setBackgroundResource(R.drawable.start_indicator_small);
+			mStartBgLayout1.setBackgroundResource(R.drawable.defoult_bg1);
+			ivPoint11.setBackgroundResource(R.drawable.start_round_select_bg);
+			ivPoint12.setBackgroundResource(R.drawable.start_round_normal_bg);
+			ivPoint13.setBackgroundResource(R.drawable.start_round_normal_bg);
+			tv11.setText(R.string.start_text1_first);
+			tv12.setText(R.string.start_text1_second);
 		}else if(position == 1){
-			ivPoint1.setBackgroundResource(R.drawable.start_indicator_small);
-			ivPoint2.setBackgroundResource(R.drawable.start_indicator_big);
-			ivPoint3.setBackgroundResource(R.drawable.start_indicator_small);
+			mStartBgLayout2.setBackgroundResource(R.drawable.defoult_bg2);
+			ivPoint21.setBackgroundResource(R.drawable.start_round_normal_bg);
+			ivPoint22.setBackgroundResource(R.drawable.start_round_select_bg);
+			ivPoint23.setBackgroundResource(R.drawable.start_round_normal_bg);
+			tv21.setText(R.string.start_text2_first);
+			tv22.setText(R.string.start_text2_second);
 		}else if(position == 2){
-			ivPoint1.setBackgroundResource(R.drawable.start_indicator_small);
-			ivPoint2.setBackgroundResource(R.drawable.start_indicator_small);
-			ivPoint3.setBackgroundResource(R.drawable.start_indicator_big);
+			mStartBgLayout3.setBackgroundResource(R.drawable.defoult_bg3);
+			ivPoint31.setBackgroundResource(R.drawable.start_round_normal_bg);
+			ivPoint32.setBackgroundResource(R.drawable.start_round_normal_bg);
+			ivPoint33.setBackgroundResource(R.drawable.start_round_select_bg);
+			tv31.setText(R.string.start_text3_first);
+			tv32.setText(R.string.start_text3_second);
 		}
 	}
 	

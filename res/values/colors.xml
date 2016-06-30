@@ -6,9 +6,12 @@
     <color name="black">#000000</color>
     
     <!-- 启动界面 -->
-    <color name="start_register_bg">#636363</color>
+    <color name="start_register_bg">#e6ffffff</color>
     <color name="start_login_bg">#eeeeee</color>
-    <color name="start_text_color">#ffffff</color>
+    <color name="start_login_text_bg">#e6009944</color>
+    <color name="start_login_text_color">#000000</color>
+    <color name="start_register_text_color">#ffffff</color>
+    <color name="start_round_select_bg">#06e86b</color>
     
     <!-- 注册界面 -->
     <color name="login_action_bar_bg">#231815</color>
