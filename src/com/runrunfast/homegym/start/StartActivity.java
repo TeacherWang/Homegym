@@ -85,6 +85,10 @@ public class StartActivity extends Activity{
 		
 		tv31 = (TextView)mStartBgRelativeLayout3.findViewById(R.id.start_text1);
 		tv32 = (TextView)mStartBgRelativeLayout3.findViewById(R.id.start_text2);
+		
+		setIndicator(0);
+		setIndicator(1);
+		setIndicator(2);
 	}
 
 	/**
@@ -137,7 +141,7 @@ public class StartActivity extends Activity{
 		// 某个页面被选中
 		@Override
 		public void onPageSelected(int position) {
-			setIndicator(position);
+//			setIndicator(position);
 		}
 
 		// 滑动状态发生变化
