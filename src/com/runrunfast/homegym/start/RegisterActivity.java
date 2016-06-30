@@ -1,8 +1,10 @@
 package com.runrunfast.homegym.start;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -15,8 +17,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.runrunfast.homegym.R;
+import com.runrunfast.homegym.start.AccountMgr.IIdentifyCodeListener;
+import com.runrunfast.homegym.start.AccountMgr.IRegisterListener;
 
 public class RegisterActivity extends Activity implements OnClickListener, TextWatcher{
+	
+	private static final int MSG_COUNTDOWN = 1;
+	private static final int MSG_COUNTDOWN_OVER = 2;
+	private static final int COUNTDOWN_INTERVAL = 1000; // 倒计时间隔1s
 	
 	private View actionBar;
 	private ImageView ivBack;
@@ -24,11 +32,90 @@ public class RegisterActivity extends Activity implements OnClickListener, TextW
 	private TextView tvHadAccount;
 	private EditText etNum, etVerifyCode, etPwd;
 	
+	private IRegisterListener iRegisterListener;
+	private IIdentifyCodeListener identifyCodeListener;
+	
+	private ProgressDialog dialog;
+	
+	private int time = 60;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_register);
 		initView();
+		initListener();
+	}
+	
+	private Handler mMainHandler = new Handler(){
+		public void handleMessage(android.os.Message msg) {
+			switch (msg.what) {
+			case MSG_COUNTDOWN:
+				mMainHandler.postDelayed(runnable, COUNTDOWN_INTERVAL);
+				btnGetVerifyCode.setEnabled(false);
+				btnGetVerifyCode.setBackgroundResource(R.drawable.bt_get_verify_code_disable_round_corner_rect);
+				btnGetVerifyCode.setText(time + "秒后重发");
+				break;
+				
+			case MSG_COUNTDOWN_OVER:
+				btnGetVerifyCode.setEnabled(true);
+				btnGetVerifyCode.setBackgroundResource(R.drawable.bt_get_verify_code_round_corner_rect);
+				btnGetVerifyCode.setText(R.string.get_verificationcode);
+				break;
+
+			default:
+				break;
+			}
+		};
+	};
+	
+	private Runnable runnable = new Runnable() {
+
+		@Override
+		public void run() {
+			if (time != 0) {
+				time--;
+				mMainHandler.sendEmptyMessage(MSG_COUNTDOWN);
+			} else {
+				mMainHandler.sendEmptyMessage(MSG_COUNTDOWN_OVER);
+				mMainHandler.removeCallbacks(runnable);
+			}
+		}
+	};
+	
+	private void initListener() {
+		iRegisterListener = new IRegisterListener() {
+			
+			@Override
+			public void onSuccess() {
+				dismissDialog();
+				jumpToImprovePersonalInfoActivity();
+				finish();
+			}
+			
+			@Override
+			public void onFail(String reason) {
+				dismissDialog();
+				Toast.makeText(RegisterActivity.this, reason, Toast.LENGTH_SHORT).show();
+			}
+		};
+		AccountMgr.getInstance().setOnRegisterListener(iRegisterListener);
+		
+		identifyCodeListener = new IIdentifyCodeListener() {
+			
+			@Override
+			public void onSuccess() {
+				mMainHandler.sendEmptyMessage(MSG_COUNTDOWN);
+			}
+			
+			@Override
+			public void onFail(String reason) {
+				dismissDialog();
+				btnGetVerifyCode.setEnabled(true);
+				Toast.makeText(RegisterActivity.this, reason, Toast.LENGTH_SHORT).show();
+			}
+		};
+		AccountMgr.getInstance().setOnIdentifyCodeListener(identifyCodeListener);
 	}
 
 	private void initView() {
@@ -54,6 +141,9 @@ public class RegisterActivity extends Activity implements OnClickListener, TextW
 		etNum.addTextChangedListener(this);
 		etVerifyCode.addTextChangedListener(this);
 		etPwd.addTextChangedListener(this);
+		
+		setBtnRegisterEnable();
+		setBtnGetVetifyCodeEnable();
 	}
 
 	@Override
@@ -81,7 +171,13 @@ public class RegisterActivity extends Activity implements OnClickListener, TextW
 	}
 
 	private void toGetVerifyCode() {
-		
+		String phoneNum = etNum.getText().toString();
+		if(TextUtils.isEmpty(phoneNum)){
+			Toast.makeText(this, R.string.phone_num_empty, Toast.LENGTH_SHORT).show();
+			return;
+		}
+		btnGetVerifyCode.setEnabled(false);
+		AccountMgr.getInstance().getVerifyCode(phoneNum);
 	}
 
 	private void jumpToLoginActivity() {
@@ -99,6 +195,12 @@ public class RegisterActivity extends Activity implements OnClickListener, TextW
 			return;
 		}
 		
+		AccountMgr.getInstance().register(strNum, strVerifyCode, strPwd);
+		
+		showDialog();
+	}
+
+	private void jumpToImprovePersonalInfoActivity() {
 		Intent intent = new Intent(this, ImprovePersonalInfoActivity.class);
 		startActivity(intent);
 		finish();
@@ -106,19 +208,37 @@ public class RegisterActivity extends Activity implements OnClickListener, TextW
 	
 	private boolean checkEmpty(String num, String verifyCode, String pwd){
 		if(TextUtils.isEmpty(num) || TextUtils.isEmpty(verifyCode) || TextUtils.isEmpty(pwd)){
-			return false;
+			return true;
 		}
-		return true;
+		return false;
 	}
 
 	@Override
 	public void afterTextChanged(Editable s) {
+		setBtnRegisterEnable();
+		setBtnGetVetifyCodeEnable();
+	}
+
+	private void setBtnRegisterEnable() {
 		if (TextUtils.isEmpty(etNum.getText().toString())
 				|| TextUtils.isEmpty(etPwd.getText().toString())
 				|| TextUtils.isEmpty(etVerifyCode.getText().toString())) {
 			btnRegisterFinish.setEnabled(false);
+			btnRegisterFinish.setBackgroundResource(R.drawable.bt_login_disable_round_corner_rect);
 		} else {
 			btnRegisterFinish.setEnabled(true);
+			btnRegisterFinish.setBackgroundResource(R.drawable.bt_login_round_corner_rect);
+		}
+	}
+	
+	private void setBtnGetVetifyCodeEnable(){
+		if (etNum.getText().toString().length() == 11
+				&& etNum.getText().toString().substring(0, 1).equals("1")) {
+			btnGetVerifyCode.setEnabled(true);
+			btnGetVerifyCode.setBackgroundResource(R.drawable.bt_get_verify_code_round_corner_rect);
+		} else {
+			btnGetVerifyCode.setBackgroundResource(R.drawable.bt_get_verify_code_disable_round_corner_rect);
+			btnGetVerifyCode.setEnabled(false);
 		}
 	}
 	
@@ -127,5 +247,23 @@ public class RegisterActivity extends Activity implements OnClickListener, TextW
 
 	@Override
 	public void onTextChanged(CharSequence s, int start, int before, int count) { }
+	
+	private void showDialog(){
+		dialog = new ProgressDialog(this);
+		dialog.setMessage(getResources().getString(R.string.please_wait));
+		dialog.setCanceledOnTouchOutside(false);
+		dialog.show();
+	}
+	
+	private void dismissDialog(){
+		dialog.dismiss();
+	}
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		AccountMgr.getInstance().removeRegisterListener();
+		AccountMgr.getInstance().removeIdentifyCodeListener();
+	}
 
 }

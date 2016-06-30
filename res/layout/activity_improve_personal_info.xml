@@ -6,7 +6,7 @@
     android:orientation="vertical" >
 
     <include layout="@layout/login_action_bar"
-        android:id="@+id/register_action_bar"/>
+        android:id="@+id/impr_personal_info_action_bar"/>
     
     <RelativeLayout
 	    android:layout_width="match_parent"

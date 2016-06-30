@@ -22,6 +22,23 @@
     <string name="input_weight">请输入体重</string>
     <string name="input_height">请输入身高</string>
     
+    <string name="phone_num_empty">手机号码为空</string>
+    <string name="phone_num_err">手机号码有误</string>
+    <string name="get_identifycode_fail">获取验证码失败，请稍后再试</string>
+    <string name="net_error">网络异常，请检查网络</string>
+    <string name="this_phone_had_bonded">该手机已被绑定</string>
+    <string name="this_account_had_exist">该账号已存在</string>
+    <string name="this_account_not_exist">该账号不存在</string>
+    <string name="register_fail">注册失败，请重新获取</string>
+    <string name="get_verify_code_fail">获取验证码失败</string>
+    <string name="verify_code_err">验证码错误</string>
+    <string name="username_or_pwd_cant_empty">用户名或密码不能为空</string>
+    <string name="username_not_identified">未认证用户</string>
+    <string name="login_fail">登录失败</string>
+    <string name="reset_pwd_fail">重置密码失败，请稍后再试</string>
+    <string name="verify_code_timeout">验证码时间太长</string>
+    <string name="please_wait">请稍后...</string>
+    
     <string name="my_training">我的训练</string>
     <string name="all_course">全部课程</string>
     
@@ -46,7 +63,8 @@
 	<string name="register_finish">完成注册</string>
 	<string name="enter_new_pwd">请输入新密码</string>
 	<string name="reset_pwd">重置密码</string>
-	<string name="input_have_empty">输入为空</string>
+	<string name="input_have_empty">输入不能为空</string>
+	<string name="reset_pwd_suc">重置密码成功</string>
 	
 	<string name="bluetooth">蓝牙</string>
 	<string name="bt_had_paired">已适配</string>

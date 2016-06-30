@@ -8,7 +8,7 @@ import android.util.Log;
 
 import com.runrunfast.homegym.BtDevice.BtInfo;
 
-public class SharedPreferenceUtils {
+public class PrefUtils {
 	private final static String TAG = "SharedPreferenceUtils";
 	// 保存最近连接过的蓝牙设备
 	private static final String SP_LAST_CONNECTED_BT 	= "sp_last_connected_bt";
@@ -44,6 +44,31 @@ public class SharedPreferenceUtils {
 		SharedPreferences preferences = context.getSharedPreferences(SP_LAST_CONNECTED_BT, Context.MODE_PRIVATE);
 		Editor editor = preferences.edit();
 		editor.clear();
+		editor.commit();
+	}
+	
+	private static final String SP_ACCOUNT 		= "sp_account";
+	private static final String KEY_USER_NAME	= "key_user_name";
+	// 保存注册成功的账号
+	public static void setAccount(Context context, String userName){
+		SharedPreferences preferences = context.getSharedPreferences(SP_ACCOUNT, Context.MODE_PRIVATE);
+		Editor editor = preferences.edit();
+		editor.putString(KEY_USER_NAME, userName);
+		editor.commit();
+	}
+	
+	public static String getAccount(Context context){
+		SharedPreferences preferences = context.getSharedPreferences(SP_ACCOUNT, Context.MODE_PRIVATE);
+		return preferences.getString(KEY_USER_NAME, "");
+	}
+	
+	public static void clearAccount(Context context){
+		SharedPreferences preferences = context.getSharedPreferences(SP_ACCOUNT, Context.MODE_PRIVATE);
+		
+		Editor editor = preferences.edit();
+		
+		editor.clear();
+		
 		editor.commit();
 	}
 	

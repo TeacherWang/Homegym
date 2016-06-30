@@ -16,7 +16,7 @@ import com.runrunfast.ble.BLEService.LocalBinder;
 import com.runrunfast.ble.BLESingleton;
 import com.runrunfast.ble.MotionCallback;
 import com.runrunfast.homegym.utils.Globle;
-import com.runrunfast.homegym.utils.SharedPreferenceUtils;
+import com.runrunfast.homegym.utils.PrefUtils;
 
 public class BtDeviceMgr {
 	private final String TAG = "BtDeviceMgr";
@@ -113,15 +113,15 @@ public class BtDeviceMgr {
 	}
 	
 	public void setLastBtInfo(Context context, String btName, String btAddress){
-		SharedPreferenceUtils.setLastConnectedBt(context, btName, btAddress);
+		PrefUtils.setLastConnectedBt(context, btName, btAddress);
 	}
 	
 	public BtInfo getLastBtInfo(Context context){
-		return SharedPreferenceUtils.getLastConnectedBt(context);
+		return PrefUtils.getLastConnectedBt(context);
 	}
 	
 	public void removeLastBtInfo(Context context){
-		SharedPreferenceUtils.removeLastConnectedBt(context);
+		PrefUtils.removeLastConnectedBt(context);
 	}
 	
 	public void connectBLE(BluetoothDevice bluetoothDevice){

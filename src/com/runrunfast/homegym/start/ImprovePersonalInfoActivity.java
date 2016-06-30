@@ -23,7 +23,7 @@ public class ImprovePersonalInfoActivity extends Activity implements OnClickList
 	}
 
 	private void initView() {
-		actionBar = (View)findViewById(R.id.login_action_bar);
+		actionBar = (View)findViewById(R.id.impr_personal_info_action_bar);
 		((TextView)actionBar.findViewById(R.id.login_title_text)).setText(R.string.improve_personal_info);
 		
 		actionBar.findViewById(R.id.login_back_img).setVisibility(View.INVISIBLE);

@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/login_item_img_margin"
-            android:background="@drawable/login_code"/>
+            android:background="@drawable/login_verification_code"/>
 	    
         <Button
             android:id="@+id/btn_register_get_verfy_code"
@@ -64,7 +64,7 @@
             android:layout_marginLeft="@dimen/login_item_edit_margin"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:inputType="textPassword"
+            android:inputType="number"
             android:hint="@string/enter_verificationcode"
             android:background="@color/transparent" />
         
