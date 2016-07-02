@@ -62,6 +62,7 @@
     </RelativeLayout>
     
     <com.handmark.pulltorefresh.library.PullToRefreshListView
+        xmlns:ptr="http://schemas.android.com/apk/res-auto"
         android:id="@+id/record_month_pull_refresh_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -73,6 +74,8 @@
         android:footerDividersEnabled="false"
         android:headerDividersEnabled="false"
         android:smoothScrollbar="true"
-        android:background="@color/my_course_bg" />
+        android:background="@color/my_course_bg"
+        ptr:ptrHeaderBackground="@color/pull_to_refresh_from_bottom_bg_color"
+        ptr:ptrHeaderTextColor="@color/pull_to_refresh_from_bottom_text_color" />
     
 </LinearLayout>
