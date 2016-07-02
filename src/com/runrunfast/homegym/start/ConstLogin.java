@@ -4,8 +4,8 @@ public class ConstLogin {
 	public static final String SERVER = "http://bikeme.duapp.com/";
 	public static final String SERVER_TEST = "http://bikemetest.duapp.com/";
 	
-	public static final String URL_LOGIN = SERVER_TEST + "Login?";
-	public static final String URL_IDENTIFY = SERVER_TEST + "servlet/PhoneRegisterServlet?";
+	public static final String URL_LOGIN = SERVER_TEST + "Login";
+	public static final String URL_IDENTIFY = SERVER_TEST + "servlet/PhoneRegisterServlet";
 	
 	// 登录类型
 	public static final String KEY_TYPE = "type";
@@ -18,7 +18,7 @@ public class ConstLogin {
 	// key
 	public static final String KEY_USER_NAME = "username";
 	public static final String KEY_PASSWORD = "password";
-	public static final String KEY_IDENTIFY = "Identify";
+	public static final String KEY_IDENTIFY = "identify";
 	public static final String KEY_PHONE = "phone";
 	
 	// 返回码说明
@@ -37,4 +37,7 @@ public class ConstLogin {
 	public static final String RET = "ret";
 	public static final String IFPHONE = "ifphone";
 	public static final String STATUS = "status";
+	
+	// 登录成功的广播
+	public static final String ACTION_LOGIN_SUC = "action_login_suc";
 }

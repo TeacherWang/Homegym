@@ -2,6 +2,7 @@ package com.runrunfast.homegym.start;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -17,13 +18,13 @@ import android.widget.Toast;
 
 import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.start.AccountMgr.IIdentifyCodeListener;
-import com.runrunfast.homegym.start.AccountMgr.ILoginListener;
 import com.runrunfast.homegym.start.AccountMgr.IResetPwdListener;
 
 public class ResetPwdActivity extends Activity implements OnClickListener, TextWatcher{
 	
 	private static final int MSG_COUNTDOWN = 1;
 	private static final int MSG_COUNTDOWN_OVER = 2;
+	private static final int COUNTDOWN_LENGTH = 60; // 倒计时
 	private static final int COUNTDOWN_INTERVAL = 1000; // 倒计时间隔1s
 	
 	private View resetActionBar;
@@ -35,7 +36,9 @@ public class ResetPwdActivity extends Activity implements OnClickListener, TextW
 	private IIdentifyCodeListener identifyCodeListener;
 	
 	private ProgressDialog dialog;
-	private int time = 60;
+	private int time = COUNTDOWN_LENGTH;
+	
+	private String mUsername;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +60,7 @@ public class ResetPwdActivity extends Activity implements OnClickListener, TextW
 				break;
 				
 			case MSG_COUNTDOWN_OVER:
+				time = COUNTDOWN_LENGTH;
 				btnGetVerifyCode.setEnabled(true);
 				btnGetVerifyCode.setBackgroundResource(R.drawable.bt_get_verify_code_round_corner_rect);
 				btnGetVerifyCode.setText(R.string.get_verificationcode);
@@ -89,6 +93,10 @@ public class ResetPwdActivity extends Activity implements OnClickListener, TextW
 			public void onSuccess() {
 				dismissDialog();
 				Toast.makeText(ResetPwdActivity.this, R.string.reset_pwd_suc, Toast.LENGTH_SHORT).show();
+				Intent intent = new Intent();
+				intent.putExtra(LoginActivity.KEY_USERNAME, mUsername);
+				setResult(LoginActivity.RSP_CODE_RESET_PWD, intent);
+				finish();
 			}
 			
 			@Override
@@ -163,16 +171,16 @@ public class ResetPwdActivity extends Activity implements OnClickListener, TextW
 	}
 
 	private void handlClickResetFinish() {
-		String userName = etNum.getText().toString();
+		mUsername = etNum.getText().toString();
 		String verifyCode = etVerifyCode.getText().toString();
 		String pwd = etPwd.getText().toString();
 		
-		if(TextUtils.isEmpty(userName) || TextUtils.isEmpty(verifyCode) || TextUtils.isEmpty(pwd)){
+		if(TextUtils.isEmpty(mUsername) || TextUtils.isEmpty(verifyCode) || TextUtils.isEmpty(pwd)){
 			Toast.makeText(this, R.string.input_have_empty, Toast.LENGTH_SHORT).show();
 			return;
 		}
 		
-		AccountMgr.getInstance().resetPwd(userName, verifyCode, pwd);
+		AccountMgr.getInstance().resetPwd(mUsername, verifyCode, pwd);
 		showDialog();
 	}
 
@@ -187,13 +195,15 @@ public class ResetPwdActivity extends Activity implements OnClickListener, TextW
 	}
 	
 	private void setBtnGetVetifyCodeEnable(){
-		if (etNum.getText().toString().length() == 11
-				&& etNum.getText().toString().substring(0, 1).equals("1")) {
+		if (etNum.getText().toString().length() == 11 && etNum.getText().toString().substring(0, 1).equals("1")) {
+			if(time != 60){
+				return;
+			}
 			btnGetVerifyCode.setEnabled(true);
-			btnGetVerifyCode.setBackgroundResource(R.drawable.bt_get_verify_code_disable_round_corner_rect);
+			btnGetVerifyCode.setBackgroundResource(R.drawable.bt_get_verify_code_round_corner_rect);
 		} else {
 			btnGetVerifyCode.setEnabled(false);
-			btnGetVerifyCode.setBackgroundResource(R.drawable.bt_get_verify_code_round_corner_rect);
+			btnGetVerifyCode.setBackgroundResource(R.drawable.bt_get_verify_code_disable_round_corner_rect);
 		}
 	}
 	

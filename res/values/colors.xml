@@ -83,4 +83,7 @@
     <color name="about_email_content_text_color">#666666</color>
     <color name="feedback_send_text_color">#009944</color>
     
+    <color name="pull_to_refresh_from_bottom_text_color">#666666</color>
+    <color name="pull_to_refresh_from_bottom_bg_color">#eeeeee</color>
+    
 </resources>

@@ -24,6 +24,7 @@ public class RegisterActivity extends Activity implements OnClickListener, TextW
 	
 	private static final int MSG_COUNTDOWN = 1;
 	private static final int MSG_COUNTDOWN_OVER = 2;
+	private static final int COUNTDOWN_LENGTH = 60; // 倒计时
 	private static final int COUNTDOWN_INTERVAL = 1000; // 倒计时间隔1s
 	
 	private View actionBar;
@@ -37,7 +38,9 @@ public class RegisterActivity extends Activity implements OnClickListener, TextW
 	
 	private ProgressDialog dialog;
 	
-	private int time = 60;
+	private int time = COUNTDOWN_LENGTH;
+	
+	private String mUsername;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +61,7 @@ public class RegisterActivity extends Activity implements OnClickListener, TextW
 				break;
 				
 			case MSG_COUNTDOWN_OVER:
+				time = COUNTDOWN_LENGTH;
 				btnGetVerifyCode.setEnabled(true);
 				btnGetVerifyCode.setBackgroundResource(R.drawable.bt_get_verify_code_round_corner_rect);
 				btnGetVerifyCode.setText(R.string.get_verificationcode);
@@ -88,11 +92,9 @@ public class RegisterActivity extends Activity implements OnClickListener, TextW
 			
 			@Override
 			public void onSuccess() {
-				dismissDialog();
-				jumpToImprovePersonalInfoActivity();
-				finish();
+				handleRegisterSuc();
 			}
-			
+
 			@Override
 			public void onFail(String reason) {
 				dismissDialog();
@@ -116,6 +118,15 @@ public class RegisterActivity extends Activity implements OnClickListener, TextW
 			}
 		};
 		AccountMgr.getInstance().setOnIdentifyCodeListener(identifyCodeListener);
+	}
+	
+	private void handleRegisterSuc() {
+		AccountMgr.getInstance().saveLoginAccount(this, mUsername);
+		AccountMgr.getInstance().setLoginSuc(this, true);
+		dismissDialog();
+		jumpToImprovePersonalInfoActivity();
+		AccountMgr.getInstance().sendLoginSucBroadcast(this);
+		finish();
 	}
 
 	private void initView() {
@@ -187,15 +198,15 @@ public class RegisterActivity extends Activity implements OnClickListener, TextW
 	}
 
 	private void handleClickRegisterFinish() {
-		String strNum = etNum.getText().toString();
+		mUsername = etNum.getText().toString();
 		String strVerifyCode = etVerifyCode.getText().toString();
 		String strPwd = etPwd.getText().toString();
-		if(checkEmpty(strNum, strVerifyCode, strPwd)){
+		if(checkEmpty(mUsername, strVerifyCode, strPwd)){
 			Toast.makeText(this, R.string.input_have_empty, Toast.LENGTH_SHORT).show();
 			return;
 		}
 		
-		AccountMgr.getInstance().register(strNum, strVerifyCode, strPwd);
+		AccountMgr.getInstance().register(mUsername, strVerifyCode, strPwd);
 		
 		showDialog();
 	}
@@ -232,8 +243,10 @@ public class RegisterActivity extends Activity implements OnClickListener, TextW
 	}
 	
 	private void setBtnGetVetifyCodeEnable(){
-		if (etNum.getText().toString().length() == 11
-				&& etNum.getText().toString().substring(0, 1).equals("1")) {
+		if (etNum.getText().toString().length() == 11 && etNum.getText().toString().substring(0, 1).equals("1")) {
+			if(time != 60){
+				return;
+			}
 			btnGetVerifyCode.setEnabled(true);
 			btnGetVerifyCode.setBackgroundResource(R.drawable.bt_get_verify_code_round_corner_rect);
 		} else {
@@ -256,7 +269,9 @@ public class RegisterActivity extends Activity implements OnClickListener, TextW
 	}
 	
 	private void dismissDialog(){
-		dialog.dismiss();
+		if(dialog != null && dialog.isShowing()){
+			dialog.dismiss();
+		}
 	}
 	
 	@Override

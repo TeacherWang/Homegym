@@ -1,11 +1,15 @@
 package com.runrunfast.homegym.start;
 
+import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.text.TextUtils;
 import android.util.Log;
 
 import com.runrunfast.homegym.R;
+import com.runrunfast.homegym.utils.Const;
 import com.runrunfast.homegym.utils.Globle;
+import com.runrunfast.homegym.utils.PrefUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -274,15 +278,15 @@ public class AccountMgr {
 				notifyLoginSuc();
 				break;
 			case ConstLogin.RET_PWD_EMPTY:
-				notifyRegisterFail(mResources.getString(R.string.username_or_pwd_cant_empty));
+				notifyLoginFail(mResources.getString(R.string.username_or_pwd_cant_empty));
 				break;
 				
 			case ConstLogin.RET_LOGIN_FAIL:
-				notifyRegisterFail(mResources.getString(R.string.username_not_identified));
+				notifyLoginFail(mResources.getString(R.string.username_not_identified));
 				break;
 				
 			case ConstLogin.RET_USER_NAME_EMPTY:
-				notifyRegisterFail(mResources.getString(R.string.this_account_not_exist));
+				notifyLoginFail(mResources.getString(R.string.this_account_not_exist));
 				break;
 			}
 		} catch (JSONException e) {
@@ -366,6 +370,32 @@ public class AccountMgr {
 		}
 	}
 
+	public void saveLoginAccount(Context context, String userName){
+		PrefUtils.setAccount(context, userName);
+	}
+	
+	public String getAccount(Context context){
+		return PrefUtils.getAccount(context);
+	}
+	
+	public void clearAccount(Context context){
+		PrefUtils.clearAccount(context);
+	}
+	
+	public void setLoginSuc(Context context, boolean suc){
+		PrefUtils.setLoginSuc(context, suc);
+	}
+	
+	public boolean getLoginSuc(Context context){
+		return PrefUtils.getLoginSuc(context);
+	}
+	
+	public void sendLoginSucBroadcast(Context context){
+		Intent intent = new Intent();
+		intent.setAction(ConstLogin.ACTION_LOGIN_SUC);
+		context.sendBroadcast(intent);
+	}
+	
 	public boolean checkLoginLegal(){
 		
 		return true;

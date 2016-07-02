@@ -14,8 +14,6 @@ import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.runrunfast.homegym.R;
-import com.runrunfast.homegym.home.fragments.AllCoursesFragment;
-import com.runrunfast.homegym.home.fragments.MeFragment;
 import com.runrunfast.homegym.home.fragments.MyTrainingFragment;
 import com.runrunfast.homegym.record.fragments.RecordMonthFragment;
 import com.runrunfast.homegym.record.fragments.RecordTotalFragment;

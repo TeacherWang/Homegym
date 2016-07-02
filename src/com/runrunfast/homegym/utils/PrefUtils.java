@@ -49,6 +49,7 @@ public class PrefUtils {
 	
 	private static final String SP_ACCOUNT 		= "sp_account";
 	private static final String KEY_USER_NAME	= "key_user_name";
+	private static final String KEY_LOGIN_SUC	= "key_login_suc";
 	// 保存注册成功的账号
 	public static void setAccount(Context context, String userName){
 		SharedPreferences preferences = context.getSharedPreferences(SP_ACCOUNT, Context.MODE_PRIVATE);
@@ -70,6 +71,21 @@ public class PrefUtils {
 		editor.clear();
 		
 		editor.commit();
+	}
+	
+	public static void setLoginSuc(Context context, boolean suc){
+		SharedPreferences preferences = context.getSharedPreferences(SP_ACCOUNT, Context.MODE_PRIVATE);
+		
+		Editor editor = preferences.edit();
+		
+		editor.putBoolean(KEY_LOGIN_SUC, suc);
+		
+		editor.commit();
+	}
+	
+	public static boolean getLoginSuc(Context context){
+		SharedPreferences preferences = context.getSharedPreferences(SP_ACCOUNT, Context.MODE_PRIVATE);
+		return preferences.getBoolean(KEY_LOGIN_SUC, false);
 	}
 	
 }

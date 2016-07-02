@@ -23,6 +23,10 @@ import com.runrunfast.homegym.start.AccountMgr.ILoginListener;
 public class LoginActivity extends Activity implements OnClickListener, TextWatcher{
 	private final String TAG = "LoginActivity";
 	
+	public static final int REQ_CODE_RESET_PWD = 1;
+	public static final int RSP_CODE_RESET_PWD = 2;
+	public static final String KEY_USERNAME = "key_username";
+	
 	private View actionBar;
 	private ImageView ivBack;
 	private Button btnLogin;
@@ -32,6 +36,8 @@ public class LoginActivity extends Activity implements OnClickListener, TextWatc
 	private ProgressDialog dialog;
 	
 	private ILoginListener iLoginListener;
+	
+	private String mUsername;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +52,7 @@ public class LoginActivity extends Activity implements OnClickListener, TextWatc
 
 			@Override
 			public void onSuccess() {
-				dismissDialog();
-				jumpToHomeActivity();
-				finish();
+				handleLoginSuc();
 			}
 
 			@Override
@@ -61,6 +65,15 @@ public class LoginActivity extends Activity implements OnClickListener, TextWatc
 		AccountMgr.getInstance().setOnLoginListener(iLoginListener);
 	}
 
+	private void handleLoginSuc() {
+		AccountMgr.getInstance().saveLoginAccount(this, mUsername);
+		AccountMgr.getInstance().setLoginSuc(this, true);
+		dismissDialog();
+		jumpToHomeActivity();
+		AccountMgr.getInstance().sendLoginSucBroadcast(this);
+		finish();
+	}
+	
 	private void initView() {
 		actionBar = (View)findViewById(R.id.login_action_bar);
 		((TextView)actionBar.findViewById(R.id.login_title_text)).setText(R.string.login);
@@ -107,9 +120,25 @@ public class LoginActivity extends Activity implements OnClickListener, TextWatc
 	}
 
 	private void jumpToResetPwd() {
-		startActivity(new Intent(this, ResetPwdActivity.class));
+		startActivityForResult(new Intent(this, ResetPwdActivity.class), REQ_CODE_RESET_PWD);
 	}
 
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if(requestCode != REQ_CODE_RESET_PWD || resultCode != RSP_CODE_RESET_PWD){
+			Log.e(TAG, "onActivityResult, requestCode and resultCode is : " + requestCode + " and " + resultCode);
+			return;
+		}
+		
+		String username = data.getStringExtra(KEY_USERNAME);
+		if(TextUtils.isEmpty(username)){
+			Log.d(TAG, "onActivityResult, username is empty");
+			return;
+		}
+		
+		etPhoneNume.setText(username);
+	}
+	
 	private void jumpToRegister() {
 		startActivity(new Intent(this, RegisterActivity.class));
 	}
@@ -117,14 +146,14 @@ public class LoginActivity extends Activity implements OnClickListener, TextWatc
 	private void handleClickLogin() {
 		Log.d(TAG, "handleClickLogin");
 		
-		String phoneNum = etPhoneNume.getText().toString();
+		mUsername = etPhoneNume.getText().toString();
 		String pwd = etPwd.getText().toString();
-		if(TextUtils.isEmpty(phoneNum) || TextUtils.isEmpty(pwd)){
+		if(TextUtils.isEmpty(mUsername) || TextUtils.isEmpty(pwd)){
 			Toast.makeText(this, R.string.input_have_empty, Toast.LENGTH_SHORT).show();
 			return;
 		}
 		
-		AccountMgr.getInstance().login(phoneNum, pwd);
+		AccountMgr.getInstance().login(mUsername, pwd);
 		
 		showDialog();
 	}

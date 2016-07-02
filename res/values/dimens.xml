@@ -156,10 +156,10 @@
 	<dimen name="record_total_finish_unit_margin_bottom">11dp</dimen>
 	<dimen name="record_total_equal_text_size">15sp</dimen>
 	<dimen name="record_total_consume_margin_top">16dp</dimen>
-	<dimen name="record_total_content_margin">15dp</dimen>
-	<dimen name="record_total_consume_number_margin_top">57dp</dimen>
-	<dimen name="record_total_consume_number_unit_margin_top">70dp</dimen>
-	<dimen name="record_total_divider_margin_top">16dp</dimen>
+	<dimen name="record_total_content_margin">10dp</dimen>
+	<dimen name="record_total_consume_number_margin_top">30dp</dimen>
+	<dimen name="record_total_divider_margin_top">5dp</dimen>
+	<dimen name="record_total_consume_number_unit_bottom">5dp</dimen>
 	<dimen name="record_total_equal_margin_top">6dp</dimen>
 	<dimen name="record_total_equal_text_margin_left">9dp</dimen>
 	<dimen name="record_total_equal_img_margin_top">23dp</dimen>
@@ -167,7 +167,7 @@
 	<dimen name="record_total_equal_result_text_size">15sp</dimen>
 	<dimen name="record_total_equal_img_width">250dp</dimen>
 	<dimen name="record_total_equal_img_height">175dp</dimen>
-	<dimen name="record_total_equal_img_margin_bottom">25dp</dimen>
+	<dimen name="record_total_equal_img_margin_bottom">17dp</dimen>
 	
 	<dimen name="record_month_year_text_size">16sp</dimen>
 	<dimen name="record_month_year_margin_top">7dp</dimen>

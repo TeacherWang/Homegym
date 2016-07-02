@@ -50,9 +50,9 @@ public class RecordAdapter extends BaseAdapter {
 	@Override
 	public int getItemViewType(int position) {
 		BaseRecordData baseRecordData = mBaseRecordDataList.get(position);
-		if(baseRecordData.dataType == BaseRecordData.DATA_TYPE_HAVE_DATE){
+		if(baseRecordData.iDataType == BaseRecordData.DATA_TYPE_HAVE_DATE){
 			return LIST_SHOW_DATE;
-		}else if(baseRecordData.dataType == BaseRecordData.DATA_TYPE_ONLY_HAVE_COURSE){
+		}else if(baseRecordData.iDataType == BaseRecordData.DATA_TYPE_ONLY_HAVE_COURSE){
 			return LIST_SHOW_ONLY_COURSE;
 		}else {
 			return LIST_SHOW_ONLY_TRAIN;
@@ -103,9 +103,51 @@ public class RecordAdapter extends BaseAdapter {
 			default:
 				break;
 			}
+		}else{
+			switch (holderType) {
+			case LIST_SHOW_DATE:
+				recordDateViewHolder = (RecordDateViewHolder)convertView.getTag();
+				break;
+				
+			case LIST_SHOW_ONLY_COURSE:
+				recordCourseViewHolder = (RecordCourseViewHolder)convertView.getTag();
+				break;
+				
+			case LIST_SHOW_ONLY_TRAIN:
+				recordTrainViewHolder = (RecordTrainViewHolder)convertView.getTag();
+				break;
+
+			default:
+				break;
+			}
 		}
 		
 		BaseRecordData baseRecordData = mBaseRecordDataList.get(position);
+		switch (holderType) {
+		case LIST_SHOW_DATE:
+			RecordDataDate recordDataDate = (RecordDataDate)baseRecordData;
+			recordDateViewHolder.tvDate.setText(recordDataDate.strDate);
+			recordDateViewHolder.tvCourseName.setText(recordDataDate.strCourseName);
+			recordDateViewHolder.tvCourseConsumeTime.setText(recordDataDate.strConsumeTime);
+			break;
+			
+		case LIST_SHOW_ONLY_COURSE:
+			RecordDataPlan recordDataPlan = (RecordDataPlan)baseRecordData;
+			recordCourseViewHolder.tvCourseName.setText(recordDataPlan.strCourseName);
+			recordCourseViewHolder.tvCourseConsumeTime.setText(recordDataPlan.strConsumeTime);
+			break;
+			
+		case LIST_SHOW_ONLY_TRAIN:
+			RecordDataUnit recordDataUnit = (RecordDataUnit)baseRecordData;
+			recordTrainViewHolder.ivTrain.setBackgroundResource(R.drawable.record_action1);
+			recordTrainViewHolder.tvTrainName.setText(recordDataUnit.trainName);
+			recordTrainViewHolder.tvTrainCount.setText(String.valueOf(recordDataUnit.iGroupCount));
+			recordTrainViewHolder.tvTrainKcal.setText(String.valueOf(recordDataUnit.iTotalKcal));
+			break;
+
+		default:
+			break;
+		}
 		
 		return convertView;
 	}

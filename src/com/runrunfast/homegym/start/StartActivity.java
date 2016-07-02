@@ -1,7 +1,12 @@
 package com.runrunfast.homegym.start;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -15,8 +20,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.runrunfast.homegym.R;
-
-import java.util.ArrayList;
+import com.runrunfast.homegym.home.HomeActivity;
 
 public class StartActivity extends Activity{
 	private final String TAG = "StartActivity";
@@ -31,15 +35,44 @@ public class StartActivity extends Activity{
 	private ImageView ivPoint11, ivPoint12, ivPoint13, ivPoint21, ivPoint22, ivPoint23, ivPoint31, ivPoint32, ivPoint33;
 	private TextView tv11, tv12, tv21, tv22, tv31, tv32;
 	
+	private boolean isReceverRegisted = false;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		if( AccountMgr.getInstance().getLoginSuc(this) ){
+			startActivity(new Intent(this, HomeActivity.class));
+			finish();
+			return;
+		}
+		
 		setContentView(R.layout.activity_start);
 		
 		initView();
 		
 		initData();
+		
+		registerLoginSucReceiver();
 	}
+	
+	private void registerLoginSucReceiver(){
+		IntentFilter filter = new IntentFilter();
+		filter.addAction(ConstLogin.ACTION_LOGIN_SUC);
+		registerReceiver(mLoginSucReceiver, filter);
+		
+		isReceverRegisted = true;
+	}
+	
+	private BroadcastReceiver mLoginSucReceiver = new BroadcastReceiver() {
+		
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if(intent.getAction().equals(ConstLogin.ACTION_LOGIN_SUC)){
+				finish();
+			}
+		}
+	};
 	
 	private void initData() {
 		mRelativelayoutList = new ArrayList<RelativeLayout>(); 
@@ -201,5 +234,13 @@ public class StartActivity extends Activity{
 		
 		Intent intent = new Intent(this, RegisterActivity.class);
 		startActivity(intent);
+	}
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		if(mLoginSucReceiver != null && isReceverRegisted){
+			unregisterReceiver(mLoginSucReceiver);
+		}
 	}
 }

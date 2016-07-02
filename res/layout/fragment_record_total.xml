@@ -14,24 +14,29 @@
             android:text="@string/record_total_consume"
             android:textColor="@color/record_total_consume_text_color"
             android:textSize="@dimen/record_total_consume_text_size" />
-        <TextView 
-            android:id="@+id/record_total_consume_number_text"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="686"
-            android:textColor="@color/record_total_consume_number_color"
-            android:textSize="@dimen/record_total_consume_number_size"
-            android:textStyle="bold"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/record_total_consume_number_margin_top"/>
-        <TextView 
-            android:layout_toRightOf="@id/record_total_consume_number_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/record_total_consume_number_unit_margin_top"
-            android:text="@string/kcal"
-            android:textSize="@dimen/record_total_consume_unit_text_size"
-            android:textColor="@color/record_total_consume_kcal_unit_color"/>
+            android:layout_marginTop="@dimen/record_total_consume_number_margin_top" >
+            <TextView 
+	            android:id="@+id/record_total_consume_number_text"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="686"
+	            android:textColor="@color/record_total_consume_number_color"
+	            android:textSize="@dimen/record_total_consume_number_size"
+	            android:textStyle="bold"
+	            android:layout_centerHorizontal="true" />
+	        <TextView 
+	            android:layout_toRightOf="@id/record_total_consume_number_text"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/kcal"
+	            android:layout_alignBottom="@id/record_total_consume_number_text"
+	            android:layout_marginBottom="@dimen/record_total_consume_number_unit_bottom"
+	            android:textSize="@dimen/record_total_consume_unit_text_size"
+	            android:textColor="@color/record_total_consume_kcal_unit_color"/>
+        </RelativeLayout>
     </RelativeLayout>
 
     <View 
@@ -39,6 +44,7 @@
         android:layout_height="1px"
         android:layout_marginLeft="@dimen/record_total_content_margin"
         android:layout_marginRight="@dimen/record_total_content_margin"
+        android:layout_marginTop="@dimen/record_total_divider_margin_top"
         android:background="@color/record_total_divider"/>
     
     <LinearLayout
