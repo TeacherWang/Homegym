@@ -9,14 +9,18 @@
         android:id="@+id/home_actionbar"/>
     
     <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/about_bg_height" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/about_logo_margin_top"
+        android:layout_marginBottom="@dimen/about_logo_margin_bottom"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/about_logo" />
     
     <TextView 
         android:id="@+id/about_version_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/about_version_margin_top"
+        android:layout_marginBottom="@dimen/about_version_margin_bottom"
         android:layout_gravity="center_horizontal"
         android:text="版本1.01"
         android:textSize="@dimen/about_version_text_size"
@@ -25,7 +29,6 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/about_email_bg_height"
-        android:layout_marginTop="@dimen/about_email_margin_top"
         android:background="@color/account_item_bg" >
         <TextView 
             android:layout_width="wrap_content"

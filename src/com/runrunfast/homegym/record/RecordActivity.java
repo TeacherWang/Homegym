@@ -1,5 +1,6 @@
 package com.runrunfast.homegym.record;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -14,6 +15,7 @@ import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.runrunfast.homegym.R;
+import com.runrunfast.homegym.home.FinishActivity;
 import com.runrunfast.homegym.home.fragments.MyTrainingFragment;
 import com.runrunfast.homegym.record.fragments.RecordMonthFragment;
 import com.runrunfast.homegym.record.fragments.RecordTotalFragment;
@@ -140,7 +142,9 @@ public class RecordActivity extends FragmentActivity implements OnClickListener{
 	}
 	
 	private void showShare() {
-		
+		Intent intent = new Intent(this, FinishActivity.class);
+		intent.putExtra(FinishActivity.KEY_FINISH_OR_UNFINISH, FinishActivity.TYPE_UNFINISH);
+		startActivity(intent);
 	}
 	
 	FragmentPagerAdapter mFragmentPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {

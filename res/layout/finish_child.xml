@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    <RelativeLayout
+        android:id="@+id/finish_data_layout"
+        android:layout_width="match_parent"
+        android:background="@color/my_course_bg"
+        android:layout_height="@dimen/finish_data_finish_layout_height"  >
+        <RelativeLayout
+            android:id="@+id/finish_data_plan_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/finish_data_content_margin_top"
+            android:layout_marginLeft="@dimen/finish_data_content_margin_left_right"
+            android:layout_marginRight="@dimen/finish_data_content_margin_left_right" >
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+                <ImageView 
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_centerVertical="true"
+	                android:background="@drawable/finish_title_box"/>
+	            <TextView 
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="@string/this_train"
+	                android:layout_centerVertical="true"
+	                android:layout_marginLeft="@dimen/finish_data_this_train_text_margin_left"
+	                android:textColor="@color/black"
+	                android:textSize="@dimen/finish_data_this_train_text_size"/>
+            </RelativeLayout>
+            <ImageView 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/share_finish"/>
+            
+            <ImageView 
+                android:id="@+id/finish_trophy_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/had_finished_tropy_margin_top"
+                android:layout_marginBottom="@dimen/had_finished_tropy_margin_bottom"
+                android:background="@drawable/share_trophy"/>
+            
+            <TextView 
+                android:id="@+id/finish_data_plan_name"
+                android:layout_below="@id/finish_trophy_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="21天增肌计划"
+                android:textSize="@dimen/finish_plan_text_size"
+                android:textColor="@color/record_detail_text_color"/>
+        </RelativeLayout>
+        
+        <LinearLayout
+            android:layout_below="@id/finish_data_plan_layout"
+            android:layout_marginTop="@dimen/finish_number_layout_margin_top"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" >
+                <TextView 
+                    android:id="@+id/finish_descrp_time_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/finish_time"
+                    android:layout_centerHorizontal="true"
+                    android:textColor="@color/about_version_text_color"
+                    android:textSize="@dimen/finish_time_descp_text_size"/>
+                <TextView
+	                 android:id="@+id/finish_time_text"
+	                 android:layout_below="@id/finish_descrp_time_text" 
+	                 android:layout_marginTop="@dimen/finish_number_margin"
+	                 android:layout_width="wrap_content"
+	                 android:layout_height="wrap_content"
+	                 android:text="20:00"
+	                 android:layout_centerHorizontal="true"
+	                 android:textColor="@color/black"
+	                 android:textSize="@dimen/finish_time_text_size"/>
+	             <TextView 
+	                 android:layout_toRightOf="@id/finish_time_text"
+	                 android:layout_alignBottom="@id/finish_time_text"
+	                 android:layout_width="wrap_content"
+	                 android:layout_height="wrap_content"
+	                 android:text="@string/minute"
+	                 android:textSize="@dimen/finish_unit_size"
+	                 android:textColor="@color/about_version_text_color"/>
+            </RelativeLayout>
+            
+            <View
+                android:layout_width="@dimen/finish_number_divider_width"
+                android:layout_height="@dimen/finish_number_divider_height"
+                android:layout_gravity="center_vertical"
+                android:background="@color/divider_all_courses" />
+            
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" >
+                <TextView 
+                    android:id="@+id/finish_descrp_count_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/count_number"
+                    android:layout_centerHorizontal="true"
+                    android:textColor="@color/about_version_text_color"
+                    android:textSize="@dimen/finish_time_descp_text_size"/>
+                <TextView
+	                 android:id="@+id/finish_count_text"
+	                 android:layout_below="@id/finish_descrp_count_text" 
+	                 android:layout_width="wrap_content"
+	                 android:layout_height="wrap_content"
+	                 android:layout_marginTop="@dimen/finish_number_margin"
+	                 android:text="36"
+	                 android:layout_centerHorizontal="true"
+	                 android:textColor="@color/black"
+	                 android:textSize="@dimen/finish_time_text_size"/>
+             	<TextView 
+	                 android:layout_toRightOf="@id/finish_count_text"
+	                 android:layout_alignBottom="@id/finish_count_text"
+	                 android:layout_width="wrap_content"
+	                 android:layout_height="wrap_content"
+	                 android:text="@string/ge"
+	                 android:textSize="@dimen/finish_unit_size"
+	                 android:textColor="@color/about_version_text_color"/>
+                
+            </RelativeLayout>
+            
+            <View
+                android:layout_width="@dimen/finish_number_divider_width"
+                android:layout_height="@dimen/finish_number_divider_height"
+                android:layout_gravity="center_vertical"
+                android:background="@color/divider_all_courses" />
+            
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" >
+                <TextView 
+                    android:id="@+id/finish_descrp_burning_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/burning"
+                    android:layout_centerHorizontal="true"
+                    android:textColor="@color/about_version_text_color"
+                    android:textSize="@dimen/finish_time_descp_text_size"/>
+                <TextView
+	                 android:id="@+id/finish_buring_text" 
+	                 android:layout_below="@id/finish_descrp_burning_text"
+	                 android:layout_marginTop="@dimen/finish_number_margin"
+	                 android:layout_width="wrap_content"
+	                 android:layout_height="wrap_content"
+	                 android:text="188"
+	                 android:layout_centerHorizontal="true"
+	                 android:textColor="@color/black"
+	                 android:textSize="@dimen/finish_time_text_size"/>
+	             <TextView 
+	                 android:layout_toRightOf="@id/finish_buring_text"
+	                 android:layout_width="wrap_content"
+	                 android:layout_height="wrap_content"
+	                 android:layout_alignBottom="@id/finish_buring_text"
+	                 android:text="@string/qianka"
+	                 android:textSize="@dimen/finish_unit_size"
+	                 android:textColor="@color/about_version_text_color"/>
+                
+            </RelativeLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+</FrameLayout>

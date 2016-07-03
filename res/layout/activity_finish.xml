@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/home_bg_color"
+    android:orientation="vertical" >
+    
+    <include layout="@layout/home_actionbar"
+        android:id="@+id/home_actionbar"/>
+    
+    <View
+        android:id="@+id/finish_content_divider"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginTop="@dimen/finish_data_content_margin_top"
+        android:background="@color/account_divider_color"/>
+    <FrameLayout
+        android:id="@+id/finish_data_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/my_course_bg">
+        
+    </FrameLayout>
+    
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/divider_bt" />
+    
+    <View
+       	android:layout_width="match_parent"
+       	android:layout_height="1px"
+       	android:layout_marginTop="@dimen/finish_divider_margin"
+       	android:background="@color/divider_bt" />
+    
+    <RelativeLayout
+	     android:layout_width="match_parent"
+	     android:layout_height="@dimen/finish_had_finished_text_layout"
+	     android:background="@color/my_course_bg" >
+        <ImageView
+            android:id="@+id/had_finished_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/finish_data_content_margin_left_right"
+            android:layout_centerVertical="true"
+            android:background="@drawable/finish_title_box" />
+     	<TextView
+     	    android:layout_toRightOf="@id/had_finished_img"
+     	    android:layout_width="wrap_content"
+     	    android:layout_height="wrap_content"
+     	    android:layout_marginLeft="@dimen/finish_data_content_margin_left_right"
+    	    android:layout_centerVertical="true"
+     	    android:text="@string/had_finished_train"
+     	    android:textColor="@color/black"
+     	    android:textSize="@dimen/finish_data_this_train_text_size" />
+	 </RelativeLayout>
+	 
+     <ListView
+         android:id="@+id/had_finished_train_list"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:cacheColorHint="#00000000"
+         android:fadingEdge="none"
+         android:divider="@null"
+         android:dividerHeight="5dp"
+         android:paddingLeft="@dimen/had_finished_list_padding_left_right"
+         android:paddingRight="@dimen/had_finished_list_padding_left_right"
+         android:paddingBottom="@dimen/had_finished_list_padding_bottom"
+         android:background="@color/my_course_bg" >
+         
+     </ListView>
+    
+</LinearLayout>

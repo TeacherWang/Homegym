@@ -113,4 +113,13 @@
 	<string name="feedback_hint">请在此填写您遇到的问题和现象，或者您希望有什么新功能可以添加，我们会尽快给您反馈</string>
 	<string name="feedback_contact_hint">手机号/QQ号/邮箱</string>
 	
+	<string name="this_train">本次训练</string>
+	<string name="finish_time">时长</string>
+	<string name="burning">燃脂</string>
+	<string name="minute">min</string>
+	<string name="ge">个</string>
+	<string name="qianka">千卡</string>
+	<string name="count_number">次数</string>
+	<string name="had_finished_train">已完成训练</string>
+		
 </resources>

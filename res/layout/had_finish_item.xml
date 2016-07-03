@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" >
+    
+    <ImageView 
+        android:id="@+id/had_finish_img"
+        android:layout_width="@dimen/had_finished_img_width"
+        android:layout_height="@dimen/had_finished_img_height"
+        android:background="@drawable/action_pic_1"/>
+
+    <View 
+        android:layout_width="@dimen/had_finished_img_width"
+        android:layout_height="@dimen/had_finished_img_height"
+        android:background="@color/course_img_mask"/>
+    
+    <TextView
+        android:id="@+id/had_finish_plan_name_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/had_finished_train_text_marin_top"
+        android:text="平板卧推举"
+        android:textSize="@dimen/had_finished_train_text_size"
+        android:textColor="@color/white"/>
+    
+    <TextView
+        android:id="@+id/had_finish_action_num_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/had_finished_train_action_margin_top"
+        android:layout_marginRight="@dimen/had_finished_train_action_margin_right"
+        android:text="动作一"
+        android:textColor="@color/had_finish_action_num_text_color"
+        android:textSize="@dimen/had_finished_train_action_num_size" />
+    
+</RelativeLayout>
