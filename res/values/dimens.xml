@@ -266,8 +266,11 @@
 	<dimen name="popwindow_head_margin">15dp</dimen>
 	<dimen name="popwindow_head_text_size">15sp</dimen>
 	<dimen name="popwindow_content_width">210dp</dimen>
+	<dimen name="popwindow_content_width_big">270dp</dimen>
 	
 	<dimen name="popwindow_content_two_width">80dp</dimen>
+	<dimen name="popwindow_content_two_margin">30dp</dimen>
+	<dimen name="popwindow_content_three_margin">10dp</dimen>
 	
 	<dimen name="personal_head_bg_height">75dp</dimen>
 	<dimen name="personal_headimg_size">50dp</dimen>

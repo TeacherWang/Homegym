@@ -33,6 +33,12 @@ public class PersonalInfoActivity extends Activity implements OnClickListener{
 	private View wheelOneLayout;
 	private WheelView wheelOneWheelView;
 	
+	private View wheelTwoLayout;
+	private WheelView wheelTwoWheelView1, wheelTwoWheelView2;
+	
+	private View wheelThreeLayout;
+	private WheelView wheelThreeWheelView1, wheelThreeWheelView2, wheelThreeWheelView3;
+	
 	private TextView tvNick, tvSex, tvBirth, tvCity, tvHeight, tvWeight, tvBmiNum, tvBmiDescip;
 	
 	private String strSex;
@@ -194,7 +200,41 @@ public class PersonalInfoActivity extends Activity implements OnClickListener{
 	}
 
 	private void showSelectBirth() {
+		inputType = INPUT_TYPE_BIRTH;
+		selectContainer.removeAllViews();
+		wheelThreeLayout = (View)LayoutInflater.from(this).inflate(R.layout.wheel_three, null);
+		selectContainer.addView(wheelOneLayout);
+		tvPopTitle.setText(R.string.select_birth);
 		
+		wheelThreeWheelView1 = (WheelView)wheelThreeLayout.findViewById(R.id.select_wheelview_one);
+		wheelThreeWheelView2 = (WheelView)wheelThreeLayout.findViewById(R.id.select_wheelview_two);
+		wheelThreeWheelView3 = (WheelView)wheelThreeLayout.findViewById(R.id.select_wheelview_three);
+		wheelThreeWheelView1.setOnWheelViewListener(new OnWheelViewListener(){
+			@Override
+			public void onSelected(int selectedIndex, String item) {
+				Log.d(TAG, "onSelected, item = " + item);
+			}
+		});
+		wheelThreeWheelView2.setOnWheelViewListener(new OnWheelViewListener(){
+			@Override
+			public void onSelected(int selectedIndex, String item) {
+				Log.d(TAG, "onSelected, item = " + item);
+			}
+		});
+		wheelThreeWheelView3.setOnWheelViewListener(new OnWheelViewListener(){
+			@Override
+			public void onSelected(int selectedIndex, String item) {
+				Log.d(TAG, "onSelected, item = " + item);
+			}
+		});
+		wheelOneWheelView.setOffset(1);
+		wheelOneWheelView.setSeletion(20);
+		wheelOneWheelView.setItems(AccountMgr.getInstance().getHeightList());
+		strHeight = AccountMgr.getInstance().getHeightList().get(20);
+		
+		popWindows = new PopupWindows(this, selectContainer);
+		popWindows.setLayout(popView);
+		popWindows.show();
 	}
 	private void showSelectSex() {
 		inputType = INPUT_TYPE_SEX;

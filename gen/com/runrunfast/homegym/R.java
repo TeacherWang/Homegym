@@ -17,9 +17,12 @@ public final class R {
         public static final int slide_out_to_top=0x7f040005;
     }
     public static final class array {
-        public static final int height=0x7f090001;
+        public static final int day=0x7f090003;
+        public static final int height=0x7f090004;
+        public static final int month=0x7f090002;
         public static final int sex=0x7f090000;
-        public static final int weight=0x7f090002;
+        public static final int weight=0x7f090005;
+        public static final int year=0x7f090001;
     }
     public static final class attr {
         /**  BELOW HERE ARE DEPRECEATED. DO NOT USE. 
@@ -281,7 +284,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
          would include 7" and 10" devices in landscape (~960dp and ~1280dp respectively).
     
          */
-        public static final int activity_horizontal_margin=0x7f0600f0;
+        public static final int activity_horizontal_margin=0x7f0600f3;
         public static final int bottom_height=0x7f06003c;
         public static final int bottom_padding_top=0x7f06003b;
         public static final int bottom_text_size=0x7f06003d;
@@ -414,12 +417,15 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int personal_base_info_text=0x7f060033;
         public static final int personal_decrip_height=0x7f060034;
         public static final int personal_decrip_text_margin_left=0x7f060035;
-        public static final int personal_head_bg_height=0x7f0600ed;
-        public static final int personal_headimg_margin=0x7f0600ef;
-        public static final int personal_headimg_size=0x7f0600ee;
+        public static final int personal_head_bg_height=0x7f0600f0;
+        public static final int personal_headimg_margin=0x7f0600f2;
+        public static final int personal_headimg_size=0x7f0600f1;
         public static final int personal_text_margin_left=0x7f060036;
-        public static final int popwindow_content_two_width=0x7f0600ec;
+        public static final int popwindow_content_three_margin=0x7f0600ef;
+        public static final int popwindow_content_two_margin=0x7f0600ee;
+        public static final int popwindow_content_two_width=0x7f0600ed;
         public static final int popwindow_content_width=0x7f0600eb;
+        public static final int popwindow_content_width_big=0x7f0600ec;
         public static final int popwindow_head_height=0x7f0600e8;
         public static final int popwindow_head_margin=0x7f0600e9;
         public static final int popwindow_head_text_size=0x7f0600ea;
@@ -774,6 +780,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int select_weight_img=0x7f05002f;
         public static final int select_wheelview=0x7f0500ce;
         public static final int select_wheelview_one=0x7f0500cf;
+        public static final int select_wheelview_three=0x7f0500d1;
         public static final int select_wheelview_two=0x7f0500d0;
         public static final int sex_img=0x7f050043;
         public static final int start_bg=0x7f0500c7;
