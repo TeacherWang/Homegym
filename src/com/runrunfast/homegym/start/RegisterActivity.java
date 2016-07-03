@@ -17,8 +17,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.runrunfast.homegym.R;
-import com.runrunfast.homegym.start.AccountMgr.IIdentifyCodeListener;
-import com.runrunfast.homegym.start.AccountMgr.IRegisterListener;
+import com.runrunfast.homegym.account.AccountMgr;
+import com.runrunfast.homegym.account.AccountMgr.IIdentifyCodeListener;
+import com.runrunfast.homegym.account.AccountMgr.IRegisterListener;
 
 public class RegisterActivity extends Activity implements OnClickListener, TextWatcher{
 	

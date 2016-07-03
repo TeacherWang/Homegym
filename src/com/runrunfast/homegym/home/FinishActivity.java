@@ -2,9 +2,6 @@ package com.runrunfast.homegym.home;
 
 import java.util.ArrayList;
 
-import com.runrunfast.homegym.R;
-
-import android.R.integer;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ListView;
+
+import com.runrunfast.homegym.R;
 
 public class FinishActivity extends Activity {
 	

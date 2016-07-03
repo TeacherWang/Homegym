@@ -17,8 +17,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.runrunfast.homegym.R;
+import com.runrunfast.homegym.account.AccountMgr;
+import com.runrunfast.homegym.account.AccountMgr.ILoginListener;
 import com.runrunfast.homegym.home.HomeActivity;
-import com.runrunfast.homegym.start.AccountMgr.ILoginListener;
 
 public class LoginActivity extends Activity implements OnClickListener, TextWatcher{
 	private final String TAG = "LoginActivity";

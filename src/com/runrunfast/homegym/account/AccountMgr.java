@@ -1,4 +1,7 @@
-package com.runrunfast.homegym.start;
+package com.runrunfast.homegym.account;
+
+import java.util.Arrays;
+import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
@@ -7,6 +10,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.runrunfast.homegym.R;
+import com.runrunfast.homegym.start.ConstLogin;
 import com.runrunfast.homegym.utils.Const;
 import com.runrunfast.homegym.utils.Globle;
 import com.runrunfast.homegym.utils.PrefUtils;
@@ -95,6 +99,18 @@ public class AccountMgr {
 	
 	private AccountMgr(){
 		mResources = Globle.gApplicationContext.getResources();
+	}
+	
+	public List<String> getHeightList(){
+		return Arrays.asList(mResources.getStringArray(R.array.height));
+	}
+	
+	public List<String> getWeightList(){
+		return Arrays.asList(mResources.getStringArray(R.array.weight));
+	}
+	
+	public List<String> getSexList(){
+		return Arrays.asList(mResources.getStringArray(R.array.sex));
 	}
 	
 	/**

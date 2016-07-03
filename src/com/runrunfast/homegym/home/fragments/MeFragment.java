@@ -15,6 +15,8 @@ import android.widget.Button;
 import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.home.AboutActivity;
 import com.runrunfast.homegym.home.FeedbackActivity;
+import com.runrunfast.homegym.home.PersonalInfoActivity;
+import com.runrunfast.homegym.start.ImprovePersonalInfoActivity;
 import com.runrunfast.homegym.start.StartActivity;
 import com.runrunfast.homegym.utils.Const;
 import com.runrunfast.homegym.widget.DialogActivity;
@@ -22,7 +24,7 @@ import com.runrunfast.homegym.widget.DialogActivity;
 public class MeFragment extends Fragment implements OnClickListener{
 	private final String TAG = "MeFragment";
 	
-	private View rootView, aboutView, feedbackView;
+	private View rootView, personalInfoView, aboutView, feedbackView;
 	
 	private Resources mResources;
 	
@@ -49,6 +51,9 @@ public class MeFragment extends Fragment implements OnClickListener{
 		
 		feedbackView = (View)rootView.findViewById(R.id.account_feedback_layout);
 		feedbackView.setOnClickListener(this);
+		
+		personalInfoView = (View)rootView.findViewById(R.id.me_personal_info_layout);
+		personalInfoView.setOnClickListener(this);
 	}
 
 	@Override
@@ -64,6 +69,11 @@ public class MeFragment extends Fragment implements OnClickListener{
 			
 		case R.id.account_feedback_layout:
 			startActivity(new Intent(getActivity(), FeedbackActivity.class));
+			break;
+			
+		case R.id.me_personal_info_layout:
+//			startActivity(new Intent(getActivity(), ImprovePersonalInfoActivity.class));
+			startActivity(new Intent(getActivity(), PersonalInfoActivity.class));
 			break;
 
 		default:

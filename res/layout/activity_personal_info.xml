@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/start_login_bg"
+    android:orientation="vertical" >
+
+    <include layout="@layout/login_action_bar"
+        android:id="@+id/impr_personal_info_action_bar"/>
+    
+    <RelativeLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="@dimen/personal_head_bg_height"
+	    android:background="@color/my_course_bg" >
+	    <com.runrunfast.homegym.widget.CircleMaskImageView
+	        android:id="@+id/personal_head_img"
+	        android:layout_width="@dimen/personal_headimg_size"
+	        android:layout_height="@dimen/personal_headimg_size"
+	        android:layout_marginLeft="@dimen/personal_headimg_margin"
+	        android:layout_centerVertical="true"
+	        android:background="@drawable/head_round_bg" />
+	    <TextView
+            android:id="@+id/add_headimg_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/personal_headimg_margin"
+            android:layout_alignParentRight="true"
+            android:text="@string/change_headimg"
+            android:textColor="@color/bottom_text_enable_color"
+            android:textSize="@dimen/impr_add_headimg_text_size" />
+    </RelativeLayout>
+    
+    <TextView 
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/personal_base_info_height"
+        android:text="@string/base_info"
+        android:textColor="@color/about_version_text_color"
+        android:textSize="@dimen/personal_base_info_text"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="@dimen/personal_headimg_margin"/>
+    
+    <RelativeLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="@dimen/personal_decrip_height"
+	    android:background="@color/login_num_bg" >
+        <ImageView 
+            android:id="@+id/nick_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/login_item_img_margin"
+            android:background="@drawable/infor_name"/>
+	    
+        <TextView
+            android:id="@+id/personal_nick_decrip_text"
+            android:layout_toRightOf="@id/nick_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/personal_decrip_text_margin_left"
+            android:text="@string/nick" />
+        
+        <TextView
+            android:id="@+id/personal_nick_text"
+            android:layout_toRightOf="@id/personal_nick_decrip_text"
+            android:layout_marginLeft="@dimen/personal_text_margin_left"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/impr_info_text_size"
+            android:textColor="@color/black"
+            android:background="@color/transparent" />
+	</RelativeLayout>
+    
+    <View 
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/divider_bt"/>
+    
+    <RelativeLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="@dimen/personal_decrip_height"
+	    android:background="@color/login_num_bg" >
+        <ImageView 
+            android:id="@+id/sex_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/login_item_img_margin"
+            android:background="@drawable/infor_sex"/>
+	    
+        <TextView
+            android:id="@+id/personal_sex_decrip_text"
+            android:layout_toRightOf="@id/sex_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/personal_decrip_text_margin_left"
+            android:text="@string/sex" />
+        
+        <TextView
+            android:id="@+id/personal_sex_text"
+            android:layout_toRightOf="@id/personal_sex_decrip_text"
+            android:layout_marginLeft="@dimen/personal_text_margin_left"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/impr_info_text_size"
+            android:textColor="@color/black"
+            android:background="@color/transparent" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/my_course_padding_left_right"
+            android:background="@drawable/me_into" />
+	</RelativeLayout>
+    <View 
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/divider_bt"/>
+    
+    <RelativeLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="@dimen/personal_decrip_height"
+	    android:background="@color/login_num_bg" >
+        <ImageView 
+            android:id="@+id/birth_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/login_item_img_margin"
+            android:background="@drawable/infor_day"/>
+	    
+        <TextView
+            android:id="@+id/personal_birth_decrip_text"
+            android:layout_toRightOf="@id/birth_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/personal_decrip_text_margin_left"
+            android:text="@string/birth" />
+        
+        <TextView
+            android:id="@+id/personal_birth_text"
+            android:layout_toRightOf="@id/personal_birth_decrip_text"
+            android:layout_marginLeft="@dimen/personal_text_margin_left"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/impr_info_text_size"
+            android:textColor="@color/black"
+            android:background="@color/transparent" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/my_course_padding_left_right"
+            android:background="@drawable/me_into" />
+	</RelativeLayout>
+    <View 
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/divider_bt"/>
+    
+    <RelativeLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="@dimen/personal_decrip_height"
+	    android:background="@color/login_num_bg" >
+        <ImageView 
+            android:id="@+id/city_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/login_item_img_margin"
+            android:background="@drawable/infor_sex"/>
+	    
+        <TextView
+            android:id="@+id/personal_city_decrip_text"
+            android:layout_toRightOf="@id/city_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/personal_decrip_text_margin_left"
+            android:text="@string/city" />
+        
+        <TextView
+            android:id="@+id/personal_city_text"
+            android:layout_toRightOf="@id/personal_city_decrip_text"
+            android:layout_marginLeft="@dimen/personal_text_margin_left"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/impr_info_text_size"
+            android:textColor="@color/black"
+            android:background="@color/transparent" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/my_course_padding_left_right"
+            android:background="@drawable/me_into" />
+	</RelativeLayout>
+    <View 
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/divider_bt"/>
+    <TextView 
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/personal_base_info_height"
+        android:text="@string/health_index"
+        android:textColor="@color/about_version_text_color"
+        android:textSize="@dimen/personal_base_info_text"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="@dimen/personal_headimg_margin"/>
+    
+    <RelativeLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="@dimen/personal_decrip_height"
+	    android:background="@color/login_num_bg" >
+        <ImageView 
+            android:id="@+id/height_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/login_item_img_margin"
+            android:background="@drawable/infor_height"/>
+	    
+        <TextView
+            android:id="@+id/personal_height_decrip_text"
+            android:layout_toRightOf="@id/height_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/personal_decrip_text_margin_left"
+            android:text="@string/height" />
+        
+        <TextView
+            android:id="@+id/personal_height_text"
+            android:layout_toRightOf="@id/personal_height_decrip_text"
+            android:layout_marginLeft="@dimen/personal_text_margin_left"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/impr_info_text_size"
+            android:textColor="@color/black"
+            android:background="@color/transparent" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/my_course_padding_left_right"
+            android:background="@drawable/me_into" />
+	</RelativeLayout>
+    <View 
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/divider_bt"/>
+    <RelativeLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="@dimen/personal_decrip_height"
+	    android:background="@color/login_num_bg" >
+        <ImageView 
+            android:id="@+id/weight_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/login_item_img_margin"
+            android:background="@drawable/infor_weight"/>
+	    
+        <TextView
+            android:id="@+id/personal_weight_decrip_text"
+            android:layout_toRightOf="@id/weight_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/personal_decrip_text_margin_left"
+            android:text="@string/weight" />
+        
+        <TextView
+            android:id="@+id/personal_weight_text"
+            android:layout_toRightOf="@id/personal_weight_decrip_text"
+            android:layout_marginLeft="@dimen/personal_text_margin_left"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/impr_info_text_size"
+            android:textColor="@color/black"
+            android:background="@color/transparent" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/my_course_padding_left_right"
+            android:background="@drawable/me_into" />
+	</RelativeLayout>
+    <View 
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/divider_bt"/>
+    <RelativeLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="@dimen/personal_decrip_height"
+	    android:background="@color/login_num_bg" >
+        <ImageView 
+            android:id="@+id/bmi_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/login_item_img_margin"
+            android:background="@drawable/infor_bmi"/>
+	    
+        <TextView
+            android:id="@+id/personal_bmi_descrip_text"
+            android:layout_toRightOf="@id/bmi_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/personal_decrip_text_margin_left"
+            android:text="@string/sex" />
+        
+        <TextView
+            android:id="@+id/personal_bmi_text"
+            android:layout_toRightOf="@id/personal_bmi_descrip_text"
+            android:layout_marginLeft="@dimen/personal_text_margin_left"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/impr_info_text_size"
+            android:textColor="@color/black"
+            android:background="@color/transparent" />
+        <TextView
+            android:id="@+id/personal_bmi_context_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/personal_headimg_margin"
+            android:text="正常"
+            android:textColor="@color/feedback_send_text_color"
+            android:textSize="@dimen/impr_info_text_size" />
+	</RelativeLayout>
+    <View 
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/divider_bt"/>
+    
+</LinearLayout>

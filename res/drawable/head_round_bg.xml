@@ -4,6 +4,4 @@
     <!-- 填充颜色 -->
     <solid android:color="@color/impr_default_headimg_bg"></solid>
 
-    
-    
 </shape>

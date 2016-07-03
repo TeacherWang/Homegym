@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black_30_transparent" >
+
+    <LinearLayout
+        android:id="@+id/ll_popup"
+        android:layout_width="@dimen/popwindow_width"
+        android:layout_height="@dimen/popwindow_height"
+        android:layout_centerInParent="true"
+        android:background="@drawable/popwindows_bg_round_corner_rect"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/popwindow_head_height" >
+
+            <TextView
+                android:id="@+id/popupwindow_menu_title_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/popwindow_head_margin"
+                android:textColor="@color/about_version_text_color"
+                android:textSize="@dimen/popwindow_head_text_size" />
+
+            <TextView
+                android:id="@+id/popupwindow_menu_confirm_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/popwindow_head_margin"
+                android:text="@string/confirm"
+                android:textColor="@color/feedback_send_text_color"
+                android:textSize="@dimen/popwindow_head_text_size" />
+        </RelativeLayout>
+
+        <View 
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:layout_marginLeft="@dimen/popwindow_head_margin"
+            android:layout_marginRight="@dimen/popwindow_head_margin"
+            android:background="@color/account_divider_color"/>
+        
+        <RelativeLayout
+            android:id="@+id/popupwindow_content"
+            android:layout_width="@dimen/popwindow_content_width"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal" >
+		
+        </RelativeLayout>
+    </LinearLayout>
+
+</RelativeLayout>

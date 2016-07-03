@@ -186,6 +186,7 @@
 	    android:background="@color/account_divider_color" />
     
     <RelativeLayout
+        android:id="@+id/me_personal_info_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/account_item_height"
         android:background="@color/account_item_bg" >

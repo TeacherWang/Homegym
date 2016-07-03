@@ -20,6 +20,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.runrunfast.homegym.R;
+import com.runrunfast.homegym.account.AccountMgr;
 import com.runrunfast.homegym.home.HomeActivity;
 
 public class StartActivity extends Activity{
