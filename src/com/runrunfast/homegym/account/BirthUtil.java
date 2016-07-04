@@ -29,15 +29,6 @@ public class BirthUtil {
 		return instance;
 	}
 	
-	public interface IBirthListener{
-		void onMonthList(List<String> monthList);
-		void onDayList(List<String> dayList);
-	}
-	
-	public void setOnIBirthListener(IBirthListener iBirthListener){
-		this.mIBirthListener = iBirthListener;
-	}
-	
 	public int getYearPosition(String strYear){
 		int year = Integer.parseInt(strYear);
 		return 70 - Calendar.getInstance().get(Calendar.YEAR) + year;
@@ -101,10 +92,6 @@ public class BirthUtil {
 		
 		Log.i(TAG, "getDayList, year = " + year + ", month = " + month + ", day = " + day);
 		
-		cp_year = year;
-		// 月
-		cp_month = month;
-		// 日
 		if (list_big.contains(String.valueOf(month))) {
 			return AccountMgr.getInstance().getDay31List();
 		} else if (list_little.contains(String.valueOf(month))) {

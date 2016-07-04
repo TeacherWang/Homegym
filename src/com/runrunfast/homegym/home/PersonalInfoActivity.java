@@ -1,17 +1,5 @@
 package com.runrunfast.homegym.home;
 
-import com.runrunfast.homegym.R;
-import com.runrunfast.homegym.account.AccountMgr;
-import com.runrunfast.homegym.account.BirthUtil;
-import com.runrunfast.homegym.account.BirthUtil.IBirthListener;
-import com.runrunfast.homegym.utils.DateUtil;
-import com.runrunfast.homegym.widget.PopupWindows;
-import com.runrunfast.homegym.widget.WheelView;
-import com.runrunfast.homegym.widget.WheelView.OnWheelViewListener;
-
-import java.util.List;
-
-import android.R.integer;
 import android.app.Activity;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -21,9 +9,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.RelativeLayout;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.runrunfast.homegym.R;
+import com.runrunfast.homegym.account.AccountMgr;
+import com.runrunfast.homegym.account.BirthUtil;
+import com.runrunfast.homegym.utils.DateUtil;
+import com.runrunfast.homegym.widget.PopupWindows;
+import com.runrunfast.homegym.widget.WheelView;
+import com.runrunfast.homegym.widget.WheelView.OnWheelViewListener;
+
+import java.util.List;
 
 public class PersonalInfoActivity extends Activity implements OnClickListener{
 	private final String TAG = "PersonalInfoActivity";
@@ -69,8 +67,6 @@ public class PersonalInfoActivity extends Activity implements OnClickListener{
 	private int mMonthPosition;
 	private int mDayPosition;
 	
-	private IBirthListener mIBirthListener;
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -91,26 +87,8 @@ public class PersonalInfoActivity extends Activity implements OnClickListener{
 		mBirthday = DateUtil.getCurrentDate();
 		
 		getBirthdayMonthAndDay();
-		
-		initListener();
 	}
 	
-	private void initListener() {
-		mIBirthListener = new IBirthListener() {
-			
-			@Override
-			public void onMonthList(List<String> monthList) {
-				setBirthMonthWheel(monthList, 0);
-			}
-			
-			@Override
-			public void onDayList(List<String> dayList) {
-				setBirthDayWheel(dayList, 0);
-			}
-		};
-		BirthUtil.getInstance().setOnIBirthListener(mIBirthListener);
-	}
-
 	private void getBirthdayMonthAndDay(){
 		mBirthdayYear = BirthUtil.getInstance().getBirthYear(mBirthday);
 		mBirthdayMonth = BirthUtil.getInstance().getBirthMonth(mBirthday);
