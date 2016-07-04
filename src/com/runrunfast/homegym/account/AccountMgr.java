@@ -1,8 +1,6 @@
 package com.runrunfast.homegym.account;
 
-import java.util.Arrays;
-import java.util.List;
-
+import android.R.integer;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -11,7 +9,6 @@ import android.util.Log;
 
 import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.start.ConstLogin;
-import com.runrunfast.homegym.utils.Const;
 import com.runrunfast.homegym.utils.Globle;
 import com.runrunfast.homegym.utils.PrefUtils;
 
@@ -20,6 +17,11 @@ import org.json.JSONObject;
 import org.xutils.x;
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.List;
 
 public class AccountMgr {
 	private final String TAG = "AccountMgr";
@@ -111,6 +113,39 @@ public class AccountMgr {
 	
 	public List<String> getSexList(){
 		return Arrays.asList(mResources.getStringArray(R.array.sex));
+	}
+	
+	public List<String> getYearList(){
+		List<String> yearList = new ArrayList<String>();
+		
+		int startYear = Calendar.getInstance().get(Calendar.YEAR) - 70;
+		int endYear = Calendar.getInstance().get(Calendar.YEAR);
+		
+		for(int i=0; i<71; i++){
+			yearList.add(String.valueOf(startYear + i));
+		}
+		
+		return yearList;
+	}
+	
+	public List<String> getMonthList(){
+		return Arrays.asList(mResources.getStringArray(R.array.month));
+	}
+	
+	public List<String> getDay31List(){
+		return Arrays.asList(mResources.getStringArray(R.array.day_31));
+	}
+	
+	public List<String> getDay30List(){
+		return Arrays.asList(mResources.getStringArray(R.array.day_30));
+	}
+	
+	public List<String> getDay29List(){
+		return Arrays.asList(mResources.getStringArray(R.array.day_29));
+	}
+	
+	public List<String> getDay28List(){
+		return Arrays.asList(mResources.getStringArray(R.array.day_28));
 	}
 	
 	/**

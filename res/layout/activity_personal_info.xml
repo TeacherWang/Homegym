@@ -323,7 +323,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/personal_decrip_text_margin_left"
-            android:text="@string/sex" />
+            android:text="@string/bmi" />
         
         <TextView
             android:id="@+id/personal_bmi_text"

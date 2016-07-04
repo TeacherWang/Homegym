@@ -146,6 +146,9 @@ public class LoginActivity extends Activity implements OnClickListener, TextWatc
 
 	private void handleClickLogin() {
 		Log.d(TAG, "handleClickLogin");
+		// TODO 测试
+		handleLoginSuc();
+		// TODO 测试
 		
 		mUsername = etPhoneNume.getText().toString();
 		String pwd = etPwd.getText().toString();
@@ -154,9 +157,9 @@ public class LoginActivity extends Activity implements OnClickListener, TextWatc
 			return;
 		}
 		
-		AccountMgr.getInstance().login(mUsername, pwd);
-		
-		showDialog();
+//		AccountMgr.getInstance().login(mUsername, pwd);
+//		
+//		showDialog();
 	}
 
 	private void jumpToHomeActivity() {
@@ -194,7 +197,9 @@ public class LoginActivity extends Activity implements OnClickListener, TextWatc
 	}
 	
 	private void dismissDialog(){
-		dialog.dismiss();
+		if(dialog != null && dialog.isShowing()){
+			dialog.dismiss();
+		}
 	}
 	
 	@Override

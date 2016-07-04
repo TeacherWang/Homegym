@@ -98,6 +98,9 @@ public class WheelView extends ScrollView {
 
     private void init(Context context) {
         this.context = context;
+        
+        setVerticalFadingEdgeEnabled(false);
+        setOverScrollMode(View.OVER_SCROLL_NEVER);
 
 //        scrollView = ((ScrollView)this.getParent());
 //        Log.d(TAG, "scrollview: " + scrollView);
@@ -154,8 +157,6 @@ public class WheelView extends ScrollView {
                 }
             }
         };
-
-
     }
 
     int initialY;
@@ -172,6 +173,8 @@ public class WheelView extends ScrollView {
     private void initData() {
         displayItemCount = offset * 2 + 1;
 
+        views.removeAllViews();
+        
         for (String item : items) {
             views.addView(createView(item));
         }
@@ -180,12 +183,23 @@ public class WheelView extends ScrollView {
     }
 
     int itemHeight = 0;
-
+    int textSize = 24;
+    
+    /**
+      * @Method: setTextSize
+      * @Description: 设置内容字体大小
+      * @param sizeSp	
+      * 返回类型：void 
+      */
+    public void setTextSize(int sizeSp){
+    	textSize = sizeSp;
+    }
+    
     private TextView createView(String item) {
         TextView tv = new TextView(context);
         tv.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         tv.setSingleLine(true);
-        tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24);
+        tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, textSize);
         tv.setText(item);
         tv.setGravity(Gravity.CENTER);
         int padding = dip2px(8);
