@@ -35,6 +35,9 @@
     <string name="weight">体重</string>
     <string name="bmi">BMI</string>
     <string name="health_index">健康指数</string>
+    <string name="select_img">选择照片</string>
+    <string name="camera">相机</string>
+    <string name="album">相册</string>
     
     <string name="phone_num_empty">手机号码为空</string>
     <string name="phone_num_err">手机号码有误</string>

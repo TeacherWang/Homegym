@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.runrunfast.homegym.R;
+import com.runrunfast.homegym.account.AccountMgr;
 import com.runrunfast.homegym.home.AboutActivity;
 import com.runrunfast.homegym.home.FeedbackActivity;
 import com.runrunfast.homegym.home.PersonalInfoActivity;
@@ -99,7 +100,7 @@ public class MeFragment extends Fragment implements OnClickListener{
 		if(resultCode == DialogActivity.RSP_CONFIRM){
 			Log.d(TAG, "onActivityResult, confirm resultCode = " + resultCode);
 			// TODO 退出帐号的操作
-			
+			AccountMgr.getInstance().logout(getActivity());
 			startActivity(new Intent(getActivity(), StartActivity.class));
 			getActivity().finish();
 		}
