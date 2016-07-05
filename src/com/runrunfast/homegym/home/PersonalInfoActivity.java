@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.account.AccountMgr;
-import com.runrunfast.homegym.account.BirthUtil;
+import com.runrunfast.homegym.account.DataTransferUtil;
 import com.runrunfast.homegym.utils.DateUtil;
 import com.runrunfast.homegym.widget.PopupWindows;
 import com.runrunfast.homegym.widget.WheelView;
@@ -90,13 +90,13 @@ public class PersonalInfoActivity extends Activity implements OnClickListener{
 	}
 	
 	private void getBirthdayMonthAndDay(){
-		mBirthdayYear = BirthUtil.getInstance().getBirthYear(mBirthday);
-		mBirthdayMonth = BirthUtil.getInstance().getBirthMonth(mBirthday);
-		mBirthdayDay = BirthUtil.getInstance().getBirthDay(mBirthday);
+		mBirthdayYear = DataTransferUtil.getInstance().getBirthYear(mBirthday);
+		mBirthdayMonth = DataTransferUtil.getInstance().getBirthMonth(mBirthday);
+		mBirthdayDay = DataTransferUtil.getInstance().getBirthDay(mBirthday);
 		
-		mYearPosition = BirthUtil.getInstance().getYearPosition(mBirthdayYear);
-		mMonthPosition = BirthUtil.getInstance().getMonthPosition(mBirthdayMonth);
-		mDayPosition = BirthUtil.getInstance().getDayPosition(mBirthdayDay);
+		mYearPosition = DataTransferUtil.getInstance().getYearPosition(mBirthdayYear);
+		mMonthPosition = DataTransferUtil.getInstance().getMonthPosition(mBirthdayMonth);
+		mDayPosition = DataTransferUtil.getInstance().getDayPosition(mBirthdayDay);
 	}
 	
 	private void initView() {
@@ -276,9 +276,9 @@ public class PersonalInfoActivity extends Activity implements OnClickListener{
 				
 				mBirthday = mBirthdayYear + "-" + mBirthdayMonth + "-" + String.format("%02d", Integer.parseInt(mBirthdayDay));
 				
-				Log.d(TAG, "onSelected, day list = " + BirthUtil.getInstance().getDayList(mBirthday));
+				Log.d(TAG, "onSelected, day list = " + DataTransferUtil.getInstance().getDayList(mBirthday));
 				
-				setBirthDayWheel(BirthUtil.getInstance().getDayList(mBirthday), 0);
+				setBirthDayWheel(DataTransferUtil.getInstance().getDayList(mBirthday), 0);
 			}
 		});
 		wheelThreeWheelView3.setOnWheelViewListener(new OnWheelViewListener(){
@@ -296,7 +296,7 @@ public class PersonalInfoActivity extends Activity implements OnClickListener{
 		
 		setBirthMonthWheel(AccountMgr.getInstance().getMonthList(), mMonthPosition);
 		
-		setBirthDayWheel(BirthUtil.getInstance().getDayList(mBirthday), mDayPosition);
+		setBirthDayWheel(DataTransferUtil.getInstance().getDayList(mBirthday), mDayPosition);
 		
 		popWindows = new PopupWindows(this, selectContainer);
 		popWindows.setLayout(popView);

@@ -1,6 +1,5 @@
 package com.runrunfast.homegym.account;
 
-import android.R.integer;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -30,6 +29,8 @@ public class AccountMgr {
 	private volatile static AccountMgr instance;
 	
 	private Resources mResources;
+	
+	private UserInfo mUserInfo;
 	
 	private IIdentifyCodeListener iIdentifyCodeListener;
 	private IRegisterListener iRegisterListener;
@@ -101,6 +102,34 @@ public class AccountMgr {
 	
 	private AccountMgr(){
 		mResources = Globle.gApplicationContext.getResources();
+		loadUserInfo();
+	}
+	
+	private void loadUserInfo(){
+		String accountId = PrefUtils.getAccount(Globle.gApplicationContext);
+		if(TextUtils.isEmpty(accountId)){
+			Log.d(TAG, "loadUserInfo, accountId is empty");
+			mUserInfo = null;
+			return;
+		}
+		
+		mUserInfo = new UserInfo();
+		
+		String strNickName = PrefUtils.getNickname(Globle.gApplicationContext);
+		String strSex = PrefUtils.getSex(Globle.gApplicationContext);
+		String strBirthday = PrefUtils.getBirthday(Globle.gApplicationContext);
+		String strWeight = PrefUtils.getWeight(Globle.gApplicationContext);
+		String strHeight = PrefUtils.getHeight(Globle.gApplicationContext);
+		
+		Log.i(TAG, "loadUserInfo, nickname = " + strNickName + ", sex = " + strSex + 
+				   ", birthday = " + strBirthday + ", weight = " + strWeight + ", height = " + strHeight);
+		
+		mUserInfo.strAccountId = accountId;
+		mUserInfo.strNickName = strNickName;
+		mUserInfo.strSex = strSex;
+		mUserInfo.strBirthday = strBirthday;
+		mUserInfo.strWeight = strWeight;
+		mUserInfo.strHeight = strHeight;
 	}
 	
 	public List<String> getHeightList(){
@@ -173,7 +202,8 @@ public class AccountMgr {
 
 			@Override
 			public void onError(Throwable throwable, boolean isOnCallback) {
-				Log.e(TAG, "getVerifyCode onError, reason is : " + throwable.getMessage());
+				Log.e(TAG, "getVerifyCode onError, reason is : " + throwable);
+				
 				notifyGetIdentifyCodeFail(mResources.getString(R.string.get_verify_code_fail));
 			}
 			
@@ -243,6 +273,8 @@ public class AccountMgr {
 			}
 			@Override
 			public void onError(Throwable throwable, boolean arg1) {
+				Log.e(TAG, "register, onError, throwable is : " + throwable);
+				
 				notifyRegisterFail(mResources.getString(R.string.net_error));
 			}
 			@Override
@@ -310,6 +342,8 @@ public class AccountMgr {
 			}
 			@Override
 			public void onError(Throwable throwable, boolean arg1) {
+				Log.e(TAG, "login, onError, throwable is : " + throwable);
+				
 				notifyLoginFail(mResources.getString(R.string.net_error));
 			}
 			@Override
@@ -338,6 +372,9 @@ public class AccountMgr {
 				
 			case ConstLogin.RET_USER_NAME_EMPTY:
 				notifyLoginFail(mResources.getString(R.string.this_account_not_exist));
+				break;
+			default:
+				notifyLoginFail(mResources.getString(R.string.login_fail));
 				break;
 			}
 		} catch (JSONException e) {
@@ -445,6 +482,10 @@ public class AccountMgr {
 		Intent intent = new Intent();
 		intent.setAction(ConstLogin.ACTION_LOGIN_SUC);
 		context.sendBroadcast(intent);
+	}
+	
+	public void logout(Context context){
+		setLoginSuc(context, false);
 	}
 	
 	public boolean checkLoginLegal(){

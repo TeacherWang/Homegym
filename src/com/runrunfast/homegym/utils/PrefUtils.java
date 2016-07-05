@@ -50,6 +50,11 @@ public class PrefUtils {
 	private static final String SP_ACCOUNT 		= "sp_account";
 	private static final String KEY_USER_NAME	= "key_user_name";
 	private static final String KEY_LOGIN_SUC	= "key_login_suc";
+	private static final String KEY_NICKNAME 	= "key_nuckname";
+	private static final String KEY_SEX			= "key_sex";
+	private static final String KEY_BIRTHDAY	= "key_birthday";
+	private static final String KEY_WEIGHT		= "key_weight";
+	private static final String KEY_HEIGHT		= "key_height";
 	// 保存注册成功的账号
 	public static void setAccount(Context context, String userName){
 		SharedPreferences preferences = context.getSharedPreferences(SP_ACCOUNT, Context.MODE_PRIVATE);
@@ -65,27 +70,81 @@ public class PrefUtils {
 	
 	public static void clearAccount(Context context){
 		SharedPreferences preferences = context.getSharedPreferences(SP_ACCOUNT, Context.MODE_PRIVATE);
-		
 		Editor editor = preferences.edit();
-		
 		editor.clear();
-		
 		editor.commit();
 	}
 	
 	public static void setLoginSuc(Context context, boolean suc){
 		SharedPreferences preferences = context.getSharedPreferences(SP_ACCOUNT, Context.MODE_PRIVATE);
-		
 		Editor editor = preferences.edit();
-		
 		editor.putBoolean(KEY_LOGIN_SUC, suc);
-		
 		editor.commit();
 	}
 	
 	public static boolean getLoginSuc(Context context){
 		SharedPreferences preferences = context.getSharedPreferences(SP_ACCOUNT, Context.MODE_PRIVATE);
 		return preferences.getBoolean(KEY_LOGIN_SUC, false);
+	}
+	
+	public static void setNickname(Context context, String nickname){
+		SharedPreferences preferences = context.getSharedPreferences(SP_ACCOUNT, Context.MODE_PRIVATE);
+		Editor editor = preferences.edit();
+		editor.putString(KEY_NICKNAME, nickname);
+		editor.commit();
+	}
+	
+	public static String getNickname(Context context){
+		SharedPreferences preferences = context.getSharedPreferences(SP_ACCOUNT, Context.MODE_PRIVATE);
+		return preferences.getString(KEY_NICKNAME, "");
+	}
+	
+	public static void setSex(Context context, String sex){
+		SharedPreferences preferences = context.getSharedPreferences(SP_ACCOUNT, Context.MODE_PRIVATE);
+		Editor editor = preferences.edit();
+		editor.putString(KEY_SEX, sex);
+		editor.commit();
+	}
+	
+	public static String getSex(Context context){
+		SharedPreferences preferences = context.getSharedPreferences(SP_ACCOUNT, Context.MODE_PRIVATE);
+		return preferences.getString(KEY_SEX, "");
+	}
+	
+	public static void setBirthday(Context context, String birthday){
+		SharedPreferences preferences = context.getSharedPreferences(SP_ACCOUNT, Context.MODE_PRIVATE);
+		Editor editor = preferences.edit();
+		editor.putString(KEY_BIRTHDAY, birthday);
+		editor.commit();
+	}
+	
+	public static String getBirthday(Context context){
+		SharedPreferences preferences = context.getSharedPreferences(SP_ACCOUNT, Context.MODE_PRIVATE);
+		return preferences.getString(KEY_BIRTHDAY, "");
+	}
+	
+	public static void setWeight(Context context, String weight){
+		SharedPreferences preferences = context.getSharedPreferences(SP_ACCOUNT, Context.MODE_PRIVATE);
+		Editor editor = preferences.edit();
+		editor.putString(KEY_WEIGHT, weight);
+		editor.commit();
+	}
+	
+	public static String getWeight(Context context){
+		SharedPreferences preferences = context.getSharedPreferences(SP_ACCOUNT, Context.MODE_PRIVATE);
+		return preferences.getString(KEY_WEIGHT, "");
+	}
+	
+	public static void setHeight(Context context, String height){
+		SharedPreferences preferences = context.getSharedPreferences(SP_ACCOUNT, Context.MODE_PRIVATE);
+		Editor editor = preferences.edit();
+		editor.putString(KEY_HEIGHT, height);
+		editor.commit();
+	}
+	
+	public static String getHeight(Context context){
+		SharedPreferences preferences = context.getSharedPreferences(SP_ACCOUNT, Context.MODE_PRIVATE);
+		return preferences.getString(KEY_HEIGHT, "");
 	}
 	
 }

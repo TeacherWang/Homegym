@@ -1,5 +1,6 @@
 package com.runrunfast.homegym.account;
 
+import android.R.integer;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -7,9 +8,9 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
-public class BirthUtil {
-	private final String TAG = "BirthUtil";
-	private static volatile BirthUtil instance;
+public class DataTransferUtil {
+	private final String TAG = "DataTransferUtil";
+	private static volatile DataTransferUtil instance;
 	private static Object lockObject = new Object();
 	
 	private static int START_YEAR, END_YEAR;// 起始年 结束年
@@ -18,11 +19,11 @@ public class BirthUtil {
 	private static final List<String> list_big = Arrays.asList(months_big);
 	private static final List<String> list_little = Arrays.asList(months_little);
 	
-	public static BirthUtil getInstance(){
+	public static DataTransferUtil getInstance(){
 		if(instance == null){
 			synchronized (lockObject) {
 				if(instance == null){
-					instance = new BirthUtil();
+					instance = new DataTransferUtil();
 				}
 			}
 		}
@@ -105,4 +106,27 @@ public class BirthUtil {
 			}
 		}
 	}
+	
+	/**
+	  * @Method: getWeightPosition
+	  * @Description: 获取体重选择器的位置
+	  * @param strWeight
+	  * @return	
+	  * 返回类型：int 
+	  */
+	public int getWeightPosition(String strWeight){
+		return (Integer.parseInt(strWeight) - 45);
+	}
+	
+	/**
+	  * @Method: getHeightPosition
+	  * @Description: 获取身高选择器的位置
+	  * @param strHeight
+	  * @return	
+	  * 返回类型：int 
+	  */
+	public int getHeightPosition(String strHeight){
+		return (Integer.parseInt(strHeight) - 150);
+	}
+	
 }
