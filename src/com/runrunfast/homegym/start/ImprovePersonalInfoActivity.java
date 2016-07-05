@@ -234,11 +234,10 @@ public class ImprovePersonalInfoActivity extends Activity implements OnClickList
 			if (null != data) {
 				bmFromCamera = data.getParcelableExtra("data");
 				
-				setUserInfo();
-				BitmapUtils.saveBitmapToSDcard(bmFromCamera);
-				UserInfoSaveAsyncTask task = new UserInfoSaveAsyncTask(
-						bmFromCamera, this, "正在修改用户信息，请耐心等候...");
-				task.execute();
+				BitmapUtils.saveBitmapToSDcard(bmFromCamera, UserInfo.IMAGE_FILE_DIR, UserInfo.IMG_FILE_NAME);
+//				UserInfoSaveAsyncTask task = new UserInfoSaveAsyncTask(
+//						bmFromCamera, this, "正在修改用户信息，请耐心等候...");
+//				task.execute();
 			}
 		}
 	}

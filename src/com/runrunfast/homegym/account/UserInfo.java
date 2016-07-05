@@ -11,7 +11,8 @@ public class UserInfo {
 	
 	public static final String IMAGE_FILE_DIR = SDCARD_ROOT + File.separator
 			+ "homegym" + File.separator + MediaStore.MEDIA_IGNORE_FILENAME + File.separator;
-	public static final String IMAGE_FILE_LOCATION = IMAGE_FILE_DIR + "headimg.png";
+	public static final String IMG_FILE_NAME = "headimg.png";
+	public static final String IMAGE_FILE_LOCATION = IMAGE_FILE_DIR + IMG_FILE_NAME;
 	
 	private static final String IMAGE_FILE_LOCATION_TEMP = SDCARD_ROOT + File.separator
 			+ "homegym" + File.separator + MediaStore.MEDIA_IGNORE_FILENAME + File.separator + "temp_headimg.png";
