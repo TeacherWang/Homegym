@@ -2,6 +2,8 @@ package com.runrunfast.homegym.home.fragments;
 
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,15 +13,18 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.account.AccountMgr;
+import com.runrunfast.homegym.account.UserInfo;
 import com.runrunfast.homegym.home.AboutActivity;
 import com.runrunfast.homegym.home.FeedbackActivity;
 import com.runrunfast.homegym.home.PersonalInfoActivity;
-import com.runrunfast.homegym.start.ImprovePersonalInfoActivity;
 import com.runrunfast.homegym.start.StartActivity;
 import com.runrunfast.homegym.utils.Const;
+import com.runrunfast.homegym.widget.CircleMaskImageView;
 import com.runrunfast.homegym.widget.DialogActivity;
 
 public class MeFragment extends Fragment implements OnClickListener{
@@ -30,6 +35,12 @@ public class MeFragment extends Fragment implements OnClickListener{
 	private Resources mResources;
 	
 	private Button btnExit;
+	
+	private UserInfo mUserInfo;
+	
+	private CircleMaskImageView headimgView;
+	private TextView tvNickname;
+	private ImageView ivSex;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater,
@@ -40,9 +51,26 @@ public class MeFragment extends Fragment implements OnClickListener{
 		
 		initView();
 		
+		initData();
+		
 		return rootView;
 	}
 	
+	private void initData() {
+		mUserInfo = AccountMgr.getInstance().mUserInfo;
+		Bitmap bitmap = BitmapFactory.decodeFile(UserInfo.IMAGE_FILE_LOCATION);
+		if(bitmap != null){
+			headimgView.setImageBitmap(bitmap);
+		}
+		
+		tvNickname.setText(mUserInfo.strNickName);
+		if(mUserInfo.strSex.equals(UserInfo.SEX_MAN)){
+			ivSex.setBackgroundResource(R.drawable.sex_men);
+		}else{
+			ivSex.setBackgroundResource(R.drawable.sex_women);
+		}
+	}
+
 	private void initView() {
 		btnExit = (Button)rootView.findViewById(R.id.btn_exit);
 		btnExit.setOnClickListener(this);
@@ -55,6 +83,11 @@ public class MeFragment extends Fragment implements OnClickListener{
 		
 		personalInfoView = (View)rootView.findViewById(R.id.me_personal_info_layout);
 		personalInfoView.setOnClickListener(this);
+		
+		headimgView = (CircleMaskImageView)rootView.findViewById(R.id.account_head_img);
+		tvNickname = (TextView)rootView.findViewById(R.id.account_name_text);
+		
+		ivSex = (ImageView)rootView.findViewById(R.id.account_sex_img);
 	}
 
 	@Override

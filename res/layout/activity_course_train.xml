@@ -1,0 +1,36 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/home_bg_color" >
+	
+    <include layout="@layout/home_actionbar"
+        android:id="@+id/bt_device_home_actionbar"/>
+    
+    <Button 
+        android:id="@+id/btn_start_train"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/course_start_train_btn_height"
+        android:layout_alignParentBottom="true"
+        android:text="@string/bt_cancel"
+        android:textColor="@color/white"
+        android:textSize="@dimen/bt_cancel_pair_text_size"
+        android:background="@drawable/bt_unbind_round_corner_rect"
+        android:clickable="true"/>
+    
+    <RelativeLayout
+        android:layout_below="@id/bt_device_home_actionbar"
+        android:layout_above="@id/btn_start_train"
+        android:layout_marginTop="@dimen/course_train_margin_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+        
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+            
+        </ListView>
+        
+    </RelativeLayout>
+    
+</RelativeLayout>

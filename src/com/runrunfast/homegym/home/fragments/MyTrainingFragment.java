@@ -12,6 +12,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 public class MyTrainingFragment extends Fragment{
@@ -33,7 +35,22 @@ public class MyTrainingFragment extends Fragment{
 		
 		initData();
 		
+		initListener();
+		
 		return rootView;
+	}
+
+	private void initListener() {
+		mRecommedCourseListView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				CourseInfo courseInfo = mRecommedList.get(position);
+				int courseId = courseInfo.courseId;
+				String courseName = courseInfo.courseName;
+				
+			}
+		});
 	}
 
 	private void initData() {
@@ -50,13 +67,13 @@ public class MyTrainingFragment extends Fragment{
 		CourseInfo courseInfo1 = new CourseInfo();
 		courseInfo1.isMyCourse = false;
 		courseInfo1.isNew = true;
-		courseInfo1.courseDescription = "21天增肌训练";
+		courseInfo1.courseName = "21天增肌训练";
 		mRecommedList.add(courseInfo1);
 		
 		CourseInfo courseInfo2 = new CourseInfo();
 		courseInfo2.isMyCourse = false;
 		courseInfo2.isNew = false;
-		courseInfo2.courseDescription = "腹肌雕刻训练";
+		courseInfo2.courseName = "腹肌雕刻训练";
 		mRecommedList.add(courseInfo2);
 		
 		mRecommedAdapter = new CourseAdapter(getActivity(), mRecommedList);

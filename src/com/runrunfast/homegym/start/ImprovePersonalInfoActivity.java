@@ -10,12 +10,15 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -24,8 +27,11 @@ import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.account.AccountMgr;
 import com.runrunfast.homegym.account.DataTransferUtil;
 import com.runrunfast.homegym.account.UserInfo;
+import com.runrunfast.homegym.home.HomeActivity;
 import com.runrunfast.homegym.utils.BitmapUtils;
 import com.runrunfast.homegym.utils.DateUtil;
+import com.runrunfast.homegym.utils.PrefUtils;
+import com.runrunfast.homegym.widget.CircleMaskImageView;
 import com.runrunfast.homegym.widget.PopupWindows;
 import com.runrunfast.homegym.widget.WheelView;
 import com.runrunfast.homegym.widget.WheelView.OnWheelViewListener;
@@ -47,7 +53,7 @@ public class ImprovePersonalInfoActivity extends Activity implements OnClickList
 	private TextView tvAddHeadimg;
 	private Button btnFinish;
 	
-	private View headImg;
+	private CircleMaskImageView headImg;
 	private EditText etNick;
 	private TextView tvSex, tvBirth, tvWeight, tvHeight;
 	
@@ -71,7 +77,7 @@ public class ImprovePersonalInfoActivity extends Activity implements OnClickList
 	private int mDayPosition;
 	
 	private String strSex;
-	private String mBirthday;
+	private String strBirthday;
 	private String strWeight;
 	private String strHeight;
 	
@@ -90,9 +96,10 @@ public class ImprovePersonalInfoActivity extends Activity implements OnClickList
 	}
 
 	private void initData() {
-		mBirthday = DateUtil.getCurrentDate();
+		strBirthday = DateUtil.getCurrentDate();
 		strWeight = "65";
 		strHeight = "165";
+		strSex = UserInfo.SEX_MAN;
 	}
 
 	private void initView() {
@@ -107,11 +114,10 @@ public class ImprovePersonalInfoActivity extends Activity implements OnClickList
 		btnFinish = (Button)findViewById(R.id.btn_impr_finish);
 		btnFinish.setOnClickListener(this);
 		
-		headImg = (View)findViewById(R.id.impr_personal_head_img);
+		headImg = (CircleMaskImageView)findViewById(R.id.impr_personal_head_img);
 		headImg.setOnClickListener(this);
 		
 		etNick = (EditText)findViewById(R.id.impr_nick_edit);
-		etNick.setOnClickListener(this);
 		
 		tvSex = (TextView)findViewById(R.id.impr_sex_text);
 		tvSex.setOnClickListener(this);
@@ -142,10 +148,6 @@ public class ImprovePersonalInfoActivity extends Activity implements OnClickList
 			
 		case R.id.btn_impr_finish:
 			infoInputFinish();
-			break;
-			
-		case R.id.impr_nick_edit:
-			
 			break;
 			
 		case R.id.impr_sex_text:
@@ -187,7 +189,7 @@ public class ImprovePersonalInfoActivity extends Activity implements OnClickList
 
 			dialog, int which) {
 				Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-				intent.putExtra(MediaStore.EXTRA_OUTPUT, UserInfo.IMAGE_URI);
+				intent.putExtra(MediaStore.EXTRA_OUTPUT, UserInfo.CAMERA_IMG_URI);
 				startActivityForResult(intent, UserInfo.REQ_CAMERA);
 			}
 		});
@@ -203,6 +205,8 @@ public class ImprovePersonalInfoActivity extends Activity implements OnClickList
 		AlertDialog alert = builder.create();
 		alert.show();
 	}
+	
+	
 	
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		ContentResolver resolver = getContentResolver();
@@ -225,7 +229,7 @@ public class ImprovePersonalInfoActivity extends Activity implements OnClickList
 			return;
 		}
 		if (requestCode == UserInfo.REQ_CAMERA) {// 拍照
-			startPhotoZoom(UserInfo.IMAGE_URI);
+			startPhotoZoom(UserInfo.CAMERA_IMG_URI);
 		} else if (requestCode == UserInfo.REQ_ALBUM) {// 相册
 			if (null != data) {
 				startPhotoZoom(data.getData());
@@ -235,6 +239,7 @@ public class ImprovePersonalInfoActivity extends Activity implements OnClickList
 				bmFromCamera = data.getParcelableExtra("data");
 				
 				BitmapUtils.saveBitmapToSDcard(bmFromCamera, UserInfo.IMAGE_FILE_DIR, UserInfo.IMG_FILE_NAME);
+				headImg.setImageBitmap(bmFromCamera);
 //				UserInfoSaveAsyncTask task = new UserInfoSaveAsyncTask(
 //						bmFromCamera, this, "正在修改用户信息，请耐心等候...");
 //				task.execute();
@@ -280,7 +285,7 @@ public class ImprovePersonalInfoActivity extends Activity implements OnClickList
 			break;
 			
 		case INPUT_TYPE_BIRTH:
-			tvBirth.setText(mBirthday);
+			tvBirth.setText(strBirthday);
 			break;
 
 		default:
@@ -291,6 +296,7 @@ public class ImprovePersonalInfoActivity extends Activity implements OnClickList
 	private void showSelectHeight() {
 		inputType = INPUT_TYPE_HEIGHT;
 		selectContainer.removeAllViews();
+		setSelectContainerWidth();
 		wheelOneLayout = (View)LayoutInflater.from(this).inflate(R.layout.wheel_one, null);
 		selectContainer.addView(wheelOneLayout);
 		tvPopTitle.setText(R.string.select_height);
@@ -315,6 +321,7 @@ public class ImprovePersonalInfoActivity extends Activity implements OnClickList
 	private void showSelectWeight() {
 		inputType = INPUT_TYPE_WEIGHT;
 		selectContainer.removeAllViews();
+		setSelectContainerWidth();
 		wheelOneLayout = (View)LayoutInflater.from(this).inflate(R.layout.wheel_one, null);
 		selectContainer.addView(wheelOneLayout);
 		tvPopTitle.setText(R.string.select_weight);
@@ -355,7 +362,7 @@ public class ImprovePersonalInfoActivity extends Activity implements OnClickList
 			public void onSelected(int selectedIndex, String item) {
 				Log.d(TAG, "onSelected, year = " + item);
 				mBirthdayYear = item;
-				mBirthday = mBirthdayYear + "-" + String.format("%02d", Integer.parseInt(mBirthdayMonth)) + "-" + String.format("%02d", Integer.parseInt(mBirthdayDay));
+				strBirthday = mBirthdayYear + "-" + String.format("%02d", Integer.parseInt(mBirthdayMonth)) + "-" + String.format("%02d", Integer.parseInt(mBirthdayDay));
 			}
 		});
 		wheelThreeWheelView2.setOnWheelViewListener(new OnWheelViewListener(){
@@ -367,11 +374,11 @@ public class ImprovePersonalInfoActivity extends Activity implements OnClickList
 				mBirthdayDay = "1";
 				mDayPosition = 0;
 				
-				mBirthday = mBirthdayYear + "-" + String.format("%02d", Integer.parseInt(mBirthdayMonth)) + "-" + String.format("%02d", Integer.parseInt(mBirthdayDay));
+				strBirthday = mBirthdayYear + "-" + String.format("%02d", Integer.parseInt(mBirthdayMonth)) + "-" + String.format("%02d", Integer.parseInt(mBirthdayDay));
 				
-				Log.d(TAG, "onSelected, day list = " + DataTransferUtil.getInstance().getDayList(mBirthday));
+				Log.d(TAG, "onSelected, day list = " + DataTransferUtil.getInstance().getDayList(strBirthday));
 				
-				setBirthDayWheel(DataTransferUtil.getInstance().getDayList(mBirthday), 0);
+				setBirthDayWheel(DataTransferUtil.getInstance().getDayList(strBirthday), 0);
 			}
 		});
 		wheelThreeWheelView3.setOnWheelViewListener(new OnWheelViewListener(){
@@ -379,7 +386,7 @@ public class ImprovePersonalInfoActivity extends Activity implements OnClickList
 			public void onSelected(int selectedIndex, String item) {
 				Log.d(TAG, "onSelected, day = " + item);
 				mBirthdayDay = String.format("%02d", Integer.parseInt(item));
-				mBirthday = mBirthdayYear + "-" + String.format("%02d", Integer.parseInt(mBirthdayMonth)) + "-" + String.format("%02d", Integer.parseInt(mBirthdayDay));
+				strBirthday = mBirthdayYear + "-" + String.format("%02d", Integer.parseInt(mBirthdayMonth)) + "-" + String.format("%02d", Integer.parseInt(mBirthdayDay));
 			}
 		});
 		wheelThreeWheelView1.setTextSize(18);
@@ -389,7 +396,7 @@ public class ImprovePersonalInfoActivity extends Activity implements OnClickList
 		
 		setBirthMonthWheel(AccountMgr.getInstance().getMonthList(), mMonthPosition);
 		
-		setBirthDayWheel(DataTransferUtil.getInstance().getDayList(mBirthday), mDayPosition);
+		setBirthDayWheel(DataTransferUtil.getInstance().getDayList(strBirthday), mDayPosition);
 		
 		popWindows = new PopupWindows(this, selectContainer);
 		popWindows.setLayout(popView);
@@ -411,9 +418,9 @@ public class ImprovePersonalInfoActivity extends Activity implements OnClickList
 	}
 	
 	private void getBirthdayMonthAndDay(){
-		mBirthdayYear = DataTransferUtil.getInstance().getBirthYear(mBirthday);
-		mBirthdayMonth = DataTransferUtil.getInstance().getBirthMonth(mBirthday);
-		mBirthdayDay = DataTransferUtil.getInstance().getBirthDay(mBirthday);
+		mBirthdayYear = DataTransferUtil.getInstance().getBirthYear(strBirthday);
+		mBirthdayMonth = DataTransferUtil.getInstance().getBirthMonth(strBirthday);
+		mBirthdayDay = DataTransferUtil.getInstance().getBirthDay(strBirthday);
 		
 		mYearPosition = DataTransferUtil.getInstance().getYearPosition(mBirthdayYear);
 		mMonthPosition = DataTransferUtil.getInstance().getMonthPosition(mBirthdayMonth);
@@ -424,12 +431,22 @@ public class ImprovePersonalInfoActivity extends Activity implements OnClickList
 		LayoutParams params = (LayoutParams) selectContainer.getLayoutParams();
 		params.height = LayoutParams.MATCH_PARENT;
 		params.width = (int) mResources.getDimension(R.dimen.popwindow_content_width_big);
+		params.gravity = Gravity.CENTER_HORIZONTAL;
+		selectContainer.setLayoutParams(params);
+	}
+	
+	private void setSelectContainerWidth() {
+		LayoutParams params = (LayoutParams) selectContainer.getLayoutParams();
+		params.height = LayoutParams.MATCH_PARENT;
+		params.width = (int) mResources.getDimension(R.dimen.popwindow_content_width);
+		params.gravity = Gravity.CENTER_HORIZONTAL;
 		selectContainer.setLayoutParams(params);
 	}
 	
 	private void showSelectSex() {
 		inputType = INPUT_TYPE_SEX;
 		selectContainer.removeAllViews();
+		setSelectContainerWidth();
 		wheelOneLayout = (View)LayoutInflater.from(this).inflate(R.layout.wheel_one, null);
 		selectContainer.addView(wheelOneLayout);
 		tvPopTitle.setText(R.string.select_weight);
@@ -443,9 +460,8 @@ public class ImprovePersonalInfoActivity extends Activity implements OnClickList
 			}
 		});
 		wheelOneWheelView.setOffset(1);
-		wheelOneWheelView.setSeletion(0);
+		wheelOneWheelView.setSeletion(DataTransferUtil.getInstance().getSexPosition(strSex));
 		wheelOneWheelView.setItems(AccountMgr.getInstance().getSexList());
-		strSex = AccountMgr.getInstance().getSexList().get(0);
 		
 		popWindows = new PopupWindows(this, selectContainer);
 		popWindows.setLayout(popView);
@@ -453,7 +469,23 @@ public class ImprovePersonalInfoActivity extends Activity implements OnClickList
 	}
 
 	private void infoInputFinish() {
+		String nickName = etNick.getText().toString();
+		if(TextUtils.isEmpty(nickName) || TextUtils.isEmpty(strSex) || TextUtils.isEmpty(strBirthday) || TextUtils.isEmpty(strWeight) || TextUtils.isEmpty(strHeight)){
+			Toast.makeText(this, R.string.input_have_empty, Toast.LENGTH_SHORT).show();
+			return;
+		}
 		
+		PrefUtils.setNickname(this, nickName);
+		PrefUtils.setSex(this, strSex);
+		PrefUtils.setBirthday(this, strBirthday);
+		PrefUtils.setWeight(this, strWeight);
+		PrefUtils.setHeight(this, strHeight);
+		
+		AccountMgr.getInstance().loadUserInfo();
+		
+		// 上传网络，回调成功后，再跳转到主界面，现在暂时先跳转到主界面
+		startActivity(new Intent(this, HomeActivity.class));
+		finish();
 	}
 
 	private void getHeadImg() {

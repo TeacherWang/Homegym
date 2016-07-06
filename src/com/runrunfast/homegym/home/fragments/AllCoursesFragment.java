@@ -42,25 +42,25 @@ public class AllCoursesFragment extends Fragment {
 		CourseInfo courseInfo1 = new CourseInfo();
 		courseInfo1.isMyCourse = false;
 		courseInfo1.isNew = true;
-		courseInfo1.courseDescription = "塑性训练";
+		courseInfo1.courseName = "塑性训练";
 		mAllCoursesList.add(courseInfo1);
 		
 		CourseInfo courseInfo2 = new CourseInfo();
 		courseInfo2.isMyCourse = false;
 		courseInfo2.isNew = false;
-		courseInfo2.courseDescription = "21天腹肌雕刻";
+		courseInfo2.courseName = "21天腹肌雕刻";
 		mAllCoursesList.add(courseInfo2);
 		
 		CourseInfo courseInfo3 = new CourseInfo();
 		courseInfo3.isMyCourse = false;
 		courseInfo3.isNew = false;
-		courseInfo3.courseDescription = "S型身材速成";
+		courseInfo3.courseName = "S型身材速成";
 		mAllCoursesList.add(courseInfo3);
 		
 		CourseInfo courseInfo4 = new CourseInfo();
 		courseInfo4.isMyCourse = false;
 		courseInfo4.isNew = false;
-		courseInfo4.courseDescription = "人鱼线训练";
+		courseInfo4.courseName = "人鱼线训练";
 		mAllCoursesList.add(courseInfo4);
 		
 		mAllCoursesAdapter = new CourseAdapter(getActivity(), mAllCoursesList);

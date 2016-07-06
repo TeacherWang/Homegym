@@ -52,6 +52,8 @@ public class CourseAdapter extends BaseAdapter {
 			viewHolder.btnAdd = (Button)convertView.findViewById(R.id.btn_add);
 			viewHolder.courseNewImg = (ImageView)convertView.findViewById(R.id.course_new_img);
 			viewHolder.courseProgressImg = (ImageView)convertView.findViewById(R.id.course_progress_img);
+			viewHolder.tvCourseName = (TextView)convertView.findViewById(R.id.course_name_text);
+			viewHolder.tvEmptyDescript = (TextView)convertView.findViewById(R.id.course_empty_text);
 			viewHolder.tvProgress = (TextView)convertView.findViewById(R.id.course_progress_text);
 			viewHolder.tvCourseQuality = (TextView)convertView.findViewById(R.id.excellent_course_text);
 			
@@ -74,8 +76,11 @@ public class CourseAdapter extends BaseAdapter {
 		if(courseInfo.isNew){
 			viewHolder.courseNewImg.setVisibility(View.VISIBLE);
 		}
+		viewHolder.tvEmptyDescript.setVisibility(View.INVISIBLE);
+		viewHolder.tvCourseName.setVisibility(View.VISIBLE);
 		viewHolder.courseProgressImg.setVisibility(View.INVISIBLE);
 		viewHolder.tvProgress.setVisibility(View.INVISIBLE);
+		viewHolder.tvCourseName.setText(courseInfo.courseName);
 	}
 
 	/**
@@ -88,6 +93,8 @@ public class CourseAdapter extends BaseAdapter {
 			viewHolder.btnAdd.setVisibility(View.VISIBLE);
 			viewHolder.courseNewImg.setVisibility(View.INVISIBLE);
 			viewHolder.courseProgressImg.setVisibility(View.INVISIBLE);
+			viewHolder.tvEmptyDescript.setVisibility(View.VISIBLE);
+			viewHolder.tvCourseName.setVisibility(View.INVISIBLE);
 			viewHolder.tvProgress.setVisibility(View.INVISIBLE);
 			viewHolder.tvCourseQuality.setVisibility(View.INVISIBLE);
 			return;
@@ -96,6 +103,9 @@ public class CourseAdapter extends BaseAdapter {
 		
 		viewHolder.btnAdd.setVisibility(View.INVISIBLE);
 		viewHolder.courseNewImg.setVisibility(View.INVISIBLE);
+		viewHolder.tvEmptyDescript.setVisibility(View.INVISIBLE);
+		viewHolder.tvCourseName.setVisibility(View.VISIBLE);
+		viewHolder.tvCourseName.setText(courseInfo.courseName);
 		setCourseProgress(viewHolder, courseInfo.courseProgress);
 		if(courseInfo.courseQuality == CourseInfo.QUALITY_EXCELLENT){
 			viewHolder.tvCourseQuality.setVisibility(View.VISIBLE);
@@ -127,6 +137,8 @@ public class CourseAdapter extends BaseAdapter {
 		public Button btnAdd;
 		public ImageView courseNewImg;
 		public ImageView courseProgressImg;
+		public TextView tvEmptyDescript;
+		public TextView tvCourseName;
 		public TextView tvProgress;
 		public TextView tvCourseQuality;
 	}

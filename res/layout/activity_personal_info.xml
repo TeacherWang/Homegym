@@ -5,7 +5,7 @@
     android:background="@color/start_login_bg"
     android:orientation="vertical" >
 
-    <include layout="@layout/login_action_bar"
+    <include layout="@layout/home_actionbar"
         android:id="@+id/impr_personal_info_action_bar"/>
     
     <RelativeLayout
@@ -20,10 +20,11 @@
 	        android:layout_centerVertical="true"
 	        android:background="@drawable/head_round_bg" />
 	    <TextView
-            android:id="@+id/add_headimg_text"
+            android:id="@+id/change_headimg_text"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_centerVertical="true"
+            android:gravity="center_vertical"
             android:layout_marginRight="@dimen/personal_headimg_margin"
             android:layout_alignParentRight="true"
             android:text="@string/change_headimg"
@@ -176,7 +177,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/login_item_img_margin"
-            android:background="@drawable/infor_sex"/>
+            android:background="@drawable/infor_city"/>
 	    
         <TextView
             android:id="@+id/personal_city_decrip_text"

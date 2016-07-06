@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,7 +43,19 @@ public class StartActivity extends Activity{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
+		// 测试
+//		startActivity(new Intent(this, ImprovePersonalInfoActivity.class));
+//		finish();
+//		return;
+		// 测试
+		
 		if( AccountMgr.getInstance().getLoginSuc(this) ){
+			if(TextUtils.isEmpty(AccountMgr.getInstance().mUserInfo.strNickName)){
+				Log.d(TAG, "onCreate, nickname is empty, start ImprovePersonalInfoActivity");
+				startActivity(new Intent(this, ImprovePersonalInfoActivity.class));
+				finish();
+				return;
+			}
 			startActivity(new Intent(this, HomeActivity.class));
 			finish();
 			return;

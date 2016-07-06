@@ -1,9 +1,9 @@
 package com.runrunfast.homegym.account;
 
-import android.R.integer;
 import android.text.TextUtils;
 import android.util.Log;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
@@ -119,6 +119,21 @@ public class DataTransferUtil {
 	}
 	
 	/**
+	  * @Method: getSexPosition
+	  * @Description: 获取性别选择器的位置
+	  * @param strSex
+	  * @return	
+	  * 返回类型：int 
+	  */
+	public int getSexPosition(String strSex){
+		if(strSex.equals(UserInfo.SEX_MAN)){
+			return 0;
+		}else{
+			return 1;
+		}
+	}
+	
+	/**
 	  * @Method: getHeightPosition
 	  * @Description: 获取身高选择器的位置
 	  * @param strHeight
@@ -127,6 +142,20 @@ public class DataTransferUtil {
 	  */
 	public int getHeightPosition(String strHeight){
 		return (Integer.parseInt(strHeight) - 150);
+	}
+	
+	public static final float BigDecimals(float f, int scale, int roune) {
+		try {
+			if (f != 0) {
+				BigDecimal bd = new BigDecimal((double) f);
+				bd = bd.setScale(scale, roune);
+				return bd.floatValue();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+
 	}
 	
 }

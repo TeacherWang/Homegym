@@ -1,22 +1,36 @@
 package com.runrunfast.homegym.home;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.ContentResolver;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.account.AccountMgr;
 import com.runrunfast.homegym.account.DataTransferUtil;
-import com.runrunfast.homegym.utils.DateUtil;
+import com.runrunfast.homegym.account.UserInfo;
+import com.runrunfast.homegym.utils.BitmapUtils;
+import com.runrunfast.homegym.utils.FileUtils;
+import com.runrunfast.homegym.utils.PrefUtils;
+import com.runrunfast.homegym.widget.CircleMaskImageView;
 import com.runrunfast.homegym.widget.PopupWindows;
 import com.runrunfast.homegym.widget.WheelView;
 import com.runrunfast.homegym.widget.WheelView.OnWheelViewListener;
@@ -35,10 +49,14 @@ public class PersonalInfoActivity extends Activity implements OnClickListener{
 	
 	private Resources mResources;
 	
+	private TextView tvTitle;
+	private Button btnSelectLeft, btnSelectRight;
+	
 	private RelativeLayout popView;
 	private RelativeLayout selectContainer;
 	private PopupWindows popWindows;
-	private TextView tvPopTitle, tvPopConfirm;
+	private TextView tvPopTitle, tvPopConfirm, tvChangeHeadimg;
+	private CircleMaskImageView headimgView;
 	
 	private View wheelOneLayout;
 	private WheelView wheelOneWheelView;
@@ -51,8 +69,11 @@ public class PersonalInfoActivity extends Activity implements OnClickListener{
 	
 	private TextView tvNick, tvSex, tvBirth, tvCity, tvHeight, tvWeight, tvBmiNum, tvBmiDescip;
 	
+	private UserInfo mUserInfo;
+	
+	private String strNickname;
 	private String strSex;
-	private String mBirthday;
+	private String strBirthday;
 	private String strWeight;
 	private String strHeight;
 	
@@ -67,6 +88,8 @@ public class PersonalInfoActivity extends Activity implements OnClickListener{
 	private int mMonthPosition;
 	private int mDayPosition;
 	
+	private Bitmap bmFromCamera;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -80,19 +103,43 @@ public class PersonalInfoActivity extends Activity implements OnClickListener{
 	}
 
 	private void initData() {
+		mUserInfo = AccountMgr.getInstance().mUserInfo;
+		
+		strNickname = mUserInfo.strNickName;
+		strSex = mUserInfo.strSex;
+		strBirthday = mUserInfo.strBirthday;
+		strHeight = mUserInfo.strHeight;
+		strWeight = mUserInfo.strWeight;
+		
 		handleThread = new HandlerThread(TAG);
 		handleThread.start();
 		mWorkHandler = new Handler(handleThread.getLooper());
 		
-		mBirthday = DateUtil.getCurrentDate();
+		strBirthday = mUserInfo.strBirthday;
 		
 		getBirthdayMonthAndDay();
+		
+		tvNick.setText(mUserInfo.strNickName);
+		tvSex.setText(mUserInfo.strSex);
+		tvBirth.setText(mUserInfo.strBirthday);
+		tvHeight.setText(mUserInfo.strHeight);
+		tvWeight.setText(mUserInfo.strWeight);
+		
+		int weight = Integer.parseInt(strWeight);
+		int height = Integer.parseInt(strHeight);
+		
+		tvBmiNum.setText( DataTransferUtil.BigDecimals(weight / (height * height), 1, 4) + "");
+		
+		Bitmap bitmap = BitmapFactory.decodeFile(UserInfo.IMAGE_FILE_LOCATION);
+		if(bitmap != null){
+			headimgView.setImageBitmap(bitmap);
+		}
 	}
 	
 	private void getBirthdayMonthAndDay(){
-		mBirthdayYear = DataTransferUtil.getInstance().getBirthYear(mBirthday);
-		mBirthdayMonth = DataTransferUtil.getInstance().getBirthMonth(mBirthday);
-		mBirthdayDay = DataTransferUtil.getInstance().getBirthDay(mBirthday);
+		mBirthdayYear = DataTransferUtil.getInstance().getBirthYear(strBirthday);
+		mBirthdayMonth = DataTransferUtil.getInstance().getBirthMonth(strBirthday);
+		mBirthdayDay = DataTransferUtil.getInstance().getBirthDay(strBirthday);
 		
 		mYearPosition = DataTransferUtil.getInstance().getYearPosition(mBirthdayYear);
 		mMonthPosition = DataTransferUtil.getInstance().getMonthPosition(mBirthdayMonth);
@@ -100,6 +147,18 @@ public class PersonalInfoActivity extends Activity implements OnClickListener{
 	}
 	
 	private void initView() {
+		tvTitle = (TextView)findViewById(R.id.actionbar_title);
+		tvTitle.setText(R.string.personal_info);
+		
+		btnSelectLeft = (Button)findViewById(R.id.actionbar_left_btn);
+		btnSelectLeft.setBackgroundResource(R.drawable.nav_back);
+		btnSelectLeft.setOnClickListener(this);
+		
+		btnSelectRight = (Button)findViewById(R.id.actionbar_right_btn);
+		btnSelectRight.setText(R.string.save);
+		btnSelectRight.setTextColor(mResources.getColor(R.color.feedback_send_text_color));
+		btnSelectRight.setOnClickListener(this);
+		
 		tvNick = (TextView)findViewById(R.id.personal_nick_text);
 		
 		tvSex = (TextView)findViewById(R.id.personal_sex_text);
@@ -126,6 +185,11 @@ public class PersonalInfoActivity extends Activity implements OnClickListener{
 		tvPopConfirm.setOnClickListener(this);
 		
 		selectContainer = (RelativeLayout)popView.findViewById(R.id.popupwindow_content);
+		
+		tvChangeHeadimg = (TextView)findViewById(R.id.change_headimg_text);
+		tvChangeHeadimg.setOnClickListener(this);
+		
+		headimgView = (CircleMaskImageView)findViewById(R.id.personal_head_img);
 	}
 
 	@Override
@@ -146,12 +210,21 @@ public class PersonalInfoActivity extends Activity implements OnClickListener{
 		case R.id.personal_weight_text:
 			showSelectWeight();
 			break;
-		case R.id.personal_bmi_text:
-			
-			break;
 			
 		case R.id.popupwindow_menu_confirm_text:
 			clickPopConfirm();
+			break;
+			
+		case R.id.change_headimg_text:
+			changeHeadimg();
+			break;
+			
+		case R.id.actionbar_left_btn:
+			finish();
+			break;
+			
+		case R.id.actionbar_right_btn:
+			savePersonalInfo();
 			break;
 	
 		default:
@@ -159,6 +232,103 @@ public class PersonalInfoActivity extends Activity implements OnClickListener{
 		}
 	}
 	
+	private void savePersonalInfo() {
+		// 这里应该先上传，成功后再执行下面操作
+		BitmapUtils.saveBitmapToSDcard(bmFromCamera, UserInfo.IMAGE_FILE_DIR, UserInfo.IMG_FILE_NAME);
+		
+		PrefUtils.setNickname(this, strNickname);
+		PrefUtils.setSex(this, strSex);
+		PrefUtils.setBirthday(this, strBirthday);
+		PrefUtils.setWeight(this, strWeight);
+		PrefUtils.setHeight(this, strHeight);
+		
+		AccountMgr.getInstance().loadUserInfo();
+		FileUtils.deleteFile(UserInfo.IMAGE_FILE_LOCATION_TEMP);
+		finish();
+	}
+
+	private void changeHeadimg() {
+		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+		builder.setTitle(R.string.select_img);
+		builder.setPositiveButton(R.string.camera, new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface
+
+			dialog, int which) {
+				Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+				intent.putExtra(MediaStore.EXTRA_OUTPUT, UserInfo.CAMERA_IMG_URI);
+				startActivityForResult(intent, UserInfo.REQ_CAMERA);
+			}
+		});
+		builder.setNegativeButton(R.string.album, new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				Intent intent = new Intent(
+						Intent.ACTION_PICK,
+						android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+				startActivityForResult(intent, UserInfo.REQ_ALBUM);
+			}
+		});
+		AlertDialog alert = builder.create();
+		alert.show();
+	}
+	
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		ContentResolver resolver = getContentResolver();
+		/**
+		 * 如果不拍照 或者不选择图片返回 不执行任何操作
+		 */
+		/**
+		 * 因为两种方式都用到了startActivityForResult方法，这个方法执行完后都会执行onActivityResult方法 ，
+		 * 所以为了区别到底选择了那个方式获取图片要进行判断
+		 * ，这里的requestCode跟startActivityForResult里面第二个参数对应 1== 相册 0 ==相机
+		 */
+
+		/**
+		 * 因为两种方式都用到了startActivityForResult方法，这个方法执行完后都会执行onActivityResult方法 ，
+		 * 所以为了区别到底选择了那个方式获取图片要进行判断
+		 * ，这里的requestCode跟startActivityForResult里面第二个参数对应 1== 相册 0 ==相机
+		 */
+		if(resultCode == 0){
+			Log.e(TAG, "onActivityResult, resultCode = 0, ignore");
+			return;
+		}
+		if (requestCode == UserInfo.REQ_CAMERA) {// 拍照
+			startPhotoZoom(UserInfo.CAMERA_IMG_URI);
+		} else if (requestCode == UserInfo.REQ_ALBUM) {// 相册
+			if (null != data) {
+				startPhotoZoom(data.getData());
+			}
+		} else if (requestCode == UserInfo.REQ_ZOOM) { // 3--保存裁剪的图片
+			if (null != data) {
+				bmFromCamera = data.getParcelableExtra("data");
+				
+				BitmapUtils.saveBitmapToSDcard(bmFromCamera, UserInfo.IMAGE_FILE_DIR, UserInfo.IMG_FILE_NAME_TEMP);
+				headimgView.setImageBitmap(bmFromCamera);
+//				UserInfoSaveAsyncTask task = new UserInfoSaveAsyncTask(
+//						bmFromCamera, this, "正在修改用户信息，请耐心等候...");
+//				task.execute();
+			}
+		}
+	}
+	
+	// 对相册或者拍照进行裁剪
+	public void startPhotoZoom(Uri uri) {
+		Intent intent = new Intent("com.android.camera.action.CROP");
+		intent.setDataAndType(uri, "image/*");
+		// 下面这个crop=true是设置在开启的Intent中设置显示的view可裁剪
+		intent.putExtra("crop", "true");
+		// aspectX,aspectY是宽高的比例
+		intent.putExtra("aspectX", 1);
+		intent.putExtra("aspectY", 1);
+		// outputX,outputY是裁剪图片宽高
+		intent.putExtra("outputX", 150);
+		intent.putExtra("outputY", 150);
+		intent.putExtra("return-data", true);
+		startActivityForResult(intent, UserInfo.REQ_ZOOM);
+	}
+
 	private void clickPopConfirm() {
 		if(popWindows == null){
 			Log.e(TAG, "clickPopConfirm, popWindows == null");
@@ -181,7 +351,7 @@ public class PersonalInfoActivity extends Activity implements OnClickListener{
 			break;
 			
 		case INPUT_TYPE_BIRTH:
-			tvBirth.setText(mBirthday);
+			tvBirth.setText(strBirthday);
 			break;
 
 		default:
@@ -207,9 +377,8 @@ public class PersonalInfoActivity extends Activity implements OnClickListener{
 		});
 		wheelOneWheelView.setTextSize(24);
 		wheelOneWheelView.setOffset(1);
-		wheelOneWheelView.setSeletion(20);
+		wheelOneWheelView.setSeletion(DataTransferUtil.getInstance().getHeightPosition(strHeight));
 		wheelOneWheelView.setItems(AccountMgr.getInstance().getHeightList());
-		strHeight = AccountMgr.getInstance().getHeightList().get(20);
 		
 		popWindows = new PopupWindows(this, selectContainer);
 		popWindows.setLayout(popView);
@@ -234,9 +403,8 @@ public class PersonalInfoActivity extends Activity implements OnClickListener{
 		});
 		wheelOneWheelView.setTextSize(24);
 		wheelOneWheelView.setOffset(1);
-		wheelOneWheelView.setSeletion(20);
+		wheelOneWheelView.setSeletion(DataTransferUtil.getInstance().getWeightPosition(strWeight));
 		wheelOneWheelView.setItems(AccountMgr.getInstance().getWeightList());
-		strWeight = AccountMgr.getInstance().getWeightList().get(20);
 		
 		popWindows = new PopupWindows(this, selectContainer);
 		popWindows.setLayout(popView);
@@ -262,7 +430,7 @@ public class PersonalInfoActivity extends Activity implements OnClickListener{
 			public void onSelected(int selectedIndex, String item) {
 				Log.d(TAG, "onSelected, year = " + item);
 				mBirthdayYear = item;
-				mBirthday = mBirthdayYear + "-" + mBirthdayMonth + "-" + mBirthdayDay;
+				strBirthday = mBirthdayYear + "-" + String.format("%02d", Integer.parseInt(mBirthdayMonth)) + "-" + String.format("%02d", Integer.parseInt(mBirthdayDay));
 			}
 		});
 		wheelThreeWheelView2.setOnWheelViewListener(new OnWheelViewListener(){
@@ -274,11 +442,11 @@ public class PersonalInfoActivity extends Activity implements OnClickListener{
 				mBirthdayDay = "1";
 				mDayPosition = 0;
 				
-				mBirthday = mBirthdayYear + "-" + mBirthdayMonth + "-" + String.format("%02d", Integer.parseInt(mBirthdayDay));
+				strBirthday = mBirthdayYear + "-" + String.format("%02d", Integer.parseInt(mBirthdayMonth)) + "-" + String.format("%02d", Integer.parseInt(mBirthdayDay));
 				
-				Log.d(TAG, "onSelected, day list = " + DataTransferUtil.getInstance().getDayList(mBirthday));
+				Log.d(TAG, "onSelected, day list = " + DataTransferUtil.getInstance().getDayList(strBirthday));
 				
-				setBirthDayWheel(DataTransferUtil.getInstance().getDayList(mBirthday), 0);
+				setBirthDayWheel(DataTransferUtil.getInstance().getDayList(strBirthday), 0);
 			}
 		});
 		wheelThreeWheelView3.setOnWheelViewListener(new OnWheelViewListener(){
@@ -286,7 +454,7 @@ public class PersonalInfoActivity extends Activity implements OnClickListener{
 			public void onSelected(int selectedIndex, String item) {
 				Log.d(TAG, "onSelected, day = " + item);
 				mBirthdayDay = String.format("%02d", Integer.parseInt(item));
-				mBirthday = mBirthdayYear + "-" + mBirthdayMonth + "-" + mBirthdayDay;
+				strBirthday = mBirthdayYear + "-" + String.format("%02d", Integer.parseInt(mBirthdayMonth)) + "-" + String.format("%02d", Integer.parseInt(mBirthdayDay));
 			}
 		});
 		wheelThreeWheelView1.setTextSize(18);
@@ -296,7 +464,7 @@ public class PersonalInfoActivity extends Activity implements OnClickListener{
 		
 		setBirthMonthWheel(AccountMgr.getInstance().getMonthList(), mMonthPosition);
 		
-		setBirthDayWheel(DataTransferUtil.getInstance().getDayList(mBirthday), mDayPosition);
+		setBirthDayWheel(DataTransferUtil.getInstance().getDayList(strBirthday), mDayPosition);
 		
 		popWindows = new PopupWindows(this, selectContainer);
 		popWindows.setLayout(popView);
@@ -321,6 +489,7 @@ public class PersonalInfoActivity extends Activity implements OnClickListener{
 		LayoutParams params = (LayoutParams) selectContainer.getLayoutParams();
 		params.height = LayoutParams.MATCH_PARENT;
 		params.width = (int) mResources.getDimension(R.dimen.popwindow_content_width);
+		params.gravity = Gravity.CENTER_HORIZONTAL;
 		selectContainer.setLayoutParams(params);
 	}
 	
@@ -328,6 +497,7 @@ public class PersonalInfoActivity extends Activity implements OnClickListener{
 		LayoutParams params = (LayoutParams) selectContainer.getLayoutParams();
 		params.height = LayoutParams.MATCH_PARENT;
 		params.width = (int) mResources.getDimension(R.dimen.popwindow_content_width_big);
+		params.gravity = Gravity.CENTER_HORIZONTAL;
 		selectContainer.setLayoutParams(params);
 	}
 	
@@ -349,9 +519,8 @@ public class PersonalInfoActivity extends Activity implements OnClickListener{
 		});
 		wheelOneWheelView.setTextSize(24);
 		wheelOneWheelView.setOffset(1);
-		wheelOneWheelView.setSeletion(0);
+		wheelOneWheelView.setSeletion(DataTransferUtil.getInstance().getSexPosition(strSex));
 		wheelOneWheelView.setItems(AccountMgr.getInstance().getSexList());
-		strSex = AccountMgr.getInstance().getSexList().get(0);
 		
 		popWindows = new PopupWindows(this, selectContainer);
 		popWindows.setLayout(popView);

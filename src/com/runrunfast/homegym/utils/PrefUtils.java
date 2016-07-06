@@ -55,6 +55,7 @@ public class PrefUtils {
 	private static final String KEY_BIRTHDAY	= "key_birthday";
 	private static final String KEY_WEIGHT		= "key_weight";
 	private static final String KEY_HEIGHT		= "key_height";
+	private static final String KEY_CITY		= "key_city";
 	// 保存注册成功的账号
 	public static void setAccount(Context context, String userName){
 		SharedPreferences preferences = context.getSharedPreferences(SP_ACCOUNT, Context.MODE_PRIVATE);
@@ -145,6 +146,18 @@ public class PrefUtils {
 	public static String getHeight(Context context){
 		SharedPreferences preferences = context.getSharedPreferences(SP_ACCOUNT, Context.MODE_PRIVATE);
 		return preferences.getString(KEY_HEIGHT, "");
+	}
+	
+	public static void setCity(Context context, String city){
+		SharedPreferences preferences = context.getSharedPreferences(SP_ACCOUNT, Context.MODE_PRIVATE);
+		Editor editor = preferences.edit();
+		editor.putString(KEY_CITY, city);
+		editor.commit();
+	}
+	
+	public static String getCity(Context context){
+		SharedPreferences preferences = context.getSharedPreferences(SP_ACCOUNT, Context.MODE_PRIVATE);
+		return preferences.getString(KEY_CITY, "");
 	}
 	
 }

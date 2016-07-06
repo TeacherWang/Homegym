@@ -30,7 +30,7 @@ public class AccountMgr {
 	
 	private Resources mResources;
 	
-	private UserInfo mUserInfo;
+	public UserInfo mUserInfo;
 	
 	private IIdentifyCodeListener iIdentifyCodeListener;
 	private IRegisterListener iRegisterListener;
@@ -105,7 +105,7 @@ public class AccountMgr {
 		loadUserInfo();
 	}
 	
-	private void loadUserInfo(){
+	public void loadUserInfo(){
 		String accountId = PrefUtils.getAccount(Globle.gApplicationContext);
 		if(TextUtils.isEmpty(accountId)){
 			Log.d(TAG, "loadUserInfo, accountId is empty");
@@ -113,7 +113,9 @@ public class AccountMgr {
 			return;
 		}
 		
-		mUserInfo = new UserInfo();
+		if(mUserInfo == null){
+			mUserInfo = new UserInfo();
+		}
 		
 		String strNickName = PrefUtils.getNickname(Globle.gApplicationContext);
 		String strSex = PrefUtils.getSex(Globle.gApplicationContext);
@@ -460,6 +462,7 @@ public class AccountMgr {
 
 	public void saveLoginAccount(Context context, String userName){
 		PrefUtils.setAccount(context, userName);
+		loadUserInfo();
 	}
 	
 	public String getAccount(Context context){
@@ -476,6 +479,10 @@ public class AccountMgr {
 	
 	public boolean getLoginSuc(Context context){
 		return PrefUtils.getLoginSuc(context);
+	}
+	
+	public void saveAccountInfo(String nickname, String sex, String birthday, String weight, String height, String city){
+		
 	}
 	
 	public void sendLoginSucBroadcast(Context context){

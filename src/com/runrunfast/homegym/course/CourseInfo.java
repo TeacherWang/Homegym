@@ -14,6 +14,6 @@ public class CourseInfo {
 	public boolean isCommend = false; 		// 推荐课程
 	public boolean isNew = false;			// 新增课程
 	public int courseId;					// 课程id
-	public String courseDescription;		// 课程描述
+	public String courseName;				// 课程名
 	public int courseProgress;				// 课程进度（我参加的课程）
 }

@@ -86,6 +86,10 @@
 	<dimen name="course_divider_1px">1px</dimen>
 	<dimen name="course_divider_5dp">5dp</dimen>
 	
+	<dimen name="course_name_size">28sp</dimen>
+	<dimen name="course_start_train_btn_height">48dp</dimen>
+	<dimen name="course_train_margin_top">5dp</dimen>
+	
 	<!-- 我 -->
 	<dimen name="account_bg_height">265dp</dimen>
 	<dimen name="account_headimg_size">74dp</dimen>
@@ -275,5 +279,7 @@
 	<dimen name="personal_head_bg_height">75dp</dimen>
 	<dimen name="personal_headimg_size">50dp</dimen>
 	<dimen name="personal_headimg_margin">15dp</dimen>
+	
+	<dimen name="historyscore_tb">10dp</dimen>
 	
 </resources>
