@@ -8,8 +8,10 @@ import android.os.Environment;
 
 import com.runrunfast.homegym.account.UserInfo;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 
 public class BitmapUtils {
 	
@@ -90,5 +92,29 @@ public class BitmapUtils {
 		return BitmapFactory.decodeByteArray(data, 0, data.length, opts);
 	}
 
+	public static byte[] readStream(InputStream inStream) throws Exception {
+		byte[] buffer = new byte[1024];
+		int len = -1;
+		ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+		while ((len = inStream.read(buffer)) != -1) {
+			outStream.write(buffer, 0, len);
+		}
+		byte[] data = outStream.toByteArray();
+		outStream.close();
+		inStream.close();
+		return data;
 
+	}
+
+	public static Bitmap getPicFromBytes(byte[] bytes,
+			BitmapFactory.Options opts) {
+		if (bytes != null)
+			if (opts != null)
+				return BitmapFactory.decodeByteArray(bytes, 0, bytes.length,
+						opts);
+			else
+				return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+		return null;
+	}
+	
 }
