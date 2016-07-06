@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/course_img_width"
+    android:layout_height="@dimen/course_train_imgbg_height"
+    android:layout_gravity="center_horizontal" >
+    <ImageView 
+        android:id="@+id/course_img"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/course_action_pic_1"/>
+    <!-- 蒙版 -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/course_img_mask">
+    </TextView>
+    
+    <TextView 
+        android:id="@+id/course_train_name_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/course_train_name_margin_top"
+        android:layout_marginLeft="@dimen/course_train_name_margin_left"
+        android:text="平板卧推举"
+        android:textSize="@dimen/course_train_name_size"
+        android:textColor="@color/white"/>
+    <TextView 
+        android:id="@+id/course_train_action_num_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/course_train_action_num_margin_top"
+        android:layout_marginRight="@dimen/course_train_action_num_margin_right"
+        android:layout_alignParentRight="true"
+        android:text="动作二"
+        android:textSize="@dimen/course_train_action_num_size"
+        android:textColor="@color/course_train_action_num_color"/>
+    
+	<TextView 
+	    android:id="@+id/course_train_descrip_text"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_marginTop="@dimen/course_train_decrip_margin_top"
+	    android:layout_marginLeft="@dimen/course_train_name_margin_left"
+	    android:text="背部 胸部"
+	    android:textColor="@color/white"
+	    android:textSize="@dimen/course_train_decrip_size"/>
+	
+	<RelativeLayout
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_marginTop="@dimen/course_train_diffcult_margin_top"
+	    android:layout_marginLeft="@dimen/course_train_name_margin_left" >
+	    <TextView 
+		    android:id="@+id/course_train_diffcult_text"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="难度"
+		    android:textColor="@color/white"
+		    android:textSize="@dimen/course_train_decrip_size"/>
+	    <LinearLayout
+	        android:layout_toRightOf="@id/course_train_diffcult_text"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_centerVertical="true"
+	        android:layout_marginLeft="@dimen/course_train_diffcult_img_margin"
+	        android:orientation="horizontal" >
+	        <ImageView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:background="@drawable/icon_difficulty_level" />
+	    </LinearLayout>
+	</RelativeLayout>
+	
+	<TextView 
+	    android:id="@+id/course_train_time_text"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_marginTop="@dimen/course_train_time_margin_top"
+	    android:layout_alignParentRight="true"
+	    android:layout_marginRight="@dimen/course_train_action_num_margin_right"
+	    android:text="15分钟 38千卡"
+	    android:textSize="@dimen/course_train_decrip_size"
+	    android:textColor="@color/white"/>
+	
+</RelativeLayout>

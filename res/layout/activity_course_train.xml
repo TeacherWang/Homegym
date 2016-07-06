@@ -12,10 +12,10 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/course_start_train_btn_height"
         android:layout_alignParentBottom="true"
-        android:text="@string/bt_cancel"
+        android:text="@string/start_train"
         android:textColor="@color/white"
         android:textSize="@dimen/bt_cancel_pair_text_size"
-        android:background="@drawable/bt_unbind_round_corner_rect"
+        android:background="@drawable/bt_start_train_corner_rect"
         android:clickable="true"/>
     
     <RelativeLayout
@@ -23,11 +23,16 @@
         android:layout_above="@id/btn_start_train"
         android:layout_marginTop="@dimen/course_train_margin_top"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:background="@color/white" >
         
         <ListView
+            android:id="@+id/course_train_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/course_train_list_margin_top"
+            android:layout_marginLeft="@dimen/course_train_list_margin_left_right"
+            android:layout_marginRight="@dimen/course_train_list_margin_left_right" >
             
         </ListView>
         

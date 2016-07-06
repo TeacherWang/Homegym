@@ -70,6 +70,7 @@
     <string name="course_progress_ing">进行中</string>
     <string name="course_rest_day">休息日</string>
     <string name="trainnig_record">训练记录</string>
+    <string name="start_train">开始训练</string>
     
     <string name="enter_phone_num">请输入您的手机号</string>
     <string name="enter_pwd">请输入登录密码</string>

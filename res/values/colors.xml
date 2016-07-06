@@ -34,6 +34,7 @@
     
     <color name="bottom_text_enable_color">#231815</color>
     <color name="bottom_text_disable_color">#918b8a</color>
+    <color name="course_train_action_num_color">#e2d007</color>
     
     <color name="divider_1">#cccccc</color>
     <color name="divider_bt">#e5e5e5</color>

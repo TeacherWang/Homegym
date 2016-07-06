@@ -89,6 +89,20 @@
 	<dimen name="course_name_size">28sp</dimen>
 	<dimen name="course_start_train_btn_height">48dp</dimen>
 	<dimen name="course_train_margin_top">5dp</dimen>
+	<dimen name="course_train_list_margin_top">8dp</dimen>
+	<dimen name="course_train_list_margin_left_right">4dp</dimen>
+	<dimen name="course_train_imgbg_height">120dp</dimen>
+	<dimen name="course_train_name_size">24sp</dimen>
+	<dimen name="course_train_action_num_size">14sp</dimen>
+	<dimen name="course_train_decrip_size">12sp</dimen>
+	<dimen name="course_train_name_margin_top">25dp</dimen>
+	<dimen name="course_train_name_margin_left">17dp</dimen>
+	<dimen name="course_train_action_num_margin_top">9dp</dimen>
+	<dimen name="course_train_action_num_margin_right">15dp</dimen>
+	<dimen name="course_train_decrip_margin_top">60dp</dimen>
+	<dimen name="course_train_diffcult_margin_top">80dp</dimen>
+	<dimen name="course_train_diffcult_img_margin">7dp</dimen>
+	<dimen name="course_train_time_margin_top">96dp</dimen>
 	
 	<!-- 我 -->
 	<dimen name="account_bg_height">265dp</dimen>
