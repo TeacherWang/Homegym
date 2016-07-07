@@ -33,15 +33,13 @@ import java.util.Map;
 @SuppressWarnings("deprecation")
 public class KCalendar extends ViewFlipper implements
 		android.view.GestureDetector.OnGestureListener {
-	public static final int COLOR_BG_WEEK_TITLE = Color.parseColor("#ffeeeeee"); // 星期标题背景颜色
-	public static final int COLOR_TX_WEEK_TITLE = Color.parseColor("#ffcc3333"); // 星期标题文字颜色
-	public static final int COLOR_TX_THIS_MONTH_DAY = Color
-			.parseColor("#aa564b4b"); // 当前月日历数字颜色
-	public static final int COLOR_TX_OTHER_MONTH_DAY = Color
-			.parseColor("#ffcccccc"); // 其他月日历数字颜色
-	public static final int COLOR_TX_THIS_DAY = Color.parseColor("#ff008000"); // 当天日历数字颜色
-	public static final int COLOR_BG_THIS_DAY = Color.parseColor("#ffcccccc"); // 当天日历背景颜色
-	public static final int COLOR_BG_CALENDAR = Color.parseColor("#ffeeeeee"); // 日历背景色
+	public static final int COLOR_BG_WEEK_TITLE = Color.parseColor("#ffffff"); // 星期标题背景颜色
+	public static final int COLOR_TX_WEEK_TITLE = Color.parseColor("#231815"); // 星期标题文字颜色
+	public static final int COLOR_TX_THIS_MONTH_DAY = Color.parseColor("#231815"); // 当前月日历数字颜色
+	public static final int COLOR_TX_OTHER_MONTH_DAY = Color.parseColor("#a09d9d"); // 其他月日历数字颜色
+	public static final int COLOR_TX_THIS_DAY = Color.parseColor("#d94d01"); // 当天日历数字颜色
+	public static final int COLOR_BG_THIS_DAY = Color.parseColor("#ffffff"); // 当天日历背景颜色
+	public static final int COLOR_BG_CALENDAR = Color.parseColor("#ffffff"); // 日历背景色
 
 	private GestureDetector gd; // 手势监听器
 	private Animation push_left_in; // 动画-左进
@@ -293,7 +291,7 @@ public class KCalendar extends ViewFlipper implements
 								&& thisday.getMonth() == calendarday.getMonth()
 								&& thisday.getYear() == calendarday.getYear()) {
 							view.setText("今天");
-							view.setTextColor(COLOR_TX_WEEK_TITLE);
+							view.setTextColor(COLOR_TX_THIS_DAY);
 							view.setBackgroundColor(Color.TRANSPARENT);
 						} else {
 							view.setTextColor(COLOR_TX_THIS_MONTH_DAY);

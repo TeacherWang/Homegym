@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white" >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/current_day_train_height"
+        android:layout_marginTop="@dimen/current_day_train_margin_top"
+        android:layout_marginLeft="@dimen/current_day_train_margin_left"
+        android:layout_marginRight="@dimen/current_day_train_margin_left" >
+        
+        <ImageView 
+            android:id="@+id/current_day_img"
+            android:layout_width="@dimen/current_day_train_img_width"
+            android:layout_height="@dimen/current_day_train_img_height"
+            android:layout_centerVertical="true"
+            android:background="@drawable/action_pic_1"/>
+        
+        <LinearLayout
+            android:layout_toRightOf="@id/current_day_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/current_day_train_content_margin_left"
+            android:orientation="vertical" >
+            <TextView
+                android:id="@+id/current_day_train_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="平板卧推举"
+                android:textSize="@dimen/detail_plan_current_day_text_size"
+                android:textColor="@color/record_detail_text_color" />
+            
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+                <TextView 
+                    android:id="@+id/current_day_group_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="4组"
+                    android:textColor="@color/record_detail_text_color"
+                    android:textSize="@dimen/current_day_train_num_size"/>
+                <TextView 
+                    android:id="@+id/current_day_count_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="共30次"
+                    android:layout_marginLeft="@dimen/current_day_train_content_number_divider"
+                    android:textColor="@color/record_detail_text_color"
+                    android:textSize="@dimen/current_day_train_num_size"/>
+            </LinearLayout>
+            
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+                <TextView 
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/difficult"
+                    android:textSize="@dimen/current_day_train_num_size"
+                    android:textColor="@color/record_detail_text_color"/>
+                <ImageView
+                    android:id="@+id/current_day_difficult_level1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/current_day_train_content_difficult_margin"
+                    android:background="@drawable/icon_level_black" />
+                <ImageView
+                    android:id="@+id/current_day_difficult_level2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/current_day_train_content_difficult_divider"
+                    android:background="@drawable/icon_level_black" />
+                <ImageView
+                    android:id="@+id/current_day_difficult_level3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/current_day_train_content_difficult_divider"
+                    android:background="@drawable/icon_level_while" />
+            </LinearLayout>
+        </LinearLayout>
+        
+        <TextView 
+            android:id="@+id/current_day_action_num_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/current_day_train_margin_top"
+            android:layout_marginRight="@dimen/current_day_train_margin_left"
+            android:layout_alignParentRight="true"
+            android:text="动作一"
+            android:textColor="@color/record_detail_text_color"
+            android:textSize="@dimen/course_train_action_num_size"/>
+        
+    </RelativeLayout>
+
+</RelativeLayout>

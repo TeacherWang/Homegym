@@ -1,16 +1,21 @@
 package com.runrunfast.homegym.home.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.course.CourseAdapter;
 import com.runrunfast.homegym.course.CourseInfo;
+import com.runrunfast.homegym.course.CourseTrainActivity;
+import com.runrunfast.homegym.utils.Const;
 
 import java.util.ArrayList;
 
@@ -33,7 +38,25 @@ public class AllCoursesFragment extends Fragment {
 		
 		initData();
 		
+		initListener();
+		
 		return rootView;
+	}
+
+	private void initListener() {
+		mAllCoursesListView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				CourseInfo courseInfo = mAllCoursesList.get(position);
+				int courseId = courseInfo.courseId;
+				String courseName = courseInfo.courseName;
+				Intent intent = new Intent(getActivity(), CourseTrainActivity.class);
+				intent.putExtra(Const.KEY_COURSE_ID, courseId);
+				intent.putExtra(Const.KEY_COURSE_NAME, courseName);
+				startActivity(intent);
+			}
+		});
 	}
 
 	private void initData() {
