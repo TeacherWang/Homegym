@@ -5,7 +5,7 @@
     android:background="@color/home_bg_color" >
 	
     <include layout="@layout/home_actionbar"
-        android:id="@+id/bt_device_home_actionbar"/>
+        android:id="@+id/course_train_home_actionbar"/>
     
     <Button 
         android:id="@+id/btn_start_train"
@@ -19,11 +19,11 @@
         android:clickable="true"/>
     
     <RelativeLayout
-        android:layout_below="@id/bt_device_home_actionbar"
+        android:layout_below="@id/course_train_home_actionbar"
         android:layout_above="@id/btn_start_train"
         android:layout_marginTop="@dimen/course_train_margin_top"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="@color/white" >
         
         <ListView
@@ -32,7 +32,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/course_train_list_margin_top"
             android:layout_marginLeft="@dimen/course_train_list_margin_left_right"
-            android:layout_marginRight="@dimen/course_train_list_margin_left_right" >
+            android:layout_marginRight="@dimen/course_train_list_margin_left_right"
+            android:divider="@null"
+            android:dividerHeight="@dimen/course_train_list_devider" >
             
         </ListView>
         

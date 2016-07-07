@@ -1,0 +1,100 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/home_bg_color" >
+	
+    <include layout="@layout/home_actionbar"
+        android:id="@+id/detail_plan_home_actionbar"/>
+    
+    <Button 
+        android:id="@+id/btn_start_train"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/course_start_train_btn_height"
+        android:layout_alignParentBottom="true"
+        android:text="@string/start_train"
+        android:textColor="@color/white"
+        android:textSize="@dimen/bt_cancel_pair_text_size"
+        android:background="@drawable/bt_start_train_corner_rect"
+        android:clickable="true"/>
+    
+    <RelativeLayout
+        android:id="@+id/calendar_layout"
+        android:layout_below="@id/detail_plan_home_actionbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/calender_layout_margin_top"
+        android:background="@color/white" >
+        
+        <RelativeLayout
+            android:id="@+id/calendar_head_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/calendar_date_left_img_margin_top" >
+            <ImageView
+                android:id="@+id/calendar_left_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/calendar_date_left_img_margin_left_right"
+                android:background="@drawable/icon_date_left" />
+            <TextView
+                android:id="@+id/calendar_date_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:textColor="@color/record_detail_text_color"
+                android:textSize="@dimen/calendar_date_text_size" />
+            <ImageView
+                android:id="@+id/calendar_right_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/calendar_date_left_img_margin_left_right"
+                android:background="@drawable/icon_date_right" />
+        </RelativeLayout>
+        
+        <com.runrunfast.homegym.widget.KCalendar
+            android:id="@+id/calendar_view"
+            android:layout_below="@id/calendar_head_layout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/calender_height" >
+            
+        </com.runrunfast.homegym.widget.KCalendar>
+        
+    </RelativeLayout>
+    
+    <TextView
+        android:id="@+id/current_day_text"
+        android:layout_below="@id/calendar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/detail_plan_current_day_height"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/detail_plan_current_day_text_margin"
+        android:text="@string/current_day_train_content"
+        android:textColor="@color/record_total_equal_text_color"
+        android:textSize="@dimen/detail_plan_current_day_text_size"
+        android:background="@color/transparent" />
+    
+    <RelativeLayout
+        android:layout_below="@id/current_day_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white" >
+        
+        <ListView
+            android:id="@+id/course_train_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/detail_plan_list_margin_top"
+            android:layout_marginLeft="@dimen/detail_plan_list_margin_left_right"
+            android:layout_marginRight="@dimen/detail_plan_list_margin_left_right"
+            android:divider="@color/account_divider_color"
+            android:dividerHeight="1px" >
+            
+        </ListView>
+        
+    </RelativeLayout>
+    
+</RelativeLayout>

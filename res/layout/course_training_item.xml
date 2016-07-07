@@ -65,8 +65,33 @@
 	        android:layout_marginLeft="@dimen/course_train_diffcult_img_margin"
 	        android:orientation="horizontal" >
 	        <ImageView
+	            android:id="@+id/course_train_diffcult_level1_img"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
+	            android:background="@drawable/icon_difficulty_level" />
+	        <ImageView
+	            android:id="@+id/course_train_diffcult_level2_img"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_marginLeft="@dimen/course_train_diffcult_img_margin"
+	            android:background="@drawable/icon_difficulty_level" />
+	        <ImageView
+	            android:id="@+id/course_train_diffcult_level3_img"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_marginLeft="@dimen/course_train_diffcult_img_margin"
+	            android:background="@drawable/icon_difficulty_level" />
+	        <ImageView
+	            android:id="@+id/course_train_diffcult_level4_img"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_marginLeft="@dimen/course_train_diffcult_img_margin"
+	            android:background="@drawable/icon_difficulty_level" />
+	        <ImageView
+	            android:id="@+id/course_train_diffcult_level5_img"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_marginLeft="@dimen/course_train_diffcult_img_margin"
 	            android:background="@drawable/icon_difficulty_level" />
 	    </LinearLayout>
 	</RelativeLayout>

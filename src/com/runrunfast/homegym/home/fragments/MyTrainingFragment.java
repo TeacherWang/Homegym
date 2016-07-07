@@ -5,7 +5,10 @@ import java.util.ArrayList;
 import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.course.CourseAdapter;
 import com.runrunfast.homegym.course.CourseInfo;
+import com.runrunfast.homegym.course.CourseTrainActivity;
+import com.runrunfast.homegym.utils.Const;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -48,7 +51,10 @@ public class MyTrainingFragment extends Fragment{
 				CourseInfo courseInfo = mRecommedList.get(position);
 				int courseId = courseInfo.courseId;
 				String courseName = courseInfo.courseName;
-				
+				Intent intent = new Intent(getActivity(), CourseTrainActivity.class);
+				intent.putExtra(Const.KEY_COURSE_ID, courseId);
+				intent.putExtra(Const.KEY_COURSE_NAME, courseName);
+				startActivity(intent);
 			}
 		});
 	}

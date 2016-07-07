@@ -3,6 +3,7 @@ package com.runrunfast.homegym.course;
 public class CourseTrainInfo {
 	public int iCourseId;
 	public String strCrouseName;
+	public String strActionNum;
 	public int iTrainId;
 	public String strTrainName;
 	public String strTrainDecript;

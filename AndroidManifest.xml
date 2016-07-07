@@ -95,7 +95,6 @@
             android:theme="@android:style/Theme.NoTitleBar"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:screenOrientation="portrait" >
-            
         </activity>
         
         <activity
@@ -103,7 +102,6 @@
             android:theme="@android:style/Theme.NoTitleBar"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:screenOrientation="portrait" >
-            
         </activity>
         
         <activity
@@ -111,7 +109,6 @@
             android:theme="@android:style/Theme.NoTitleBar"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:screenOrientation="portrait" >
-            
         </activity>
         
         <activity
@@ -119,7 +116,20 @@
             android:theme="@android:style/Theme.NoTitleBar"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:screenOrientation="portrait" >
-            
+        </activity>
+        
+        <activity
+            android:name="com.runrunfast.homegym.course.CourseTrainActivity"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:configChanges="keyboard|keyboardHidden|orientation"
+            android:screenOrientation="portrait" >
+        </activity>
+        
+        <activity
+            android:name="com.runrunfast.homegym.course.DetailPlanActivity"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:configChanges="keyboard|keyboardHidden|orientation"
+            android:screenOrientation="portrait" >
         </activity>
         
         <service android:name="com.runrunfast.ble.BLEService" >
