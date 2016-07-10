@@ -321,4 +321,36 @@
 	<dimen name="calender_layout_margin_top">10dp</dimen>
 	<dimen name="calender_height">271dp</dimen>
 	
+	<dimen name="train_action_set_bg_height">225dp</dimen>
+	<dimen name="train_action_set_num_size">12dp</dimen>
+	<dimen name="train_action_set_num_margin_left">12dp</dimen>
+	<dimen name="train_action_set_num_margin_top">101dp</dimen>
+	<dimen name="train_action_set_name_size">18sp</dimen>
+	<dimen name="train_action_set_name_margin_left">36dp</dimen>
+	<dimen name="train_action_set_name_margin_top">127dp</dimen>
+	<dimen name="train_action_set_descript_margin_top">158dp</dimen>
+	<dimen name="train_action_set_join_in_teach_size">15sp</dimen>
+	<dimen name="train_action_set_join_in_teach_margin_top">186dp</dimen>
+	<dimen name="train_action_set_join_in_margin_right">20dp</dimen>
+	<dimen name="train_action_set_join_in_margint_bottom">36dp</dimen>
+	<dimen name="train_action_set_back_margint_top">8dp</dimen>
+	<dimen name="train_action_set_back_margint_left">4dp</dimen>
+	
+	<dimen name="train_action_set_title_height">39dp</dimen>
+	<dimen name="train_action_set_title_margin_left">12dp</dimen>
+	<dimen name="train_action_set_title_text_img_divider">10dp</dimen>
+	<dimen name="back_text_size">14sp</dimen>
+	
+	<dimen name="train_action_set_recommend">73dp</dimen>
+	<dimen name="train_action_set_consume_margin_top">7dp</dimen>
+	<dimen name="train_action_set_consume_num_margin_top">13dp</dimen>
+	<dimen name="train_action_set_consume_size">14sp</dimen>
+	<dimen name="train_action_set_consume_num_size">16sp</dimen>
+	<dimen name="train_action_set_consume_unit_size">10sp</dimen>
+	<dimen name="train_action_set_group_num_size">24sp</dimen>
+	<dimen name="train_action_set_group_img_num_divider">60dp</dimen>
+	<dimen name="train_action_set_group_num_decr_size">15sp</dimen>
+	<dimen name="train_action_set_group_num_decr_marleft">39dp</dimen>
+	<dimen name="train_action_set_group_num_decr_divider">55dp</dimen>
+	
 </resources>

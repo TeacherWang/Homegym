@@ -2,12 +2,6 @@ package com.runrunfast.homegym.home.fragments;
 
 import java.util.ArrayList;
 
-import com.runrunfast.homegym.R;
-import com.runrunfast.homegym.course.CourseAdapter;
-import com.runrunfast.homegym.course.CourseInfo;
-import com.runrunfast.homegym.course.CourseTrainActivity;
-import com.runrunfast.homegym.utils.Const;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -19,6 +13,14 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
+import com.runrunfast.homegym.R;
+import com.runrunfast.homegym.course.CourseAdapter;
+import com.runrunfast.homegym.course.CourseAdapter.ICourseAdapterListener;
+import com.runrunfast.homegym.course.CourseInfo;
+import com.runrunfast.homegym.course.CourseTrainActivity;
+import com.runrunfast.homegym.home.HomeActivity;
+import com.runrunfast.homegym.utils.Const;
+
 public class MyTrainingFragment extends Fragment{
 	private View rootView;
 	private ListView mMyCourseListView;
@@ -29,6 +31,8 @@ public class MyTrainingFragment extends Fragment{
 	
 	private ArrayList<CourseInfo> mMyCourseList;
 	private ArrayList<CourseInfo> mRecommedList;
+	
+	private ICourseAdapterListener mICourseAdapterListener;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -57,6 +61,16 @@ public class MyTrainingFragment extends Fragment{
 				startActivity(intent);
 			}
 		});
+		
+		mICourseAdapterListener = new ICourseAdapterListener() {
+			
+			@Override
+			public void onAddCourseClicked() {
+				((HomeActivity)getActivity()).switchFragment(HomeActivity.FRAGMENT_ALL_COURSES);
+			}
+		};
+		
+		mMyCourseAdapter.setOnCourseAdapterListener(mICourseAdapterListener);
 	}
 
 	private void initData() {

@@ -190,6 +190,7 @@ public class ImprovePersonalInfoActivity extends Activity implements OnClickList
 			dialog, int which) {
 				Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 				intent.putExtra(MediaStore.EXTRA_OUTPUT, UserInfo.CAMERA_IMG_URI);
+				intent.putExtra("return-data", false);
 				startActivityForResult(intent, UserInfo.REQ_CAMERA);
 			}
 		});
@@ -199,6 +200,7 @@ public class ImprovePersonalInfoActivity extends Activity implements OnClickList
 				Intent intent = new Intent(
 						Intent.ACTION_PICK,
 						android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+				intent.putExtra("return-data", false);
 				startActivityForResult(intent, UserInfo.REQ_ALBUM);
 			}
 		});

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -20,6 +21,15 @@ public class CourseAdapter extends BaseAdapter {
 	private LayoutInflater mInflater;
 	private Context mContext;
 	private ArrayList<CourseInfo> mCourseList;
+	private ICourseAdapterListener mICourseAdapterListener;
+	
+	public interface ICourseAdapterListener{
+		void onAddCourseClicked();
+	}
+	
+	public void setOnCourseAdapterListener(ICourseAdapterListener iCourseAdapterListener){
+		this.mICourseAdapterListener = iCourseAdapterListener;
+	}
 	
 	public CourseAdapter(Context context, ArrayList<CourseInfo> courseList){
 		this.mContext = context;
@@ -91,6 +101,17 @@ public class CourseAdapter extends BaseAdapter {
 		if(courseInfo.isMyCourseEmpty){
 			Log.d(TAG, "handleMyCourse empty");
 			viewHolder.btnAdd.setVisibility(View.VISIBLE);
+			
+			viewHolder.btnAdd.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					if(mICourseAdapterListener != null){
+						mICourseAdapterListener.onAddCourseClicked();
+					}
+				}
+			});
+			
 			viewHolder.courseNewImg.setVisibility(View.INVISIBLE);
 			viewHolder.courseProgressImg.setVisibility(View.INVISIBLE);
 			viewHolder.tvEmptyDescript.setVisibility(View.VISIBLE);

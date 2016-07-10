@@ -297,7 +297,10 @@ public class PersonalInfoActivity extends Activity implements OnClickListener{
 		if (requestCode == UserInfo.REQ_CAMERA) {// 拍照
 			startPhotoZoom(UserInfo.CAMERA_IMG_URI);
 		} else if (requestCode == UserInfo.REQ_ALBUM) {// 相册
+			Log.d(TAG, "onActivityResult, data = " + data);
 			if (null != data) {
+				Log.d(TAG, "onActivityResult, data.getData() = " + data.getData());
+				Log.d(TAG, "onActivityResult, data.getExtras(); = " + data.getExtras());
 				startPhotoZoom(data.getData());
 			}
 		} else if (requestCode == UserInfo.REQ_ZOOM) { // 3--保存裁剪的图片

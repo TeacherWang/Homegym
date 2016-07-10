@@ -1,15 +1,18 @@
 package com.runrunfast.homegym.account;
 
+import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
 import android.text.TextUtils;
 import android.util.Log;
 
-import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.List;
-
 public class DataTransferUtil {
-	private final String TAG = "DataTransferUtil";
+	private final static String TAG = "DataTransferUtil";
 	private static volatile DataTransferUtil instance;
 	private static Object lockObject = new Object();
 	
@@ -156,6 +159,59 @@ public class DataTransferUtil {
 		}
 		return 0;
 
+	}
+	
+	public static int getAgeByBirtyday(String birthday){
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = null;
+		try {
+			date = sdf.parse(birthday);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		return getAgeByBirthday(date);
+	}
+	
+	/**
+	 * 根据用户生日计算年龄
+	 */
+	public static int getAgeByBirthday(Date birthday) {
+		Calendar cal = Calendar.getInstance();
+
+		if(birthday == null){
+			Log.e(TAG, "getAgeByBirthday, birthday is null");
+			return 0;
+		}
+		
+		if (cal.before(birthday)) {
+			throw new IllegalArgumentException(
+					"The birthDay is before Now.It's unbelievable!");
+		}
+
+		int yearNow = cal.get(Calendar.YEAR);
+		int monthNow = cal.get(Calendar.MONTH) + 1;
+		int dayOfMonthNow = cal.get(Calendar.DAY_OF_MONTH);
+
+		cal.setTime(birthday);
+		int yearBirth = cal.get(Calendar.YEAR);
+		int monthBirth = cal.get(Calendar.MONTH) + 1;
+		int dayOfMonthBirth = cal.get(Calendar.DAY_OF_MONTH);
+
+		int age = yearNow - yearBirth;
+
+		if (monthNow <= monthBirth) {
+			if (monthNow == monthBirth) {
+				// monthNow==monthBirth 
+				if (dayOfMonthNow < dayOfMonthBirth) {
+					age--;
+				}
+			} else {
+				// monthNow>monthBirth 
+				age--;
+			}
+		}
+		return age;
 	}
 	
 }

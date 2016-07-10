@@ -64,7 +64,7 @@ public class CourseTrainAdapter extends BaseAdapter {
 		
 		CourseTrainInfo courseTrainInfo = mCourseTrainInfoList.get(position);
 		holder.tvTrainName.setText(courseTrainInfo.strCrouseName);
-		holder.tvTrainDescipt.setText(courseTrainInfo.strTrainDecript);
+		holder.tvTrainDescipt.setText(courseTrainInfo.strTrainPosition);
 		holder.tvTrainActionNum.setText(courseTrainInfo.strActionNum);
 		holder.tvTime.setText(String.valueOf(courseTrainInfo.iTime) + mContext.getResources().getString(R.string.minute)
 				+ " " + String.valueOf(courseTrainInfo.iKcal + mContext.getResources().getString(R.string.kcal)));

@@ -1,0 +1,274 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/my_course_bg" >
+	
+    <RelativeLayout
+        android:id="@+id/train_action_set_head_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/train_action_set_bg_height"
+        android:background="@drawable/action1_bg" >
+        <RelativeLayout
+            android:id="@+id/train_action_back_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+            <ImageView 
+	            android:id="@+id/train_action_set_back_img"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_centerVertical="true"
+	            android:layout_marginTop="@dimen/train_action_set_back_margint_top"
+	            android:layout_marginLeft="@dimen/train_action_set_back_margint_left"
+	            android:background="@drawable/nav_back_white"/>
+	        <TextView
+	            android:layout_toRightOf="@id/train_action_set_back_img"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_centerVertical="true"
+	            android:text="@string/back"
+	            android:textSize="@dimen/back_text_size"
+	            android:textColor="@color/white"/>
+        </RelativeLayout>
+        
+        <TextView
+            android:id="@+id/train_action_num_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/train_action_set_num_margin_left"
+            android:layout_marginTop="@dimen/train_action_set_num_margin_top"
+            android:text="动作一"
+            android:textSize="@dimen/course_train_action_num_size"
+            android:textColor="@color/white" />
+        
+        <TextView
+            android:id="@+id/train_action_name_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/train_action_set_name_margin_left"
+            android:layout_marginTop="@dimen/train_action_set_name_margin_top"
+            android:text="坡地上"
+            android:textSize="@dimen/train_action_set_name_size"
+            android:textColor="@color/white" />
+        
+        <TextView
+            android:id="@+id/train_action_descript_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/train_action_set_name_margin_left"
+            android:layout_marginTop="@dimen/train_action_set_descript_margin_top"
+            android:text="坚持锻炼balalalaala"
+            android:textSize="@dimen/course_train_action_num_size"
+            android:textColor="@color/white" />
+        
+		<TextView
+            android:id="@+id/train_action_join_in_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/train_action_set_join_in_margin_right"
+            android:layout_marginTop="@dimen/train_action_set_join_in_teach_margin_top"
+            android:text="@string/join_in_teach"
+            android:textSize="@dimen/train_action_set_join_in_teach_size"
+            android:textColor="@color/feedback_send_text_color" />
+        
+    </RelativeLayout>
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/train_action_set_title_height"
+        android:layout_marginLeft="@dimen/train_action_set_title_margin_left" >
+        <ImageView
+            android:id="@+id/line"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:background="@drawable/home_recommend" />
+        <TextView 
+            android:layout_toRightOf="@id/line"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/train_action_set_title_text_img_divider"
+            android:text="@string/recommend_train"
+            android:textColor="@color/record_date_color"
+            android:textSize="@dimen/actionbar_text_size"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/divider_all_courses"
+            android:layout_alignParentBottom="true" />
+    </RelativeLayout>
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/train_action_set_recommend"
+        android:orientation="horizontal" >
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:orientation="vertical" >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/train_action_set_consume_margin_top"
+                android:text="@string/finish_time"
+                android:textSize="@dimen/train_action_set_consume_size"
+                android:textColor="@color/record_date_color" />
+            <TextView
+                android:id="@+id/train_action_time_num_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/train_action_set_consume_num_margin_top"
+                android:text="7:30"
+                android:textColor="@color/black"
+                android:textSize="@dimen/train_action_set_consume_num_size" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/train_action_set_consume_num_margin_top"
+                android:text="@string/minute"
+                android:textColor="@color/record_date_color" />
+        </LinearLayout>
+        
+        <View
+            android:layout_width="2px"
+            android:layout_height="56dp"
+            android:layout_gravity="center_vertical"
+            android:background="@color/record_total_divider" />
+        
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:orientation="vertical" >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/train_action_set_consume_margin_top"
+                android:text="@string/burning"
+                android:textSize="@dimen/train_action_set_consume_size"
+                android:textColor="@color/record_date_color" />
+            <TextView
+                android:id="@+id/train_action_burning_num_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/train_action_set_consume_num_margin_top"
+                android:text="128"
+                android:textColor="@color/black"
+                android:textSize="@dimen/train_action_set_consume_num_size" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/train_action_set_consume_num_margin_top"
+                android:text="@string/kcal"
+                android:textColor="@color/record_date_color" />
+        </LinearLayout>
+        
+    </LinearLayout>
+    
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginLeft="@dimen/train_action_set_title_margin_left"
+        android:background="@color/divider_all_courses" />
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/train_action_set_title_height"
+        android:layout_marginLeft="@dimen/train_action_set_title_margin_left" >
+        <ImageView
+            android:id="@+id/group_line"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:background="@drawable/home_recommend" />
+        <TextView 
+            android:layout_toRightOf="@id/group_line"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/train_action_set_title_text_img_divider"
+            android:text="@string/train_group_num"
+            android:textColor="@color/record_date_color"
+            android:textSize="@dimen/actionbar_text_size"/>
+    </RelativeLayout>
+    
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal" >
+        <TextView
+            android:id="@+id/tv_group_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="4"
+            android:textSize="@dimen/train_action_set_group_num_size"
+            android:textColor="@color/black" />
+        <Button
+            android:layout_toLeftOf="@id/tv_group_num"
+            android:id="@+id/btn_group_num_add"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/train_action_set_group_img_num_divider"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/icon_plus" />
+        <Button
+            android:id="@+id/btn_group_num_minus"
+            android:layout_toRightOf="@id/tv_group_num"
+            android:layout_marginLeft="@dimen/train_action_set_group_img_num_divider"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/icon_minus" />
+    </RelativeLayout>
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/train_action_set_group_num_decr_marleft"
+        android:orientation="horizontal" >
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/group_num"
+            android:textColor="@color/black"
+            android:textSize="@dimen/train_action_set_group_num_decr_size" />
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/train_action_set_group_num_decr_divider"
+            android:text="@string/count_number"
+            android:textColor="@color/black"
+            android:textSize="@dimen/train_action_set_group_num_decr_size" />
+        
+         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/train_action_set_group_num_decr_divider"
+            android:text="@string/weight_tool"
+            android:textColor="@color/black"
+            android:textSize="@dimen/train_action_set_group_num_decr_size" />
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/train_action_set_group_num_decr_divider"
+            android:text="@string/burning_kcal"
+            android:textColor="@color/black"
+            android:textSize="@dimen/train_action_set_group_num_decr_size" />
+    </LinearLayout>
+    
+    <ListView
+        android:id="@+id/train_action_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@null" />
+        
+</LinearLayout>

@@ -18,12 +18,14 @@ import android.widget.TextView;
 
 import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.account.AccountMgr;
+import com.runrunfast.homegym.account.DataTransferUtil;
 import com.runrunfast.homegym.account.UserInfo;
 import com.runrunfast.homegym.home.AboutActivity;
 import com.runrunfast.homegym.home.FeedbackActivity;
 import com.runrunfast.homegym.home.PersonalInfoActivity;
 import com.runrunfast.homegym.start.StartActivity;
 import com.runrunfast.homegym.utils.Const;
+import com.runrunfast.homegym.utils.FileUtils;
 import com.runrunfast.homegym.widget.CircleMaskImageView;
 import com.runrunfast.homegym.widget.DialogActivity;
 
@@ -41,6 +43,7 @@ public class MeFragment extends Fragment implements OnClickListener{
 	private CircleMaskImageView headimgView;
 	private TextView tvNickname;
 	private ImageView ivSex;
+	private TextView tvAge;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater,
@@ -56,9 +59,21 @@ public class MeFragment extends Fragment implements OnClickListener{
 		return rootView;
 	}
 	
+	@Override
+	public void onResume() {
+		super.onResume();
+		
+		tvAge.setText(String.valueOf(DataTransferUtil.getAgeByBirtyday(mUserInfo.strBirthday)) + mResources.getString(R.string.age));
+	}
+	
 	private void initData() {
 		mUserInfo = AccountMgr.getInstance().mUserInfo;
-		Bitmap bitmap = BitmapFactory.decodeFile(UserInfo.IMAGE_FILE_LOCATION);
+		
+		Bitmap bitmap = null;
+		if(FileUtils.isFileExist(UserInfo.IMAGE_FILE_LOCATION)){
+			bitmap = BitmapFactory.decodeFile(UserInfo.IMAGE_FILE_LOCATION);
+		}
+		
 		if(bitmap != null){
 			headimgView.setImageBitmap(bitmap);
 		}
@@ -69,6 +84,7 @@ public class MeFragment extends Fragment implements OnClickListener{
 		}else{
 			ivSex.setBackgroundResource(R.drawable.sex_women);
 		}
+		
 	}
 
 	private void initView() {
@@ -88,6 +104,7 @@ public class MeFragment extends Fragment implements OnClickListener{
 		tvNickname = (TextView)rootView.findViewById(R.id.account_name_text);
 		
 		ivSex = (ImageView)rootView.findViewById(R.id.account_sex_img);
+		tvAge = (TextView)rootView.findViewById(R.id.account_old_text);
 	}
 
 	@Override

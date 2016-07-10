@@ -24,9 +24,9 @@ public class HomeActivity extends FragmentActivity{
 	private final String TAG = "HomeActivity";
 	
 	private static final int PAGE_COUNT = 3;
-	private static final int FRAGMENT_MY_TRAINING = 0;
-	private static final int FRAGMENT_ALL_COURSES = 1;
-	private static final int FRAGMENT_ME		  = 2;
+	public static final int FRAGMENT_MY_TRAINING = 0;
+	public static final int FRAGMENT_ALL_COURSES = 1;
+	public static final int FRAGMENT_ME		  = 2;
 	
 	private int mTrainingType = FRAGMENT_MY_TRAINING; // 默认训练界面的我的训练
 	
@@ -99,7 +99,7 @@ public class HomeActivity extends FragmentActivity{
 		}
 	}
 	
-	private void switchFragment(int tabPosition) {
+	public void switchFragment(int tabPosition) {
 		Fragment fragment = (Fragment) mFragmentPagerAdapter.instantiateItem(mFrameLayout, tabPosition);
 		mFragmentPagerAdapter.setPrimaryItem(mFrameLayout, FRAGMENT_MY_TRAINING, fragment);
 		mFragmentPagerAdapter.finishUpdate(mFrameLayout);
