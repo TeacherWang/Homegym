@@ -1,17 +1,25 @@
 package com.runrunfast.homegym.course;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.runrunfast.homegym.R;
+import com.runrunfast.homegym.account.DataTransferUtil;
 import com.runrunfast.homegym.utils.Const;
+import com.runrunfast.homegym.utils.DateUtil;
 
 public class TrainActionSetActivity extends Activity implements OnClickListener{
+	private final String TAG = "TrainActionSetActivity";
 	
 	private View backView;
 	private TextView tvActionNum, tvTrainName, tvTrainDescript, tvJoinInTeach, tvGroupNum, tvTimeConsume, tvBurning;
@@ -22,6 +30,13 @@ public class TrainActionSetActivity extends Activity implements OnClickListener{
 	private String mTrainName;
 	private String mTrainDescript;
 	private String mActionNum;
+	private ListView mListView;
+	
+	private int mConsumeSecond = 500; // 消耗时间
+	private int mBurning = 178; // 燃脂
+	
+	private ArrayList<TrainActionInfo> mTrainActionInfoList;
+	private TrainActionSetAdapter mTrainActionSetAdapter;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +49,8 @@ public class TrainActionSetActivity extends Activity implements OnClickListener{
 	}
 
 	private void initData() {
+		mTrainActionInfoList = new ArrayList<TrainActionInfo>();
+		
 		Intent intent = getIntent();
 		mCourseId = intent.getIntExtra(Const.KEY_COURSE_ID, -1);
 		mTrainId = intent.getIntExtra(Const.KEY_TRAIN_ID, -1);
@@ -45,6 +62,48 @@ public class TrainActionSetActivity extends Activity implements OnClickListener{
 		tvTrainName.setText(mTrainName);
 		tvTrainDescript.setText(mTrainDescript);
 		
+		TrainActionInfo trainActionInfo1 = new TrainActionInfo();
+		trainActionInfo1.iCourseId = mCourseId;
+		trainActionInfo1.iTrainId = mTrainId;
+		trainActionInfo1.strGroupNum = "第一组";
+		trainActionInfo1.iCount = 10;
+		trainActionInfo1.iToolWeight = 5;
+		trainActionInfo1.iBurning = 36;
+		mTrainActionInfoList.add(trainActionInfo1);
+		
+		TrainActionInfo trainActionInfo2 = new TrainActionInfo();
+		trainActionInfo2.iCourseId = mCourseId;
+		trainActionInfo2.iTrainId = mTrainId;
+		trainActionInfo2.strGroupNum = "第二组";
+		trainActionInfo2.iCount = 10;
+		trainActionInfo2.iToolWeight = 10;
+		trainActionInfo2.iBurning = 45;
+		mTrainActionInfoList.add(trainActionInfo2);
+		
+		TrainActionInfo trainActionInfo3 = new TrainActionInfo();
+		trainActionInfo3.iCourseId = mCourseId;
+		trainActionInfo3.iTrainId = mTrainId;
+		trainActionInfo3.strGroupNum = "第三组";
+		trainActionInfo3.iCount = 12;
+		trainActionInfo3.iToolWeight = 15;
+		trainActionInfo3.iBurning = 50;
+		mTrainActionInfoList.add(trainActionInfo3);
+		
+		TrainActionInfo trainActionInfo4 = new TrainActionInfo();
+		trainActionInfo4.iCourseId = mCourseId;
+		trainActionInfo4.iTrainId = mTrainId;
+		trainActionInfo4.strGroupNum = "第四组";
+		trainActionInfo4.iCount = 8;
+		trainActionInfo4.iToolWeight = 10;
+		trainActionInfo4.iBurning = 60;
+		mTrainActionInfoList.add(trainActionInfo4);
+		
+		mTrainActionSetAdapter = new TrainActionSetAdapter(this, mTrainActionInfoList);
+		mListView.setAdapter(mTrainActionSetAdapter);
+		
+		tvGroupNum.setText(String.valueOf(mTrainActionInfoList.size()));
+		tvTimeConsume.setText(DateUtil.secToTime(mConsumeSecond));
+		tvBurning.setText(String.valueOf(mBurning));
 	}
 
 	private void initView() {
@@ -64,6 +123,10 @@ public class TrainActionSetActivity extends Activity implements OnClickListener{
 		tvJoinInTeach.setOnClickListener(this);
 		tvTimeConsume = (TextView)findViewById(R.id.train_action_time_num_text);
 		tvBurning = (TextView)findViewById(R.id.train_action_burning_num_text);
+		
+		mListView = (ListView)findViewById(R.id.train_action_list);
+		
+		tvGroupNum = (TextView)findViewById(R.id.tv_group_num);
 	}
 
 	@Override
@@ -74,11 +137,11 @@ public class TrainActionSetActivity extends Activity implements OnClickListener{
 			break;
 			
 		case R.id.btn_group_num_add:
-			showAddGroupNum();
+			addGroupNum();
 			break;
 			
 		case R.id.btn_group_num_minus:
-			showMinusGroupNum();
+			minusGroupNum();
 			break;
 			
 		case R.id.train_action_join_in_text:
@@ -94,11 +157,46 @@ public class TrainActionSetActivity extends Activity implements OnClickListener{
 		
 	}
 
-	private void showMinusGroupNum() {
+	private void minusGroupNum() {
+		if(mTrainActionInfoList.size() == 1){
+			Log.e(TAG, "addGroupNum, size == 1, return");
+			Toast.makeText(this, R.string.group_num_is_smaller_than_1, Toast.LENGTH_SHORT).show();
+			return;
+		}
 		
+		mTrainActionInfoList.remove(mTrainActionInfoList.size() - 1);
+		mTrainActionSetAdapter.notifyDataSetChanged();
+		
+		tvGroupNum.setText(String.valueOf(mTrainActionInfoList.size()));
+		mConsumeSecond = mConsumeSecond - 10;
+		mBurning = mBurning - 20;
+		tvTimeConsume.setText(DateUtil.secToTime(mConsumeSecond));
+		tvBurning.setText(String.valueOf(mBurning));
 	}
 
-	private void showAddGroupNum() {
+	private void addGroupNum() {
+		if(mTrainActionInfoList.size() == 9){
+			Log.e(TAG, "addGroupNum, size == 9, return");
+			Toast.makeText(this, R.string.group_num_is_bigger_than_9, Toast.LENGTH_SHORT).show();
+			return;
+		}
 		
+		TrainActionInfo trainActionInfo = new TrainActionInfo();
+		trainActionInfo.iCourseId = mCourseId;
+		trainActionInfo.iTrainId = mTrainId;
+		trainActionInfo.strGroupNum = "第" + DataTransferUtil.getInstance().getBigNum(mTrainActionInfoList.size() + 1) + "组";
+		trainActionInfo.iCount = 8;
+		trainActionInfo.iToolWeight = 10;
+		trainActionInfo.iBurning = 60;
+		mTrainActionInfoList.add(trainActionInfo);
+		
+		mTrainActionSetAdapter.notifyDataSetChanged();
+		
+		tvGroupNum.setText(String.valueOf(mTrainActionInfoList.size()));
+		
+		mConsumeSecond = mConsumeSecond + 10;
+		mBurning = mBurning + 20;
+		tvTimeConsume.setText(DateUtil.secToTime(mConsumeSecond));
+		tvBurning.setText(String.valueOf(mBurning));
 	}
 }

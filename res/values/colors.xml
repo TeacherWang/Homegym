@@ -90,4 +90,6 @@
     
     <color name="had_finish_action_num_text_color">#e2d007</color>
     
+    <color name="train_action_set_item_deep_color">#eaeaea</color>
+    
 </resources>

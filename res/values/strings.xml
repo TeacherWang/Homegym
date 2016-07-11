@@ -80,6 +80,9 @@
     <string name="exit_train">退出训练</string>
     <string name="current_day_train_content">当天训练内容</string>
     
+    <string name="group_num_is_bigger_than_9">不能超过9组</string>
+    <string name="group_num_is_smaller_than_1">不能小于1组</string>
+    
     <string name="enter_phone_num">请输入您的手机号</string>
     <string name="enter_pwd">请输入登录密码</string>
 	<string name="fogot_pwd">忘记密码？</string>

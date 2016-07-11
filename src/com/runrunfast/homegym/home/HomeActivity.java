@@ -148,7 +148,7 @@ public class HomeActivity extends FragmentActivity{
 		tvMe.setTextColor(mResources.getColor(R.color.bottom_text_disable_color));
 	}
 
-	private void handleClickAllCourse() {
+	public void handleClickAllCourse() {
 		switchFragment(FRAGMENT_ALL_COURSES);
 		mTrainingType = FRAGMENT_ALL_COURSES;
 		
