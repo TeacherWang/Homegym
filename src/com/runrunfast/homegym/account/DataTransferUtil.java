@@ -6,7 +6,9 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.text.TextUtils;
 import android.util.Log;
@@ -21,6 +23,21 @@ public class DataTransferUtil {
 	private static String[] months_little = { "4", "6", "9", "11" };
 	private static final List<String> list_big = Arrays.asList(months_big);
 	private static final List<String> list_little = Arrays.asList(months_little);
+	
+	private static HashMap numMap;
+	
+	static{
+		numMap = new HashMap();
+		numMap.put(1,"一");
+		numMap.put(2,"二");
+		numMap.put(3,"三");
+		numMap.put(4,"四");
+		numMap.put(5,"五");
+		numMap.put(6,"六");
+		numMap.put(7,"七");
+		numMap.put(8,"八");
+		numMap.put(9,"九");
+	}
 	
 	public static DataTransferUtil getInstance(){
 		if(instance == null){
@@ -212,6 +229,10 @@ public class DataTransferUtil {
 			}
 		}
 		return age;
+	}
+	
+	public String getBigNum(int num){
+		return (String) numMap.get(num);
 	}
 	
 }

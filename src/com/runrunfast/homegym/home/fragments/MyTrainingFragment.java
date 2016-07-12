@@ -66,7 +66,7 @@ public class MyTrainingFragment extends Fragment{
 			
 			@Override
 			public void onAddCourseClicked() {
-				((HomeActivity)getActivity()).switchFragment(HomeActivity.FRAGMENT_ALL_COURSES);
+				((HomeActivity)getActivity()).handleClickAllCourse();
 			}
 		};
 		
