@@ -2,15 +2,16 @@ package com.runrunfast.homegym.course;
 
 import java.util.ArrayList;
 
-import com.runrunfast.homegym.R;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.runrunfast.homegym.R;
 
 public class TrainActionSetAdapter extends BaseAdapter {
 
@@ -22,6 +23,10 @@ public class TrainActionSetAdapter extends BaseAdapter {
 		this.mTrainActionInfoList = trainActionInfos;
 		this.mInflater = LayoutInflater.from(context);
 		this.mContext = context;
+	}
+	
+	public interface ITrainActionItemListener{
+		void onCountClicked(int position);
 	}
 	
 	@Override
@@ -70,6 +75,14 @@ public class TrainActionSetAdapter extends BaseAdapter {
 		holder.tvCount.setText(String.valueOf(trainActionInfo.iCount));
 		holder.tvWeight.setText(String.valueOf(trainActionInfo.iToolWeight));
 		holder.tvKcal.setText(String.valueOf(trainActionInfo.iBurning));
+		
+		holder.tvCount.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+			}
+		});
 		
 		return convertView;
 	}
