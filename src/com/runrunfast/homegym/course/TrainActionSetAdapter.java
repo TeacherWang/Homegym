@@ -19,6 +19,8 @@ public class TrainActionSetAdapter extends BaseAdapter {
 	private LayoutInflater mInflater;
 	private Context mContext;
 	
+	private ITrainActionItemListener mITrainActionItemListener;
+	
 	public TrainActionSetAdapter(Context context, ArrayList<TrainActionInfo> trainActionInfos){
 		this.mTrainActionInfoList = trainActionInfos;
 		this.mInflater = LayoutInflater.from(context);
@@ -27,6 +29,11 @@ public class TrainActionSetAdapter extends BaseAdapter {
 	
 	public interface ITrainActionItemListener{
 		void onCountClicked(int position);
+		void onToolWeightClicked(int position);
+	}
+	
+	public void setOnITrainActionItemListener(ITrainActionItemListener iTrainActionItemListener){
+		this.mITrainActionItemListener = iTrainActionItemListener;
 	}
 	
 	@Override
@@ -48,7 +55,7 @@ public class TrainActionSetAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView, ViewGroup parent) {
 		ViewHolder holder = null;
 		if(convertView == null){
 			holder = new ViewHolder();
@@ -80,7 +87,19 @@ public class TrainActionSetAdapter extends BaseAdapter {
 			
 			@Override
 			public void onClick(View v) {
-				
+				if(mITrainActionItemListener != null){
+					mITrainActionItemListener.onCountClicked(position);
+				}
+			}
+		});
+		
+		holder.tvWeight.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				if(mITrainActionItemListener != null){
+					mITrainActionItemListener.onToolWeightClicked(position);
+				}
 			}
 		});
 		

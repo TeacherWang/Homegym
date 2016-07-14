@@ -6,20 +6,32 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.runrunfast.homegym.R;
+import com.runrunfast.homegym.account.AccountMgr;
 import com.runrunfast.homegym.account.DataTransferUtil;
+import com.runrunfast.homegym.course.TrainActionSetAdapter.ITrainActionItemListener;
 import com.runrunfast.homegym.utils.Const;
 import com.runrunfast.homegym.utils.DateUtil;
+import com.runrunfast.homegym.widget.PopupWindows;
+import com.runrunfast.homegym.widget.WheelView;
+import com.runrunfast.homegym.widget.WheelView.OnWheelViewListener;
 
 public class TrainActionSetActivity extends Activity implements OnClickListener{
 	private final String TAG = "TrainActionSetActivity";
+	
+	private static final int INPUT_TYPE_COUNT = 1;
+	private static final int INPUT_TYPE_TOOL_WEIGHT = 2;
+	
+	private int inputType;
 	
 	private View backView;
 	private TextView tvActionNum, tvTrainName, tvTrainDescript, tvJoinInTeach, tvGroupNum, tvTimeConsume, tvBurning;
@@ -37,6 +49,18 @@ public class TrainActionSetActivity extends Activity implements OnClickListener{
 	
 	private ArrayList<TrainActionInfo> mTrainActionInfoList;
 	private TrainActionSetAdapter mTrainActionSetAdapter;
+	private ITrainActionItemListener mITrainActionItemListener;
+	
+	private RelativeLayout popView;
+	private RelativeLayout selectContainer;
+	private TextView tvPopTitle, tvPopConfirm;
+	private View wheelOneLayout;
+	private WheelView wheelOneWheelView;
+	private PopupWindows popWindows;
+	
+	private TrainActionInfo mTrainActionInfo;
+	private int mCount;
+	private int mToolWeight;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +70,85 @@ public class TrainActionSetActivity extends Activity implements OnClickListener{
 		initView();
 		
 		initData();
+		
+		initListener();
+	}
+
+	private void initListener() {
+		mITrainActionItemListener = new ITrainActionItemListener() {
+			
+			@Override
+			public void onCountClicked(int position) {
+				showCountSelectView(position);
+			}
+
+			@Override
+			public void onToolWeightClicked(int position) {
+				showToolWeightSelectView(position);
+			}
+
+		};
+		mTrainActionSetAdapter.setOnITrainActionItemListener(mITrainActionItemListener);
+	}
+	
+	private void showCountSelectView(int position) {
+		inputType = INPUT_TYPE_COUNT;
+		
+		mTrainActionInfo = mTrainActionInfoList.get(position);
+		int defaultCount = mTrainActionInfo.iCount;
+		
+		selectContainer.removeAllViews();
+//		setSelectContainerWidth();
+		wheelOneLayout = (View)LayoutInflater.from(this).inflate(R.layout.wheel_one, null);
+		selectContainer.addView(wheelOneLayout);
+		tvPopTitle.setText(R.string.select_count);
+		
+		wheelOneWheelView = (WheelView)wheelOneLayout.findViewById(R.id.select_wheelview);
+		wheelOneWheelView.setOnWheelViewListener(new OnWheelViewListener(){
+			@Override
+			public void onSelected(int selectedIndex, String item) {
+				Log.d(TAG, "onSelected, item = " + item);
+				mCount = Integer.valueOf(item);
+			}
+		});
+		wheelOneWheelView.setTextSize(24);
+		wheelOneWheelView.setOffset(1);
+		wheelOneWheelView.setSeletion(DataTransferUtil.getInstance().getCountPostion(defaultCount));
+		wheelOneWheelView.setItems(AccountMgr.getInstance().getCountList());
+		
+		popWindows = new PopupWindows(this, selectContainer);
+		popWindows.setLayout(popView);
+		popWindows.show();
+	}
+	
+	private void showToolWeightSelectView(int position) {
+		inputType = INPUT_TYPE_TOOL_WEIGHT;
+		
+		mTrainActionInfo = mTrainActionInfoList.get(position);
+		int defaultToolWeight = mTrainActionInfo.iToolWeight;
+		
+		selectContainer.removeAllViews();
+//		setSelectContainerWidth();
+		wheelOneLayout = (View)LayoutInflater.from(this).inflate(R.layout.wheel_one, null);
+		selectContainer.addView(wheelOneLayout);
+		tvPopTitle.setText(R.string.select_tool_weight);
+		
+		wheelOneWheelView = (WheelView)wheelOneLayout.findViewById(R.id.select_wheelview);
+		wheelOneWheelView.setOnWheelViewListener(new OnWheelViewListener(){
+			@Override
+			public void onSelected(int selectedIndex, String item) {
+				Log.d(TAG, "onSelected, item = " + item);
+				mToolWeight = Integer.valueOf(item);
+			}
+		});
+		wheelOneWheelView.setTextSize(24);
+		wheelOneWheelView.setOffset(1);
+		wheelOneWheelView.setSeletion(DataTransferUtil.getInstance().getToolWeightPostion(defaultToolWeight));
+		wheelOneWheelView.setItems(AccountMgr.getInstance().getToolWeightList());
+		
+		popWindows = new PopupWindows(this, selectContainer);
+		popWindows.setLayout(popView);
+		popWindows.show();
 	}
 
 	private void initData() {
@@ -127,6 +230,12 @@ public class TrainActionSetActivity extends Activity implements OnClickListener{
 		mListView = (ListView)findViewById(R.id.train_action_list);
 		
 		tvGroupNum = (TextView)findViewById(R.id.tv_group_num);
+		
+		popView = (RelativeLayout)LayoutInflater.from(this).inflate(R.layout.popupwindow_layout, null);
+		tvPopTitle = (TextView)popView.findViewById(R.id.popupwindow_menu_title_text);
+		tvPopConfirm = (TextView)popView.findViewById(R.id.popupwindow_menu_confirm_text);
+		tvPopConfirm.setOnClickListener(this);
+		selectContainer = (RelativeLayout)popView.findViewById(R.id.popupwindow_content);
 	}
 
 	@Override
@@ -146,6 +255,32 @@ public class TrainActionSetActivity extends Activity implements OnClickListener{
 			
 		case R.id.train_action_join_in_text:
 			jumpToVideoDemo();
+			break;
+			
+		case R.id.popupwindow_menu_confirm_text:
+			clickPopConfirm();
+			break;
+			
+		default:
+			break;
+		}
+	}
+
+	private void clickPopConfirm() {
+		if(popWindows == null){
+			Log.e(TAG, "clickPopConfirm, popWindows == null");
+			return;
+		}
+		
+		popWindows.dismiss();
+		
+		switch (inputType) {
+		case INPUT_TYPE_COUNT:
+			mTrainActionInfo.iCount = mCount;
+			break;
+			
+		case INPUT_TYPE_TOOL_WEIGHT:
+			mTrainActionInfo.iToolWeight = mToolWeight;
 			break;
 
 		default:

@@ -45,6 +45,8 @@
     <string name="join_in_teach">进入教学</string>
     <string name="recommend_train">推荐训练</string>
     <string name="train_group_num">训练组数</string>
+    <string name="select_count">次数选择</string>
+    <string name="select_tool_weight">重量选择</string>
     
     <string name="phone_num_empty">手机号码为空</string>
     <string name="phone_num_err">手机号码有误</string>

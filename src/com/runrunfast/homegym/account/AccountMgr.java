@@ -159,6 +159,32 @@ public class AccountMgr {
 		return yearList;
 	}
 	
+	public List<String> getCountList(){
+		List<String> countList = new ArrayList<String>();
+		
+		int count = 1;
+		for(int i=0; i<99; i++){
+			countList.add(String.valueOf(count));
+			count++;
+		}
+		
+		return countList;
+	}
+	
+	public List<String> getToolWeightList(){
+		List<String> toolWeightList = new ArrayList<String>();
+		
+		int toolWeight = 5;
+		
+		while(toolWeight <= 300){
+			toolWeightList.add(String.valueOf(toolWeight));
+			
+			toolWeight = toolWeight + 5;
+		}
+		
+		return toolWeightList;
+	}
+	
 	public List<String> getMonthList(){
 		return Arrays.asList(mResources.getStringArray(R.array.month));
 	}

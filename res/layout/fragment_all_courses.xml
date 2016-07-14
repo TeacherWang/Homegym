@@ -3,16 +3,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/my_course_bg" >
-    
-    <ListView
-        android:id="@+id/all_courses_listview"
+    android:background="@color/home_bg_color" >
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-       	android:layout_marginTop="@dimen/my_course_padding_top_bottom"
-        android:layout_marginBottom="@dimen/my_course_padding_top_bottom"
-        android:divider="@color/my_course_bg"
-        android:dividerHeight="@dimen/course_listview_divider_height" >
-   	</ListView>
+        android:layout_marginTop="@dimen/my_course_margin_top"
+        android:paddingTop="@dimen/my_course_padding_top_bottom"
+        android:paddingBottom="@dimen/my_course_padding_top_bottom"
+        android:paddingLeft="@dimen/my_course_padding_left_right"
+        android:paddingRight="@dimen/my_course_padding_left_right"
+        android:background="@color/my_course_bg" >
+	    <ListView
+	        android:id="@+id/all_courses_listview"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:divider="@color/my_course_bg"
+	        android:dividerHeight="@dimen/course_listview_divider_height" >
+	   	</ListView>
+   	</RelativeLayout>
 
 </LinearLayout>

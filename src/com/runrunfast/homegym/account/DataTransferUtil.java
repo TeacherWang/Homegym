@@ -13,6 +13,10 @@ import java.util.Map;
 import android.text.TextUtils;
 import android.util.Log;
 
+/**
+ * @author TeacherWang
+ *
+ */
 public class DataTransferUtil {
 	private final static String TAG = "DataTransferUtil";
 	private static volatile DataTransferUtil instance;
@@ -162,6 +166,28 @@ public class DataTransferUtil {
 	  */
 	public int getHeightPosition(String strHeight){
 		return (Integer.parseInt(strHeight) - 150);
+	}
+	
+	/**
+	  * @Method: getCountPostion
+	  * @Description: 获取次数选择器的位置
+	  * @param count
+	  * @return	
+	  * 返回类型：int 
+	  */
+	public int getCountPostion(int count){
+		return (count - 1);
+	}
+	
+	/**
+	  * @Method: getToolWeightPostion
+	  * @Description: 获取重量选择器的位置
+	  * @param toolWeight
+	  * @return	
+	  * 返回类型：int 
+	  */
+	public int getToolWeightPostion(int toolWeight){
+		return (toolWeight / 5 - 1);
 	}
 	
 	public static final float BigDecimals(float f, int scale, int roune) {
