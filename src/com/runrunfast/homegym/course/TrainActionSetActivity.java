@@ -19,6 +19,7 @@ import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.account.AccountMgr;
 import com.runrunfast.homegym.account.DataTransferUtil;
 import com.runrunfast.homegym.course.TrainActionSetAdapter.ITrainActionItemListener;
+import com.runrunfast.homegym.utils.ClickUtil;
 import com.runrunfast.homegym.utils.Const;
 import com.runrunfast.homegym.utils.DateUtil;
 import com.runrunfast.homegym.widget.PopupWindows;
@@ -79,11 +80,19 @@ public class TrainActionSetActivity extends Activity implements OnClickListener{
 			
 			@Override
 			public void onCountClicked(int position) {
+				if(ClickUtil.isFastClick()){
+					Log.d(TAG, "onCountClicked, is fast click");
+					return;
+				}
 				showCountSelectView(position);
 			}
 
 			@Override
 			public void onToolWeightClicked(int position) {
+				if(ClickUtil.isFastClick()){
+					Log.d(TAG, "onToolWeightClicked, is fast click");
+					return;
+				}
 				showToolWeightSelectView(position);
 			}
 

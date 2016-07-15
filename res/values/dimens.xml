@@ -110,6 +110,8 @@
 	<dimen name="detail_plan_current_day_text_margin">12dp</dimen>
 	<dimen name="detail_plan_list_margin_top">10dp</dimen>
 	<dimen name="detail_plan_list_margin_left_right">12dp</dimen>
+	<dimen name="detail_plan_join_btn_height">48dp</dimen>
+	<dimen name="join_in_text_size">18sp</dimen>
 	<dimen name="calendar_date_text_size">15sp</dimen>
 	<dimen name="calendar_date_left_img_margin_top">9dp</dimen>
 	<dimen name="calendar_date_left_img_margin_left_right">52dp</dimen>

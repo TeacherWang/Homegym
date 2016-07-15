@@ -18,6 +18,7 @@ import com.runrunfast.homegym.course.CourseAdapter;
 import com.runrunfast.homegym.course.CourseAdapter.ICourseAdapterListener;
 import com.runrunfast.homegym.course.CourseInfo;
 import com.runrunfast.homegym.course.CourseTrainActivity;
+import com.runrunfast.homegym.course.DetailPlanActivity;
 import com.runrunfast.homegym.home.HomeActivity;
 import com.runrunfast.homegym.utils.Const;
 
@@ -55,7 +56,7 @@ public class MyTrainingFragment extends Fragment{
 				CourseInfo courseInfo = mRecommedList.get(position);
 				int courseId = courseInfo.courseId;
 				String courseName = courseInfo.courseName;
-				Intent intent = new Intent(getActivity(), CourseTrainActivity.class);
+				Intent intent = new Intent(getActivity(), DetailPlanActivity.class);
 				intent.putExtra(Const.KEY_COURSE_ID, courseId);
 				intent.putExtra(Const.KEY_COURSE_NAME, courseName);
 				startActivity(intent);

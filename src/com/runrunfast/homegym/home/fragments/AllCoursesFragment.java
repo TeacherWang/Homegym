@@ -15,6 +15,7 @@ import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.course.CourseAdapter;
 import com.runrunfast.homegym.course.CourseInfo;
 import com.runrunfast.homegym.course.CourseTrainActivity;
+import com.runrunfast.homegym.course.DetailPlanActivity;
 import com.runrunfast.homegym.utils.Const;
 
 import java.util.ArrayList;
@@ -51,7 +52,7 @@ public class AllCoursesFragment extends Fragment {
 				CourseInfo courseInfo = mAllCoursesList.get(position);
 				int courseId = courseInfo.courseId;
 				String courseName = courseInfo.courseName;
-				Intent intent = new Intent(getActivity(), CourseTrainActivity.class);
+				Intent intent = new Intent(getActivity(), DetailPlanActivity.class);
 				intent.putExtra(Const.KEY_COURSE_ID, courseId);
 				intent.putExtra(Const.KEY_COURSE_NAME, courseName);
 				startActivity(intent);

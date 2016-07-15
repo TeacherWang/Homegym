@@ -21,6 +21,7 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 	
 	private TextView tvTitle;
 	private Button btnLeft, btnRight;
+	private Button btnStartTrain;
 	
 	private CourseTrainAdapter mCourseTrainAdapter;
 	private ListView mCourseTrainListView;

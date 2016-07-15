@@ -77,8 +77,19 @@
         android:textSize="@dimen/detail_plan_current_day_text_size"
         android:background="@color/transparent" />
     
+    <Button 
+        android:id="@+id/btn_join_in_train"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/detail_plan_join_btn_height"
+        android:layout_alignParentBottom="true"
+        android:text="@string/join_train"
+        android:textColor="@color/white"
+        android:textSize="@dimen/join_in_text_size"
+        android:background="@color/feedback_send_text_color" />
+    
     <RelativeLayout
         android:layout_below="@id/current_day_text"
+        android:layout_above="@id/btn_join_in_train"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white" >
