@@ -1,0 +1,41 @@
+package com.runrunfast.homegym.dao;
+
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+
+/* SQliteOpenHelper是一个抽象类，来管理数据库的创建和版本的管理 */
+public class DBOpenHelper extends SQLiteOpenHelper {
+	// 数据库名
+	private static final String DATABASE_NAME = "homegym.db";
+	// 数据库版本
+	private static final int DATABASE_VERSION = 1;
+
+	public DBOpenHelper(Context context) {
+		super(context, DATABASE_NAME, null, DATABASE_VERSION);
+	}
+
+	@Override
+	public void onCreate(SQLiteDatabase db) {
+		// 用户User帐户表
+//		String user = User.sql$UserTable();
+//		db.execSQL(user);
+//		// 喝水记录表
+//		String water = Water.sql$WaterTable();
+//		db.execSQL(water);
+//		// 即时数据
+//		String currentData = CurrentData.sql$CurrentDataTable();
+//		db.execSQL(currentData);
+
+		//如果表不存在就创建表
+		String sql = "CREATE TABLE IF NOT EXISTS "
+				+ "downloadlog(id integer primary key autoincrement,downpath varchar(100),"
+				+ "threadid integer,downlength integer);";
+		db.execSQL(sql);//执行语句
+	}
+	@Override
+	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+		String sql = "DROP TABLE IF EXISTS downloadlog;";
+		db.execSQL(sql);
+	}
+}
