@@ -1,6 +1,5 @@
 package com.runrunfast.homegym.course;
 
-
 public class CourseInfo {
 	public static final int QUALITY_NORMAL = 0;		// 一般课程
 	public static final int QUALITY_EXCELLENT = 1;	// 精品课程
