@@ -17,16 +17,9 @@ public class DBOpenHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		// 用户User帐户表
-//		String user = User.sql$UserTable();
-//		db.execSQL(user);
-//		// 喝水记录表
-//		String water = Water.sql$WaterTable();
-//		db.execSQL(water);
-//		// 即时数据
-//		String currentData = CurrentData.sql$CurrentDataTable();
-//		db.execSQL(currentData);
-
+		String courseInfoTable = CourseDao.getCourseTableSql();
+		db.execSQL(courseInfoTable);
+		
 		//如果表不存在就创建表
 		String sql = "CREATE TABLE IF NOT EXISTS "
 				+ "downloadlog(id integer primary key autoincrement,downpath varchar(100),"

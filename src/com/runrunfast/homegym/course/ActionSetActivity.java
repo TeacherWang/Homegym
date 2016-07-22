@@ -18,7 +18,7 @@ import android.widget.Toast;
 import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.account.AccountMgr;
 import com.runrunfast.homegym.account.DataTransferUtil;
-import com.runrunfast.homegym.course.TrainActionSetAdapter.ITrainActionItemListener;
+import com.runrunfast.homegym.course.ActionSetAdapter.ITrainActionItemListener;
 import com.runrunfast.homegym.utils.ClickUtil;
 import com.runrunfast.homegym.utils.Const;
 import com.runrunfast.homegym.utils.DateUtil;
@@ -26,7 +26,7 @@ import com.runrunfast.homegym.widget.PopupWindows;
 import com.runrunfast.homegym.widget.WheelView;
 import com.runrunfast.homegym.widget.WheelView.OnWheelViewListener;
 
-public class TrainActionSetActivity extends Activity implements OnClickListener{
+public class ActionSetActivity extends Activity implements OnClickListener{
 	private final String TAG = "TrainActionSetActivity";
 	
 	private static final int INPUT_TYPE_COUNT = 1;
@@ -48,8 +48,8 @@ public class TrainActionSetActivity extends Activity implements OnClickListener{
 	private int mConsumeSecond = 500; // 消耗时间
 	private int mBurning = 178; // 燃脂
 	
-	private ArrayList<TrainActionInfo> mTrainActionInfoList;
-	private TrainActionSetAdapter mTrainActionSetAdapter;
+	private ArrayList<ActionInfo> mTrainActionInfoList;
+	private ActionSetAdapter mTrainActionSetAdapter;
 	private ITrainActionItemListener mITrainActionItemListener;
 	
 	private RelativeLayout popView;
@@ -59,7 +59,7 @@ public class TrainActionSetActivity extends Activity implements OnClickListener{
 	private WheelView wheelOneWheelView;
 	private PopupWindows popWindows;
 	
-	private TrainActionInfo mTrainActionInfo;
+	private ActionInfo mTrainActionInfo;
 	private int mCount;
 	private int mToolWeight;
 	
@@ -161,7 +161,7 @@ public class TrainActionSetActivity extends Activity implements OnClickListener{
 	}
 
 	private void initData() {
-		mTrainActionInfoList = new ArrayList<TrainActionInfo>();
+		mTrainActionInfoList = new ArrayList<ActionInfo>();
 		
 		Intent intent = getIntent();
 		mCourseId = intent.getIntExtra(Const.KEY_COURSE_ID, -1);
@@ -174,43 +174,43 @@ public class TrainActionSetActivity extends Activity implements OnClickListener{
 		tvTrainName.setText(mTrainName);
 		tvTrainDescript.setText(mTrainDescript);
 		
-		TrainActionInfo trainActionInfo1 = new TrainActionInfo();
+		ActionInfo trainActionInfo1 = new ActionInfo();
 		trainActionInfo1.iCourseId = mCourseId;
-		trainActionInfo1.iTrainId = mTrainId;
+		trainActionInfo1.iActionId = mTrainId;
 		trainActionInfo1.strGroupNum = "第一组";
 		trainActionInfo1.iCount = 10;
 		trainActionInfo1.iToolWeight = 5;
 		trainActionInfo1.iBurning = 36;
 		mTrainActionInfoList.add(trainActionInfo1);
 		
-		TrainActionInfo trainActionInfo2 = new TrainActionInfo();
+		ActionInfo trainActionInfo2 = new ActionInfo();
 		trainActionInfo2.iCourseId = mCourseId;
-		trainActionInfo2.iTrainId = mTrainId;
+		trainActionInfo2.iActionId = mTrainId;
 		trainActionInfo2.strGroupNum = "第二组";
 		trainActionInfo2.iCount = 10;
 		trainActionInfo2.iToolWeight = 10;
 		trainActionInfo2.iBurning = 45;
 		mTrainActionInfoList.add(trainActionInfo2);
 		
-		TrainActionInfo trainActionInfo3 = new TrainActionInfo();
+		ActionInfo trainActionInfo3 = new ActionInfo();
 		trainActionInfo3.iCourseId = mCourseId;
-		trainActionInfo3.iTrainId = mTrainId;
+		trainActionInfo3.iActionId = mTrainId;
 		trainActionInfo3.strGroupNum = "第三组";
 		trainActionInfo3.iCount = 12;
 		trainActionInfo3.iToolWeight = 15;
 		trainActionInfo3.iBurning = 50;
 		mTrainActionInfoList.add(trainActionInfo3);
 		
-		TrainActionInfo trainActionInfo4 = new TrainActionInfo();
+		ActionInfo trainActionInfo4 = new ActionInfo();
 		trainActionInfo4.iCourseId = mCourseId;
-		trainActionInfo4.iTrainId = mTrainId;
+		trainActionInfo4.iActionId = mTrainId;
 		trainActionInfo4.strGroupNum = "第四组";
 		trainActionInfo4.iCount = 8;
 		trainActionInfo4.iToolWeight = 10;
 		trainActionInfo4.iBurning = 60;
 		mTrainActionInfoList.add(trainActionInfo4);
 		
-		mTrainActionSetAdapter = new TrainActionSetAdapter(this, mTrainActionInfoList);
+		mTrainActionSetAdapter = new ActionSetAdapter(this, mTrainActionInfoList);
 		mListView.setAdapter(mTrainActionSetAdapter);
 		
 		tvGroupNum.setText(String.valueOf(mTrainActionInfoList.size()));
@@ -325,9 +325,9 @@ public class TrainActionSetActivity extends Activity implements OnClickListener{
 			return;
 		}
 		
-		TrainActionInfo trainActionInfo = new TrainActionInfo();
+		ActionInfo trainActionInfo = new ActionInfo();
 		trainActionInfo.iCourseId = mCourseId;
-		trainActionInfo.iTrainId = mTrainId;
+		trainActionInfo.iActionId = mTrainId;
 		trainActionInfo.strGroupNum = "第" + DataTransferUtil.getInstance().getBigNum(mTrainActionInfoList.size() + 1) + "组";
 		trainActionInfo.iCount = 8;
 		trainActionInfo.iToolWeight = 10;

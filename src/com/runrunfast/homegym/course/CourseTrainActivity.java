@@ -62,7 +62,7 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 		String actionNum = courseTrainInfo.strActionNum;
 		String trainDecript = courseTrainInfo.strTrainDescript;
 		
-		Intent intent = new Intent(CourseTrainActivity.this, TrainActionSetActivity.class);
+		Intent intent = new Intent(CourseTrainActivity.this, ActionSetActivity.class);
 		intent.putExtra(Const.KEY_COURSE_ID, mCourseId);
 		intent.putExtra(Const.KEY_TRAIN_ID, trainId);
 		intent.putExtra(Const.KEY_TRAIN_NAME, trainName);

@@ -13,15 +13,15 @@ import android.widget.TextView;
 
 import com.runrunfast.homegym.R;
 
-public class TrainActionSetAdapter extends BaseAdapter {
+public class ActionSetAdapter extends BaseAdapter {
 
-	private ArrayList<TrainActionInfo> mTrainActionInfoList;
+	private ArrayList<ActionInfo> mTrainActionInfoList;
 	private LayoutInflater mInflater;
 	private Context mContext;
 	
 	private ITrainActionItemListener mITrainActionItemListener;
 	
-	public TrainActionSetAdapter(Context context, ArrayList<TrainActionInfo> trainActionInfos){
+	public ActionSetAdapter(Context context, ArrayList<ActionInfo> trainActionInfos){
 		this.mTrainActionInfoList = trainActionInfos;
 		this.mInflater = LayoutInflater.from(context);
 		this.mContext = context;
@@ -71,7 +71,7 @@ public class TrainActionSetAdapter extends BaseAdapter {
 			holder = (ViewHolder)convertView.getTag();
 		}
 		
-		TrainActionInfo trainActionInfo = mTrainActionInfoList.get(position);
+		ActionInfo trainActionInfo = mTrainActionInfoList.get(position);
 		
 		if( (position % 2) == 0 ){
 			holder.layout.setBackgroundColor(mContext.getResources().getColor(R.color.my_course_bg));

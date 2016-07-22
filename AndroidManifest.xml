@@ -133,7 +133,7 @@
         </activity>
         
         <activity
-            android:name="com.runrunfast.homegym.course.TrainActionSetActivity"
+            android:name="com.runrunfast.homegym.course.ActionSetActivity"
             android:theme="@android:style/Theme.NoTitleBar"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:screenOrientation="portrait" >
