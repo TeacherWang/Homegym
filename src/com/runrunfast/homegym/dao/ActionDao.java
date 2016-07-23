@@ -3,16 +3,12 @@ package com.runrunfast.homegym.dao;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.json.JSONArray;
-
-import android.R.integer;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.runrunfast.homegym.course.ActionInfo;
-import com.runrunfast.homegym.course.CourseInfo;
 import com.runrunfast.homegym.utils.Const;
 
 public class ActionDao {
@@ -35,6 +31,9 @@ public class ActionDao {
 				+ " (" + Const.DB_KEY_ROW + " INTEGER PRIMARY KEY,"
 				+ Const.DB_KEY_ACTION_ID + " TEXT,"
 				+ Const.DB_KEY_ACTION_NAME + " TEXT,"
+				+ Const.DB_KEY_ACTION_POSITION + " TEXT,"
+				+ Const.DB_KEY_ACTION_DESCRIPT + " TEXT,"
+				+ Const.DB_KEY_DEFAULT_TIME + " TEXT,"
 				+ Const.DB_KEY_DEFAULT_GROUP_NUM + " TEXT,"
 				+ Const.DB_KEY_DEFAULT_COUNT + " TEXT,"
 				+ Const.DB_KEY_DEFAULT_TOOL_WEIGHT + " TEXT"
@@ -50,18 +49,21 @@ public class ActionDao {
 			db = dbHelper.getWritableDatabase();
 			ContentValues values = new ContentValues();
 			
-			values.put(Const.DB_KEY_ACTION_ID, actionInfo.iActionId);
+			values.put(Const.DB_KEY_ACTION_ID, actionInfo.strActionId);
 			values.put(Const.DB_KEY_ACTION_NAME, actionInfo.actionName);
+			values.put(Const.DB_KEY_ACTION_POSITION, actionInfo.strTrainPosition);
+			values.put(Const.DB_KEY_ACTION_DESCRIPT, actionInfo.strTrainDescript);
+			values.put(Const.DB_KEY_DEFAULT_TIME, String.valueOf(actionInfo.iTime));
 			values.put(Const.DB_KEY_DEFAULT_GROUP_NUM, actionInfo.defaultGroupNum);
 			values.put(Const.DB_KEY_DEFAULT_COUNT, actionInfo.defaultCountList.toString());
 			values.put(Const.DB_KEY_DEFAULT_TOOL_WEIGHT, actionInfo.defaultToolWeightList.toString());
 			values.put(Const.DB_KEY_DEFAULT_BURNING, actionInfo.defaultBurningList.toString());
 			
 			c = db.query(Const.TABLE_ACTION, null, Const.DB_KEY_ACTION_ID + " = ?",
-					new String[] { String.valueOf(actionInfo.iActionId) }, null, null, null);
+					new String[] { String.valueOf(actionInfo.strActionId) }, null, null, null);
 			if (c.getCount() > 0) {// 查询到数据库有该数据，就更新该行数据
 				db.update(Const.TABLE_ACTION, values, Const.DB_KEY_ACTION_ID + " = ?",
-						new String[] { String.valueOf(actionInfo.iActionId) });
+						new String[] { String.valueOf(actionInfo.strActionId) });
 			}else{
 				db.insert(Const.TABLE_ACTION, null, values);
 			}
@@ -92,8 +94,11 @@ public class ActionDao {
 				
 				actionInfo = new ActionInfo();
 				
-				actionInfo.iActionId = c.getInt(c.getColumnIndex(Const.DB_KEY_ACTION_ID));
+				actionInfo.strActionId = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_ID));
 				actionInfo.actionName = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_NAME));
+				actionInfo.strTrainPosition = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_POSITION));
+				actionInfo.strTrainDescript = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_DESCRIPT));
+				actionInfo.iTime = Integer.parseInt(c.getString(c.getColumnIndex(Const.DB_KEY_DEFAULT_TIME)));
 				actionInfo.defaultGroupNum = c.getInt(c.getColumnIndex(Const.DB_KEY_DEFAULT_GROUP_NUM));
 				actionInfo.defaultCountList = (ArrayList<String>) Arrays.asList( c.getString(c.getColumnIndex(Const.DB_KEY_DEFAULT_COUNT)).split(",") );
 				actionInfo.defaultToolWeightList = (ArrayList<String>) Arrays.asList( c.getString(c.getColumnIndex(Const.DB_KEY_DEFAULT_TOOL_WEIGHT)).split(",") );

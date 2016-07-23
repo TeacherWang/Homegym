@@ -1,6 +1,7 @@
 package com.runrunfast.homegym.dao;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.json.JSONArray;
 
@@ -34,6 +35,7 @@ public class CourseDao {
 				+ Const.DB_KEY_COURSE_NAME + " TEXT,"
 				+ Const.DB_KEY_ACTION_IDS + " TEXT,"
 				+ Const.DB_KEY_DATE_NUM + " TEXT,"
+				+ Const.DB_KEY_DATE_ACTION_IDS + " TEXT,"
 				+ Const.DB_KEY_RECOMMEND + " TEXT,"
 				+ Const.DB_KEY_COURSE_QUALITY + " TEXT,"
 				+ Const.DB_KEY_NEW_COURSE + " TEXT"
@@ -52,7 +54,8 @@ public class CourseDao {
 			values.put(Const.DB_KEY_COURSE_ID, courseInfo.courseId);
 			values.put(Const.DB_KEY_COURSE_NAME, courseInfo.courseName);
 			values.put(Const.DB_KEY_ACTION_IDS, courseInfo.actionIds.toString());
-			values.put(Const.DB_KEY_DATE_NUM, courseInfo.dateNumJsonArray.toString());
+			values.put(Const.DB_KEY_DATE_NUM, courseInfo.dateNumList.toString());
+			values.put(Const.DB_KEY_DATE_ACTION_IDS, courseInfo.dateActionIdList.toString());
 			values.put(Const.DB_KEY_RECOMMEND, (courseInfo.isRecommend ? 1 : 0));
 			values.put(Const.DB_KEY_COURSE_QUALITY, courseInfo.courseQuality);
 			values.put(Const.DB_KEY_NEW_COURSE, (courseInfo.isNew ? 1 : 0));
@@ -90,10 +93,11 @@ public class CourseDao {
 				while (c.moveToNext()) {
 					CourseInfo courseInfo = new CourseInfo();
 					
-					courseInfo.courseId = c.getInt(c.getColumnIndex(Const.DB_KEY_COURSE_ID));
+					courseInfo.courseId = c.getString(c.getColumnIndex(Const.DB_KEY_COURSE_ID));
 					courseInfo.courseName = c.getString(c.getColumnIndex(Const.DB_KEY_COURSE_NAME));
-					courseInfo.actionIds = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_IDS)).split(",");
-					courseInfo.dateNumJsonArray = new JSONArray(c.getString(c.getColumnIndex(Const.DB_KEY_DATE_NUM)));
+					courseInfo.actionIds = Arrays.asList(c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_IDS)).split(","));
+					courseInfo.dateNumList = Arrays.asList(c.getString(c.getColumnIndex(Const.DB_KEY_DATE_NUM)).split(","));
+					courseInfo.dateActionIdList = Arrays.asList(c.getString(c.getColumnIndex(Const.DB_KEY_DATE_ACTION_IDS)).split(";"));
 					courseInfo.isRecommend = c.getInt(c.getColumnIndex(Const.DB_KEY_RECOMMEND)) == 1 ? true : false;
 					courseInfo.courseQuality = c.getInt(c.getColumnIndex(Const.DB_KEY_COURSE_QUALITY));
 					courseInfo.isNew = c.getInt(c.getColumnIndex(Const.DB_KEY_NEW_COURSE)) == 1 ? true : false;
@@ -129,10 +133,11 @@ public class CourseDao {
 				
 				courseInfo = new CourseInfo();
 				
-				courseInfo.courseId = c.getInt(c.getColumnIndex(Const.DB_KEY_COURSE_ID));
+				courseInfo.courseId = c.getString(c.getColumnIndex(Const.DB_KEY_COURSE_ID));
 				courseInfo.courseName = c.getString(c.getColumnIndex(Const.DB_KEY_COURSE_NAME));
-				courseInfo.actionIds = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_IDS)).split(",");
-				courseInfo.dateNumJsonArray = new JSONArray(c.getString(c.getColumnIndex(Const.DB_KEY_DATE_NUM)));
+				courseInfo.actionIds = Arrays.asList(c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_IDS)).split(","));
+				courseInfo.dateNumList = Arrays.asList(c.getString(c.getColumnIndex(Const.DB_KEY_DATE_NUM)).split(","));
+				courseInfo.dateActionIdList = Arrays.asList(c.getString(c.getColumnIndex(Const.DB_KEY_DATE_ACTION_IDS)).split(";"));
 				courseInfo.isRecommend = c.getInt(c.getColumnIndex(Const.DB_KEY_RECOMMEND)) == 1 ? true : false;
 				courseInfo.courseQuality = c.getInt(c.getColumnIndex(Const.DB_KEY_COURSE_QUALITY));
 				courseInfo.isNew = c.getInt(c.getColumnIndex(Const.DB_KEY_NEW_COURSE)) == 1 ? true : false;

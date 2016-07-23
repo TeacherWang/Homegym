@@ -32,4 +32,5 @@ public class UserInfo {
 	public String strBirthday;
 	public String strWeight;
 	public String strHeight;
+	public String strCity;
 }

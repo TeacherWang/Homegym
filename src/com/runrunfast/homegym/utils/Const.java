@@ -28,11 +28,15 @@ public class Const {
 	public static final String DB_KEY_COURSE_NAME = "course_name";
 	public static final String DB_KEY_ACTION_IDS = "action_ids";
 	public static final String DB_KEY_DATE_NUM = "date_num";
+	public static final String DB_KEY_DATE_ACTION_IDS = "date_action_ids";
 	public static final String DB_KEY_RECOMMEND = "recommend";
 	public static final String DB_KEY_COURSE_QUALITY = "course_quality";
 	public static final String DB_KEY_NEW_COURSE = "new_course";
 	public static final String DB_KEY_ACTION_ID = "action_id";
 	public static final String DB_KEY_ACTION_NAME = "action_name";
+	public static final String DB_KEY_ACTION_POSITION = "action_position"; // 动作锻炼的部位
+	public static final String DB_KEY_ACTION_DESCRIPT = "action_descript"; // 动作的描述
+	public static final String DB_KEY_DEFAULT_TIME = "default_group_num";
 	public static final String DB_KEY_DEFAULT_GROUP_NUM = "default_group_num";
 	public static final String DB_KEY_DEFAULT_COUNT = "default_count";
 	public static final String DB_KEY_DEFAULT_TOOL_WEIGHT = "default_tool_weight";

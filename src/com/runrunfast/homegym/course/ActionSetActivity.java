@@ -38,8 +38,8 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 	private TextView tvActionNum, tvTrainName, tvTrainDescript, tvJoinInTeach, tvGroupNum, tvTimeConsume, tvBurning;
 	private Button btnAdd, btnMinus;
 	
-	private int mCourseId;
-	private int mTrainId;
+	private String mCourseId;
+	private String mTrainId;
 	private String mTrainName;
 	private String mTrainDescript;
 	private String mActionNum;
@@ -164,8 +164,8 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 		mTrainActionInfoList = new ArrayList<ActionInfo>();
 		
 		Intent intent = getIntent();
-		mCourseId = intent.getIntExtra(Const.KEY_COURSE_ID, -1);
-		mTrainId = intent.getIntExtra(Const.KEY_TRAIN_ID, -1);
+		mCourseId = intent.getStringExtra(Const.KEY_COURSE_ID);
+		mTrainId = intent.getStringExtra(Const.KEY_TRAIN_ID);
 		mTrainName = intent.getStringExtra(Const.KEY_TRAIN_NAME);
 		mTrainDescript = intent.getStringExtra(Const.KEY_TRAIN_DESCRIPT);
 		mActionNum = intent.getStringExtra(Const.KEY_ACTION_NUM);
@@ -175,8 +175,8 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 		tvTrainDescript.setText(mTrainDescript);
 		
 		ActionInfo trainActionInfo1 = new ActionInfo();
-		trainActionInfo1.iCourseId = mCourseId;
-		trainActionInfo1.iActionId = mTrainId;
+		trainActionInfo1.strCourseId = mCourseId;
+		trainActionInfo1.strActionId = mTrainId;
 		trainActionInfo1.strGroupNum = "第一组";
 		trainActionInfo1.iCount = 10;
 		trainActionInfo1.iToolWeight = 5;
@@ -184,8 +184,8 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 		mTrainActionInfoList.add(trainActionInfo1);
 		
 		ActionInfo trainActionInfo2 = new ActionInfo();
-		trainActionInfo2.iCourseId = mCourseId;
-		trainActionInfo2.iActionId = mTrainId;
+		trainActionInfo2.strCourseId = mCourseId;
+		trainActionInfo2.strActionId = mTrainId;
 		trainActionInfo2.strGroupNum = "第二组";
 		trainActionInfo2.iCount = 10;
 		trainActionInfo2.iToolWeight = 10;
@@ -193,8 +193,8 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 		mTrainActionInfoList.add(trainActionInfo2);
 		
 		ActionInfo trainActionInfo3 = new ActionInfo();
-		trainActionInfo3.iCourseId = mCourseId;
-		trainActionInfo3.iActionId = mTrainId;
+		trainActionInfo3.strCourseId = mCourseId;
+		trainActionInfo3.strActionId = mTrainId;
 		trainActionInfo3.strGroupNum = "第三组";
 		trainActionInfo3.iCount = 12;
 		trainActionInfo3.iToolWeight = 15;
@@ -202,8 +202,8 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 		mTrainActionInfoList.add(trainActionInfo3);
 		
 		ActionInfo trainActionInfo4 = new ActionInfo();
-		trainActionInfo4.iCourseId = mCourseId;
-		trainActionInfo4.iActionId = mTrainId;
+		trainActionInfo4.strCourseId = mCourseId;
+		trainActionInfo4.strActionId = mTrainId;
 		trainActionInfo4.strGroupNum = "第四组";
 		trainActionInfo4.iCount = 8;
 		trainActionInfo4.iToolWeight = 10;
@@ -326,8 +326,8 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 		}
 		
 		ActionInfo trainActionInfo = new ActionInfo();
-		trainActionInfo.iCourseId = mCourseId;
-		trainActionInfo.iActionId = mTrainId;
+		trainActionInfo.strCourseId = mCourseId;
+		trainActionInfo.strActionId = mTrainId;
 		trainActionInfo.strGroupNum = "第" + DataTransferUtil.getInstance().getBigNum(mTrainActionInfoList.size() + 1) + "组";
 		trainActionInfo.iCount = 8;
 		trainActionInfo.iToolWeight = 10;

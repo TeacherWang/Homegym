@@ -54,7 +54,7 @@ public class MyTrainingFragment extends Fragment{
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				CourseInfo courseInfo = mRecommedList.get(position);
-				int courseId = courseInfo.courseId;
+				String courseId = courseInfo.courseId;
 				String courseName = courseInfo.courseName;
 				Intent intent = new Intent(getActivity(), DetailPlanActivity.class);
 				intent.putExtra(Const.KEY_COURSE_ID, courseId);
