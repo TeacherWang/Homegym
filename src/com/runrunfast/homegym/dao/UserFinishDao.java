@@ -24,7 +24,7 @@ public class UserFinishDao {
 	}
 	
 	public static String getUserFinishTableSql(){
-		String sql = "create table if not exists " + Const.TABLE_USER
+		String sql = "create table if not exists " + Const.TABLE_FINISH
 				+ " (" + Const.DB_KEY_ROW + " INTEGER PRIMARY KEY,"
 				+ Const.DB_KEY_UID + " TEXT,"
 				+ Const.DB_KEY_COURSE_ID + " TEXT,"
@@ -37,40 +37,40 @@ public class UserFinishDao {
 		return sql;
 	}
 	
-	public void saveUserInfoToDb(Context context, UserInfo userInfo){
+	public void saveUserFinishToDb(Context context, UserInfo userInfo){
 		Cursor c = null;
 		SQLiteDatabase db = null;
-		try {
-			DBOpenHelper dbHelper = new DBOpenHelper(context);
-			db = dbHelper.getWritableDatabase();
-			ContentValues values = new ContentValues();
-			
-			values.put(Const.DB_KEY_UID, userInfo.strAccountId);
-			values.put(Const.DB_KEY_NICK, userInfo.strNickName);
-			values.put(Const.DB_KEY_SEX, userInfo.strSex);
-			values.put(Const.DB_KEY_BIRTH, userInfo.strBirthday);
-			values.put(Const.DB_KEY_WEIGHT, userInfo.strWeight);
-			values.put(Const.DB_KEY_HEIGHT, userInfo.strHeight);
-			values.put(Const.DB_KEY_CITY, userInfo.strCity);
-			
-			c = db.query(Const.TABLE_USER, null, Const.DB_KEY_UID + " = ?",
-					new String[] { userInfo.strAccountId }, null, null, null);
-			if (c.getCount() > 0) {// 查询到数据库有该数据，就更新该行数据
-				db.update(Const.TABLE_USER, values, Const.DB_KEY_UID + " = ?",
-						new String[] { userInfo.strAccountId });
-			}else{
-				db.insert(Const.TABLE_USER, null, values);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally{
-			if(c != null){
-				c.close();
-			}
-			if(db != null){
-				db.close();
-			}
-		}
+//		try {
+//			DBOpenHelper dbHelper = new DBOpenHelper(context);
+//			db = dbHelper.getWritableDatabase();
+//			ContentValues values = new ContentValues();
+//			
+//			values.put(Const.DB_KEY_UID, userInfo.strAccountId);
+//			values.put(Const.DB_KEY_NICK, userInfo.strNickName);
+//			values.put(Const.DB_KEY_SEX, userInfo.strSex);
+//			values.put(Const.DB_KEY_BIRTH, userInfo.strBirthday);
+//			values.put(Const.DB_KEY_WEIGHT, userInfo.strWeight);
+//			values.put(Const.DB_KEY_HEIGHT, userInfo.strHeight);
+//			values.put(Const.DB_KEY_CITY, userInfo.strCity);
+//			
+//			c = db.query(Const.TABLE_FINISH, null, Const.DB_KEY_UID + " = ?",
+//					new String[] { userInfo.strAccountId }, null, null, null);
+//			if (c.getCount() > 0) {// 查询到数据库有该数据，就更新该行数据
+//				db.update(Const.TABLE_FINISH, values, Const.DB_KEY_UID + " = ?",
+//						new String[] { userInfo.strAccountId });
+//			}else{
+//				db.insert(Const.TABLE_FINISH, null, values);
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		} finally{
+//			if(c != null){
+//				c.close();
+//			}
+//			if(db != null){
+//				db.close();
+//			}
+//		}
 	}
 	
 }

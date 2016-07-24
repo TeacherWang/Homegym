@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.runrunfast.homegym.course.ActionInfo;
+import com.runrunfast.homegym.course.CourseInfo;
 import com.runrunfast.homegym.utils.Const;
 
 public class ActionDao {
@@ -36,7 +37,8 @@ public class ActionDao {
 				+ Const.DB_KEY_DEFAULT_TIME + " TEXT,"
 				+ Const.DB_KEY_DEFAULT_GROUP_NUM + " TEXT,"
 				+ Const.DB_KEY_DEFAULT_COUNT + " TEXT,"
-				+ Const.DB_KEY_DEFAULT_TOOL_WEIGHT + " TEXT"
+				+ Const.DB_KEY_DEFAULT_TOOL_WEIGHT + " TEXT,"
+				+ Const.DB_KEY_DEFAULT_BURNING + " TEXT"
 				+ ");";
 		return sql;
 	}
@@ -118,4 +120,45 @@ public class ActionDao {
 		
 		return actionInfo;
 	}
+	
+	public synchronized ArrayList<ActionInfo> getActionInfoListFromDb(Context context) {
+		ArrayList<ActionInfo> actionInfoList = new ArrayList<ActionInfo>();
+		SQLiteDatabase db = null;
+		Cursor c = null;
+		try {
+			DBOpenHelper dbHelper = new DBOpenHelper(context);
+			db = dbHelper.getWritableDatabase();
+			
+			c = db.query(Const.TABLE_ACTION, null, null, null, null, null, null);
+			if(null != c && c.getCount() > 0){
+				while (c.moveToNext()) {
+					ActionInfo actionInfo = new ActionInfo();
+					
+					actionInfo.strActionId = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_ID));
+					actionInfo.actionName = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_NAME));
+					actionInfo.strTrainPosition = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_POSITION));
+					actionInfo.strTrainDescript = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_DESCRIPT));
+					actionInfo.iTime = Integer.parseInt(c.getString(c.getColumnIndex(Const.DB_KEY_DEFAULT_TIME)));
+					actionInfo.defaultGroupNum = c.getInt(c.getColumnIndex(Const.DB_KEY_DEFAULT_GROUP_NUM));
+					actionInfo.defaultCountList = (ArrayList<String>) Arrays.asList( c.getString(c.getColumnIndex(Const.DB_KEY_DEFAULT_COUNT)).split(",") );
+					actionInfo.defaultToolWeightList = (ArrayList<String>) Arrays.asList( c.getString(c.getColumnIndex(Const.DB_KEY_DEFAULT_TOOL_WEIGHT)).split(",") );
+					actionInfo.defaultBurningList = (ArrayList<String>) Arrays.asList( c.getString(c.getColumnIndex(Const.DB_KEY_DEFAULT_BURNING)).split(",") );
+					
+					actionInfoList.add(actionInfo);
+				}
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally{
+			if(c != null){
+				c.close();
+			}
+			if(db != null){
+				db.close();
+			}
+		}
+		return actionInfoList;
+	}
+	
 }

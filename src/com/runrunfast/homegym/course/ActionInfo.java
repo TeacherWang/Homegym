@@ -1,6 +1,7 @@
 package com.runrunfast.homegym.course;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ActionInfo {
 	public String strCourseId; // 课程id
@@ -8,11 +9,11 @@ public class ActionInfo {
 	public String actionName;
 	public String strTrainPosition; // 锻炼的部位
 	public String strTrainDescript; // 简单描述
-	public int iTime; // 分钟
+	public int iTime; // 秒
 	public int defaultGroupNum;
-	public ArrayList<String> defaultCountList;
-	public ArrayList<String> defaultToolWeightList;
-	public ArrayList<String> defaultBurningList;
+	public List<String> defaultCountList = new ArrayList<String>();
+	public List<String> defaultToolWeightList = new ArrayList<String>();
+	public List<String> defaultBurningList = new ArrayList<String>();
 	
 	public String strGroupNum; // 第几组
 	public int iCount; // 次数

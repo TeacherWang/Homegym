@@ -3,6 +3,7 @@ package com.runrunfast.homegym.record;
 import java.util.ArrayList;
 
 import com.runrunfast.homegym.R;
+import com.runrunfast.homegym.utils.DateUtil;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -128,13 +129,13 @@ public class RecordAdapter extends BaseAdapter {
 			RecordDataDate recordDataDate = (RecordDataDate)baseRecordData;
 			recordDateViewHolder.tvDate.setText(recordDataDate.strDate);
 			recordDateViewHolder.tvCourseName.setText(recordDataDate.strCourseName);
-			recordDateViewHolder.tvCourseConsumeTime.setText(recordDataDate.strConsumeTime);
+			recordDateViewHolder.tvCourseConsumeTime.setText(DateUtil.secToTime(recordDataDate.iConsumeTime));
 			break;
 			
 		case LIST_SHOW_ONLY_COURSE:
 			RecordDataPlan recordDataPlan = (RecordDataPlan)baseRecordData;
 			recordCourseViewHolder.tvCourseName.setText(recordDataPlan.strCourseName);
-			recordCourseViewHolder.tvCourseConsumeTime.setText(recordDataPlan.strConsumeTime);
+			recordCourseViewHolder.tvCourseConsumeTime.setText(DateUtil.secToTime(recordDataPlan.iConsumeTime));
 			break;
 			
 		case LIST_SHOW_ONLY_TRAIN:

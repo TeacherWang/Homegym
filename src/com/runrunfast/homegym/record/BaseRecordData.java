@@ -6,6 +6,6 @@ public class BaseRecordData {
 	public static final int DATA_TYPE_ONLY_HAVE_TRAIN 	= 3; // 不带课程计划，只带训练
 	
 	public int iDataType; // 数据类型
-	public int iCoursId; // 课程计划id
+	public String strCoursId; // 课程计划id
 	public String strCourseName; // 课程计划名称
 }

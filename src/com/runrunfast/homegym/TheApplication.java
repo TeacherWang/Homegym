@@ -1,6 +1,7 @@
 package com.runrunfast.homegym;
 
 import com.runrunfast.homegym.account.AccountMgr;
+import com.runrunfast.homegym.course.DataIniter;
 import com.runrunfast.homegym.utils.Globle;
 
 import org.xutils.x;
@@ -16,5 +17,7 @@ public class TheApplication extends Application{
 	    x.Ext.setDebug(BuildConfig.DEBUG); // 是否输出debug日志, 开启debug会影响性能.
 	    
 	    AccountMgr.getInstance().loadUserInfo();
+	    
+	    DataIniter.getInstance().initData();
 	}
 }

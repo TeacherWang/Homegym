@@ -16,7 +16,9 @@ import com.runrunfast.homegym.course.CourseAdapter;
 import com.runrunfast.homegym.course.CourseInfo;
 import com.runrunfast.homegym.course.CourseTrainActivity;
 import com.runrunfast.homegym.course.DetailPlanActivity;
+import com.runrunfast.homegym.dao.CourseDao;
 import com.runrunfast.homegym.utils.Const;
+import com.runrunfast.homegym.utils.Globle;
 
 import java.util.ArrayList;
 
@@ -63,31 +65,9 @@ public class AllCoursesFragment extends Fragment {
 	private void initData() {
 		mAllCoursesList = new ArrayList<CourseInfo>();
 		
-		CourseInfo courseInfo1 = new CourseInfo();
-		courseInfo1.isMyCourse = false;
-		courseInfo1.isNew = true;
-		courseInfo1.courseName = "塑性训练";
-		mAllCoursesList.add(courseInfo1);
+		mAllCoursesList = CourseDao.getInstance().getCourseInfoListFromDb(Globle.gApplicationContext);
 		
-		CourseInfo courseInfo2 = new CourseInfo();
-		courseInfo2.isMyCourse = false;
-		courseInfo2.isNew = false;
-		courseInfo2.courseName = "21天腹肌雕刻";
-		mAllCoursesList.add(courseInfo2);
-		
-		CourseInfo courseInfo3 = new CourseInfo();
-		courseInfo3.isMyCourse = false;
-		courseInfo3.isNew = false;
-		courseInfo3.courseName = "S型身材速成";
-		mAllCoursesList.add(courseInfo3);
-		
-		CourseInfo courseInfo4 = new CourseInfo();
-		courseInfo4.isMyCourse = false;
-		courseInfo4.isNew = false;
-		courseInfo4.courseName = "人鱼线训练";
-		mAllCoursesList.add(courseInfo4);
-		
-		mAllCoursesAdapter = new CourseAdapter(getActivity(), mAllCoursesList);
+		mAllCoursesAdapter = new CourseAdapter(getActivity(), mAllCoursesList, false);
 		mAllCoursesListView.setAdapter(mAllCoursesAdapter);
 	}
 

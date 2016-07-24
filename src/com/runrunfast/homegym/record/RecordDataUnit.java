@@ -1,9 +1,12 @@
 package com.runrunfast.homegym.record;
 
-
-public class RecordDataUnit extends BaseRecordData{
+/**
+ * 单个动作的完成情况
+ *
+ */
+public class RecordDataUnit extends RecordDataDate{
 	
-	public int iTrainId; // 本次训练动作id
+	public String actionId; // 本次训练动作id
 	public String trainName; // 本次训练动作名称
 	public int iGroupCount; // 做了几组
 	public int iTotalKcal; // 消耗的总卡路里

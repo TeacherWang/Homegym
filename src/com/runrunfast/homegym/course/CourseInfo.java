@@ -10,7 +10,7 @@ public class CourseInfo {
 	public static final int PROGRESS_ING = 1; // 进行中
 	public static final int PROGRESS_REST = 2; // 休息日
 	
-	public boolean isMyCourse = false; 		// 我参加的课程
+//	public boolean isMyCourse = false; 		// 我参加的课程
 	public boolean isMyCourseEmpty = true; 	// 是否参加过课程
 	public int courseQuality;				// 课程质量
 	public boolean isRecommend = false; 		// 推荐课程
@@ -21,4 +21,6 @@ public class CourseInfo {
 	public List<String> actionIds = new ArrayList<String>();				// 课程动作类型id
 	public List<String> dateNumList = new ArrayList<String>();		// 根据date分布
 	public List<String> dateActionIdList = new ArrayList<String>(); // 根据date分配的动作id
+	
+	public String startDate; // 对于我参加的课程，标示参加的第一天日期
 }

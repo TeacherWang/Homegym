@@ -17,7 +17,6 @@ public class Const {
 	
 	// 数据库字段名称
 	public static final String TABLE_COURSE = "course_table";
-	public static final String TABLE_USER = "user_table";
 	public static final String TABLE_ACTION = "action_table";
 	public static final String TABLE_MY_COURSE = "my_course_table";
 	public static final String TABLE_MY_COURSE_ACTION = "my_course_action_table";
@@ -36,7 +35,7 @@ public class Const {
 	public static final String DB_KEY_ACTION_NAME = "action_name";
 	public static final String DB_KEY_ACTION_POSITION = "action_position"; // 动作锻炼的部位
 	public static final String DB_KEY_ACTION_DESCRIPT = "action_descript"; // 动作的描述
-	public static final String DB_KEY_DEFAULT_TIME = "default_group_num";
+	public static final String DB_KEY_DEFAULT_TIME = "default_time";
 	public static final String DB_KEY_DEFAULT_GROUP_NUM = "default_group_num";
 	public static final String DB_KEY_DEFAULT_COUNT = "default_count";
 	public static final String DB_KEY_DEFAULT_TOOL_WEIGHT = "default_tool_weight";
@@ -46,6 +45,7 @@ public class Const {
 	public static final String DB_KEY_FINISH_GROUP_NUM = "finish_group_num";
 	public static final String DB_KEY_FINISH_COUNT = "finish_count";
 	public static final String DB_KEY_FINISH_KCAL = "finish_kcal";
+	public static final String DB_KEY_FINISH_TIME = "finish_time";
 	public static final String DB_KEY_DATE = "date";
 	
 	public static final String DB_KEY_UID = "uid";

@@ -49,9 +49,9 @@ public class RecordMonthFragment extends Fragment {
 		
 		RecordDataDate recordDataDate = new RecordDataDate();
 		recordDataDate.strDate = DateUtil.getCurrentDate();
-		recordDataDate.iCoursId = 1;
+		recordDataDate.strCoursId = "c1";
 		recordDataDate.strCourseName = "21天增肌计划";
-		recordDataDate.strConsumeTime = DateUtil.secToTime(1000);
+		recordDataDate.iConsumeTime = 1000;
 		mBaseRecordDataList.add(recordDataDate);
 		
 		addPlanA();
@@ -65,18 +65,18 @@ public class RecordMonthFragment extends Fragment {
 
 	private void addPlanA() {
 		RecordDataUnit recordDataUnit = new RecordDataUnit();
-		recordDataUnit.iCoursId = 1;
+		recordDataUnit.strCoursId = "c1";
 		recordDataUnit.strCourseName = "21天增肌计划";
-		recordDataUnit.iTrainId = 1;
+		recordDataUnit.actionId = "a1";
 		recordDataUnit.trainName = "平板式推举";
 		recordDataUnit.iGroupCount = 2;
 		recordDataUnit.iTotalKcal = 49;
 		mBaseRecordDataList.add(recordDataUnit);
 		
 		RecordDataUnit recordDataUnit2 = new RecordDataUnit();
-		recordDataUnit2.iCoursId = 2;
+		recordDataUnit2.strCoursId = "c2";
 		recordDataUnit2.strCourseName = "21天增肌计划";
-		recordDataUnit2.iTrainId = 1;
+		recordDataUnit2.actionId = "a1";
 		recordDataUnit2.trainName = "站式卧推举";
 		recordDataUnit2.iGroupCount = 3;
 		recordDataUnit2.iTotalKcal = 79;
@@ -85,24 +85,24 @@ public class RecordMonthFragment extends Fragment {
 	
 	private void addPlanB() {
 		RecordDataPlan recordDataPlan = new RecordDataPlan();
-		recordDataPlan.iCoursId = 2;
+		recordDataPlan.strCoursId = "c2";
 		recordDataPlan.strCourseName = "腹肌雕刻计划";
-		recordDataPlan.strConsumeTime = DateUtil.secToTime(1000);
+		recordDataPlan.iConsumeTime = 1000;
 		mBaseRecordDataList.add(recordDataPlan);
 		
 		RecordDataUnit recordDataUnit = new RecordDataUnit();
-		recordDataUnit.iCoursId = 2;
+		recordDataUnit.strCoursId = "c2";
 		recordDataUnit.strCourseName = "腹肌雕刻计划";
-		recordDataUnit.iTrainId = 1;
+		recordDataUnit.actionId = "a1";
 		recordDataUnit.trainName = "平板式推举";
 		recordDataUnit.iGroupCount = 5;
 		recordDataUnit.iTotalKcal = 29;
 		mBaseRecordDataList.add(recordDataUnit);
 		
 		RecordDataUnit recordDataUnit2 = new RecordDataUnit();
-		recordDataUnit2.iCoursId = 2;
+		recordDataUnit2.strCoursId = "c2";
 		recordDataUnit2.strCourseName = "腹肌雕刻计划";
-		recordDataUnit2.iTrainId = 2;
+		recordDataUnit2.actionId = "a2";
 		recordDataUnit2.trainName = "站式卧推举";
 		recordDataUnit2.iGroupCount = 6;
 		recordDataUnit2.iTotalKcal = 179;

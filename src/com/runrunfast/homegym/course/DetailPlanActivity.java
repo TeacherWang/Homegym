@@ -37,7 +37,7 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 	private CurrentDayTrainAdapter mCurrentDayTrainAdapter;
 	
 	private boolean isCourseExist = false;
-	private int mCourseId;
+	private String mCourseId;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +65,7 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 	}
 
 	private void initData() {
-		mCourseId = getIntent().getIntExtra(Const.KEY_COURSE_ID, -1);
+		mCourseId = getIntent().getStringExtra(Const.KEY_COURSE_ID);
 		
 		isCourseExist = isCourseExist();
 		

@@ -3,8 +3,6 @@ package com.runrunfast.homegym.dao;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.json.JSONArray;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;

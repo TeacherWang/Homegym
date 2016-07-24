@@ -22,6 +22,7 @@ public class CourseAdapter extends BaseAdapter {
 	private Context mContext;
 	private ArrayList<CourseInfo> mCourseList;
 	private ICourseAdapterListener mICourseAdapterListener;
+	private boolean mIsMyCourse;
 	
 	public interface ICourseAdapterListener{
 		void onAddCourseClicked();
@@ -31,10 +32,11 @@ public class CourseAdapter extends BaseAdapter {
 		this.mICourseAdapterListener = iCourseAdapterListener;
 	}
 	
-	public CourseAdapter(Context context, ArrayList<CourseInfo> courseList){
+	public CourseAdapter(Context context, ArrayList<CourseInfo> courseList, boolean isMyCourse){
 		this.mContext = context;
 		this.mCourseList = courseList;
 		this.mInflater = LayoutInflater.from(context);
+		this.mIsMyCourse = isMyCourse;
 	}
 	
 	@Override
@@ -73,7 +75,7 @@ public class CourseAdapter extends BaseAdapter {
 		}
 		
 		CourseInfo courseInfo = mCourseList.get(position);
-		if(courseInfo.isMyCourse){
+		if(mIsMyCourse){
 			handleMyCourse(viewHolder, courseInfo);
 		}else{
 			handleCourse(viewHolder, courseInfo);

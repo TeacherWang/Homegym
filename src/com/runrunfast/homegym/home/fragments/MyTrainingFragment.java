@@ -79,25 +79,12 @@ public class MyTrainingFragment extends Fragment{
 		mRecommedList = new ArrayList<CourseInfo>();
 		
 		CourseInfo emptyCourseInfo = new CourseInfo();
-		emptyCourseInfo.isMyCourse = true;
 		emptyCourseInfo.isMyCourseEmpty = true;
 		mMyCourseList.add(emptyCourseInfo);
-		mMyCourseAdapter = new CourseAdapter(getActivity(), mMyCourseList);
+		mMyCourseAdapter = new CourseAdapter(getActivity(), mMyCourseList, true);
 		mMyCourseListView.setAdapter(mMyCourseAdapter);
 		
-		CourseInfo courseInfo1 = new CourseInfo();
-		courseInfo1.isMyCourse = false;
-		courseInfo1.isNew = true;
-		courseInfo1.courseName = "21天增肌训练";
-		mRecommedList.add(courseInfo1);
-		
-		CourseInfo courseInfo2 = new CourseInfo();
-		courseInfo2.isMyCourse = false;
-		courseInfo2.isNew = false;
-		courseInfo2.courseName = "腹肌雕刻训练";
-		mRecommedList.add(courseInfo2);
-		
-		mRecommedAdapter = new CourseAdapter(getActivity(), mRecommedList);
+		mRecommedAdapter = new CourseAdapter(getActivity(), mRecommedList, false);
 		mRecommedCourseListView.setAdapter(mRecommedAdapter);
 	}
 
