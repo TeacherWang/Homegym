@@ -27,7 +27,7 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 	private ListView mCourseTrainListView;
 	private ArrayList<CourseTrainInfo> mCourseTrainInfoList;
 	
-	private int mCourseId;
+	private String mCourseId;
 	private String mCourseName;
 	
 	@Override
@@ -74,7 +74,7 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 	private void initData() {
 		mCourseTrainInfoList = new ArrayList<CourseTrainInfo>();
 		
-		mCourseId = getIntent().getIntExtra(Const.KEY_COURSE_ID, -1);
+		mCourseId = getIntent().getStringExtra(Const.KEY_COURSE_ID);
 		mCourseName = getIntent().getStringExtra(Const.KEY_COURSE_NAME);
 		
 		tvTitle.setText(mCourseName);
@@ -171,7 +171,7 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 	private void jumpToTrainDetailActivity() {
 		Intent intent = new Intent(this, DetailPlanActivity.class);
 		
-		intent.putExtra(Const.KEY_COURSE_ID, 1);
+		intent.putExtra(Const.KEY_COURSE_ID, mCourseId);
 		
 		startActivity(intent);
 	}

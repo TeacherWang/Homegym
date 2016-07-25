@@ -102,9 +102,18 @@ public class ActionDao {
 				actionInfo.strTrainDescript = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_DESCRIPT));
 				actionInfo.iTime = Integer.parseInt(c.getString(c.getColumnIndex(Const.DB_KEY_DEFAULT_TIME)));
 				actionInfo.defaultGroupNum = c.getInt(c.getColumnIndex(Const.DB_KEY_DEFAULT_GROUP_NUM));
-				actionInfo.defaultCountList = (ArrayList<String>) Arrays.asList( c.getString(c.getColumnIndex(Const.DB_KEY_DEFAULT_COUNT)).split(",") );
-				actionInfo.defaultToolWeightList = (ArrayList<String>) Arrays.asList( c.getString(c.getColumnIndex(Const.DB_KEY_DEFAULT_TOOL_WEIGHT)).split(",") );
-				actionInfo.defaultBurningList = (ArrayList<String>) Arrays.asList( c.getString(c.getColumnIndex(Const.DB_KEY_DEFAULT_BURNING)).split(",") );
+				
+				String tempDefaultCountString = c.getString(c.getColumnIndex(Const.DB_KEY_DEFAULT_COUNT));
+				String defaultCountString = tempDefaultCountString.substring(1, tempDefaultCountString.length() - 1);
+				actionInfo.defaultCountList = Arrays.asList( defaultCountString.split(",") );
+				
+				String tempDefaultToolWeightString = c.getString(c.getColumnIndex(Const.DB_KEY_DEFAULT_TOOL_WEIGHT));
+				String defaultToolWeightString = tempDefaultToolWeightString.substring(1, tempDefaultToolWeightString.length() - 1);
+				actionInfo.defaultToolWeightList = Arrays.asList( defaultToolWeightString.split(",") );
+				
+				String tempDefaultBurningString = c.getString(c.getColumnIndex(Const.DB_KEY_DEFAULT_BURNING));
+				String defaultBurningString = tempDefaultBurningString.substring(1, tempDefaultBurningString.length() - 1);
+				actionInfo.defaultBurningList = Arrays.asList( defaultBurningString.split(",") );
 			}
 			
 		} catch (Exception e) {
@@ -140,9 +149,18 @@ public class ActionDao {
 					actionInfo.strTrainDescript = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_DESCRIPT));
 					actionInfo.iTime = Integer.parseInt(c.getString(c.getColumnIndex(Const.DB_KEY_DEFAULT_TIME)));
 					actionInfo.defaultGroupNum = c.getInt(c.getColumnIndex(Const.DB_KEY_DEFAULT_GROUP_NUM));
-					actionInfo.defaultCountList = (ArrayList<String>) Arrays.asList( c.getString(c.getColumnIndex(Const.DB_KEY_DEFAULT_COUNT)).split(",") );
-					actionInfo.defaultToolWeightList = (ArrayList<String>) Arrays.asList( c.getString(c.getColumnIndex(Const.DB_KEY_DEFAULT_TOOL_WEIGHT)).split(",") );
-					actionInfo.defaultBurningList = (ArrayList<String>) Arrays.asList( c.getString(c.getColumnIndex(Const.DB_KEY_DEFAULT_BURNING)).split(",") );
+					
+					String tempDefaultCountString = c.getString(c.getColumnIndex(Const.DB_KEY_DEFAULT_COUNT));
+					String defaultCountString = tempDefaultCountString.substring(1, tempDefaultCountString.length() - 1);
+					actionInfo.defaultCountList = Arrays.asList( defaultCountString.split(",") );
+					
+					String tempDefaultToolWeightString = c.getString(c.getColumnIndex(Const.DB_KEY_DEFAULT_TOOL_WEIGHT));
+					String defaultToolWeightString = tempDefaultToolWeightString.substring(1, tempDefaultToolWeightString.length() - 1);
+					actionInfo.defaultToolWeightList = Arrays.asList( defaultToolWeightString.split(",") );
+					
+					String tempDefaultBurningString = c.getString(c.getColumnIndex(Const.DB_KEY_DEFAULT_BURNING));
+					String defaultBurningString = tempDefaultBurningString.substring(1, tempDefaultBurningString.length() - 1);
+					actionInfo.defaultBurningList = Arrays.asList( defaultBurningString.split(",") );
 					
 					actionInfoList.add(actionInfo);
 				}

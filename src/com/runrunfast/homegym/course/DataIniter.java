@@ -112,7 +112,7 @@ public class DataIniter {
 		courseInfo2.dateActionIdList.add("a1");
 		courseInfo2.dateActionIdList.add("a2");
 		
-		courseInfo2.isRecommend = false;
+		courseInfo2.isRecommend = true;
 		courseInfo2.courseQuality = CourseInfo.QUALITY_NORMAL;
 		courseInfoList.add(courseInfo2);
 		

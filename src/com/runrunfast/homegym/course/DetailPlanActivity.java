@@ -14,7 +14,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.runrunfast.homegym.R;
+import com.runrunfast.homegym.account.AccountMgr;
+import com.runrunfast.homegym.dao.CourseDao;
+import com.runrunfast.homegym.dao.MyCourseDao;
 import com.runrunfast.homegym.utils.Const;
+import com.runrunfast.homegym.utils.DateUtil;
+import com.runrunfast.homegym.utils.Globle;
 import com.runrunfast.homegym.widget.DialogActivity;
 import com.runrunfast.homegym.widget.KCalendar;
 import com.runrunfast.homegym.widget.KCalendar.OnCalendarDateChangedListener;
@@ -37,7 +42,9 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 	private CurrentDayTrainAdapter mCurrentDayTrainAdapter;
 	
 	private boolean isCourseExist = false;
+	private boolean isMyCourse = false;
 	private String mCourseId;
+	private CourseInfo mCourseInfo;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -66,13 +73,17 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 
 	private void initData() {
 		mCourseId = getIntent().getStringExtra(Const.KEY_COURSE_ID);
+		mCourseInfo = CourseDao.getInstance().getCourseInfoFromDb(Globle.gApplicationContext, mCourseId);
 		
 		isCourseExist = isCourseExist();
+		isMyCourse = isMyCourse();
 		
-		if(isCourseExist){
+		if(isMyCourse){
 			btnJoin.setText(R.string.start_train);
+			btnRight.setVisibility(View.VISIBLE);
 		}else{
 			btnJoin.setText(R.string.join_train);
+			btnRight.setVisibility(View.INVISIBLE);
 		}
 		
 		tvCalendarDate.setText(kCalendar.getCalendarYear() + mResources.getString(R.string.year)
@@ -112,6 +123,16 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 		
 		mCurrentDayTrainAdapter = new CurrentDayTrainAdapter(this, mContentInfoList);
 		mCurrentDayListView.setAdapter(mCurrentDayTrainAdapter);
+	}
+
+	private boolean isMyCourse() {
+		CourseInfo courseInfo = MyCourseDao.getInstance().getMyCourseInfo(Globle.gApplicationContext, mCourseId);
+		if(courseInfo == null){
+			return false;
+		}else{
+			return true;
+		}
+		
 	}
 
 	private void initView() {
@@ -190,9 +211,11 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 	}
 
 	private void prepareJoinCourse() {
-		// 本地存在此课程视频等信息
-		if(isCourseExist){
+		// 不是我的课程，点击添加到我的课程
+		if( !isMyCourse ){
+			prepareToSaveMyCourse();
 			btnRight.setVisibility(View.VISIBLE);
+			btnJoin.setText(R.string.start_train);
 		}
 		// 本地不存在此课程视频等信息
 		else{
@@ -200,6 +223,14 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 			
 		}
 		
+	}
+
+	private void prepareToSaveMyCourse() {
+		mCourseInfo.startDate = DateUtil.getCurrentDate();
+		
+		Log.i(TAG, "prepareToSaveMyCourse, start date = " + mCourseInfo.startDate);
+		
+		MyCourseDao.getInstance().saveMyCourseInfo(Globle.gApplicationContext, AccountMgr.getInstance().mUserInfo.strAccountId, mCourseInfo);
 	}
 
 	/**
@@ -210,7 +241,7 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 	  */
 	private boolean isCourseExist(){
 		
-		return true;
+		return false;
 	}
 	
 	private void toNextMonth() {

@@ -23,6 +23,7 @@ public class CourseAdapter extends BaseAdapter {
 	private ArrayList<CourseInfo> mCourseList;
 	private ICourseAdapterListener mICourseAdapterListener;
 	private boolean mIsMyCourse;
+	private boolean mIsMyCourseEmpty;
 	
 	public interface ICourseAdapterListener{
 		void onAddCourseClicked();
@@ -32,11 +33,12 @@ public class CourseAdapter extends BaseAdapter {
 		this.mICourseAdapterListener = iCourseAdapterListener;
 	}
 	
-	public CourseAdapter(Context context, ArrayList<CourseInfo> courseList, boolean isMyCourse){
+	public CourseAdapter(Context context, ArrayList<CourseInfo> courseList, boolean isMyCourse, boolean isMyCourseEmpty){
 		this.mContext = context;
 		this.mCourseList = courseList;
 		this.mInflater = LayoutInflater.from(context);
 		this.mIsMyCourse = isMyCourse;
+		this.mIsMyCourseEmpty = isMyCourseEmpty;
 	}
 	
 	@Override
@@ -100,7 +102,7 @@ public class CourseAdapter extends BaseAdapter {
 	 * @param courseInfo
 	 */
 	private void handleMyCourse(ViewHolder viewHolder, CourseInfo courseInfo) {
-		if(courseInfo.isMyCourseEmpty){
+		if(mIsMyCourseEmpty){
 			Log.d(TAG, "handleMyCourse empty");
 			viewHolder.btnAdd.setVisibility(View.VISIBLE);
 			

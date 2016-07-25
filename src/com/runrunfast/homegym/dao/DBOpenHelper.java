@@ -23,6 +23,12 @@ public class DBOpenHelper extends SQLiteOpenHelper {
 		String actionInfoTable = ActionDao.getActionTableSql();
 		db.execSQL(actionInfoTable);
 		
+		String myCourseTable = MyCourseDao.getCourseTableSql();
+		db.execSQL(myCourseTable);
+		
+		String MyCourseActionTable = MyCourseActionDao.getMyCourseTableSql();
+		db.execSQL(MyCourseActionTable);
+		
 		//如果表不存在就创建表
 		String sql = "CREATE TABLE IF NOT EXISTS "
 				+ "downloadlog(id integer primary key autoincrement,downpath varchar(100),"

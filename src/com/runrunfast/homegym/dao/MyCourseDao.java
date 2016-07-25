@@ -100,4 +100,38 @@ public class MyCourseDao {
 		}
 		return courseInfoList;
 	}
+	
+	public CourseInfo getMyCourseInfo(Context context, String courseId){
+		CourseInfo courseInfo = null;
+		SQLiteDatabase db = null;
+		Cursor c = null;
+		try {
+			DBOpenHelper dbHelper = new DBOpenHelper(context);
+			db = dbHelper.getWritableDatabase();
+			
+			c = db.query(Const.TABLE_MY_COURSE, null, Const.DB_KEY_COURSE_ID + "=?", new String[]{ courseId }, null, null, null);
+			if(null != c && c.getCount() > 0){
+				c.moveToNext();
+				
+				courseInfo = CourseDao.getInstance().getCourseInfoFromDb(context, courseId);
+				
+				if(courseInfo != null){
+					courseInfo.startDate = c.getString(c.getColumnIndex(Const.DB_KEY_START_DATE));
+				}
+				
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally{
+			if(c != null){
+				c.close();
+			}
+			if(db != null){
+				db.close();
+			}
+		}
+		return courseInfo;
+	}
+	
 }
