@@ -165,9 +165,9 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 		
 		Intent intent = getIntent();
 		mCourseId = intent.getStringExtra(Const.KEY_COURSE_ID);
-		mTrainId = intent.getStringExtra(Const.KEY_TRAIN_ID);
-		mTrainName = intent.getStringExtra(Const.KEY_TRAIN_NAME);
-		mTrainDescript = intent.getStringExtra(Const.KEY_TRAIN_DESCRIPT);
+		mTrainId = intent.getStringExtra(Const.KEY_ACTION_ID);
+		mTrainName = intent.getStringExtra(Const.KEY_ACTION_NAME);
+		mTrainDescript = intent.getStringExtra(Const.KEY_ACTION_DESCRIPT);
 		mActionNum = intent.getStringExtra(Const.KEY_ACTION_NUM);
 		
 		tvActionNum.setText(mActionNum);

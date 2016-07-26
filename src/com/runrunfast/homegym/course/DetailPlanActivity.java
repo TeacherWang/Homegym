@@ -227,6 +227,7 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 
 	private void prepareToSaveMyCourse() {
 		mCourseInfo.startDate = DateUtil.getCurrentDate();
+		mCourseInfo.courseProgress = CourseInfo.PROGRESS_ING;
 		
 		Log.i(TAG, "prepareToSaveMyCourse, start date = " + mCourseInfo.startDate);
 		

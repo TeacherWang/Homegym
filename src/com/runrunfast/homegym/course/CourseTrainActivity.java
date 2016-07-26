@@ -1,6 +1,7 @@
 package com.runrunfast.homegym.course;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -15,7 +16,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.runrunfast.homegym.R;
+import com.runrunfast.homegym.dao.ActionDao;
 import com.runrunfast.homegym.utils.Const;
+import com.runrunfast.homegym.utils.Globle;
 
 public class CourseTrainActivity extends Activity implements OnClickListener{
 	
@@ -25,10 +28,11 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 	
 	private CourseTrainAdapter mCourseTrainAdapter;
 	private ListView mCourseTrainListView;
-	private ArrayList<CourseTrainInfo> mCourseTrainInfoList;
+	private ArrayList<ActionInfo> mCourseActionInfoList;
 	
 	private String mCourseId;
 	private String mCourseName;
+	private List<String> mActionIdList;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +60,7 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 	}
 	
 	private void jumpToTrainActionSetActivity(int position) {
-		CourseTrainInfo courseTrainInfo = mCourseTrainInfoList.get(position);
+		CourseTrainInfo courseTrainInfo = mCourseActionInfoList.get(position);
 		int trainId = courseTrainInfo.iTrainId;
 		String trainName = courseTrainInfo.strTrainName;
 		String actionNum = courseTrainInfo.strActionNum;
@@ -64,20 +68,26 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 		
 		Intent intent = new Intent(CourseTrainActivity.this, ActionSetActivity.class);
 		intent.putExtra(Const.KEY_COURSE_ID, mCourseId);
-		intent.putExtra(Const.KEY_TRAIN_ID, trainId);
-		intent.putExtra(Const.KEY_TRAIN_NAME, trainName);
-		intent.putExtra(Const.KEY_TRAIN_DESCRIPT, trainDecript);
+		intent.putExtra(Const.KEY_ACTION_ID, trainId);
+		intent.putExtra(Const.KEY_ACTION_NAME, trainName);
+		intent.putExtra(Const.KEY_ACTION_DESCRIPT, trainDecript);
 		intent.putExtra(Const.KEY_ACTION_NUM, actionNum);
 		CourseTrainActivity.this.startActivity(intent);
 	}
 
 	private void initData() {
-		mCourseTrainInfoList = new ArrayList<CourseTrainInfo>();
+		mCourseActionInfoList = new ArrayList<ActionInfo>();
 		
 		mCourseId = getIntent().getStringExtra(Const.KEY_COURSE_ID);
 		mCourseName = getIntent().getStringExtra(Const.KEY_COURSE_NAME);
-		
 		tvTitle.setText(mCourseName);
+		
+		mActionIdList = getIntent().getStringArrayListExtra(Const.KEY_ACTION_IDS);
+		int actionIdSize = mActionIdList.size();
+		for(int i=0; i<actionIdSize; i++){
+			ActionInfo actionInfo = ActionDao.getInstance().getActionInfoFromDb(Globle.gApplicationContext, mActionIdList.get(i));
+			mCourseActionInfoList.add(actionInfo);
+		}
 		
 		CourseTrainInfo courseTrainInfo1 = new CourseTrainInfo();
 		courseTrainInfo1.iCourseId = 1;
@@ -90,7 +100,7 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 		courseTrainInfo1.iTime = 15;
 		courseTrainInfo1.iKcal = 187;
 		courseTrainInfo1.iDiffcultLevel = 1;
-		mCourseTrainInfoList.add(courseTrainInfo1);
+		mCourseActionInfoList.add(courseTrainInfo1);
 		
 		CourseTrainInfo courseTrainInfo2 = new CourseTrainInfo();
 		courseTrainInfo2.iCourseId = 1;
@@ -103,7 +113,7 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 		courseTrainInfo2.iTime = 15;
 		courseTrainInfo2.iKcal = 287;
 		courseTrainInfo2.iDiffcultLevel = 2;
-		mCourseTrainInfoList.add(courseTrainInfo2);
+		mCourseActionInfoList.add(courseTrainInfo2);
 		
 		CourseTrainInfo courseTrainInfo3 = new CourseTrainInfo();
 		courseTrainInfo3.iCourseId = 1;
@@ -116,7 +126,7 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 		courseTrainInfo3.iTime = 15;
 		courseTrainInfo3.iKcal = 387;
 		courseTrainInfo3.iDiffcultLevel = 3;
-		mCourseTrainInfoList.add(courseTrainInfo3);
+		mCourseActionInfoList.add(courseTrainInfo3);
 		
 		CourseTrainInfo courseTrainInfo4 = new CourseTrainInfo();
 		courseTrainInfo4.iCourseId = 1;
@@ -129,9 +139,9 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 		courseTrainInfo4.iTime = 15;
 		courseTrainInfo4.iKcal = 487;
 		courseTrainInfo4.iDiffcultLevel = 4;
-		mCourseTrainInfoList.add(courseTrainInfo4);
+		mCourseActionInfoList.add(courseTrainInfo4);
 		
-		mCourseTrainAdapter = new CourseTrainAdapter(this, mCourseTrainInfoList);
+		mCourseTrainAdapter = new CourseTrainAdapter(this, mCourseActionInfoList);
 		mCourseTrainListView.setAdapter(mCourseTrainAdapter);
 	}
 

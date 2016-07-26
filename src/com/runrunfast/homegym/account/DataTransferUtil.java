@@ -28,7 +28,7 @@ public class DataTransferUtil {
 	private static final List<String> list_big = Arrays.asList(months_big);
 	private static final List<String> list_little = Arrays.asList(months_little);
 	
-	private static HashMap numMap;
+	public static HashMap numMap;
 	
 	static{
 		numMap = new HashMap();

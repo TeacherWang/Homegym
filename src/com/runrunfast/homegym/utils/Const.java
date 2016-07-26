@@ -10,10 +10,11 @@ public class Const {
 	// 启动CourseTrainActivity所传参数
 	public static final String KEY_COURSE_ID = "key_course_id";
 	public static final String KEY_COURSE_NAME = "key_course_name";
-	public static final String KEY_TRAIN_ID = "key_train_id";
-	public static final String KEY_TRAIN_NAME = "key_train_name";
-	public static final String KEY_TRAIN_DESCRIPT = "key_descript";
+	public static final String KEY_ACTION_ID = "key_action_id";
+	public static final String KEY_ACTION_NAME = "key_action_name";
+	public static final String KEY_ACTION_DESCRIPT = "key_descript";
 	public static final String KEY_ACTION_NUM = "key_action_num";
+	public static final String KEY_ACTION_IDS = "key_action_ids";
 	
 	// 数据库字段名称
 	public static final String TABLE_COURSE = "course_table";
@@ -35,12 +36,15 @@ public class Const {
 	public static final String DB_KEY_ACTION_NAME = "action_name";
 	public static final String DB_KEY_ACTION_POSITION = "action_position"; // 动作锻炼的部位
 	public static final String DB_KEY_ACTION_DESCRIPT = "action_descript"; // 动作的描述
+	public static final String DB_KEY_ACTION_DIFFICULT = "action_difficult"; // 动作的难度
+	public static final String DB_KEY_ACTION_DEFAULT_TOTAL_KCAL = "action_default_total_kcal"; // 动作的默认总消耗卡
 	public static final String DB_KEY_DEFAULT_TIME = "default_time";
 	public static final String DB_KEY_DEFAULT_GROUP_NUM = "default_group_num";
 	public static final String DB_KEY_DEFAULT_COUNT = "default_count";
 	public static final String DB_KEY_DEFAULT_TOOL_WEIGHT = "default_tool_weight";
-	public static final String DB_KEY_DEFAULT_BURNING = "default_burning";
+	public static final String DB_KEY_DEFAULT_BURNING = "default_burning"; // 每组动作的消耗卡
 	public static final String DB_KEY_START_DATE = "start_date";
+	public static final String DB_KEY_MY_COURSE_PROGRESS = "my_course_progress"; // 进度--进行中、休息日、已完成
 	
 	public static final String DB_KEY_FINISH_GROUP_NUM = "finish_group_num";
 	public static final String DB_KEY_FINISH_COUNT = "finish_count";

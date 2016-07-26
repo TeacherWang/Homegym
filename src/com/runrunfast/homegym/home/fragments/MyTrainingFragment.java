@@ -1,6 +1,7 @@
 package com.runrunfast.homegym.home.fragments;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -31,10 +32,8 @@ public class MyTrainingFragment extends Fragment{
 	
 	private View rootView;
 	private ListView mMyCourseListView;
-	private ListView mRecommedCourseListView;
 	
 	private CourseAdapter mMyCourseAdapter;
-	private CourseAdapter mRecommedAdapter;
 	
 	private ArrayList<CourseInfo> mMyCourseList;
 	private ArrayList<CourseInfo> mRecommedList;
@@ -60,29 +59,29 @@ public class MyTrainingFragment extends Fragment{
 		
 		Log.i(TAG, "onResume");
 		
-		ArrayList<CourseInfo> myCourseInfos = MyCourseDao.getInstance().getMyCourseInfoList(Globle.gApplicationContext);
-		if(myCourseInfos.size() != 0){
-			mMyCourseList.clear();
-			mMyCourseList.addAll(myCourseInfos);
-			mMyCourseAdapter.notifyDataSetChanged();
+		mMyCourseList = MyCourseDao.getInstance().getMyCourseInfoList(Globle.gApplicationContext);
+		if(mMyCourseList.size() > 0){
+			CourseInfo recommendDescipt = new CourseInfo();
+			recommendDescipt.isRecommendDescript = true;
+			mMyCourseList.add(recommendDescipt);
+			
+			mMyCourseList.addAll(mRecommedList);
+			mMyCourseAdapter.updateData(mMyCourseList, false);
+		}else{
+			CourseInfo emptyCourseInfo = new CourseInfo();
+			emptyCourseInfo.isMyCourse = true;
+			mMyCourseList.add(emptyCourseInfo);
+			
+			CourseInfo recommendDescipt = new CourseInfo();
+			recommendDescipt.isRecommendDescript = true;
+			mMyCourseList.add(recommendDescipt);
+			
+			mMyCourseList.addAll(mRecommedList);
+			mMyCourseAdapter.updateData(mMyCourseList, true);
 		}
 	}
 
 	private void initListener() {
-		mRecommedCourseListView.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				CourseInfo courseInfo = mRecommedList.get(position);
-				String courseId = courseInfo.courseId;
-				String courseName = courseInfo.courseName;
-				Intent intent = new Intent(getActivity(), DetailPlanActivity.class);
-				intent.putExtra(Const.KEY_COURSE_ID, courseId);
-				intent.putExtra(Const.KEY_COURSE_NAME, courseName);
-				startActivity(intent);
-			}
-		});
-		
 		mMyCourseListView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
@@ -90,7 +89,19 @@ public class MyTrainingFragment extends Fragment{
 				CourseInfo courseInfo = mMyCourseList.get(position);
 				String courseId = courseInfo.courseId;
 				String courseName = courseInfo.courseName;
-				Intent intent = new Intent(getActivity(), CourseTrainActivity.class);
+				if(courseInfo.isRecommendDescript){
+					return;
+				}
+				
+				Intent intent = null;
+				
+				if(courseInfo.isMyCourse){
+					intent = new Intent(getActivity(), CourseTrainActivity.class);
+					intent.putStringArrayListExtra(Const.KEY_ACTION_IDS, (ArrayList<String>)courseInfo.actionIds);
+				}else{
+					intent = new Intent(getActivity(), DetailPlanActivity.class);
+				}
+				
 				intent.putExtra(Const.KEY_COURSE_ID, courseId);
 				intent.putExtra(Const.KEY_COURSE_NAME, courseName);
 				startActivity(intent);
@@ -113,23 +124,21 @@ public class MyTrainingFragment extends Fragment{
 		
 		if(mMyCourseList.size() == 0){
 			CourseInfo emptyCourseInfo = new CourseInfo();
+			emptyCourseInfo.isMyCourse = true;
 			mMyCourseList.add(emptyCourseInfo);
-			mMyCourseAdapter = new CourseAdapter(getActivity(), mMyCourseList, true, true);
+			mMyCourseAdapter = new CourseAdapter(getActivity(), mMyCourseList, true);
 			mMyCourseListView.setAdapter(mMyCourseAdapter);
 		}else{
-			mMyCourseAdapter = new CourseAdapter(getActivity(), mMyCourseList, true, false);
+			mMyCourseAdapter = new CourseAdapter(getActivity(), mMyCourseList, false);
 			mMyCourseListView.setAdapter(mMyCourseAdapter);
 		}
 		
 		mRecommedList = CourseDao.getInstance().getRecommedCourseInfoListFromDb(Globle.gApplicationContext);
-		
-		mRecommedAdapter = new CourseAdapter(getActivity(), mRecommedList, false, false);
-		mRecommedCourseListView.setAdapter(mRecommedAdapter);
 	}
 
 	private void initView() {
 		mMyCourseListView = (ListView)rootView.findViewById(R.id.my_course_listview);
-		mRecommedCourseListView = (ListView)rootView.findViewById(R.id.course_recommed_listview);
+//		mRecommedCourseListView = (ListView)rootView.findViewById(R.id.course_recommed_listview);
 	}
 	
 	// 不要删除，切换fragment用到

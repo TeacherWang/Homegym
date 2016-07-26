@@ -29,7 +29,8 @@ public class MyCourseDao {
 				+ " (" + Const.DB_KEY_ROW + " INTEGER PRIMARY KEY,"
 				+ Const.DB_KEY_UID + " TEXT,"
 				+ Const.DB_KEY_COURSE_ID + " TEXT,"
-				+ Const.DB_KEY_START_DATE + " TEXT"
+				+ Const.DB_KEY_START_DATE + " TEXT,"
+				+ Const.DB_KEY_MY_COURSE_PROGRESS + " INTEGER"
 				+ ");";
 		return sql;
 	}
@@ -45,6 +46,7 @@ public class MyCourseDao {
 			values.put(Const.DB_KEY_UID, uid);
 			values.put(Const.DB_KEY_COURSE_ID, courseInfo.courseId);
 			values.put(Const.DB_KEY_START_DATE, courseInfo.startDate);
+			values.put(Const.DB_KEY_MY_COURSE_PROGRESS, courseInfo.courseProgress);
 			
 			c = db.query(Const.TABLE_MY_COURSE, null, Const.DB_KEY_UID + " = ? and " + Const.DB_KEY_COURSE_ID + " =?",
 					new String[] { uid, courseInfo.courseId }, null, null, null);
@@ -82,7 +84,9 @@ public class MyCourseDao {
 					CourseInfo courseInfo = CourseDao.getInstance().getCourseInfoFromDb(context, courseId);
 					
 					if(courseInfo != null){
+						courseInfo.isMyCourse = true;
 						courseInfo.startDate = c.getString(c.getColumnIndex(Const.DB_KEY_START_DATE));
+						courseInfo.courseProgress = c.getInt(c.getColumnIndex(Const.DB_KEY_MY_COURSE_PROGRESS));
 						courseInfoList.add(courseInfo);
 					}
 				}
@@ -117,6 +121,7 @@ public class MyCourseDao {
 				
 				if(courseInfo != null){
 					courseInfo.startDate = c.getString(c.getColumnIndex(Const.DB_KEY_START_DATE));
+					courseInfo.courseProgress = c.getInt(c.getColumnIndex(Const.DB_KEY_MY_COURSE_PROGRESS));
 				}
 				
 			}

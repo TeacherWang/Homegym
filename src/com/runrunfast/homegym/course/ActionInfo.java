@@ -9,8 +9,10 @@ public class ActionInfo {
 	public String actionName;
 	public String strTrainPosition; // 锻炼的部位
 	public String strTrainDescript; // 简单描述
+	public int iDiffcultLevel;
 	public int iTime; // 秒
 	public int defaultGroupNum;
+	public int iDefaultTotalKcal; // 千卡
 	public List<String> defaultCountList = new ArrayList<String>();
 	public List<String> defaultToolWeightList = new ArrayList<String>();
 	public List<String> defaultBurningList = new ArrayList<String>();

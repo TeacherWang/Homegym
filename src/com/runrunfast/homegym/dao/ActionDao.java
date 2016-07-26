@@ -34,6 +34,8 @@ public class ActionDao {
 				+ Const.DB_KEY_ACTION_NAME + " TEXT,"
 				+ Const.DB_KEY_ACTION_POSITION + " TEXT,"
 				+ Const.DB_KEY_ACTION_DESCRIPT + " TEXT,"
+				+ Const.DB_KEY_ACTION_DIFFICULT + " INTEGER,"
+				+ Const.DB_KEY_ACTION_DEFAULT_TOTAL_KCAL + " INTEGER,"
 				+ Const.DB_KEY_DEFAULT_TIME + " TEXT,"
 				+ Const.DB_KEY_DEFAULT_GROUP_NUM + " TEXT,"
 				+ Const.DB_KEY_DEFAULT_COUNT + " TEXT,"
@@ -55,7 +57,9 @@ public class ActionDao {
 			values.put(Const.DB_KEY_ACTION_NAME, actionInfo.actionName);
 			values.put(Const.DB_KEY_ACTION_POSITION, actionInfo.strTrainPosition);
 			values.put(Const.DB_KEY_ACTION_DESCRIPT, actionInfo.strTrainDescript);
-			values.put(Const.DB_KEY_DEFAULT_TIME, String.valueOf(actionInfo.iTime));
+			values.put(Const.DB_KEY_DEFAULT_TIME, actionInfo.iTime);
+			values.put(Const.DB_KEY_ACTION_DIFFICULT, actionInfo.iDiffcultLevel);
+			values.put(Const.DB_KEY_ACTION_DEFAULT_TOTAL_KCAL, actionInfo.iDefaultTotalKcal);
 			values.put(Const.DB_KEY_DEFAULT_GROUP_NUM, actionInfo.defaultGroupNum);
 			values.put(Const.DB_KEY_DEFAULT_COUNT, actionInfo.defaultCountList.toString());
 			values.put(Const.DB_KEY_DEFAULT_TOOL_WEIGHT, actionInfo.defaultToolWeightList.toString());
@@ -81,7 +85,7 @@ public class ActionDao {
 		}
 	}
 	
-	public synchronized ActionInfo getActionInfoFromDb(Context context, int actionId){
+	public synchronized ActionInfo getActionInfoFromDb(Context context, String actionId){
 		ActionInfo actionInfo = null;
 		SQLiteDatabase db = null;
 		Cursor c = null;
@@ -90,7 +94,7 @@ public class ActionDao {
 			DBOpenHelper dbHelper = new DBOpenHelper(context);
 			db = dbHelper.getWritableDatabase();
 			
-			c = db.query(Const.TABLE_ACTION, null, Const.DB_KEY_ACTION_ID + "=?", new String[]{ String.valueOf(actionId) }, null, null, null);
+			c = db.query(Const.TABLE_ACTION, null, Const.DB_KEY_ACTION_ID + "=?", new String[]{ actionId }, null, null, null);
 			if(null != c && c.getCount() > 0){
 				c.moveToNext();
 				
@@ -100,7 +104,9 @@ public class ActionDao {
 				actionInfo.actionName = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_NAME));
 				actionInfo.strTrainPosition = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_POSITION));
 				actionInfo.strTrainDescript = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_DESCRIPT));
-				actionInfo.iTime = Integer.parseInt(c.getString(c.getColumnIndex(Const.DB_KEY_DEFAULT_TIME)));
+				actionInfo.iTime = c.getInt(c.getColumnIndex(Const.DB_KEY_DEFAULT_TIME));
+				actionInfo.iDiffcultLevel = c.getInt(c.getColumnIndex(Const.DB_KEY_ACTION_DIFFICULT));
+				actionInfo.iDefaultTotalKcal = c.getInt(c.getColumnIndex(Const.DB_KEY_ACTION_DEFAULT_TOTAL_KCAL));
 				actionInfo.defaultGroupNum = c.getInt(c.getColumnIndex(Const.DB_KEY_DEFAULT_GROUP_NUM));
 				
 				String tempDefaultCountString = c.getString(c.getColumnIndex(Const.DB_KEY_DEFAULT_COUNT));
@@ -147,7 +153,9 @@ public class ActionDao {
 					actionInfo.actionName = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_NAME));
 					actionInfo.strTrainPosition = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_POSITION));
 					actionInfo.strTrainDescript = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_DESCRIPT));
-					actionInfo.iTime = Integer.parseInt(c.getString(c.getColumnIndex(Const.DB_KEY_DEFAULT_TIME)));
+					actionInfo.iTime = c.getInt(c.getColumnIndex(Const.DB_KEY_DEFAULT_TIME));
+					actionInfo.iDiffcultLevel = c.getInt(c.getColumnIndex(Const.DB_KEY_ACTION_DIFFICULT));
+					actionInfo.iDefaultTotalKcal = c.getInt(c.getColumnIndex(Const.DB_KEY_ACTION_DEFAULT_TOTAL_KCAL));
 					actionInfo.defaultGroupNum = c.getInt(c.getColumnIndex(Const.DB_KEY_DEFAULT_GROUP_NUM));
 					
 					String tempDefaultCountString = c.getString(c.getColumnIndex(Const.DB_KEY_DEFAULT_COUNT));

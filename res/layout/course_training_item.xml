@@ -36,7 +36,7 @@
         android:textColor="@color/course_train_action_num_color"/>
     
 	<TextView 
-	    android:id="@+id/course_train_descrip_text"
+	    android:id="@+id/course_train_position_text"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:layout_marginTop="@dimen/course_train_decrip_margin_top"

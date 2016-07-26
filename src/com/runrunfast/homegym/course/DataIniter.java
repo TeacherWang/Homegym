@@ -74,7 +74,7 @@ public class DataIniter {
 		// course1
 		CourseInfo courseInfo1 = new CourseInfo();
 		courseInfo1.courseId = "c1";
-		courseInfo1.isNew = true;
+		courseInfo1.isNew = false;
 		courseInfo1.courseName = "塑性训练";
 		
 		courseInfo1.actionIds.add("a1");
@@ -98,7 +98,7 @@ public class DataIniter {
 		// course2
 		CourseInfo courseInfo2 = new CourseInfo();
 		courseInfo2.courseId = "c2";
-		courseInfo2.isNew = true;
+		courseInfo2.isNew = false;
 		courseInfo2.courseName = "21天腹肌雕刻";
 		
 		courseInfo2.actionIds.add("a1");
@@ -175,6 +175,8 @@ public class DataIniter {
 		actionInfo1.strTrainDescript = "坚持训练将锻炼到胸大肌和三角肌";
 		actionInfo1.iTime = 1000;
 		actionInfo1.defaultGroupNum = 4;
+		actionInfo1.iDefaultTotalKcal = 187;
+		actionInfo1.iDiffcultLevel = 1;
 		
 		actionInfo1.defaultCountList.add("11");
 		actionInfo1.defaultCountList.add("10");
@@ -200,6 +202,8 @@ public class DataIniter {
 		actionInfo2.strTrainDescript = "坚持训练将锻炼到肱二头肌和三角肌";
 		actionInfo2.iTime = 2000;
 		actionInfo2.defaultGroupNum = 4;
+		actionInfo2.iDefaultTotalKcal = 287;
+		actionInfo2.iDiffcultLevel = 2;
 		
 		actionInfo2.defaultCountList.add("12");
 		actionInfo2.defaultCountList.add("9");
@@ -225,6 +229,8 @@ public class DataIniter {
 		actionInfo3.strTrainDescript = "坚持训练将锻炼到腹肌";
 		actionInfo3.iTime = 3000;
 		actionInfo3.defaultGroupNum = 4;
+		actionInfo3.iDefaultTotalKcal = 387;
+		actionInfo3.iDiffcultLevel = 3;
 		
 		actionInfo3.defaultCountList.add("32");
 		actionInfo3.defaultCountList.add("30");
@@ -250,6 +256,8 @@ public class DataIniter {
 		actionInfo4.strTrainDescript = "坚持训练将锻炼到胸大肌和三角肌";
 		actionInfo4.iTime = 4000;
 		actionInfo4.defaultGroupNum = 4;
+		actionInfo4.iDefaultTotalKcal = 487;
+		actionInfo4.iDiffcultLevel = 1;
 		
 		actionInfo4.defaultCountList.add("42");
 		actionInfo4.defaultCountList.add("40");
@@ -275,6 +283,8 @@ public class DataIniter {
 		actionInfo5.strTrainDescript = "坚持训练将锻炼到胸大肌和三角肌";
 		actionInfo5.iTime = 5000;
 		actionInfo5.defaultGroupNum = 4;
+		actionInfo5.iDefaultTotalKcal = 587;
+		actionInfo5.iDiffcultLevel = 2;
 		
 		actionInfo5.defaultCountList.add("52");
 		actionInfo5.defaultCountList.add("50");

@@ -67,7 +67,7 @@ public class AllCoursesFragment extends Fragment {
 		
 		mAllCoursesList = CourseDao.getInstance().getCourseInfoListFromDb(Globle.gApplicationContext);
 		
-		mAllCoursesAdapter = new CourseAdapter(getActivity(), mAllCoursesList, false, false);
+		mAllCoursesAdapter = new CourseAdapter(getActivity(), mAllCoursesList, false);
 		mAllCoursesListView.setAdapter(mAllCoursesAdapter);
 	}
 

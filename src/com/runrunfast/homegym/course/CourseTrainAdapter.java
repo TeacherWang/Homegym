@@ -11,27 +11,28 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.runrunfast.homegym.R;
+import com.runrunfast.homegym.account.DataTransferUtil;
 
 public class CourseTrainAdapter extends BaseAdapter {
 	
-	private ArrayList<CourseTrainInfo> mCourseTrainInfoList;
+	private ArrayList<ActionInfo> mActinoInfoList;
 	private LayoutInflater mInflater;
 	private Context mContext;
 	
-	public CourseTrainAdapter(Context context, ArrayList<CourseTrainInfo> courseTrainInfos){
+	public CourseTrainAdapter(Context context, ArrayList<ActionInfo> actinoInfoList){
 		this.mContext = context;
-		this.mCourseTrainInfoList = courseTrainInfos;
+		this.mActinoInfoList = actinoInfoList;
 		this.mInflater = LayoutInflater.from(context);
 	}
 	
 	@Override
 	public int getCount() {
-		return mCourseTrainInfoList.size();
+		return mActinoInfoList.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
-		return mCourseTrainInfoList.get(position);
+		return mActinoInfoList.get(position);
 	}
 
 	@Override
@@ -48,7 +49,7 @@ public class CourseTrainAdapter extends BaseAdapter {
 			
 			holder.tvTrainName = (TextView)convertView.findViewById(R.id.course_train_name_text);
 			holder.tvTrainActionNum = (TextView)convertView.findViewById(R.id.course_train_action_num_text);
-			holder.tvTrainDescipt = (TextView)convertView.findViewById(R.id.course_train_descrip_text);
+			holder.tvTrainPosition = (TextView)convertView.findViewById(R.id.course_train_position_text);
 			holder.tvDiffcult = (TextView)convertView.findViewById(R.id.course_train_diffcult_text);
 			holder.tvTime = (TextView)convertView.findViewById(R.id.course_train_time_text);
 			holder.ivDiffcultLevel1 = (ImageView)convertView.findViewById(R.id.course_train_diffcult_level1_img);
@@ -62,38 +63,38 @@ public class CourseTrainAdapter extends BaseAdapter {
 			holder = (ViewHolder) convertView.getTag();
 		}
 		
-		CourseTrainInfo courseTrainInfo = mCourseTrainInfoList.get(position);
-		holder.tvTrainName.setText(courseTrainInfo.strTrainName);
-		holder.tvTrainDescipt.setText(courseTrainInfo.strTrainPosition);
-		holder.tvTrainActionNum.setText(courseTrainInfo.strActionNum);
-		holder.tvTime.setText(String.valueOf(courseTrainInfo.iTime) + mContext.getResources().getString(R.string.minute)
-				+ " " + String.valueOf(courseTrainInfo.iKcal + mContext.getResources().getString(R.string.kcal)));
+		ActionInfo actionInfo = mActinoInfoList.get(position);
+		holder.tvTrainName.setText(actionInfo.actionName);
+		holder.tvTrainPosition.setText(actionInfo.strTrainPosition);
+		holder.tvTrainActionNum.setText("动作" + DataTransferUtil.numMap.get(position));
+		holder.tvTime.setText(String.valueOf(actionInfo.iTime) + mContext.getResources().getString(R.string.minute)
+				+ " " + String.valueOf(actionInfo.iDefaultTotalKcal) + mContext.getResources().getString(R.string.kcal));
 		holder.tvDiffcult.setText(R.string.difficult);
-		if(courseTrainInfo.iDiffcultLevel == 1){
+		if(actionInfo.iDiffcultLevel == 1){
 			holder.ivDiffcultLevel1.setVisibility(View.VISIBLE);
 			holder.ivDiffcultLevel2.setVisibility(View.INVISIBLE);
 			holder.ivDiffcultLevel3.setVisibility(View.INVISIBLE);
 			holder.ivDiffcultLevel4.setVisibility(View.INVISIBLE);
 			holder.ivDiffcultLevel5.setVisibility(View.INVISIBLE);
-		}else if(courseTrainInfo.iDiffcultLevel == 2){
+		}else if(actionInfo.iDiffcultLevel == 2){
 			holder.ivDiffcultLevel1.setVisibility(View.VISIBLE);
 			holder.ivDiffcultLevel2.setVisibility(View.VISIBLE);
 			holder.ivDiffcultLevel3.setVisibility(View.INVISIBLE);
 			holder.ivDiffcultLevel4.setVisibility(View.INVISIBLE);
 			holder.ivDiffcultLevel5.setVisibility(View.INVISIBLE);
-		}else if(courseTrainInfo.iDiffcultLevel == 3){
+		}else if(actionInfo.iDiffcultLevel == 3){
 			holder.ivDiffcultLevel1.setVisibility(View.VISIBLE);
 			holder.ivDiffcultLevel2.setVisibility(View.VISIBLE);
 			holder.ivDiffcultLevel3.setVisibility(View.VISIBLE);
 			holder.ivDiffcultLevel4.setVisibility(View.INVISIBLE);
 			holder.ivDiffcultLevel5.setVisibility(View.INVISIBLE);
-		}else if(courseTrainInfo.iDiffcultLevel == 4){
+		}else if(actionInfo.iDiffcultLevel == 4){
 			holder.ivDiffcultLevel1.setVisibility(View.VISIBLE);
 			holder.ivDiffcultLevel2.setVisibility(View.VISIBLE);
 			holder.ivDiffcultLevel3.setVisibility(View.VISIBLE);
 			holder.ivDiffcultLevel4.setVisibility(View.VISIBLE);
 			holder.ivDiffcultLevel5.setVisibility(View.INVISIBLE);
-		}else if(courseTrainInfo.iDiffcultLevel == 5){
+		}else if(actionInfo.iDiffcultLevel == 5){
 			holder.ivDiffcultLevel1.setVisibility(View.VISIBLE);
 			holder.ivDiffcultLevel2.setVisibility(View.VISIBLE);
 			holder.ivDiffcultLevel3.setVisibility(View.VISIBLE);
@@ -107,7 +108,7 @@ public class CourseTrainAdapter extends BaseAdapter {
 	class ViewHolder{
 		public TextView tvTrainName;
 		public TextView tvTrainActionNum;
-		public TextView tvTrainDescipt;
+		public TextView tvTrainPosition;
 		public TextView tvDiffcult;
 		public TextView tvTime;
 		public ImageView ivDiffcultLevel1, ivDiffcultLevel2, ivDiffcultLevel3, ivDiffcultLevel4, ivDiffcultLevel5;
