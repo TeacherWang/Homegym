@@ -8,13 +8,13 @@ public class Const {
 	public static final int DIALOG_REQ_CODE_EXIT_COURSE = 4;
 	
 	// 启动CourseTrainActivity所传参数
+	public static final String KEY_COURSE_INFO = "key_course_info";
 	public static final String KEY_COURSE_ID = "key_course_id";
 	public static final String KEY_COURSE_NAME = "key_course_name";
 	public static final String KEY_ACTION_ID = "key_action_id";
 	public static final String KEY_ACTION_NAME = "key_action_name";
 	public static final String KEY_ACTION_DESCRIPT = "key_descript";
-	public static final String KEY_ACTION_NUM = "key_action_num";
-	public static final String KEY_ACTION_IDS = "key_action_ids";
+	public static final String KEY_ACTION_NUM = "key_action_num"; // 动作几
 	
 	// 数据库字段名称
 	public static final String TABLE_COURSE = "course_table";

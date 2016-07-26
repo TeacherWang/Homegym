@@ -66,7 +66,7 @@ public class CourseTrainAdapter extends BaseAdapter {
 		ActionInfo actionInfo = mActinoInfoList.get(position);
 		holder.tvTrainName.setText(actionInfo.actionName);
 		holder.tvTrainPosition.setText(actionInfo.strTrainPosition);
-		holder.tvTrainActionNum.setText("动作" + DataTransferUtil.numMap.get(position));
+		holder.tvTrainActionNum.setText("动作" + DataTransferUtil.numMap.get(position + 1));
 		holder.tvTime.setText(String.valueOf(actionInfo.iTime) + mContext.getResources().getString(R.string.minute)
 				+ " " + String.valueOf(actionInfo.iDefaultTotalKcal) + mContext.getResources().getString(R.string.kcal));
 		holder.tvDiffcult.setText(R.string.difficult);

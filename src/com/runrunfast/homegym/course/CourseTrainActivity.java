@@ -16,7 +16,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.runrunfast.homegym.R;
+import com.runrunfast.homegym.account.AccountMgr;
+import com.runrunfast.homegym.account.UserInfo;
 import com.runrunfast.homegym.dao.ActionDao;
+import com.runrunfast.homegym.dao.MyCourseActionDao;
 import com.runrunfast.homegym.utils.Const;
 import com.runrunfast.homegym.utils.Globle;
 
@@ -33,6 +36,8 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 	private String mCourseId;
 	private String mCourseName;
 	private List<String> mActionIdList;
+	private CourseInfo mCourseInfo;
+	private UserInfo mUserInfo;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -60,86 +65,94 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 	}
 	
 	private void jumpToTrainActionSetActivity(int position) {
-		CourseTrainInfo courseTrainInfo = mCourseActionInfoList.get(position);
-		int trainId = courseTrainInfo.iTrainId;
-		String trainName = courseTrainInfo.strTrainName;
-		String actionNum = courseTrainInfo.strActionNum;
-		String trainDecript = courseTrainInfo.strTrainDescript;
+		ActionInfo actionInfo = mCourseActionInfoList.get(position);
+		String actionId = actionInfo.strActionId;
+		String actionName = actionInfo.actionName;
+		int actionNum = position + 1;
+		String actionDecript = actionInfo.strTrainDescript;
 		
 		Intent intent = new Intent(CourseTrainActivity.this, ActionSetActivity.class);
 		intent.putExtra(Const.KEY_COURSE_ID, mCourseId);
-		intent.putExtra(Const.KEY_ACTION_ID, trainId);
-		intent.putExtra(Const.KEY_ACTION_NAME, trainName);
-		intent.putExtra(Const.KEY_ACTION_DESCRIPT, trainDecript);
+		intent.putExtra(Const.KEY_ACTION_ID, actionId);
+		intent.putExtra(Const.KEY_ACTION_NAME, actionName);
+		intent.putExtra(Const.KEY_ACTION_DESCRIPT, actionDecript);
 		intent.putExtra(Const.KEY_ACTION_NUM, actionNum);
 		CourseTrainActivity.this.startActivity(intent);
 	}
 
 	private void initData() {
+		mUserInfo = AccountMgr.getInstance().mUserInfo;
+		
 		mCourseActionInfoList = new ArrayList<ActionInfo>();
 		
-		mCourseId = getIntent().getStringExtra(Const.KEY_COURSE_ID);
-		mCourseName = getIntent().getStringExtra(Const.KEY_COURSE_NAME);
-		tvTitle.setText(mCourseName);
+		mCourseInfo = (CourseInfo) getIntent().getSerializableExtra(Const.KEY_COURSE_INFO);
 		
-		mActionIdList = getIntent().getStringArrayListExtra(Const.KEY_ACTION_IDS);
+		mCourseId = mCourseInfo.courseId;
+		tvTitle.setText(mCourseInfo.courseName);
+		
+		mActionIdList = mCourseInfo.actionIds;
 		int actionIdSize = mActionIdList.size();
 		for(int i=0; i<actionIdSize; i++){
-			ActionInfo actionInfo = ActionDao.getInstance().getActionInfoFromDb(Globle.gApplicationContext, mActionIdList.get(i));
+			ActionInfo actionInfo = MyCourseActionDao.getInstance().getMyCourseActionInfo(Globle.gApplicationContext, mUserInfo.strAccountId, mCourseId, mActionIdList.get(i).trim());
+			ActionInfo baseActionInfo = ActionDao.getInstance().getActionInfoFromDb(Globle.gApplicationContext, mActionIdList.get(i).trim());
+			actionInfo.actionName = baseActionInfo.actionName;
+			actionInfo.strTrainPosition = baseActionInfo.strTrainPosition;
+			actionInfo.strTrainDescript = baseActionInfo.strTrainDescript;
+			actionInfo.iDiffcultLevel = baseActionInfo.iDiffcultLevel;
 			mCourseActionInfoList.add(actionInfo);
 		}
 		
-		CourseTrainInfo courseTrainInfo1 = new CourseTrainInfo();
-		courseTrainInfo1.iCourseId = 1;
-		courseTrainInfo1.strCrouseName = "21天增肌训练";
-		courseTrainInfo1.iTrainId = 1;
-		courseTrainInfo1.strTrainName = "平板卧推举";
-		courseTrainInfo1.strActionNum = "动作一";
-		courseTrainInfo1.strTrainPosition = "背部 胸部";
-		courseTrainInfo1.strTrainDescript = "坚持训练将锻炼到胸大肌和三角肌";
-		courseTrainInfo1.iTime = 15;
-		courseTrainInfo1.iKcal = 187;
-		courseTrainInfo1.iDiffcultLevel = 1;
-		mCourseActionInfoList.add(courseTrainInfo1);
-		
-		CourseTrainInfo courseTrainInfo2 = new CourseTrainInfo();
-		courseTrainInfo2.iCourseId = 1;
-		courseTrainInfo2.strCrouseName = "21天增肌训练";
-		courseTrainInfo2.iTrainId = 2;
-		courseTrainInfo2.strTrainName = "平板卧推举";
-		courseTrainInfo2.strActionNum = "动作二";
-		courseTrainInfo2.strTrainPosition = "背部 胸部";
-		courseTrainInfo2.strTrainDescript = "坚持训练将锻炼到胸大肌和三角肌";
-		courseTrainInfo2.iTime = 15;
-		courseTrainInfo2.iKcal = 287;
-		courseTrainInfo2.iDiffcultLevel = 2;
-		mCourseActionInfoList.add(courseTrainInfo2);
-		
-		CourseTrainInfo courseTrainInfo3 = new CourseTrainInfo();
-		courseTrainInfo3.iCourseId = 1;
-		courseTrainInfo3.strCrouseName = "21天增肌训练";
-		courseTrainInfo3.iTrainId = 3;
-		courseTrainInfo3.strTrainName = "平板卧推举";
-		courseTrainInfo3.strActionNum = "动作三";
-		courseTrainInfo3.strTrainPosition = "背部 胸部";
-		courseTrainInfo3.strTrainDescript = "坚持训练将锻炼到胸大肌和三角肌";
-		courseTrainInfo3.iTime = 15;
-		courseTrainInfo3.iKcal = 387;
-		courseTrainInfo3.iDiffcultLevel = 3;
-		mCourseActionInfoList.add(courseTrainInfo3);
-		
-		CourseTrainInfo courseTrainInfo4 = new CourseTrainInfo();
-		courseTrainInfo4.iCourseId = 1;
-		courseTrainInfo4.strCrouseName = "21天增肌训练";
-		courseTrainInfo4.iTrainId = 4;
-		courseTrainInfo4.strTrainName = "平板卧推举";
-		courseTrainInfo4.strActionNum = "动作四";
-		courseTrainInfo4.strTrainPosition = "背部 胸部";
-		courseTrainInfo4.strTrainDescript = "坚持训练将锻炼到胸大肌和三角肌";
-		courseTrainInfo4.iTime = 15;
-		courseTrainInfo4.iKcal = 487;
-		courseTrainInfo4.iDiffcultLevel = 4;
-		mCourseActionInfoList.add(courseTrainInfo4);
+//		CourseTrainInfo courseTrainInfo1 = new CourseTrainInfo();
+//		courseTrainInfo1.iCourseId = 1;
+//		courseTrainInfo1.strCrouseName = "21天增肌训练";
+//		courseTrainInfo1.iTrainId = 1;
+//		courseTrainInfo1.strTrainName = "平板卧推举";
+//		courseTrainInfo1.strActionNum = "动作一";
+//		courseTrainInfo1.strTrainPosition = "背部 胸部";
+//		courseTrainInfo1.strTrainDescript = "坚持训练将锻炼到胸大肌和三角肌";
+//		courseTrainInfo1.iTime = 15;
+//		courseTrainInfo1.iKcal = 187;
+//		courseTrainInfo1.iDiffcultLevel = 1;
+//		mCourseActionInfoList.add(courseTrainInfo1);
+//		
+//		CourseTrainInfo courseTrainInfo2 = new CourseTrainInfo();
+//		courseTrainInfo2.iCourseId = 1;
+//		courseTrainInfo2.strCrouseName = "21天增肌训练";
+//		courseTrainInfo2.iTrainId = 2;
+//		courseTrainInfo2.strTrainName = "平板卧推举";
+//		courseTrainInfo2.strActionNum = "动作二";
+//		courseTrainInfo2.strTrainPosition = "背部 胸部";
+//		courseTrainInfo2.strTrainDescript = "坚持训练将锻炼到胸大肌和三角肌";
+//		courseTrainInfo2.iTime = 15;
+//		courseTrainInfo2.iKcal = 287;
+//		courseTrainInfo2.iDiffcultLevel = 2;
+//		mCourseActionInfoList.add(courseTrainInfo2);
+//		
+//		CourseTrainInfo courseTrainInfo3 = new CourseTrainInfo();
+//		courseTrainInfo3.iCourseId = 1;
+//		courseTrainInfo3.strCrouseName = "21天增肌训练";
+//		courseTrainInfo3.iTrainId = 3;
+//		courseTrainInfo3.strTrainName = "平板卧推举";
+//		courseTrainInfo3.strActionNum = "动作三";
+//		courseTrainInfo3.strTrainPosition = "背部 胸部";
+//		courseTrainInfo3.strTrainDescript = "坚持训练将锻炼到胸大肌和三角肌";
+//		courseTrainInfo3.iTime = 15;
+//		courseTrainInfo3.iKcal = 387;
+//		courseTrainInfo3.iDiffcultLevel = 3;
+//		mCourseActionInfoList.add(courseTrainInfo3);
+//		
+//		CourseTrainInfo courseTrainInfo4 = new CourseTrainInfo();
+//		courseTrainInfo4.iCourseId = 1;
+//		courseTrainInfo4.strCrouseName = "21天增肌训练";
+//		courseTrainInfo4.iTrainId = 4;
+//		courseTrainInfo4.strTrainName = "平板卧推举";
+//		courseTrainInfo4.strActionNum = "动作四";
+//		courseTrainInfo4.strTrainPosition = "背部 胸部";
+//		courseTrainInfo4.strTrainDescript = "坚持训练将锻炼到胸大肌和三角肌";
+//		courseTrainInfo4.iTime = 15;
+//		courseTrainInfo4.iKcal = 487;
+//		courseTrainInfo4.iDiffcultLevel = 4;
+//		mCourseActionInfoList.add(courseTrainInfo4);
 		
 		mCourseTrainAdapter = new CourseTrainAdapter(this, mCourseActionInfoList);
 		mCourseTrainListView.setAdapter(mCourseTrainAdapter);

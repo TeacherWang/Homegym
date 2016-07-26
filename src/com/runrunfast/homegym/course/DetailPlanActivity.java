@@ -15,7 +15,9 @@ import android.widget.TextView;
 
 import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.account.AccountMgr;
+import com.runrunfast.homegym.dao.ActionDao;
 import com.runrunfast.homegym.dao.CourseDao;
+import com.runrunfast.homegym.dao.MyCourseActionDao;
 import com.runrunfast.homegym.dao.MyCourseDao;
 import com.runrunfast.homegym.utils.Const;
 import com.runrunfast.homegym.utils.DateUtil;
@@ -25,6 +27,7 @@ import com.runrunfast.homegym.widget.KCalendar;
 import com.runrunfast.homegym.widget.KCalendar.OnCalendarDateChangedListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DetailPlanActivity extends Activity implements OnClickListener{
 	private final String TAG = "DetailPlanActivity";
@@ -232,6 +235,13 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 		Log.i(TAG, "prepareToSaveMyCourse, start date = " + mCourseInfo.startDate);
 		
 		MyCourseDao.getInstance().saveMyCourseInfo(Globle.gApplicationContext, AccountMgr.getInstance().mUserInfo.strAccountId, mCourseInfo);
+		List<String> actionIdList = mCourseInfo.actionIds;
+		int actionIdSize = actionIdList.size();
+		for(int i=0; i<actionIdSize; i++){
+			String actionId = actionIdList.get(i).trim();
+			ActionInfo actionInfo = ActionDao.getInstance().getActionInfoFromDb(Globle.gApplicationContext, actionId);
+			MyCourseActionDao.getInstance().saveMyCourseActionInfo(Globle.gApplicationContext, mCourseInfo.courseId, actionInfo);
+		}
 	}
 
 	/**

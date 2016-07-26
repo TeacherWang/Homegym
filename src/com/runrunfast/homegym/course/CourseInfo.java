@@ -1,9 +1,10 @@
 package com.runrunfast.homegym.course;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CourseInfo {
+public class CourseInfo implements Serializable{
 	public static final int QUALITY_NORMAL = 0;		// 一般课程
 	public static final int QUALITY_EXCELLENT = 1;	// 精品课程
 	

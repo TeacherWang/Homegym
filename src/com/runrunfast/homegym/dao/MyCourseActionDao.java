@@ -41,7 +41,7 @@ public class MyCourseActionDao {
 		return sql;
 	}
 	
-	public synchronized void saveMyCourseActionInfo(Context context, ActionInfo actionInfo){
+	public synchronized void saveMyCourseActionInfo(Context context, String courseId, ActionInfo actionInfo){
 		Cursor c = null;
 		SQLiteDatabase db = null;
 		try {
@@ -50,7 +50,7 @@ public class MyCourseActionDao {
 			ContentValues values = new ContentValues();
 			
 			values.put(Const.DB_KEY_UID, AccountMgr.getInstance().mUserInfo.strAccountId);
-			values.put(Const.DB_KEY_COURSE_ID, actionInfo.strCourseId);
+			values.put(Const.DB_KEY_COURSE_ID, courseId);
 			values.put(Const.DB_KEY_ACTION_ID, actionInfo.strActionId);
 			values.put(Const.DB_KEY_DEFAULT_GROUP_NUM, actionInfo.defaultGroupNum);
 			values.put(Const.DB_KEY_DEFAULT_COUNT, actionInfo.defaultCountList.toString());
@@ -59,10 +59,10 @@ public class MyCourseActionDao {
 			values.put(Const.DB_KEY_DEFAULT_TIME, actionInfo.iTime);
 			
 			c = db.query(Const.TABLE_MY_COURSE_ACTION, null, Const.DB_KEY_UID + " = ? and " + Const.DB_KEY_COURSE_ID + " = ? and " + Const.DB_KEY_ACTION_ID + " = ?",
-					new String[] { AccountMgr.getInstance().mUserInfo.strAccountId, actionInfo.strCourseId, actionInfo.strActionId }, null, null, null);
+					new String[] { AccountMgr.getInstance().mUserInfo.strAccountId, courseId, actionInfo.strActionId }, null, null, null);
 			if (c.getCount() > 0) {// 查询到数据库有该数据，就更新该行数据
 				db.update(Const.TABLE_MY_COURSE_ACTION, values, Const.DB_KEY_UID + " = ? and " + Const.DB_KEY_COURSE_ID + " =? and " + Const.DB_KEY_ACTION_ID + " = ?",
-						new String[] { AccountMgr.getInstance().mUserInfo.strAccountId, actionInfo.strCourseId, actionInfo.strActionId });
+						new String[] { AccountMgr.getInstance().mUserInfo.strAccountId, courseId, actionInfo.strActionId });
 			}else{
 				db.insert(Const.TABLE_MY_COURSE_ACTION, null, values);
 			}

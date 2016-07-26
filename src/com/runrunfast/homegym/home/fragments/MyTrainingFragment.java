@@ -87,8 +87,6 @@ public class MyTrainingFragment extends Fragment{
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				CourseInfo courseInfo = mMyCourseList.get(position);
-				String courseId = courseInfo.courseId;
-				String courseName = courseInfo.courseName;
 				if(courseInfo.isRecommendDescript){
 					return;
 				}
@@ -97,13 +95,10 @@ public class MyTrainingFragment extends Fragment{
 				
 				if(courseInfo.isMyCourse){
 					intent = new Intent(getActivity(), CourseTrainActivity.class);
-					intent.putStringArrayListExtra(Const.KEY_ACTION_IDS, (ArrayList<String>)courseInfo.actionIds);
 				}else{
 					intent = new Intent(getActivity(), DetailPlanActivity.class);
 				}
-				
-				intent.putExtra(Const.KEY_COURSE_ID, courseId);
-				intent.putExtra(Const.KEY_COURSE_NAME, courseName);
+				intent.putExtra(Const.KEY_COURSE_INFO, courseInfo);
 				startActivity(intent);
 			}
 		});
