@@ -153,6 +153,8 @@ public class CourseAdapter extends BaseAdapter {
 	private void handleCourse(ViewHolder viewHolder, CourseInfo courseInfo) {
 		if(courseInfo.isNew){
 			viewHolder.courseNewImg.setVisibility(View.VISIBLE);
+		}else{
+			viewHolder.courseNewImg.setVisibility(View.INVISIBLE);
 		}
 		viewHolder.tvEmptyDescript.setVisibility(View.INVISIBLE);
 		viewHolder.tvCourseName.setVisibility(View.VISIBLE);

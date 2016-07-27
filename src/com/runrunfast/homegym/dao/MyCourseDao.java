@@ -139,4 +139,28 @@ public class MyCourseDao {
 		return courseInfo;
 	}
 	
+	public synchronized void deleteMyCourse(Context context, String uid, String courseId ){
+		SQLiteDatabase db = null;
+		Cursor c = null;
+		try {
+			DBOpenHelper dbHelper = new DBOpenHelper(context);
+			db = dbHelper.getWritableDatabase();
+			
+			c = db.query(Const.TABLE_MY_COURSE, null, Const.DB_KEY_UID + "=? and " + Const.DB_KEY_COURSE_ID + "=?", new String[]{ uid, courseId }, null, null, null);
+			if(null != c && c.getCount() > 0){
+				db.delete(Const.TABLE_MY_COURSE, Const.DB_KEY_UID + "=? and " + Const.DB_KEY_COURSE_ID + "=?", new String[]{ uid, courseId });
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally{
+			if(c != null){
+				c.close();
+			}
+			if(db != null){
+				db.close();
+			}
+		}
+	}
+	
 }

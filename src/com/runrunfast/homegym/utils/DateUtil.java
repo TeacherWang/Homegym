@@ -1,5 +1,7 @@
 package com.runrunfast.homegym.utils;
 
+import android.R.integer;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -38,6 +40,17 @@ public class DateUtil {
             }
         }
         return timeStr;
+    }
+    
+    /**
+      * @Method: secToMinute
+      * @Description: 秒转成分钟数
+      * @param second
+      * @return	
+      * 返回类型：String 
+      */
+    public static String secToMinute(int second){
+    	return String.valueOf( second / 60);
     }
 
     public static String unitFormat(int i) {

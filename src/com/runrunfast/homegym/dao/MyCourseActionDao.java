@@ -36,6 +36,7 @@ public class MyCourseActionDao {
 				+ Const.DB_KEY_DEFAULT_COUNT + " TEXT,"
 				+ Const.DB_KEY_DEFAULT_TOOL_WEIGHT + " TEXT,"
 				+ Const.DB_KEY_DEFAULT_BURNING + " TEXT,"
+				+ Const.DB_KEY_ACTION_DEFAULT_TOTAL_KCAL + " INTEGER,"
 				+ Const.DB_KEY_DEFAULT_TIME + " TEXT"
 				+ ");";
 		return sql;
@@ -52,11 +53,12 @@ public class MyCourseActionDao {
 			values.put(Const.DB_KEY_UID, AccountMgr.getInstance().mUserInfo.strAccountId);
 			values.put(Const.DB_KEY_COURSE_ID, courseId);
 			values.put(Const.DB_KEY_ACTION_ID, actionInfo.strActionId);
+			values.put(Const.DB_KEY_DEFAULT_TIME, actionInfo.iTime);
 			values.put(Const.DB_KEY_DEFAULT_GROUP_NUM, actionInfo.defaultGroupNum);
 			values.put(Const.DB_KEY_DEFAULT_COUNT, actionInfo.defaultCountList.toString());
 			values.put(Const.DB_KEY_DEFAULT_TOOL_WEIGHT, actionInfo.defaultToolWeightList.toString());
 			values.put(Const.DB_KEY_DEFAULT_BURNING, actionInfo.defaultBurningList.toString());
-			values.put(Const.DB_KEY_DEFAULT_TIME, actionInfo.iTime);
+			values.put(Const.DB_KEY_ACTION_DEFAULT_TOTAL_KCAL, actionInfo.iDefaultTotalKcal);
 			
 			c = db.query(Const.TABLE_MY_COURSE_ACTION, null, Const.DB_KEY_UID + " = ? and " + Const.DB_KEY_COURSE_ID + " = ? and " + Const.DB_KEY_ACTION_ID + " = ?",
 					new String[] { AccountMgr.getInstance().mUserInfo.strAccountId, courseId, actionInfo.strActionId }, null, null, null);
@@ -97,10 +99,21 @@ public class MyCourseActionDao {
 				actionInfo.strCourseId = c.getString(c.getColumnIndex(Const.DB_KEY_COURSE_ID));
 				actionInfo.strActionId = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_ID));
 				actionInfo.defaultGroupNum = c.getInt(c.getColumnIndex(Const.DB_KEY_DEFAULT_GROUP_NUM));
-				actionInfo.defaultCountList = Arrays.asList(c.getString(c.getColumnIndex(Const.DB_KEY_DEFAULT_COUNT)).split(","));
-				actionInfo.defaultToolWeightList = Arrays.asList(c.getString(c.getColumnIndex(Const.DB_KEY_DEFAULT_TOOL_WEIGHT)).split(","));
-				actionInfo.defaultBurningList = Arrays.asList(c.getString(c.getColumnIndex(Const.DB_KEY_DEFAULT_BURNING)).split(","));
+				
+				String tempCountString = c.getString(c.getColumnIndex(Const.DB_KEY_DEFAULT_COUNT));
+				String countString = tempCountString.substring(1, tempCountString.length() - 1);
+				actionInfo.defaultCountList = Arrays.asList(countString.split(","));
+				
+				String tempToolWeightString = c.getString(c.getColumnIndex(Const.DB_KEY_DEFAULT_TOOL_WEIGHT));
+				String toolWeightString = tempToolWeightString.substring(1, tempToolWeightString.length() - 1);
+				actionInfo.defaultToolWeightList = Arrays.asList(toolWeightString.split(","));
+				
+				String tempBurningString = c.getString(c.getColumnIndex(Const.DB_KEY_DEFAULT_BURNING));
+				String burningString = tempBurningString.substring(1, tempBurningString.length() - 1);
+				actionInfo.defaultBurningList = Arrays.asList(burningString.split(","));
+				
 				actionInfo.iTime = c.getInt(c.getColumnIndex(Const.DB_KEY_DEFAULT_TIME));
+				actionInfo.iDefaultTotalKcal = c.getInt(c.getColumnIndex(Const.DB_KEY_ACTION_DEFAULT_TOTAL_KCAL));
 			}
 			
 		} catch (Exception e) {
@@ -114,5 +127,29 @@ public class MyCourseActionDao {
 			}
 		}
 		return actionInfo;
+	}
+	
+	public synchronized void deleteMyCourseAction(Context context, String uid, String courseId){
+		SQLiteDatabase db = null;
+		Cursor c = null;
+		try {
+			DBOpenHelper dbHelper = new DBOpenHelper(context);
+			db = dbHelper.getWritableDatabase();
+			
+			c = db.query(Const.TABLE_MY_COURSE_ACTION, null, Const.DB_KEY_UID + "=? and " + Const.DB_KEY_COURSE_ID + "=?", new String[]{ uid, courseId }, null, null, null);
+			if(null != c && c.getCount() > 0){
+				db.delete(Const.TABLE_MY_COURSE_ACTION, Const.DB_KEY_UID + "=? and " + Const.DB_KEY_COURSE_ID + "=?", new String[]{ uid, courseId });
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally{
+			if(c != null){
+				c.close();
+			}
+			if(db != null){
+				db.close();
+			}
+		}
 	}
 }

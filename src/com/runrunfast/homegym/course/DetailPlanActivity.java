@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.account.AccountMgr;
+import com.runrunfast.homegym.account.UserInfo;
 import com.runrunfast.homegym.dao.ActionDao;
 import com.runrunfast.homegym.dao.CourseDao;
 import com.runrunfast.homegym.dao.MyCourseActionDao;
@@ -49,6 +50,8 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 	private String mCourseId;
 	private CourseInfo mCourseInfo;
 	
+	private UserInfo mUserInfo;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -75,6 +78,8 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 	}
 
 	private void initData() {
+		mUserInfo = AccountMgr.getInstance().mUserInfo;
+		
 		mCourseId = getIntent().getStringExtra(Const.KEY_COURSE_ID);
 		mCourseInfo = CourseDao.getInstance().getCourseInfoFromDb(Globle.gApplicationContext, mCourseId);
 		
@@ -207,7 +212,8 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 		Log.i(TAG, "resultCode = " + resultCode);
 		if(requestCode == Const.DIALOG_REQ_CODE_EXIT_COURSE && resultCode == DialogActivity.RSP_CONFIRM){
 			// 删除本地数据
-			
+			MyCourseDao.getInstance().deleteMyCourse(Globle.gApplicationContext, mUserInfo.strAccountId, mCourseId);
+			MyCourseActionDao.getInstance().deleteMyCourseAction(Globle.gApplicationContext, mUserInfo.strAccountId, mCourseId);
 			// 退出界面
 			exitTrain();
 		}

@@ -78,7 +78,7 @@ public class ActionSetAdapter extends BaseAdapter {
 		}else{
 			holder.layout.setBackgroundColor(mContext.getResources().getColor(R.color.train_action_set_item_deep_color));
 		}
-		holder.tvGroupNum.setText(trainActionInfo.strGroupNum);
+		holder.tvGroupNum.setText("第" + trainActionInfo.iGroupNum + "组");
 		holder.tvCount.setText(String.valueOf(trainActionInfo.iCount));
 		holder.tvWeight.setText(String.valueOf(trainActionInfo.iToolWeight));
 		holder.tvKcal.setText(String.valueOf(trainActionInfo.iBurning));

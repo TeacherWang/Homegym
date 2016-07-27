@@ -158,7 +158,8 @@
 	<string name="burning">燃脂</string>
 	<string name="minute">min</string>
 	<string name="ge">个</string>
-	<string name="qianka">千卡</string>
+	<string name="minute_cn">分钟</string>
+	<string name="kcal_cn">千卡</string>
 	<string name="count_number">次数</string>
 	<string name="had_finished_train">已完成训练</string>
 	

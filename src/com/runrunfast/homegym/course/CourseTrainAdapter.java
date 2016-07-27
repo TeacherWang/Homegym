@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.account.DataTransferUtil;
+import com.runrunfast.homegym.utils.DateUtil;
 
 public class CourseTrainAdapter extends BaseAdapter {
 	
@@ -67,8 +68,8 @@ public class CourseTrainAdapter extends BaseAdapter {
 		holder.tvTrainName.setText(actionInfo.actionName);
 		holder.tvTrainPosition.setText(actionInfo.strTrainPosition);
 		holder.tvTrainActionNum.setText("动作" + DataTransferUtil.numMap.get(position + 1));
-		holder.tvTime.setText(String.valueOf(actionInfo.iTime) + mContext.getResources().getString(R.string.minute)
-				+ " " + String.valueOf(actionInfo.iDefaultTotalKcal) + mContext.getResources().getString(R.string.kcal));
+		holder.tvTime.setText(String.valueOf(DateUtil.secToMinute(actionInfo.iTime)) + mContext.getResources().getString(R.string.minute_cn)
+				+ " " + String.valueOf(actionInfo.iDefaultTotalKcal) + mContext.getResources().getString(R.string.kcal_cn));
 		holder.tvDiffcult.setText(R.string.difficult);
 		if(actionInfo.iDiffcultLevel == 1){
 			holder.ivDiffcultLevel1.setVisibility(View.VISIBLE);

@@ -351,7 +351,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int course_train_name_margin_left=0x7f050057;
         public static final int course_train_name_margin_top=0x7f050056;
         public static final int course_train_name_size=0x7f050053;
-        public static final int course_train_time_margin_top=0x7f05005d;
+        public static final int course_train_time_margin_bottom=0x7f05005d;
         public static final int current_day_train_content_difficult_divider=0x7f050071;
         public static final int current_day_train_content_difficult_margin=0x7f050070;
         public static final int current_day_train_content_lock_img_margin=0x7f050072;
@@ -1035,7 +1035,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int company_name=0x7f070088;
         public static final int confirm=0x7f07006a;
         public static final int count=0x7f070078;
-        public static final int count_number=0x7f070096;
+        public static final int count_number=0x7f070097;
         public static final int course_empty_text=0x7f070047;
         public static final int course_progress_ing=0x7f07004a;
         public static final int course_rest_day=0x7f07004b;
@@ -1071,7 +1071,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int group_num_is_smaller_than_1=0x7f070054;
         public static final int gym=0x7f070044;
         public static final int had_account=0x7f07005c;
-        public static final int had_finished_train=0x7f070097;
+        public static final int had_finished_train=0x7f070098;
         public static final int health_index=0x7f070025;
         public static final int height=0x7f070022;
         public static final int hour=0x7f070077;
@@ -1086,10 +1086,12 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int join_in_teach=0x7f07002d;
         public static final int join_train=0x7f07004d;
         public static final int kcal=0x7f070072;
+        public static final int kcal_cn=0x7f070096;
         public static final int login=0x7f07000f;
         public static final int login_fail=0x7f07003e;
         public static final int me=0x7f070046;
         public static final int minute=0x7f070093;
+        public static final int minute_cn=0x7f070095;
         public static final int month=0x7f07006e;
         public static final int my_training=0x7f070042;
         public static final int net_error=0x7f070035;
@@ -1108,7 +1110,6 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int pull_to_refresh_pull_label=0x7f070000;
         public static final int pull_to_refresh_refreshing_label=0x7f070002;
         public static final int pull_to_refresh_release_label=0x7f070001;
-        public static final int qianka=0x7f070095;
         public static final int recommend_train=0x7f07002e;
         public static final int recommended_courses=0x7f070049;
         public static final int record_total_consume=0x7f070071;

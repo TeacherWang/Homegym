@@ -17,7 +17,8 @@ public class ActionInfo {
 	public List<String> defaultToolWeightList = new ArrayList<String>();
 	public List<String> defaultBurningList = new ArrayList<String>();
 	
-	public String strGroupNum; // 第几组
+	// 动作设置界面的每组动作信息
+	public int iGroupNum; // 第几组
 	public int iCount; // 次数
 	public int iToolWeight; // 重量
 	public int iBurning; // 燃脂
