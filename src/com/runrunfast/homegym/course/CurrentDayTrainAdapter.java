@@ -9,28 +9,42 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.runrunfast.homegym.R;
+import com.runrunfast.homegym.account.DataTransferUtil;
 
 import java.util.ArrayList;
 
 public class CurrentDayTrainAdapter extends BaseAdapter {
-	private ArrayList<CurrentDayTrainContentInfo> mCurrentDayTrainContentInfoList;
+	private ArrayList<ActionInfo> mCurrentDayActionInfoList;
 	private LayoutInflater mInflater;
 	private Context mContext;
 	
-	public CurrentDayTrainAdapter(Context context, ArrayList<CurrentDayTrainContentInfo> currentDayTrainContentInfos){
+	public CurrentDayTrainAdapter(Context context, ArrayList<ActionInfo> currentDayActionInfos){
 		this.mContext = context;
-		this.mCurrentDayTrainContentInfoList = currentDayTrainContentInfos;
+		setData(currentDayActionInfos);
 		this.mInflater = LayoutInflater.from(context);
+	}
+	
+	private void setData(ArrayList<ActionInfo> currentDayActionInfos){
+		if(currentDayActionInfos == null){
+			this.mCurrentDayActionInfoList = new ArrayList<ActionInfo>();
+		}else{
+			mCurrentDayActionInfoList = currentDayActionInfos;
+		}
+	}
+	
+	public void updateData(ArrayList<ActionInfo> currentDayActionInfos){
+		setData(currentDayActionInfos);
+		notifyDataSetChanged();
 	}
 	
 	@Override
 	public int getCount() {
-		return mCurrentDayTrainContentInfoList.size();
+		return mCurrentDayActionInfoList.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
-		return mCurrentDayTrainContentInfoList.get(position);
+		return mCurrentDayActionInfoList.get(position);
 	}
 
 	@Override
@@ -58,21 +72,26 @@ public class CurrentDayTrainAdapter extends BaseAdapter {
 			holder = (ViewHolder)convertView.getTag();
 		}
 		
-		CurrentDayTrainContentInfo currentDayTrainContentInfo = mCurrentDayTrainContentInfoList.get(position);
-		holder.tvTrainName.setText(currentDayTrainContentInfo.strTrainName);
-		holder.tvGroupNum.setText("共" + currentDayTrainContentInfo.iGroupNum + "组");
-		holder.tvCountNum.setText(currentDayTrainContentInfo.iCount + mContext.getResources().getString(R.string.count));
-		holder.tvActionNum.setText(currentDayTrainContentInfo.strActionNum);
+		ActionInfo actionInfo = mCurrentDayActionInfoList.get(position);
+		holder.tvTrainName.setText(actionInfo.actionName);
+		holder.tvGroupNum.setText("共" + actionInfo.defaultGroupNum + "组");
+		int count = actionInfo.defaultCountList.size();
+		int totalCount = 0;
+		for(int i=0; i<count; i++){
+			totalCount = totalCount + Integer.parseInt(actionInfo.defaultCountList.get(i).trim());
+		}
+		holder.tvCountNum.setText(totalCount + mContext.getResources().getString(R.string.count));
+		holder.tvActionNum.setText( "动作" + (String)DataTransferUtil.numMap.get(position + 1));
 		
-		if(currentDayTrainContentInfo.iDifficultLevel == 1){
+		if(actionInfo.iDiffcultLevel == 1){
 			holder.ivDifficultLevel1.setBackgroundResource(R.drawable.icon_level_black);
 			holder.ivDifficultLevel2.setBackgroundResource(R.drawable.icon_level_while);
 			holder.ivDifficultLevel3.setBackgroundResource(R.drawable.icon_level_while);
-		}else if(currentDayTrainContentInfo.iDifficultLevel == 2){
+		}else if(actionInfo.iDiffcultLevel == 2){
 			holder.ivDifficultLevel1.setBackgroundResource(R.drawable.icon_level_black);
 			holder.ivDifficultLevel2.setBackgroundResource(R.drawable.icon_level_black);
 			holder.ivDifficultLevel3.setBackgroundResource(R.drawable.icon_level_while);
-		}else if(currentDayTrainContentInfo.iDifficultLevel == 3){
+		}else if(actionInfo.iDiffcultLevel == 3){
 			holder.ivDifficultLevel1.setBackgroundResource(R.drawable.icon_level_black);
 			holder.ivDifficultLevel2.setBackgroundResource(R.drawable.icon_level_black);
 			holder.ivDifficultLevel3.setBackgroundResource(R.drawable.icon_level_black);

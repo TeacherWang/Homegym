@@ -194,7 +194,7 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 	private void jumpToTrainDetailActivity() {
 		Intent intent = new Intent(this, DetailPlanActivity.class);
 		
-		intent.putExtra(Const.KEY_COURSE_ID, mCourseId);
+		intent.putExtra(Const.KEY_COURSE_INFO, mCourseInfo);
 		
 		startActivity(intent);
 	}

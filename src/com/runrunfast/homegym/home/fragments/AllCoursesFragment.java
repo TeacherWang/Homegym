@@ -52,11 +52,8 @@ public class AllCoursesFragment extends Fragment {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				CourseInfo courseInfo = mAllCoursesList.get(position);
-				String courseId = courseInfo.courseId;
-				String courseName = courseInfo.courseName;
 				Intent intent = new Intent(getActivity(), DetailPlanActivity.class);
-				intent.putExtra(Const.KEY_COURSE_ID, courseId);
-				intent.putExtra(Const.KEY_COURSE_NAME, courseName);
+				intent.putExtra(Const.KEY_COURSE_INFO, courseInfo);
 				startActivity(intent);
 			}
 		});

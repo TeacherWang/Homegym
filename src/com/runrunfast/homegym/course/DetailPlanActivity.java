@@ -25,9 +25,11 @@ import com.runrunfast.homegym.utils.DateUtil;
 import com.runrunfast.homegym.utils.Globle;
 import com.runrunfast.homegym.widget.DialogActivity;
 import com.runrunfast.homegym.widget.KCalendar;
+import com.runrunfast.homegym.widget.KCalendar.OnCalendarClickListener;
 import com.runrunfast.homegym.widget.KCalendar.OnCalendarDateChangedListener;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class DetailPlanActivity extends Activity implements OnClickListener{
@@ -41,7 +43,6 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 	private KCalendar kCalendar;
 	private TextView tvCalendarDate;
 	private ImageView ivLastMonth, ivNextMonth;
-	private ArrayList<CurrentDayTrainContentInfo> mContentInfoList;
 	private ListView mCurrentDayListView;
 	private CurrentDayTrainAdapter mCurrentDayTrainAdapter;
 	
@@ -51,6 +52,14 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 	private CourseInfo mCourseInfo;
 	
 	private UserInfo mUserInfo;
+	
+	private String mMyCourseStartDate; // 在我参加的课程中才会有，第一天的日期
+	private ArrayList<Date> mDateBeforeList; // 在我参加的课程中已经过去的日子
+	
+	private ArrayList<String> mDateFutureList; // 还未到的日子
+	
+	private String[] mActionIdsOfThatDay; // 指定某天的动作id集合
+	private ArrayList<ActionInfo> mActionInfoListOfThatDay; // 指定某天的actionInfo集合
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -75,13 +84,26 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 				tvCalendarDate.setText(year + mResources.getString(R.string.year) + month + mResources.getString(R.string.month));
 			}
 		});
+		
+		kCalendar.setOnCalendarClickListener(new OnCalendarClickListener() {
+			
+			@Override
+			public void onCalendarClick(int row, int col, String dateFormat) {
+				// dateFormat = 2016-07-27
+				Log.i(TAG, "onCalendarClick, row = " + row + ", col = " + col + ", dateFormat = " + dateFormat);
+			}
+		});
 	}
 
 	private void initData() {
 		mUserInfo = AccountMgr.getInstance().mUserInfo;
 		
-		mCourseId = getIntent().getStringExtra(Const.KEY_COURSE_ID);
+		CourseInfo courseInfo = (CourseInfo) getIntent().getSerializableExtra(Const.KEY_COURSE_INFO);
+		mCourseId = courseInfo.courseId;
 		mCourseInfo = CourseDao.getInstance().getCourseInfoFromDb(Globle.gApplicationContext, mCourseId);
+		
+		mActionIdsOfThatDay = new String[]{};
+		mActionInfoListOfThatDay = new ArrayList<ActionInfo>();
 		
 		isCourseExist = isCourseExist();
 		isMyCourse = isMyCourse();
@@ -89,48 +111,73 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 		if(isMyCourse){
 			btnJoin.setText(R.string.start_train);
 			btnRight.setVisibility(View.VISIBLE);
+			
+			mMyCourseStartDate = courseInfo.startDate;
+			handleMyCourseActionDaysDistribution();
 		}else{
 			btnJoin.setText(R.string.join_train);
 			btnRight.setVisibility(View.INVISIBLE);
+			
+			handleCourseActionDaysDistribution();
 		}
 		
 		tvCalendarDate.setText(kCalendar.getCalendarYear() + mResources.getString(R.string.year)
 				+ kCalendar.getCalendarMonth() + mResources.getString(R.string.month));
 		
-		mContentInfoList = new ArrayList<CurrentDayTrainContentInfo>();
-		
-		CurrentDayTrainContentInfo currentDayTrainContentInfo1 = new CurrentDayTrainContentInfo();
-		currentDayTrainContentInfo1.iCourseId = 1;
-		currentDayTrainContentInfo1.iTrainId = 1;
-		currentDayTrainContentInfo1.iDifficultLevel = 1;
-		currentDayTrainContentInfo1.iGroupNum = 4;
-		currentDayTrainContentInfo1.iCount = 30;
-		currentDayTrainContentInfo1.strTrainName = "平板卧推举";
-		currentDayTrainContentInfo1.strActionNum = "动作一";
-		mContentInfoList.add(currentDayTrainContentInfo1);
-		
-		CurrentDayTrainContentInfo currentDayTrainContentInfo2 = new CurrentDayTrainContentInfo();
-		currentDayTrainContentInfo2.iCourseId = 1;
-		currentDayTrainContentInfo2.iTrainId = 2;
-		currentDayTrainContentInfo2.iDifficultLevel = 2;
-		currentDayTrainContentInfo2.iGroupNum = 2;
-		currentDayTrainContentInfo2.iCount = 20;
-		currentDayTrainContentInfo2.strTrainName = "平板卧推举";
-		currentDayTrainContentInfo2.strActionNum = "动作二";
-		mContentInfoList.add(currentDayTrainContentInfo2);
-		
-		CurrentDayTrainContentInfo currentDayTrainContentInfo3 = new CurrentDayTrainContentInfo();
-		currentDayTrainContentInfo3.iCourseId = 1;
-		currentDayTrainContentInfo3.iTrainId = 3;
-		currentDayTrainContentInfo3.iDifficultLevel = 3;
-		currentDayTrainContentInfo3.iGroupNum = 5;
-		currentDayTrainContentInfo3.iCount = 40;
-		currentDayTrainContentInfo3.strTrainName = "平板卧推举";
-		currentDayTrainContentInfo3.strActionNum = "动作三";
-		mContentInfoList.add(currentDayTrainContentInfo3);
-		
-		mCurrentDayTrainAdapter = new CurrentDayTrainAdapter(this, mContentInfoList);
+		mCurrentDayTrainAdapter = new CurrentDayTrainAdapter(this, mActionInfoListOfThatDay);
 		mCurrentDayListView.setAdapter(mCurrentDayTrainAdapter);
+		
+		setCalendar();
+	}
+
+	private void setCalendar() {
+		mDateFutureList = new ArrayList<String>();
+		if(isMyCourse){
+				
+		}else{
+			List<String> dayNumList = mCourseInfo.dateNumList;
+			int dayNum = dayNumList.size();
+			for(int i=0; i<dayNum; i++){
+				String dateStr = DateUtil.getDateOfDayNumFromStartDate(i, DateUtil.getCurrentDate());
+				mDateFutureList.add(dateStr);
+			}
+			
+			kCalendar.setCalendarDaysTextColor(mDateFutureList, mResources.getColor(R.color.calendar_have_course));
+		} 
+	}
+
+	/**
+	  * @Method: handleCourseActionDaysDistribution
+	  * @Description: 一般课程的日期分布	
+	  * 返回类型：void 
+	  */
+	private void handleCourseActionDaysDistribution() {
+		String actionString = mCourseInfo.dateActionIdList.get(0).trim();
+		
+		mActionIdsOfThatDay = actionString.split(";");// 获取第一天的动作集合{a1,a2,a3}
+		int actionSize = mActionIdsOfThatDay.length;
+		for(int i=0; i<actionSize; i++){
+			String actionId = mActionIdsOfThatDay[i].trim();
+			ActionInfo actionInfo = ActionDao.getInstance().getActionInfoFromDb(Globle.gApplicationContext, actionId);
+			mActionInfoListOfThatDay.add(actionInfo);
+		}
+	}
+
+	/**
+	  * @Method: handleMyCourseActionDaysDistribution
+	  * @Description: 我参加的课程的日期分布	
+	  * 返回类型：void 
+	  */
+	private void handleMyCourseActionDaysDistribution() {
+		String actionString = mCourseInfo.dateActionIdList.get(0).trim();
+		
+		mActionIdsOfThatDay = actionString.split(";");// 获取第一天的动作集合{a1,a2,a3}
+		int actionSize = mActionIdsOfThatDay.length;
+		for(int i=0; i<actionSize; i++){
+			String actionId = mActionIdsOfThatDay[i].trim();
+			ActionInfo actionInfo = MyCourseActionDao.getInstance().getMyCourseActionInfo(Globle.gApplicationContext, mUserInfo.strAccountId, mCourseId, actionId);
+			mActionInfoListOfThatDay.add(actionInfo);
+		}
 	}
 
 	private boolean isMyCourse() {

@@ -68,7 +68,7 @@ public class MyCourseDao {
 		}
 	}
 	
-	public ArrayList<CourseInfo> getMyCourseInfoList(Context context){
+	public synchronized ArrayList<CourseInfo> getMyCourseInfoList(Context context){
 		ArrayList<CourseInfo> courseInfoList = new ArrayList<CourseInfo>();
 		SQLiteDatabase db = null;
 		Cursor c = null;
@@ -105,7 +105,7 @@ public class MyCourseDao {
 		return courseInfoList;
 	}
 	
-	public CourseInfo getMyCourseInfo(Context context, String courseId){
+	public synchronized CourseInfo getMyCourseInfo(Context context, String courseId){
 		CourseInfo courseInfo = null;
 		SQLiteDatabase db = null;
 		Cursor c = null;

@@ -187,6 +187,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int bt_all_devices_text_color=0x7f080028;
         public static final int bt_device_connected_color=0x7f080020;
         public static final int bt_had_paired_text_color=0x7f08001f;
+        public static final int calendar_have_course=0x7f080040;
         public static final int course_img_mask=0x7f08001c;
         public static final int course_train_action_num_color=0x7f080017;
         public static final int dialog_btn_cancel_color_normal=0x7f080021;

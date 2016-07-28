@@ -203,7 +203,7 @@ public class CourseDao {
 				
 				String tempDateActionIdString = c.getString(c.getColumnIndex(Const.DB_KEY_DATE_ACTION_IDS));
 				String defaultDateActionIdString = tempDateActionIdString.substring(1, tempDateActionIdString.length() - 1);
-				courseInfo.dateActionIdList = Arrays.asList( defaultDateActionIdString.split(";") );
+				courseInfo.dateActionIdList = Arrays.asList( defaultDateActionIdString.split(",") );
 				
 				courseInfo.isRecommend = c.getInt(c.getColumnIndex(Const.DB_KEY_RECOMMEND)) == 1 ? true : false;
 				courseInfo.courseQuality = c.getInt(c.getColumnIndex(Const.DB_KEY_COURSE_QUALITY));

@@ -52,8 +52,8 @@ public class KCalendar extends ViewFlipper implements
 	private String[][] dates = new String[6][7]; // 当前日历日期
 	private float tb;
 
-	private OnCalendarClickListener onCalendarClickListener; // 日历翻页回调
-	private OnCalendarDateChangedListener onCalendarDateChangedListener; // 日历点击回调
+	private OnCalendarClickListener onCalendarClickListener; // 日历点击回调
+	private OnCalendarDateChangedListener onCalendarDateChangedListener; // 日历翻页回调
 
 	private String[] weekday = new String[] { "日", "一", "二", "三", "四", "五", "六" }; // 星期标题
 
@@ -71,6 +71,8 @@ public class KCalendar extends ViewFlipper implements
 																			// res
 																			// id)
 	private Map<String, Integer> dayBgColorMap = new HashMap<String, Integer>(); // 储存某个日子的背景色
+	
+	private Map<String, Integer> dayTextColorMap = new HashMap<String, Integer>(); // 储存某个日子的文字颜色
 
 	public KCalendar(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -304,6 +306,12 @@ public class KCalendar extends ViewFlipper implements
 							view.setBackgroundResource(dayBgColorMap
 									.get(dates[i][j]));
 						}
+						// 我增加的设置文字颜色start
+						if( dayTextColorMap.get(dates[i][j]) != null ){
+							view.setTextColor(dayTextColorMap.get(dates[i][j]));
+						}
+						// 我增加的设置文字颜色end
+						
 						// 设置标记
 						setMarker(group, i, j);
 						day++;
@@ -537,6 +545,32 @@ public class KCalendar extends ViewFlipper implements
 		setCalendarDayBgColor(format(date), color);
 	}
 
+	/**
+	  * @Method: setCalendarDayTextColor
+	  * @Description: 设置日期文字颜色
+	  * @param date
+	  * @param color	getResourse.getColor(R.color.xxxx);
+	  * 返回类型：void 
+	  */
+	public void setCalendarDayTextColor(String date, int color){
+		dayTextColorMap.put(date, color);
+		setCalendarDate();
+	}
+	
+	/**
+	  * @Method: setCalendarDaysTextColor
+	  * @Description: 设置一组日期文字颜色
+	  * @param date
+	  * @param color	
+	  * 返回类型：void 
+	  */
+	public void setCalendarDaysTextColor(List<String> date, int color) {
+		for (int i = 0; i < date.size(); i++) {
+			dayTextColorMap.put(date.get(i), color);
+		}
+		setCalendarDate();
+	}
+	
 	/**
 	 * 设置日历具体某个日期的背景色
 	 * 
