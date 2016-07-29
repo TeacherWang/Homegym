@@ -50,7 +50,7 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 	private ListView mListView;
 	
 	private int mConsumeSecond = 500; // 消耗时间
-	private int mBurning = 178; // 燃脂
+	private int mTotalBurning; // 总燃脂
 	
 	private ArrayList<ActionInfo> mTrainActionInfoList;
 	private ActionSetAdapter mTrainActionSetAdapter;
@@ -202,7 +202,9 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 		
 		tvGroupNum.setText(String.valueOf(mTrainActionInfoList.size()));
 		tvTimeConsume.setText(DateUtil.secToTime(myActionInfo.iTime));
-		tvBurning.setText(String.valueOf(myActionInfo.iDefaultTotalKcal));
+		
+		mTotalBurning = myActionInfo.iDefaultTotalKcal;
+		tvBurning.setText( String.valueOf(mTotalBurning) );
 	}
 
 	private void initView() {
@@ -273,10 +275,24 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 		switch (inputType) {
 		case INPUT_TYPE_COUNT:
 			mTrainActionInfo.iCount = mCount;
+			// 要计算次数跟重量对应的燃脂，公式？还有时间
+//			mTrainActionInfo.iBurning = 公式？
+//			mTotalBurning = mTotalBurning + trainActionInfo.iBurning;
+//			tvTimeConsume.setText(DateUtil.secToTime(mConsumeSecond));
+//			tvBurning.setText(String.valueOf(mTotalBurning));
+			
+			mTrainActionSetAdapter.updateData(mTrainActionInfoList);
 			break;
 			
 		case INPUT_TYPE_TOOL_WEIGHT:
 			mTrainActionInfo.iToolWeight = mToolWeight;
+			// 要计算次数跟重量对应的燃脂，公式？还有时间
+//			mTrainActionInfo.iBurning = 公式？
+//			mTotalBurning = mTotalBurning + trainActionInfo.iBurning;
+//			tvTimeConsume.setText(DateUtil.secToTime(mConsumeSecond));
+//			tvBurning.setText(String.valueOf(mTotalBurning));
+			
+			mTrainActionSetAdapter.updateData(mTrainActionInfoList);
 			break;
 
 		default:
@@ -295,14 +311,16 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 			return;
 		}
 		
+		ActionInfo removeActionInfo = mTrainActionInfoList.get(mTrainActionInfoList.size() - 1);
+		
 		mTrainActionInfoList.remove(mTrainActionInfoList.size() - 1);
 		mTrainActionSetAdapter.notifyDataSetChanged();
 		
 		tvGroupNum.setText(String.valueOf(mTrainActionInfoList.size()));
 		mConsumeSecond = mConsumeSecond - 10;
-		mBurning = mBurning - 20;
+		mTotalBurning = mTotalBurning - removeActionInfo.iBurning;
 		tvTimeConsume.setText(DateUtil.secToTime(mConsumeSecond));
-		tvBurning.setText(String.valueOf(mBurning));
+		tvBurning.setText(String.valueOf(mTotalBurning));
 	}
 
 	private void addGroupNum() {
@@ -328,16 +346,16 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 		tvGroupNum.setText(String.valueOf(groupNum));
 		
 		mConsumeSecond = mConsumeSecond + 10;
-		mBurning = mBurning + 20;
+		mTotalBurning = mTotalBurning + trainActionInfo.iBurning;
 		tvTimeConsume.setText(DateUtil.secToTime(mConsumeSecond));
-		tvBurning.setText(String.valueOf(mBurning));
+		tvBurning.setText(String.valueOf(mTotalBurning));
 		
 		ActionInfo myActionInfo = new ActionInfo();
 		myActionInfo.strCourseId = mCourseId;
 		myActionInfo.strActionId = mActionId;
 		myActionInfo.iTime = mConsumeSecond;
 		myActionInfo.defaultGroupNum = groupNum;
-		myActionInfo.iDefaultTotalKcal = mBurning;
+		myActionInfo.iDefaultTotalKcal = mTotalBurning;
 		for(int i=0; i<groupNum; i++){
 			ActionInfo actionInfo = mTrainActionInfoList.get(i);
 			myActionInfo.defaultCountList.add(String.valueOf(actionInfo.iCount));

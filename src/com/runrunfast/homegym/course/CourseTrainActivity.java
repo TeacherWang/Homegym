@@ -190,7 +190,6 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 		}
 	}
 
-
 	private void jumpToTrainDetailActivity() {
 		Intent intent = new Intent(this, DetailPlanActivity.class);
 		

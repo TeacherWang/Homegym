@@ -175,7 +175,6 @@ public class DataIniter {
 		actionInfo1.strTrainDescript = "坚持训练将锻炼到胸大肌和三角肌";
 		actionInfo1.iTime = 1000;
 		actionInfo1.defaultGroupNum = 4;
-		actionInfo1.iDefaultTotalKcal = 187;
 		actionInfo1.iDiffcultLevel = 1;
 		
 		actionInfo1.defaultCountList.add("11");
@@ -192,6 +191,9 @@ public class DataIniter {
 		actionInfo1.defaultBurningList.add("108");
 		actionInfo1.defaultBurningList.add("102");
 		actionInfo1.defaultBurningList.add("88");
+		
+		actionInfo1.iDefaultTotalKcal = 76 + 108 + 102 + 88;
+		
 		actionInfoList.add(actionInfo1);
 		
 		// action2
@@ -202,7 +204,6 @@ public class DataIniter {
 		actionInfo2.strTrainDescript = "坚持训练将锻炼到肱二头肌和三角肌";
 		actionInfo2.iTime = 2000;
 		actionInfo2.defaultGroupNum = 4;
-		actionInfo2.iDefaultTotalKcal = 287;
 		actionInfo2.iDiffcultLevel = 2;
 		
 		actionInfo2.defaultCountList.add("12");
@@ -219,6 +220,9 @@ public class DataIniter {
 		actionInfo2.defaultBurningList.add("208");
 		actionInfo2.defaultBurningList.add("202");
 		actionInfo2.defaultBurningList.add("88");
+		
+		actionInfo2.iDefaultTotalKcal = 76 + 208 + 202 + 88;
+		
 		actionInfoList.add(actionInfo2);
 		
 		// action3
@@ -229,7 +233,6 @@ public class DataIniter {
 		actionInfo3.strTrainDescript = "坚持训练将锻炼到腹肌";
 		actionInfo3.iTime = 3000;
 		actionInfo3.defaultGroupNum = 4;
-		actionInfo3.iDefaultTotalKcal = 387;
 		actionInfo3.iDiffcultLevel = 3;
 		
 		actionInfo3.defaultCountList.add("32");
@@ -246,6 +249,9 @@ public class DataIniter {
 		actionInfo3.defaultBurningList.add("308");
 		actionInfo3.defaultBurningList.add("302");
 		actionInfo3.defaultBurningList.add("88");
+		
+		actionInfo3.iDefaultTotalKcal = 76 + 308 + 302 + 88;
+		
 		actionInfoList.add(actionInfo3);
 		
 		// action1
@@ -256,7 +262,6 @@ public class DataIniter {
 		actionInfo4.strTrainDescript = "坚持训练将锻炼到胸大肌和三角肌";
 		actionInfo4.iTime = 4000;
 		actionInfo4.defaultGroupNum = 4;
-		actionInfo4.iDefaultTotalKcal = 487;
 		actionInfo4.iDiffcultLevel = 1;
 		
 		actionInfo4.defaultCountList.add("42");
@@ -273,6 +278,9 @@ public class DataIniter {
 		actionInfo4.defaultBurningList.add("408");
 		actionInfo4.defaultBurningList.add("402");
 		actionInfo4.defaultBurningList.add("88");
+		
+		actionInfo4.iDefaultTotalKcal = 76 + 408 + 402 + 88;
+		
 		actionInfoList.add(actionInfo4);
 		
 		// action5
@@ -283,7 +291,6 @@ public class DataIniter {
 		actionInfo5.strTrainDescript = "坚持训练将锻炼到胸大肌和三角肌";
 		actionInfo5.iTime = 5000;
 		actionInfo5.defaultGroupNum = 4;
-		actionInfo5.iDefaultTotalKcal = 587;
 		actionInfo5.iDiffcultLevel = 2;
 		
 		actionInfo5.defaultCountList.add("52");
@@ -300,6 +307,9 @@ public class DataIniter {
 		actionInfo5.defaultBurningList.add("508");
 		actionInfo5.defaultBurningList.add("502");
 		actionInfo5.defaultBurningList.add("88");
+		
+		actionInfo5.iDefaultTotalKcal = 76 + 508 + 502 + 88;
+		
 		actionInfoList.add(actionInfo5);
 		
 		return actionInfoList;
