@@ -318,10 +318,10 @@
 	<dimen name="personal_headimg_size">50dp</dimen>
 	<dimen name="personal_headimg_margin">15dp</dimen>
 	
-	<dimen name="historyscore_tb">10dp</dimen>
+	<dimen name="historyscore_tb">4dp</dimen>
 	
 	<dimen name="calender_layout_margin_top">10dp</dimen>
-	<dimen name="calender_height">271dp</dimen>
+	<dimen name="calender_height">250dp</dimen>
 	
 	<dimen name="train_action_set_bg_height">225dp</dimen>
 	<dimen name="train_action_set_num_size">12dp</dimen>

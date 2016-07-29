@@ -98,7 +98,6 @@
             android:id="@+id/course_train_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/detail_plan_list_margin_top"
             android:layout_marginLeft="@dimen/detail_plan_list_margin_left_right"
             android:layout_marginRight="@dimen/detail_plan_list_margin_left_right"
             android:divider="@color/account_divider_color"

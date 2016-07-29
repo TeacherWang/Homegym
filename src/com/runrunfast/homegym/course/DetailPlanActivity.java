@@ -1,5 +1,6 @@
 package com.runrunfast.homegym.course;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -29,7 +30,6 @@ import com.runrunfast.homegym.widget.KCalendar.OnCalendarClickListener;
 import com.runrunfast.homegym.widget.KCalendar.OnCalendarDateChangedListener;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class DetailPlanActivity extends Activity implements OnClickListener{
@@ -54,12 +54,14 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 	private UserInfo mUserInfo;
 	
 	private String mMyCourseStartDate; // 在我参加的课程中才会有，第一天的日期
-	private ArrayList<Date> mDateBeforeList; // 在我参加的课程中已经过去的日子
+//	private ArrayList<String> mDateBeforeList; // 在我参加的课程中已经过去的日子
 	
-	private ArrayList<String> mDateFutureList; // 还未到的日子
+	private ArrayList<String> mCourseDateList; // 课程的日期集合，如2016-07-29, ....
 	
 	private String[] mActionIdsOfThatDay; // 指定某天的动作id集合
 	private ArrayList<ActionInfo> mActionInfoListOfThatDay; // 指定某天的actionInfo集合
+	
+	private String strSelectedDate;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -91,8 +93,20 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 			public void onCalendarClick(int row, int col, String dateFormat) {
 				// dateFormat = 2016-07-27
 				Log.i(TAG, "onCalendarClick, row = " + row + ", col = " + col + ", dateFormat = " + dateFormat);
+				
+				handleCalendarClick(dateFormat);
 			}
+			
 		});
+	}
+	
+	@SuppressLint("ResourceAsColor")
+	private void handleCalendarClick(String dateFormat) {
+		if( mCourseDateList.contains(dateFormat) ){
+			int datePosition = mCourseDateList.indexOf(dateFormat);
+			handleCourseActionDaysDistribution(datePosition);
+			mCurrentDayTrainAdapter.updateData(mActionInfoListOfThatDay);
+		}
 	}
 
 	private void initData() {
@@ -104,21 +118,40 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 		
 		mActionIdsOfThatDay = new String[]{};
 		mActionInfoListOfThatDay = new ArrayList<ActionInfo>();
+		mCourseDateList = new ArrayList<String>();
 		
 		isCourseExist = isCourseExist();
 		isMyCourse = isMyCourse();
+		
+		strSelectedDate = DateUtil.getCurrentDate();
 		
 		if(isMyCourse){
 			btnJoin.setText(R.string.start_train);
 			btnRight.setVisibility(View.VISIBLE);
 			
-			mMyCourseStartDate = courseInfo.startDate;
-			handleMyCourseActionDaysDistribution();
+			CourseInfo myCourseInfo = MyCourseDao.getInstance().getMyCourseInfo(Globle.gApplicationContext, mCourseId);
+			mCourseInfo.startDate = myCourseInfo.startDate;
+			
+			mMyCourseStartDate = mCourseInfo.startDate;
+			handleMyCourseActionDaysDistribution(mMyCourseStartDate);
+			// 把间隔天数转换为日期集合
+			int dayListSize = mCourseInfo.dateNumList.size();
+			for(int i=0; i<dayListSize; i++){
+				String dateStr = DateUtil.getDateStrOfDayNumFromStartDate(i + 1, mMyCourseStartDate);
+				mCourseDateList.add(dateStr);
+			}
 		}else{
 			btnJoin.setText(R.string.join_train);
 			btnRight.setVisibility(View.INVISIBLE);
 			
-			handleCourseActionDaysDistribution();
+			handleCourseActionDaysDistribution(0);
+			//把间隔天数转换为日期集合
+			List<String> dayNumList = mCourseInfo.dateNumList;
+			int dayNum = dayNumList.size();
+			for(int i=0; i<dayNum; i++){
+				String dateStr = DateUtil.getDateStrOfDayNumFromStartDate(i + 1, DateUtil.getCurrentDate());
+				mCourseDateList.add(dateStr);
+			}
 		}
 		
 		tvCalendarDate.setText(kCalendar.getCalendarYear() + mResources.getString(R.string.year)
@@ -130,31 +163,22 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 		setCalendar();
 	}
 
+	@SuppressLint("ResourceAsColor")
 	private void setCalendar() {
-		mDateFutureList = new ArrayList<String>();
-		if(isMyCourse){
-				
-		}else{
-			List<String> dayNumList = mCourseInfo.dateNumList;
-			int dayNum = dayNumList.size();
-			for(int i=0; i<dayNum; i++){
-				String dateStr = DateUtil.getDateOfDayNumFromStartDate(i, DateUtil.getCurrentDate());
-				mDateFutureList.add(dateStr);
-			}
-			
-			kCalendar.setCalendarDaysTextColor(mDateFutureList, mResources.getColor(R.color.calendar_have_course));
-		} 
+		kCalendar.setCalendarDaysTextColor(mCourseDateList, mResources.getColor(R.color.calendar_have_course));
+		kCalendar.setCalendarDayBgColor(DateUtil.getCurrentDate(), R.color.calendar_day_select);
 	}
 
 	/**
 	  * @Method: handleCourseActionDaysDistribution
-	  * @Description: 一般课程的日期分布	
+	  * @Description: 一般课程指定日期的动作集合	
 	  * 返回类型：void 
 	  */
-	private void handleCourseActionDaysDistribution() {
-		String actionString = mCourseInfo.dateActionIdList.get(0).trim();
+	private void handleCourseActionDaysDistribution(int position) {
+		String actionString = mCourseInfo.dateActionIdList.get(position).trim();
 		
-		mActionIdsOfThatDay = actionString.split(";");// 获取第一天的动作集合{a1,a2,a3}
+		mActionInfoListOfThatDay.clear();
+		mActionIdsOfThatDay = actionString.split(";");// 获取第position + 1天的动作集合{a1,a2,a3}
 		int actionSize = mActionIdsOfThatDay.length;
 		for(int i=0; i<actionSize; i++){
 			String actionId = mActionIdsOfThatDay[i].trim();
@@ -165,19 +189,34 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 
 	/**
 	  * @Method: handleMyCourseActionDaysDistribution
-	  * @Description: 我参加的课程的日期分布	
+	  * @Description: 我参加的课程指定日期的动作集合	
+	  * @param myCourseStartDateStr	开始的日期
 	  * 返回类型：void 
 	  */
-	private void handleMyCourseActionDaysDistribution() {
-		String actionString = mCourseInfo.dateActionIdList.get(0).trim();
+	private void handleMyCourseActionDaysDistribution(String myCourseStartDateStr) {
+		// 获取当天跟开始日期的间隔天数，1为当天，2为第二天，以此类推
+		int currentDayNumBetweenStartDay = DateUtil.getDaysNumBetweenCurrentDayAndStartDay(myCourseStartDateStr);
+		// 如果天数集合不包含当天的，那么界面显示休息日
+		if( !mCourseInfo.dateNumList.contains(String.valueOf(currentDayNumBetweenStartDay)) ){
+			Log.d(TAG, "handleMyCourseActionDaysDistribution, my course dateNumList not have current day, ignore");
+			return;
+		}
 		
-		mActionIdsOfThatDay = actionString.split(";");// 获取第一天的动作集合{a1,a2,a3}
+		// 天数集合中含当天，那么取出当天在集合中的位置，并根据位置，取出对应的动作集合，如{a1,a2}
+		int dayNumPosition = mCourseInfo.dateNumList.indexOf(String.valueOf(currentDayNumBetweenStartDay));
+		String actionString = mCourseInfo.dateActionIdList.get(dayNumPosition).trim();
+		
+		mActionIdsOfThatDay = actionString.split(";");// 获取指定日期的动作集合，如{a1,a2}
 		int actionSize = mActionIdsOfThatDay.length;
 		for(int i=0; i<actionSize; i++){
 			String actionId = mActionIdsOfThatDay[i].trim();
-			ActionInfo actionInfo = MyCourseActionDao.getInstance().getMyCourseActionInfo(Globle.gApplicationContext, mUserInfo.strAccountId, mCourseId, actionId);
-			mActionInfoListOfThatDay.add(actionInfo);
+			ActionInfo myActionInfo = MyCourseActionDao.getInstance().getMyCourseActionInfo(Globle.gApplicationContext, mUserInfo.strAccountId, mCourseId, actionId);
+			ActionInfo actionInfo = ActionDao.getInstance().getActionInfoFromDb(Globle.gApplicationContext, actionId);
+			myActionInfo.actionName = actionInfo.actionName;
+			mActionInfoListOfThatDay.add(myActionInfo);
 		}
+		// 测试，默认第一天完成
+		kCalendar.addMark(myCourseStartDateStr, 0);
 	}
 
 	private boolean isMyCourse() {
