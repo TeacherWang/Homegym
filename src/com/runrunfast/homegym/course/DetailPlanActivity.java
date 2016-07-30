@@ -61,8 +61,6 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 	private String[] mActionIdsOfThatDay; // 指定某天的动作id集合
 	private ArrayList<ActionInfo> mActionInfoListOfThatDay; // 指定某天的actionInfo集合
 	
-	private String strSelectedDate;
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -106,6 +104,9 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 			int datePosition = mCourseDateList.indexOf(dateFormat);
 			handleCourseActionDaysDistribution(datePosition);
 			mCurrentDayTrainAdapter.updateData(mActionInfoListOfThatDay);
+		}else{
+			mActionInfoListOfThatDay.clear();
+			mCurrentDayTrainAdapter.updateData(mActionInfoListOfThatDay);
 		}
 	}
 
@@ -123,8 +124,6 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 		isCourseExist = isCourseExist();
 		isMyCourse = isMyCourse();
 		
-		strSelectedDate = DateUtil.getCurrentDate();
-		
 		if(isMyCourse){
 			btnJoin.setText(R.string.start_train);
 			btnRight.setVisibility(View.VISIBLE);
@@ -135,23 +134,14 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 			mMyCourseStartDate = mCourseInfo.startDate;
 			handleMyCourseActionDaysDistribution(mMyCourseStartDate);
 			// 把间隔天数转换为日期集合
-			int dayListSize = mCourseInfo.dateNumList.size();
-			for(int i=0; i<dayListSize; i++){
-				String dateStr = DateUtil.getDateStrOfDayNumFromStartDate(i + 1, mMyCourseStartDate);
-				mCourseDateList.add(dateStr);
-			}
+			mCourseDateList = CourseUtil.getCourseDateList(mMyCourseStartDate, mCourseInfo.dateNumList);
 		}else{
 			btnJoin.setText(R.string.join_train);
 			btnRight.setVisibility(View.INVISIBLE);
 			
 			handleCourseActionDaysDistribution(0);
 			//把间隔天数转换为日期集合
-			List<String> dayNumList = mCourseInfo.dateNumList;
-			int dayNum = dayNumList.size();
-			for(int i=0; i<dayNum; i++){
-				String dateStr = DateUtil.getDateStrOfDayNumFromStartDate(i + 1, DateUtil.getCurrentDate());
-				mCourseDateList.add(dateStr);
-			}
+			mCourseDateList = CourseUtil.getCourseDateList(DateUtil.getCurrentDate(), mCourseInfo.dateNumList);
 		}
 		
 		tvCalendarDate.setText(kCalendar.getCalendarYear() + mResources.getString(R.string.year)

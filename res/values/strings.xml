@@ -76,6 +76,7 @@
     <string name="recommended_courses">推荐课程</string>
     <string name="course_progress_ing">进行中</string>
     <string name="course_rest_day">休息日</string>
+    <string name="today_is_rest_day">今天是休息日</string>
     <string name="trainnig_record">训练记录</string>
     <string name="join_train">加入训练</string>
     <string name="start_train">开始训练</string>

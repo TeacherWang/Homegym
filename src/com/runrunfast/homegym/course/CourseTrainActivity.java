@@ -14,6 +14,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.account.AccountMgr;
@@ -21,6 +22,7 @@ import com.runrunfast.homegym.account.UserInfo;
 import com.runrunfast.homegym.dao.ActionDao;
 import com.runrunfast.homegym.dao.MyCourseActionDao;
 import com.runrunfast.homegym.utils.Const;
+import com.runrunfast.homegym.utils.DateUtil;
 import com.runrunfast.homegym.utils.Globle;
 
 public class CourseTrainActivity extends Activity implements OnClickListener{
@@ -36,7 +38,7 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 	private String mCourseId;
 	private String mCourseName;
 	private List<String> mActionIdList;
-	private CourseInfo mCourseInfo;
+	private CourseInfo mMyCourseInfo;
 	private UserInfo mUserInfo;
 	
 	@Override
@@ -85,12 +87,12 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 		
 		mCourseActionInfoList = new ArrayList<ActionInfo>();
 		
-		mCourseInfo = (CourseInfo) getIntent().getSerializableExtra(Const.KEY_COURSE_INFO);
+		mMyCourseInfo = (CourseInfo) getIntent().getSerializableExtra(Const.KEY_COURSE_INFO);
 		
-		mCourseId = mCourseInfo.courseId;
-		tvTitle.setText(mCourseInfo.courseName);
+		mCourseId = mMyCourseInfo.courseId;
+		tvTitle.setText(mMyCourseInfo.courseName);
 		
-		mActionIdList = mCourseInfo.actionIds;
+		mActionIdList = mMyCourseInfo.actionIds;
 		int actionIdSize = mActionIdList.size();
 		for(int i=0; i<actionIdSize; i++){
 			ActionInfo actionInfo = MyCourseActionDao.getInstance().getMyCourseActionInfo(Globle.gApplicationContext, mUserInfo.strAccountId, mCourseId, mActionIdList.get(i).trim());
@@ -114,45 +116,6 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 //		courseTrainInfo1.iKcal = 187;
 //		courseTrainInfo1.iDiffcultLevel = 1;
 //		mCourseActionInfoList.add(courseTrainInfo1);
-//		
-//		CourseTrainInfo courseTrainInfo2 = new CourseTrainInfo();
-//		courseTrainInfo2.iCourseId = 1;
-//		courseTrainInfo2.strCrouseName = "21天增肌训练";
-//		courseTrainInfo2.iTrainId = 2;
-//		courseTrainInfo2.strTrainName = "平板卧推举";
-//		courseTrainInfo2.strActionNum = "动作二";
-//		courseTrainInfo2.strTrainPosition = "背部 胸部";
-//		courseTrainInfo2.strTrainDescript = "坚持训练将锻炼到胸大肌和三角肌";
-//		courseTrainInfo2.iTime = 15;
-//		courseTrainInfo2.iKcal = 287;
-//		courseTrainInfo2.iDiffcultLevel = 2;
-//		mCourseActionInfoList.add(courseTrainInfo2);
-//		
-//		CourseTrainInfo courseTrainInfo3 = new CourseTrainInfo();
-//		courseTrainInfo3.iCourseId = 1;
-//		courseTrainInfo3.strCrouseName = "21天增肌训练";
-//		courseTrainInfo3.iTrainId = 3;
-//		courseTrainInfo3.strTrainName = "平板卧推举";
-//		courseTrainInfo3.strActionNum = "动作三";
-//		courseTrainInfo3.strTrainPosition = "背部 胸部";
-//		courseTrainInfo3.strTrainDescript = "坚持训练将锻炼到胸大肌和三角肌";
-//		courseTrainInfo3.iTime = 15;
-//		courseTrainInfo3.iKcal = 387;
-//		courseTrainInfo3.iDiffcultLevel = 3;
-//		mCourseActionInfoList.add(courseTrainInfo3);
-//		
-//		CourseTrainInfo courseTrainInfo4 = new CourseTrainInfo();
-//		courseTrainInfo4.iCourseId = 1;
-//		courseTrainInfo4.strCrouseName = "21天增肌训练";
-//		courseTrainInfo4.iTrainId = 4;
-//		courseTrainInfo4.strTrainName = "平板卧推举";
-//		courseTrainInfo4.strActionNum = "动作四";
-//		courseTrainInfo4.strTrainPosition = "背部 胸部";
-//		courseTrainInfo4.strTrainDescript = "坚持训练将锻炼到胸大肌和三角肌";
-//		courseTrainInfo4.iTime = 15;
-//		courseTrainInfo4.iKcal = 487;
-//		courseTrainInfo4.iDiffcultLevel = 4;
-//		mCourseActionInfoList.add(courseTrainInfo4);
 		
 		mCourseTrainAdapter = new CourseTrainAdapter(this, mCourseActionInfoList);
 		mCourseTrainListView.setAdapter(mCourseTrainAdapter);
@@ -171,6 +134,9 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 		btnRight.setTextColor(getResources().getColor(R.color.record_detail_text_color));
 		
 		mCourseTrainListView = (ListView)findViewById(R.id.course_train_list);
+		
+		btnStartTrain = (Button)findViewById(R.id.btn_start_train);
+		btnStartTrain.setOnClickListener(this);
 	}
 
 
@@ -184,16 +150,36 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 		case R.id.actionbar_right_btn:
 			jumpToTrainDetailActivity();
 			break;
+			
+		case R.id.btn_start_train:
+			startTrain();
+			break;
 
 		default:
 			break;
 		}
 	}
 
+	private void startTrain() {
+		ArrayList<String> courseDateList = CourseUtil.getCourseDateList(mMyCourseInfo.startDate, mMyCourseInfo.dateNumList);
+		if( !courseDateList.contains(DateUtil.getCurrentDate()) ){
+			Toast.makeText(CourseTrainActivity.this, R.string.today_is_rest_day, Toast.LENGTH_SHORT).show();
+			return;
+		}
+		// 今天有训练，需要知道今天训练的动作列表
+		int dayIndex = courseDateList.indexOf(DateUtil.getCurrentDate());
+		String[] actionIds = mMyCourseInfo.dateActionIdList.get(dayIndex).split(",");
+		
+		Intent intent = new Intent();
+		intent.putExtra(Const.KEY_ACTION_IDS, actionIds);
+		intent.putExtra(Const.KEY_COURSE_ID, mMyCourseInfo.courseId);
+	}
+
+
 	private void jumpToTrainDetailActivity() {
 		Intent intent = new Intent(this, DetailPlanActivity.class);
 		
-		intent.putExtra(Const.KEY_COURSE_INFO, mCourseInfo);
+		intent.putExtra(Const.KEY_COURSE_INFO, mMyCourseInfo);
 		
 		startActivity(intent);
 	}
