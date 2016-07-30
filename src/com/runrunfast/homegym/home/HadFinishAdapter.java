@@ -3,6 +3,8 @@ package com.runrunfast.homegym.home;
 import java.util.ArrayList;
 
 import com.runrunfast.homegym.R;
+import com.runrunfast.homegym.account.DataTransferUtil;
+import com.runrunfast.homegym.course.ActionInfo;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -15,9 +17,9 @@ import android.widget.TextView;
 public class HadFinishAdapter extends BaseAdapter {
 
 	private LayoutInflater mInflater;
-	private ArrayList<HadFinishInfo> mHadFinishInfoList;
+	private ArrayList<ActionInfo> mHadFinishInfoList;
 	
-	public HadFinishAdapter(Context context, ArrayList<HadFinishInfo> hadfinishList){
+	public HadFinishAdapter(Context context, ArrayList<ActionInfo> hadfinishList){
 		this.mHadFinishInfoList = hadfinishList;
 		this.mInflater = LayoutInflater.from(context);
 	}
@@ -44,7 +46,7 @@ public class HadFinishAdapter extends BaseAdapter {
 			convertView = mInflater.inflate(R.layout.had_finish_item, null);
 			holder = new ViewHolder();
 			holder.ivBg = (ImageView)convertView.findViewById(R.id.had_finish_img);
-			holder.tvPlanName = (TextView)convertView.findViewById(R.id.had_finish_plan_name_text);
+			holder.tvActionName = (TextView)convertView.findViewById(R.id.had_finish_plan_name_text);
 			holder.tvAction = (TextView)convertView.findViewById(R.id.had_finish_action_num_text);
 			
 			convertView.setTag(holder);
@@ -52,18 +54,18 @@ public class HadFinishAdapter extends BaseAdapter {
 			holder = (ViewHolder) convertView.getTag();
 		}
 		
-		HadFinishInfo hadFinishInfo = mHadFinishInfoList.get(position);
+		ActionInfo hadFinishInfo = mHadFinishInfoList.get(position);
 		
 //		holder.ivBg.setBackgroundResource(resid)
-		holder.tvPlanName.setText(hadFinishInfo.strTrainName);
-		holder.tvAction.setText(hadFinishInfo.strActionNum);
+		holder.tvActionName.setText(hadFinishInfo.actionName);
+		holder.tvAction.setText("动作" + DataTransferUtil.numMap.get(position + 1));
 		
 		return convertView;
 	}
 	
 	class ViewHolder{
 		public ImageView ivBg;
-		public TextView tvPlanName;
+		public TextView tvActionName;
 		public TextView tvAction;
 	}
 

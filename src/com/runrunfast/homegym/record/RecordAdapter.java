@@ -141,9 +141,9 @@ public class RecordAdapter extends BaseAdapter {
 		case LIST_SHOW_ONLY_TRAIN:
 			RecordDataUnit recordDataUnit = (RecordDataUnit)baseRecordData;
 			recordTrainViewHolder.ivTrain.setBackgroundResource(R.drawable.record_action1);
-			recordTrainViewHolder.tvTrainName.setText(recordDataUnit.trainName);
-			recordTrainViewHolder.tvTrainCount.setText(String.valueOf(recordDataUnit.iGroupCount));
-			recordTrainViewHolder.tvTrainKcal.setText(String.valueOf(recordDataUnit.iTotalKcal));
+			recordTrainViewHolder.tvTrainName.setText(recordDataUnit.actionName);
+			recordTrainViewHolder.tvTrainCount.setText(String.valueOf(recordDataUnit.iGroupCount) + "组");
+			recordTrainViewHolder.tvTrainKcal.setText(String.valueOf(recordDataUnit.iTotalKcal) + "千卡");
 			break;
 
 		default:

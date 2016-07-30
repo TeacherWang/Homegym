@@ -37,7 +37,7 @@
                 android:background="@drawable/result_unfinish"/>
             
             <TextView 
-                android:id="@+id/finish_data_plan_name"
+                android:id="@+id/finish_data_course_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/finish_plan_text_margin_top"

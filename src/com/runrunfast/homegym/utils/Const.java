@@ -17,6 +17,10 @@ public class Const {
 	public static final String KEY_ACTION_DESCRIPT = "key_descript";
 	public static final String KEY_ACTION_NUM = "key_action_num"; // 动作几
 	
+	public static final String KEY_COURSE_TOTAL_TIME = "key_course_total_time"; // 实际课程完成的数据
+	public static final String KEY_COURSE_TOTAL_COUNT = "key_course_total_count";
+	public static final String KEY_COURSE_TOTAL_BURNING = "key_course_total_burning";
+	
 	// 数据库字段名称
 	public static final String TABLE_COURSE = "course_table";
 	public static final String TABLE_ACTION = "action_table";

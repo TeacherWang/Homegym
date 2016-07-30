@@ -47,7 +47,7 @@
                 android:background="@drawable/share_trophy"/>
             
             <TextView 
-                android:id="@+id/finish_data_plan_name"
+                android:id="@+id/finish_data_course_name"
                 android:layout_below="@id/finish_trophy_img"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

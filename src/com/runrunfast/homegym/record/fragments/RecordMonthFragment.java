@@ -68,7 +68,7 @@ public class RecordMonthFragment extends Fragment {
 		recordDataUnit.strCoursId = "c1";
 		recordDataUnit.strCourseName = "21天增肌计划";
 		recordDataUnit.actionId = "a1";
-		recordDataUnit.trainName = "平板式推举";
+		recordDataUnit.actionName = "平板式推举";
 		recordDataUnit.iGroupCount = 2;
 		recordDataUnit.iTotalKcal = 49;
 		mBaseRecordDataList.add(recordDataUnit);
@@ -77,7 +77,7 @@ public class RecordMonthFragment extends Fragment {
 		recordDataUnit2.strCoursId = "c2";
 		recordDataUnit2.strCourseName = "21天增肌计划";
 		recordDataUnit2.actionId = "a1";
-		recordDataUnit2.trainName = "站式卧推举";
+		recordDataUnit2.actionName = "站式卧推举";
 		recordDataUnit2.iGroupCount = 3;
 		recordDataUnit2.iTotalKcal = 79;
 		mBaseRecordDataList.add(recordDataUnit2);
@@ -94,7 +94,7 @@ public class RecordMonthFragment extends Fragment {
 		recordDataUnit.strCoursId = "c2";
 		recordDataUnit.strCourseName = "腹肌雕刻计划";
 		recordDataUnit.actionId = "a1";
-		recordDataUnit.trainName = "平板式推举";
+		recordDataUnit.actionName = "平板式推举";
 		recordDataUnit.iGroupCount = 5;
 		recordDataUnit.iTotalKcal = 29;
 		mBaseRecordDataList.add(recordDataUnit);
@@ -103,7 +103,7 @@ public class RecordMonthFragment extends Fragment {
 		recordDataUnit2.strCoursId = "c2";
 		recordDataUnit2.strCourseName = "腹肌雕刻计划";
 		recordDataUnit2.actionId = "a2";
-		recordDataUnit2.trainName = "站式卧推举";
+		recordDataUnit2.actionName = "站式卧推举";
 		recordDataUnit2.iGroupCount = 6;
 		recordDataUnit2.iTotalKcal = 179;
 		mBaseRecordDataList.add(recordDataUnit2);
