@@ -101,15 +101,15 @@ public class MyCourseActionDao {
 				actionInfo.defaultGroupNum = c.getInt(c.getColumnIndex(Const.DB_KEY_DEFAULT_GROUP_NUM));
 				
 				String tempCountString = c.getString(c.getColumnIndex(Const.DB_KEY_DEFAULT_COUNT));
-				String countString = tempCountString.substring(1, tempCountString.length() - 1);
+				String countString = tempCountString.substring(1, tempCountString.length() - 1).replace(" ", "");
 				actionInfo.defaultCountList = Arrays.asList(countString.split(","));
 				
 				String tempToolWeightString = c.getString(c.getColumnIndex(Const.DB_KEY_DEFAULT_TOOL_WEIGHT));
-				String toolWeightString = tempToolWeightString.substring(1, tempToolWeightString.length() - 1);
+				String toolWeightString = tempToolWeightString.substring(1, tempToolWeightString.length() - 1).replace(" ", "");
 				actionInfo.defaultToolWeightList = Arrays.asList(toolWeightString.split(","));
 				
 				String tempBurningString = c.getString(c.getColumnIndex(Const.DB_KEY_DEFAULT_BURNING));
-				String burningString = tempBurningString.substring(1, tempBurningString.length() - 1);
+				String burningString = tempBurningString.substring(1, tempBurningString.length() - 1).replace(" ", "");
 				actionInfo.defaultBurningList = Arrays.asList(burningString.split(","));
 				
 				actionInfo.iTime = c.getInt(c.getColumnIndex(Const.DB_KEY_DEFAULT_TIME));

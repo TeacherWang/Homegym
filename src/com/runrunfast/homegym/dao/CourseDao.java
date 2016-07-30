@@ -95,15 +95,15 @@ public class CourseDao {
 					courseInfo.courseName = c.getString(c.getColumnIndex(Const.DB_KEY_COURSE_NAME));
 					
 					String tempActionIdString = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_IDS));
-					String defaultActionIdString = tempActionIdString.substring(1, tempActionIdString.length() - 1);
+					String defaultActionIdString = tempActionIdString.substring(1, tempActionIdString.length() - 1).replace(" ", "");
 					courseInfo.actionIds = Arrays.asList( defaultActionIdString.split(",") );
 					
 					String tempDateNumString = c.getString(c.getColumnIndex(Const.DB_KEY_DATE_NUM));
-					String defaultDateNumString = tempDateNumString.substring(1, tempDateNumString.length() - 1);
+					String defaultDateNumString = tempDateNumString.substring(1, tempDateNumString.length() - 1).replace(" ", "");
 					courseInfo.dateNumList = Arrays.asList( defaultDateNumString.split(",") );
 					
 					String tempDateActionIdString = c.getString(c.getColumnIndex(Const.DB_KEY_DATE_ACTION_IDS));
-					String defaultDateActionIdString = tempDateActionIdString.substring(1, tempDateActionIdString.length() - 1);
+					String defaultDateActionIdString = tempDateActionIdString.substring(1, tempDateActionIdString.length() - 1).replace(" ", "");
 					courseInfo.dateActionIdList = Arrays.asList( defaultDateActionIdString.split(";") );
 					
 					courseInfo.isRecommend = c.getInt(c.getColumnIndex(Const.DB_KEY_RECOMMEND)) == 1 ? true : false;
@@ -144,15 +144,15 @@ public class CourseDao {
 					courseInfo.courseName = c.getString(c.getColumnIndex(Const.DB_KEY_COURSE_NAME));
 					
 					String tempActionIdString = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_IDS));
-					String defaultActionIdString = tempActionIdString.substring(1, tempActionIdString.length() - 1);
+					String defaultActionIdString = tempActionIdString.substring(1, tempActionIdString.length() - 1).replace(" ", "");
 					courseInfo.actionIds = Arrays.asList( defaultActionIdString.split(",") );
 					
 					String tempDateNumString = c.getString(c.getColumnIndex(Const.DB_KEY_DATE_NUM));
-					String defaultDateNumString = tempDateNumString.substring(1, tempDateNumString.length() - 1);
+					String defaultDateNumString = tempDateNumString.substring(1, tempDateNumString.length() - 1).replace(" ", "");
 					courseInfo.dateNumList = Arrays.asList( defaultDateNumString.split(",") );
 					
 					String tempDateActionIdString = c.getString(c.getColumnIndex(Const.DB_KEY_DATE_ACTION_IDS));
-					String defaultDateActionIdString = tempDateActionIdString.substring(1, tempDateActionIdString.length() - 1);
+					String defaultDateActionIdString = tempDateActionIdString.substring(1, tempDateActionIdString.length() - 1).replace(" ", "");
 					courseInfo.dateActionIdList = Arrays.asList( defaultDateActionIdString.split(";") );
 					
 					courseInfo.isRecommend = c.getInt(c.getColumnIndex(Const.DB_KEY_RECOMMEND)) == 1 ? true : false;
@@ -194,15 +194,15 @@ public class CourseDao {
 				courseInfo.courseName = c.getString(c.getColumnIndex(Const.DB_KEY_COURSE_NAME));
 				
 				String tempActionIdString = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_IDS));
-				String defaultActionIdString = tempActionIdString.substring(1, tempActionIdString.length() - 1);
+				String defaultActionIdString = tempActionIdString.substring(1, tempActionIdString.length() - 1).replace(" ", "");
 				courseInfo.actionIds = Arrays.asList( defaultActionIdString.split(",") );
 				
 				String tempDateNumString = c.getString(c.getColumnIndex(Const.DB_KEY_DATE_NUM));
-				String defaultDateNumString = tempDateNumString.substring(1, tempDateNumString.length() - 1);
+				String defaultDateNumString = tempDateNumString.substring(1, tempDateNumString.length() - 1).replace(" ", "");
 				courseInfo.dateNumList = Arrays.asList( defaultDateNumString.split(",") );
 				
 				String tempDateActionIdString = c.getString(c.getColumnIndex(Const.DB_KEY_DATE_ACTION_IDS));
-				String defaultDateActionIdString = tempDateActionIdString.substring(1, tempDateActionIdString.length() - 1);
+				String defaultDateActionIdString = tempDateActionIdString.substring(1, tempDateActionIdString.length() - 1).replace(" ", "");
 				courseInfo.dateActionIdList = Arrays.asList( defaultDateActionIdString.split(",") );
 				
 				courseInfo.isRecommend = c.getInt(c.getColumnIndex(Const.DB_KEY_RECOMMEND)) == 1 ? true : false;

@@ -6,7 +6,6 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/current_day_train_height"
-        android:layout_marginTop="@dimen/current_day_train_margin_top"
         android:layout_marginLeft="@dimen/current_day_train_margin_left"
         android:layout_marginRight="@dimen/current_day_train_margin_left" >
         

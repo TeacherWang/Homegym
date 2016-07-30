@@ -110,15 +110,15 @@ public class ActionDao {
 				actionInfo.defaultGroupNum = c.getInt(c.getColumnIndex(Const.DB_KEY_DEFAULT_GROUP_NUM));
 				
 				String tempDefaultCountString = c.getString(c.getColumnIndex(Const.DB_KEY_DEFAULT_COUNT));
-				String defaultCountString = tempDefaultCountString.substring(1, tempDefaultCountString.length() - 1);
+				String defaultCountString = tempDefaultCountString.substring(1, tempDefaultCountString.length() - 1).replace(" ", "");
 				actionInfo.defaultCountList = Arrays.asList( defaultCountString.split(",") );
 				
 				String tempDefaultToolWeightString = c.getString(c.getColumnIndex(Const.DB_KEY_DEFAULT_TOOL_WEIGHT));
-				String defaultToolWeightString = tempDefaultToolWeightString.substring(1, tempDefaultToolWeightString.length() - 1);
+				String defaultToolWeightString = tempDefaultToolWeightString.substring(1, tempDefaultToolWeightString.length() - 1).replace(" ", "");
 				actionInfo.defaultToolWeightList = Arrays.asList( defaultToolWeightString.split(",") );
 				
 				String tempDefaultBurningString = c.getString(c.getColumnIndex(Const.DB_KEY_DEFAULT_BURNING));
-				String defaultBurningString = tempDefaultBurningString.substring(1, tempDefaultBurningString.length() - 1);
+				String defaultBurningString = tempDefaultBurningString.substring(1, tempDefaultBurningString.length() - 1).replace(" ", "");
 				actionInfo.defaultBurningList = Arrays.asList( defaultBurningString.split(",") );
 			}
 			
@@ -159,15 +159,15 @@ public class ActionDao {
 					actionInfo.defaultGroupNum = c.getInt(c.getColumnIndex(Const.DB_KEY_DEFAULT_GROUP_NUM));
 					
 					String tempDefaultCountString = c.getString(c.getColumnIndex(Const.DB_KEY_DEFAULT_COUNT));
-					String defaultCountString = tempDefaultCountString.substring(1, tempDefaultCountString.length() - 1);
+					String defaultCountString = tempDefaultCountString.substring(1, tempDefaultCountString.length() - 1).replace(" ", "");
 					actionInfo.defaultCountList = Arrays.asList( defaultCountString.split(",") );
 					
 					String tempDefaultToolWeightString = c.getString(c.getColumnIndex(Const.DB_KEY_DEFAULT_TOOL_WEIGHT));
-					String defaultToolWeightString = tempDefaultToolWeightString.substring(1, tempDefaultToolWeightString.length() - 1);
+					String defaultToolWeightString = tempDefaultToolWeightString.substring(1, tempDefaultToolWeightString.length() - 1).replace(" ", "");
 					actionInfo.defaultToolWeightList = Arrays.asList( defaultToolWeightString.split(",") );
 					
 					String tempDefaultBurningString = c.getString(c.getColumnIndex(Const.DB_KEY_DEFAULT_BURNING));
-					String defaultBurningString = tempDefaultBurningString.substring(1, tempDefaultBurningString.length() - 1);
+					String defaultBurningString = tempDefaultBurningString.substring(1, tempDefaultBurningString.length() - 1).replace(" ", "");
 					actionInfo.defaultBurningList = Arrays.asList( defaultBurningString.split(",") );
 					
 					actionInfoList.add(actionInfo);

@@ -41,12 +41,12 @@ public class DateUtil {
 	/**
 	  * @Method: parseDaysToDate
 	  * @Description: 把获取到的距startDate的天数转换成日期
-	  * @param dateInt
+	  * @param dayNum
 	  * @param startDate 开始日期为yyyy-MM-dd格式
 	  * @return	
 	  * 返回类型：String 
 	  */
-	public static String getDateOfDayNumFromStartDate(int dayNum, String startDate) {
+	public static String getDateStrOfDayNumFromStartDate(int dayNum, String startDate) {
 		String dateStr = "";
 		try {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");

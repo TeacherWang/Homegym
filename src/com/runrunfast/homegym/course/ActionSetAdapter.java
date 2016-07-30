@@ -22,9 +22,22 @@ public class ActionSetAdapter extends BaseAdapter {
 	private ITrainActionItemListener mITrainActionItemListener;
 	
 	public ActionSetAdapter(Context context, ArrayList<ActionInfo> trainActionInfos){
-		this.mTrainActionInfoList = trainActionInfos;
+		setData(trainActionInfos);
 		this.mInflater = LayoutInflater.from(context);
 		this.mContext = context;
+	}
+	
+	private void setData(ArrayList<ActionInfo> trainActionInfos){
+		if(trainActionInfos == null){
+			mTrainActionInfoList = new ArrayList<ActionInfo>();
+		}else{
+			mTrainActionInfoList = trainActionInfos;
+		}
+	}
+	
+	public void updateData(ArrayList<ActionInfo> trainActionInfos){
+		setData(trainActionInfos);
+		notifyDataSetChanged();
 	}
 	
 	public interface ITrainActionItemListener{
