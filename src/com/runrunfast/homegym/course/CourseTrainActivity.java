@@ -169,10 +169,12 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 		// 今天有训练，需要知道今天训练的动作列表
 		int dayIndex = courseDateList.indexOf(DateUtil.getCurrentDate());
 		String[] actionIds = mMyCourseInfo.dateActionIdList.get(dayIndex).split(";");
+		String strDate = DateUtil.getCurrentDate();
 		
 		Intent intent = new Intent(this, CourseVideoActivity.class);
 		intent.putExtra(Const.KEY_ACTION_IDS, actionIds);
 		intent.putExtra(Const.KEY_COURSE_ID, mMyCourseInfo.courseId);
+		intent.putExtra(Const.KEY_DATE, strDate);
 		startActivity(intent);
 	}
 
@@ -181,6 +183,7 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 		Intent intent = new Intent(this, DetailPlanActivity.class);
 		
 		intent.putExtra(Const.KEY_COURSE_INFO, mMyCourseInfo);
+		
 		
 		startActivity(intent);
 	}

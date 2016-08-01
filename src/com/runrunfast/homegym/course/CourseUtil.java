@@ -17,7 +17,7 @@ public class CourseUtil {
 		ArrayList<String> courseDateList = new ArrayList<String>();
 		int dayListSize = dayNumList.size();
 		for(int i=0; i<dayListSize; i++){
-			String dateStr = DateUtil.getDateStrOfDayNumFromStartDate(i + 1, strStartDate);
+			String dateStr = DateUtil.getDateStrOfDayNumFromStartDate(Integer.parseInt(dayNumList.get(i)), strStartDate);
 			courseDateList.add(dateStr);
 		}
 		
