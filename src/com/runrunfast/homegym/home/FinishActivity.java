@@ -42,7 +42,7 @@ public class FinishActivity extends Activity {
 	private int mTotalCount;
 	private int mTotalKcal;
 	private String mCourseId;
-	private String[] mActionIds;
+	private ArrayList<String> mActionIdList;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +76,7 @@ public class FinishActivity extends Activity {
 		mTotalCount = intent.getIntExtra(Const.KEY_COURSE_TOTAL_COUNT, 0);
 		mTotalKcal = intent.getIntExtra(Const.KEY_COURSE_TOTAL_BURNING, 0);
 		mCourseId = intent.getStringExtra(Const.KEY_COURSE_ID);
-		mActionIds = intent.getStringArrayExtra(Const.KEY_ACTION_IDS);
+		mActionIdList = intent.getStringArrayListExtra(Const.KEY_ACTION_IDS);
 		
 		CourseInfo courseInfo = CourseDao.getInstance().getCourseInfoFromDb(Globle.gApplicationContext, mCourseId);
 		tvFinishCourseName.setText(courseInfo.courseName);
@@ -85,9 +85,9 @@ public class FinishActivity extends Activity {
 		tvFinishActionBurning.setText(String.valueOf(mTotalKcal));
 		
 		mActionInfoList = new ArrayList<ActionInfo>();
-		int actionSize = mActionIds.length;
+		int actionSize = mActionIdList.size();
 		for(int i=0; i<actionSize; i++){
-			String actionId = mActionIds[i];
+			String actionId = mActionIdList.get(i);
 			ActionInfo actionInfo = ActionDao.getInstance().getActionInfoFromDb(Globle.gApplicationContext, actionId);
 			mActionInfoList.add(actionInfo);
 		}

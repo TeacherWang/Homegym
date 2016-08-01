@@ -18,13 +18,15 @@ import com.runrunfast.ble.MotionCallback;
 import com.runrunfast.homegym.utils.Globle;
 import com.runrunfast.homegym.utils.PrefUtils;
 
+import java.util.ArrayList;
+
 public class BtDeviceMgr {
 	private final String TAG = "BtDeviceMgr";
 	
 	private static Object lockObject = new Object();
 	private volatile static BtDeviceMgr instance;
 	
-	private BLEServiceListener mBLEServiceListener;
+	private ArrayList<BLEServiceListener> mBleServiceObserver;
 	
 	public interface BLEServiceListener{
 		void onBLEInit();
@@ -51,6 +53,8 @@ public class BtDeviceMgr {
 		filter.addAction(BLESingleton.mBLEService.ACTION_STATE_CONNECTED);
 		filter.addAction(BLESingleton.mBLEService.ACTION_STATE_DISCONNECTED);
 		Globle.gApplicationContext.registerReceiver(mReceiver, filter);
+		
+		mBleServiceObserver = new ArrayList<BtDeviceMgr.BLEServiceListener>();
 	}
 	
 	private BroadcastReceiver mReceiver = new BroadcastReceiver() {
@@ -76,14 +80,23 @@ public class BtDeviceMgr {
 	}
 	
 	private void notifyDeviceConnected() {
-		if(mBLEServiceListener != null){
-			mBLEServiceListener.onDeviceConnected();
+		synchronized (mBleServiceObserver) {
+			if(mBleServiceObserver != null){
+				for(BLEServiceListener bleServiceListener : mBleServiceObserver){
+					bleServiceListener.onDeviceConnected();
+				}
+			}
 		}
+		
 	}
 	
 	private void notifyDeviceDisconnected() {
-		if(mBLEServiceListener != null){
-			mBLEServiceListener.onDeviceDisconnected();
+		synchronized (mBleServiceObserver) {
+			if(mBleServiceObserver != null){
+				for(BLEServiceListener bleServiceListener : mBleServiceObserver){
+					bleServiceListener.onDeviceConnected();
+				}
+			}
 		}
 	}
 	
@@ -92,12 +105,20 @@ public class BtDeviceMgr {
 		BLESingleton.mBLEService.scanBle();
 	}
 	
-	public void setBLEServiceListener(BLEServiceListener bleServiceListener){
-		this.mBLEServiceListener = bleServiceListener;
+	public void addBLEServiceObserver(BLEServiceListener bleServiceListener){
+		synchronized (mBleServiceObserver) {
+			if(mBleServiceObserver.contains(bleServiceListener)){
+				Log.d(TAG, "addBLEServiceObserver, bleServiceListener exist + " + bleServiceListener);
+				return;
+			}
+			mBleServiceObserver.add(bleServiceListener);
+		}
 	}
 	
-	public void removeBLEServiceListener(){
-		this.mBLEServiceListener = null;
+	public void removeBLEServiceObserver(BLEServiceListener bleServiceListener){
+		synchronized (mBleServiceObserver) {
+			mBleServiceObserver.remove(bleServiceListener);
+		}
 	}
 	
 	public void bindBLEService(){
@@ -173,8 +194,12 @@ public class BtDeviceMgr {
 		
 		@Override
 		public void ReedSwitch() {
-			if(mBLEServiceListener != null){
-				mBLEServiceListener.onReedSwitch();
+			synchronized (mBleServiceObserver) {
+				if(mBleServiceObserver != null){
+					for(BLEServiceListener bleServiceListener : mBleServiceObserver){
+						bleServiceListener.onReedSwitch();
+					}
+				}
 			}
 		}
 		
@@ -185,15 +210,23 @@ public class BtDeviceMgr {
 		
 		@Override
 		public void GetDevice(BluetoothDevice btDevice) {
-			if(mBLEServiceListener != null){
-				mBLEServiceListener.onGetDevice(btDevice);
+			synchronized (mBleServiceObserver) {
+				if(mBleServiceObserver != null){
+					for(BLEServiceListener bleServiceListener : mBleServiceObserver){
+						bleServiceListener.onGetDevice(btDevice);
+					}
+				}
 			}
 		}
 	};
 
 	private void notifyBLEServierInit() {
-		if(mBLEServiceListener != null){
-			mBLEServiceListener.onBLEInit();
+		synchronized (mBleServiceObserver) {
+			if(mBleServiceObserver != null){
+				for(BLEServiceListener bleServiceListener : mBleServiceObserver){
+					bleServiceListener.onBLEInit();
+				}
+			}
 		}
 	}
 	

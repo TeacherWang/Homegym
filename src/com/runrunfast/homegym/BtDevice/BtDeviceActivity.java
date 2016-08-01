@@ -90,7 +90,7 @@ public class BtDeviceActivity extends Activity{
 				
 			}
 		};
-		BtDeviceMgr.getInstance().setBLEServiceListener(mBLEServiceListener);
+		BtDeviceMgr.getInstance().addBLEServiceObserver(mBLEServiceListener);
 	}
 	
 	private void selectDevice(int position) {
@@ -263,7 +263,7 @@ public class BtDeviceActivity extends Activity{
 		super.onDestroy();
 		Log.i(TAG, "onDestroy");
 		
-		BtDeviceMgr.getInstance().removeBLEServiceListener();
+		BtDeviceMgr.getInstance().removeBLEServiceObserver(mBLEServiceListener);
 		
 		BtDeviceMgr.getInstance().unBindBLEService();
 	}
