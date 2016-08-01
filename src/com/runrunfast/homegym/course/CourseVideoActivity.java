@@ -124,7 +124,7 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 		totalCount = 110;
 		totalKcal = 188;
 		
-		
+		// 
 		
 		Intent intent = new Intent(this, FinishActivity.class);
 		intent.putExtra(FinishActivity.KEY_FINISH_OR_UNFINISH, FinishActivity.TYPE_FINISH);
