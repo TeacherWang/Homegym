@@ -9,6 +9,7 @@ public class RecordDataUnit extends RecordDataDate{
 	public String actionId; // 本次训练动作id
 	public String actionName; // 本次训练动作名称
 	public int iGroupCount; // 做了几组
+	public int iCount; // 总次数
 	public int iTotalKcal; // 消耗的总卡路里
 //	public ArrayList<TrainData> trainDataList; // 每组的详细数据
 	

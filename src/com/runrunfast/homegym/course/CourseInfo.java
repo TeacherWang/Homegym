@@ -10,6 +10,8 @@ public class CourseInfo implements Serializable{
 	
 	public static final int PROGRESS_ING = 1; // 进行中
 	public static final int PROGRESS_REST = 2; // 休息日
+	public static final int PROGRESS_FINISH = 3; // 已完成
+	public static final int PROGRESS_EXPIRED = 4; // 已过期
 	
 	public boolean isRecommendDescript = false; // 是要显示“推荐课程”文字说明栏的
 	public boolean isMyCourse = false;				// 区分是list中的我的课程

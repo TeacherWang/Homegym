@@ -35,6 +35,7 @@ public class MyFinishDao {
 				+ Const.DB_KEY_ACTION_ID + " TEXT,"
 				+ Const.DB_KEY_ACTION_NAME + " TEXT,"
 				+ Const.DB_KEY_FINISH_GROUP_NUM + " INTEGER,"
+				+ Const.DB_KEY_FINISH_COUNT + " INTEGER,"
 				+ Const.DB_KEY_FINISH_KCAL + " INTEGER,"
 				+ Const.DB_KEY_FINISH_TIME + " INTEGER"
 				+ ");";
@@ -56,6 +57,7 @@ public class MyFinishDao {
 			values.put(Const.DB_KEY_ACTION_ID, recordDataDate.actionId);
 			values.put(Const.DB_KEY_ACTION_NAME, recordDataDate.actionName);
 			values.put(Const.DB_KEY_FINISH_GROUP_NUM, recordDataDate.iGroupCount);
+			values.put(Const.DB_KEY_FINISH_COUNT, recordDataDate.iCount);
 			values.put(Const.DB_KEY_FINISH_KCAL, recordDataDate.iTotalKcal);
 			values.put(Const.DB_KEY_FINISH_TIME, recordDataDate.iConsumeTime);
 			
@@ -102,6 +104,7 @@ public class MyFinishDao {
 				recordDataUnit.actionId = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_ID));
 				recordDataUnit.actionName = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_NAME));
 				recordDataUnit.iGroupCount = c.getInt(c.getColumnIndex(Const.DB_KEY_FINISH_GROUP_NUM));
+				recordDataUnit.iCount = c.getInt(c.getColumnIndex(Const.DB_KEY_FINISH_COUNT));
 				recordDataUnit.iTotalKcal = c.getInt(c.getColumnIndex(Const.DB_KEY_FINISH_KCAL));
 				recordDataUnit.iConsumeTime = c.getInt(c.getColumnIndex(Const.DB_KEY_FINISH_TIME));
 			}
@@ -138,6 +141,7 @@ public class MyFinishDao {
 					recordDataUnit.actionId = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_ID));
 					recordDataUnit.actionName = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_NAME));
 					recordDataUnit.iGroupCount = c.getInt(c.getColumnIndex(Const.DB_KEY_FINISH_GROUP_NUM));
+					recordDataUnit.iCount = c.getInt(c.getColumnIndex(Const.DB_KEY_FINISH_COUNT));
 					recordDataUnit.iTotalKcal = c.getInt(c.getColumnIndex(Const.DB_KEY_FINISH_KCAL));
 					recordDataUnit.iConsumeTime = c.getInt(c.getColumnIndex(Const.DB_KEY_FINISH_TIME));
 					
