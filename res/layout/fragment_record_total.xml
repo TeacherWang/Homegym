@@ -99,6 +99,7 @@
                 android:textSize="@dimen/record_total_finish_text_size"
                 android:textColor="@color/record_total_consume_text_color"/>
             <TextView 
+                android:id="@+id/record_total_finish_count_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
@@ -130,6 +131,7 @@
                 android:textSize="@dimen/record_total_finish_text_size"
                 android:textColor="@color/record_total_consume_text_color"/>
             <TextView 
+                android:id="@+id/record_total_finish_days_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"

@@ -53,10 +53,15 @@ public class Const {
 	public static final String DB_KEY_MY_COURSE_PROGRESS = "my_course_progress"; // 进度--进行中、休息日、已完成
 	
 	public static final String DB_KEY_FINISH_GROUP_NUM = "finish_group_num";
-	public static final String DB_KEY_FINISH_COUNT = "finish_count";
-	public static final String DB_KEY_FINISH_KCAL = "finish_kcal";
-	public static final String DB_KEY_FINISH_TIME = "finish_time";
-	public static final String DB_KEY_DATE = "date";
+	public static final String DB_KEY_FINISH_TOTAL_COUNT = "finish_total_count";
+	public static final String DB_KEY_FINISH_TOTAL_KCAL = "finish_total_kcal";
+	public static final String DB_KEY_FINISH_TOTAL_TIME = "finish_total_time";
+	public static final String DB_KEY_FINISH_COUNT_SET = "finish_count_set";
+	public static final String DB_KEY_FINISH_TOOLWEIGHT_SET = "finish_toolweight_set";
+	public static final String DB_KEY_FINISH_BURNING_SET = "finish_burning_set";
+	public static final String DB_KEY_PLAN_DATE = "plan_date"; // 计划的时间
+	public static final String DB_KEY_ACTUAL_DATE = "actual_date"; // 实际完成的时间
+	public static final String DB_KEY_DATE_PROGRESS = "date_progress"; // 指定日期的完成情况：未完成，已完成
 	
 	public static final String DB_KEY_UID = "uid";
 	public static final String DB_KEY_NICK = "nick";
@@ -65,5 +70,8 @@ public class Const {
 	public static final String DB_KEY_WEIGHT = "weight";
 	public static final String DB_KEY_HEIGHT = "height";
 	public static final String DB_KEY_CITY = "city";
+	
+	
+	public static final String DB_KEY_DISTINCT = "DISTINCT ";
 	
 }

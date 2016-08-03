@@ -61,6 +61,29 @@ public class DateUtil {
 		return dateStr;
 	}
 
+	/**
+	  * @Method: getDateStrOfYearMonth
+	  * @Description: 获取年月，比如2016-08-03，获取为2016-08
+	  * @param strDate 日期，比如2016-08-03
+	  * @return	
+	  * 返回类型：String 
+	  */
+	public static String getDateStrOfYearMonth(String strDate){
+		String strDateYearMonth = "";
+		
+		strDateYearMonth = strDate.substring(0, 7);
+		
+		return strDateYearMonth;
+	}
+	
+	public static String getDateStrOfYear(String strDate){
+		String strDateYear = "";
+		
+		strDateYear = strDate.substring(0, 4);
+		
+		return strDateYear;
+	}
+	
 	// a integer to xx:xx:xx
     public static String secToTime(int time) {
         String timeStr = null;
@@ -95,6 +118,10 @@ public class DateUtil {
       */
     public static String secToMinute(int second){
     	return String.valueOf( second / 60);
+    }
+    
+    public static String secToHour(int second){
+    	return String.valueOf( second / (60 * 60) );
     }
 
     public static String unitFormat(int i) {

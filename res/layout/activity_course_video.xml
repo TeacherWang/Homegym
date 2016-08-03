@@ -49,6 +49,13 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:text="动作一"  />
+        
+        <TextView
+            android:id="@+id/current_action_total_group_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:text="共几组"  />
     </LinearLayout>
 
 </RelativeLayout>
