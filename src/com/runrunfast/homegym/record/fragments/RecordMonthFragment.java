@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -23,17 +25,19 @@ import com.runrunfast.homegym.record.RecordAdapter;
 import com.runrunfast.homegym.record.RecordDataDate;
 import com.runrunfast.homegym.record.RecordDataPlan;
 import com.runrunfast.homegym.record.RecordDataUnit;
+import com.runrunfast.homegym.record.RecordUtil;
 import com.runrunfast.homegym.utils.DateUtil;
 import com.runrunfast.homegym.utils.Globle;
 
 import java.util.ArrayList;
 
-public class RecordMonthFragment extends Fragment {
+public class RecordMonthFragment extends Fragment implements OnClickListener{
 	private final String TAG = "RecordMonthFragment";
 	
 	private View rootView;
 	
 	private TextView tvTotalDays;
+	private Button btnAddMonth, btnReduceMonth;
 	
 	private PullToRefreshListView pullToRefreshListView;
 	
@@ -42,6 +46,8 @@ public class RecordMonthFragment extends Fragment {
 	private RecordAdapter mRecordAdapter;
 	
 	private UserInfo mUserInfo;
+	
+	private int mCurrentMonth; // 1-12月
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater,
@@ -60,23 +66,34 @@ public class RecordMonthFragment extends Fragment {
 		
 		String strCurrentDay = DateUtil.getCurrentDate();
 		String strCurrentMonth = DateUtil.getDateStrOfYearMonth(strCurrentDay);
+		mCurrentMonth = DateUtil.getMonth(strCurrentDay);
 		int dayNum = MyFinishDao.getInstance().getFinishDayNumDependMonth(Globle.gApplicationContext, mUserInfo.strAccountId, strCurrentMonth);
 		tvTotalDays.setText(String.valueOf(dayNum) + "天");
 		
 		mBaseRecordDataList = new ArrayList<BaseRecordData>();
 		// 获取该天记录不同的课程数量
-		ArrayList<String> courseIdList = MyFinishDao.getInstance().getFinishInfoDistinctCourseIdDependsDay(Globle.gApplicationContext, mUserInfo.strAccountId, strCurrentDay);
+		mBaseRecordDataList = RecordUtil.getRecordDataOfDay(strCurrentDay, mUserInfo.strAccountId);
+		
+		mRecordAdapter = new RecordAdapter(getActivity(), mBaseRecordDataList);
+		pullToRefreshListView.setAdapter(mRecordAdapter);
+		
+		pullToRefreshListView.setMode(Mode.BOTH);
+	}
+
+	private ArrayList<BaseRecordData> getRecordDataOfDay(String strDay, String uid) {
+		ArrayList<BaseRecordData> baseRecordDataForUiList = new ArrayList<BaseRecordData>();
+		ArrayList<String> courseIdList = MyFinishDao.getInstance().getFinishInfoDistinctCourseIdDependsDay(Globle.gApplicationContext, uid, strDay);
 		
 		int courseIdSize = courseIdList.size();
 		// 根据不同的课程id，组成界面需要的不同的list
 		for(int i=0; i<courseIdSize; i++){
 			String courseId = courseIdList.get(i);
-			ArrayList<BaseRecordData> baseRecordDataList = MyFinishDao.getInstance().getFinishInfoList(Globle.gApplicationContext, mUserInfo.strAccountId, courseId, strCurrentDay);
+			ArrayList<BaseRecordData> baseRecordDataList = MyFinishDao.getInstance().getFinishInfoList(Globle.gApplicationContext, uid, courseId, strDay);
 			// 取出第一个课程的第一个，组成界面显示的时间课程信息头
 			RecordDataUnit firstDataUnit = (RecordDataUnit) baseRecordDataList.get(0);
 			if(i == 0){
 				RecordDataDate recordDataDate = new RecordDataDate();
-				recordDataDate.strDate = strCurrentDay;
+				recordDataDate.strDate = strDay;
 				recordDataDate.strCourseName = firstDataUnit.strCourseName;
 				
 				int dataSize = baseRecordDataList.size();
@@ -88,7 +105,8 @@ public class RecordMonthFragment extends Fragment {
 				recordDataDate.iConsumeTime = totalConsumeTime;
 				
 				baseRecordDataList.add(0, recordDataDate);
-				mBaseRecordDataList.addAll(baseRecordDataList);
+//				mBaseRecordDataList.addAll(baseRecordDataList);
+				baseRecordDataForUiList.addAll(baseRecordDataList);
 			}else{// 取出其他课程的第一个，组成界面显示的课程信息头
 				RecordDataPlan recordDataPlan = new RecordDataPlan();
 				recordDataPlan.strCoursId = firstDataUnit.strCoursId;
@@ -102,15 +120,12 @@ public class RecordMonthFragment extends Fragment {
 				}
 				recordDataPlan.iConsumeTime = totalConsumeTime;
 				baseRecordDataList.add(0, recordDataPlan);
-				mBaseRecordDataList.addAll(baseRecordDataList);
+//				mBaseRecordDataList.addAll(baseRecordDataList);
+				baseRecordDataForUiList.addAll(baseRecordDataList);
 			}
-			
 		}
 		
-		mRecordAdapter = new RecordAdapter(getActivity(), mBaseRecordDataList);
-		pullToRefreshListView.setAdapter(mRecordAdapter);
-		
-		pullToRefreshListView.setMode(Mode.BOTH);
+		return baseRecordDataForUiList;
 	}
 
 	private void addPlanB() {
@@ -151,6 +166,11 @@ public class RecordMonthFragment extends Fragment {
 		});
 		
 		tvTotalDays = (TextView)rootView.findViewById(R.id.record_detail_time_result_text);
+		btnAddMonth = (Button)rootView.findViewById(R.id.btn_record_add);
+		btnReduceMonth = (Button)rootView.findViewById(R.id.btn_record_reduce);
+		
+		btnAddMonth.setOnClickListener(this);
+		btnReduceMonth.setOnClickListener(this);
 	}
 
 	// 不要删除，切换fragment用到
@@ -159,5 +179,29 @@ public class RecordMonthFragment extends Fragment {
 		super.setMenuVisibility(menuVisible);
 		if (this.getView() != null)
 			this.getView().setVisibility(menuVisible ? View.VISIBLE : View.GONE);
+	}
+
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.btn_record_add:
+			nextMonthData();
+			break;
+			
+		case R.id.btn_record_reduce:
+			lastMonthData();
+			break;
+
+		default:
+			break;
+		}
+	}
+
+	private void lastMonthData() {
+		
+	}
+
+	private void nextMonthData() {
+		
 	}
 }

@@ -337,6 +337,47 @@ public class MyFinishDao {
 	}
 	
 	/**
+	  * @Method: getFinishInfoDistinctDateDependsMonth
+	  * @Description: 根据月份，获取该月记录数据的日期，并去重排序
+	  * @param context
+	  * @param uid
+	  * @param strYearMonth 格式：2016-08
+	  * @return	
+	  * 返回类型：ArrayList<String> [2016-08-03, 2016-08-04, ...]
+	  */
+	public synchronized ArrayList<String> getFinishInfoDistinctDateDependsMonth(Context context, String uid, String strYearMonth){
+		ArrayList<String> recordDistinctDateList = new ArrayList<String>();
+		SQLiteDatabase db = null;
+		Cursor c = null;
+		try {
+			DBOpenHelper dbHelper = new DBOpenHelper(context);
+			db = dbHelper.getWritableDatabase();
+			
+			c = db.query(Const.TABLE_FINISH, new String[]{ Const.DB_KEY_DISTINCT + Const.DB_KEY_ACTUAL_DATE }, Const.DB_KEY_UID + " =? and " + Const.DB_KEY_ACTUAL_DATE + " like ?",
+					new String[]{ uid, "%" + strYearMonth + "%" }, null, null, Const.DB_KEY_ACTUAL_DATE + " ASC");
+			if(null != c && c.getCount() > 0){
+				while (c.moveToNext() ) {
+					
+					String strDate = c.getString(c.getColumnIndex(Const.DB_KEY_ACTUAL_DATE));
+					
+					recordDistinctDateList.add(strDate);
+				}
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally{
+			if(c != null){
+				c.close();
+			}
+			if(db != null){
+				db.close();
+			}
+		}
+		return recordDistinctDateList;
+	}
+	
+	/**
 	  * @Method: getFinishInfoDistinctCourseIdDependsDay
 	  * @Description: 取指定某天的完成的课程列表
 	  * @param context

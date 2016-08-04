@@ -16,12 +16,17 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.runrunfast.homegym.R;
+import com.runrunfast.homegym.account.AccountMgr;
+import com.runrunfast.homegym.account.UserInfo;
+import com.runrunfast.homegym.dao.MyFinishDao;
 import com.runrunfast.homegym.record.BaseRecordData;
 import com.runrunfast.homegym.record.RecordAdapter;
 import com.runrunfast.homegym.record.RecordDataDate;
 import com.runrunfast.homegym.record.RecordDataPlan;
 import com.runrunfast.homegym.record.RecordDataUnit;
+import com.runrunfast.homegym.record.RecordUtil;
 import com.runrunfast.homegym.utils.DateUtil;
+import com.runrunfast.homegym.utils.Globle;
 
 public class RecordYearFragment extends Fragment {
 	private final String TAG = "RecordYearFragment";
@@ -34,23 +39,34 @@ public class RecordYearFragment extends Fragment {
 	
 	private RecordAdapter mRecordAdapter;
 	
+	private UserInfo mUserInfo;
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater,
 			@Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 		rootView = inflater.inflate(R.layout.fragment_record_year, container, false);
+		
 		initView();
 		
 		initData();
+		
 		return rootView;
 	}
 	
 	private void initData() {
+		mUserInfo = AccountMgr.getInstance().mUserInfo;
 		mBaseRecordDataList = new ArrayList<BaseRecordData>();
+		String currentYearMonth = DateUtil.getDateStrOfYearMonth(DateUtil.getCurrentDate());
 		
-		addPlanA();
-		addPlanB();
-		addDate2PlanA();
-		addDate2PlanB();
+		ArrayList<String> dateListOfMonth = MyFinishDao.getInstance().getFinishInfoDistinctDateDependsMonth(Globle.gApplicationContext, mUserInfo.strAccountId, currentYearMonth);
+		int dateSize = dateListOfMonth.size();
+		
+		for(int i=0; i<dateSize; i++){
+			String strDate = dateListOfMonth.get(i);
+			
+			ArrayList<BaseRecordData> baseRecordDataOfDayList = RecordUtil.getRecordDataOfDay(strDate, mUserInfo.strAccountId);
+			mBaseRecordDataList.addAll(baseRecordDataOfDayList);
+		}
 		
 		mRecordAdapter = new RecordAdapter(getActivity(), mBaseRecordDataList);
 		pullToRefreshListView.setAdapter(mRecordAdapter);

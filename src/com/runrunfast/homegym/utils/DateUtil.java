@@ -2,6 +2,7 @@ package com.runrunfast.homegym.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class DateUtil {
@@ -61,6 +62,19 @@ public class DateUtil {
 		return dateStr;
 	}
 
+	public static int getMonth(String strDate){
+		Calendar calendar = Calendar.getInstance();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			calendar.setTime(sdf.parse(strDate));
+			return ( calendar.get(Calendar.MONTH) + 1 ) ;
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		return -1;
+	}
+	
 	/**
 	  * @Method: getDateStrOfYearMonth
 	  * @Description: 获取年月，比如2016-08-03，获取为2016-08
