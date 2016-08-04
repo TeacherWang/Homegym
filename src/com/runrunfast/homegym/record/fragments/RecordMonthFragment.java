@@ -6,8 +6,8 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -18,6 +18,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.account.AccountMgr;
+import com.runrunfast.homegym.account.DataTransferUtil;
 import com.runrunfast.homegym.account.UserInfo;
 import com.runrunfast.homegym.dao.MyFinishDao;
 import com.runrunfast.homegym.record.BaseRecordData;
@@ -26,6 +27,7 @@ import com.runrunfast.homegym.record.RecordDataDate;
 import com.runrunfast.homegym.record.RecordDataPlan;
 import com.runrunfast.homegym.record.RecordDataUnit;
 import com.runrunfast.homegym.record.RecordUtil;
+import com.runrunfast.homegym.record.StatisticalData;
 import com.runrunfast.homegym.utils.DateUtil;
 import com.runrunfast.homegym.utils.Globle;
 
@@ -36,7 +38,7 @@ public class RecordMonthFragment extends Fragment implements OnClickListener{
 	
 	private View rootView;
 	
-	private TextView tvTotalDays;
+	private TextView tvTotalDays, tvSelectMonth, tvMonth;
 	private Button btnAddMonth, btnReduceMonth;
 	
 	private PullToRefreshListView pullToRefreshListView;
@@ -47,7 +49,9 @@ public class RecordMonthFragment extends Fragment implements OnClickListener{
 	
 	private UserInfo mUserInfo;
 	
-	private int mCurrentMonth; // 1-12月
+	private int mSelectMonth; // 1-12月
+	
+	private int mThisMonth; // 本月
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater,
@@ -64,14 +68,22 @@ public class RecordMonthFragment extends Fragment implements OnClickListener{
 	private void initData() {
 		mUserInfo = AccountMgr.getInstance().mUserInfo;
 		
+		mSelectMonth = DateUtil.getThisMonth();
+		mThisMonth = mSelectMonth;
+		
+		tvSelectMonth.setText(mSelectMonth + "月");
+		tvMonth.setText(DataTransferUtil.numMap.get(mSelectMonth) + "月份");
+		
 		String strCurrentDay = DateUtil.getCurrentDate();
-		String strCurrentMonth = DateUtil.getDateStrOfYearMonth(strCurrentDay);
-		mCurrentMonth = DateUtil.getMonth(strCurrentDay);
-		int dayNum = MyFinishDao.getInstance().getFinishDayNumDependMonth(Globle.gApplicationContext, mUserInfo.strAccountId, strCurrentMonth);
+		String strCurrentYearMonth = DateUtil.getDateStrOfYearMonth(strCurrentDay);
+		
+		ArrayList<StatisticalData> statisticalDataList = MyFinishDao.getInstance().getDayStatisticalDataDependYearMonth(Globle.gApplicationContext, mUserInfo.strAccountId, strCurrentYearMonth);
+		
+		int dayNum = MyFinishDao.getInstance().getTrainDayNumDependMonth(Globle.gApplicationContext, mUserInfo.strAccountId, strCurrentYearMonth);
 		tvTotalDays.setText(String.valueOf(dayNum) + "天");
 		
 		mBaseRecordDataList = new ArrayList<BaseRecordData>();
-		// 获取该天记录不同的课程数量
+		
 		mBaseRecordDataList = RecordUtil.getRecordDataOfDay(strCurrentDay, mUserInfo.strAccountId);
 		
 		mRecordAdapter = new RecordAdapter(getActivity(), mBaseRecordDataList);
@@ -128,32 +140,6 @@ public class RecordMonthFragment extends Fragment implements OnClickListener{
 		return baseRecordDataForUiList;
 	}
 
-	private void addPlanB() {
-		RecordDataPlan recordDataPlan = new RecordDataPlan();
-		recordDataPlan.strCoursId = "c2";
-		recordDataPlan.strCourseName = "腹肌雕刻计划";
-		recordDataPlan.iConsumeTime = 1000;
-		mBaseRecordDataList.add(recordDataPlan);
-		
-		RecordDataUnit recordDataUnit = new RecordDataUnit();
-		recordDataUnit.strCoursId = "c2";
-		recordDataUnit.strCourseName = "腹肌雕刻计划";
-		recordDataUnit.actionId = "a1";
-		recordDataUnit.actionName = "平板式推举";
-		recordDataUnit.iGroupCount = 5;
-		recordDataUnit.iTotalKcal = 29;
-		mBaseRecordDataList.add(recordDataUnit);
-		
-		RecordDataUnit recordDataUnit2 = new RecordDataUnit();
-		recordDataUnit2.strCoursId = "c2";
-		recordDataUnit2.strCourseName = "腹肌雕刻计划";
-		recordDataUnit2.actionId = "a2";
-		recordDataUnit2.actionName = "站式卧推举";
-		recordDataUnit2.iGroupCount = 6;
-		recordDataUnit2.iTotalKcal = 179;
-		mBaseRecordDataList.add(recordDataUnit2);
-	}
-
 	private void initView() {
 		pullToRefreshListView = (PullToRefreshListView)rootView.findViewById(R.id.record_month_pull_refresh_list);
 		pullToRefreshListView.setOnRefreshListener(new OnRefreshListener<ListView>() {
@@ -171,6 +157,9 @@ public class RecordMonthFragment extends Fragment implements OnClickListener{
 		
 		btnAddMonth.setOnClickListener(this);
 		btnReduceMonth.setOnClickListener(this);
+		
+		tvSelectMonth = (TextView)rootView.findViewById(R.id.tv_record_month_year);
+		tvMonth = (TextView)rootView.findViewById(R.id.record_detail_time_text);
 	}
 
 	// 不要删除，切换fragment用到
@@ -198,10 +187,58 @@ public class RecordMonthFragment extends Fragment implements OnClickListener{
 	}
 
 	private void lastMonthData() {
+		if(mSelectMonth == 1){
+			
+			return;
+		}
 		
+		mSelectMonth--;
+		
+		tvSelectMonth.setText(mSelectMonth + "月");
+		tvMonth.setText(DataTransferUtil.numMap.get(mSelectMonth) + "月份");
+		
+		String strCurrentDay;
+		
+		if( mSelectMonth == mThisMonth ){
+			strCurrentDay = DateUtil.getCurrentDate();
+		}else{
+			strCurrentDay = DateUtil.getStrDateFirstDayDependsMonth(mSelectMonth);
+		}
+		
+		String strCurrentYearMonth = DateUtil.getDateStrOfYearMonth(strCurrentDay);
+		
+		updateDataDependOnDay(strCurrentDay, strCurrentYearMonth);
 	}
 
 	private void nextMonthData() {
+		if(mSelectMonth == 12){
+			return;
+		}
 		
+		mSelectMonth++;
+		
+		tvSelectMonth.setText(mSelectMonth + "月");
+		tvMonth.setText(DataTransferUtil.numMap.get(mSelectMonth) + "月份");
+		
+		String strCurrentDay;
+		
+		if( mSelectMonth == mThisMonth ){
+			strCurrentDay = DateUtil.getCurrentDate();
+		}else{
+			strCurrentDay = DateUtil.getStrDateFirstDayDependsMonth(mSelectMonth);
+		}
+		
+		String strCurrentYearMonth = DateUtil.getDateStrOfYearMonth(strCurrentDay);
+		
+		updateDataDependOnDay(strCurrentDay, strCurrentYearMonth);
+	}
+	
+	private void updateDataDependOnDay(String strCurrentDay, String strCurrentMonth) {
+		int dayNum = MyFinishDao.getInstance().getTrainDayNumDependMonth(Globle.gApplicationContext, mUserInfo.strAccountId, strCurrentMonth);
+		tvTotalDays.setText(String.valueOf(dayNum) + "天");
+		
+		mBaseRecordDataList.clear();
+		mBaseRecordDataList = RecordUtil.getRecordDataOfDay(strCurrentDay, mUserInfo.strAccountId);
+		mRecordAdapter.updateData(mBaseRecordDataList);
 	}
 }

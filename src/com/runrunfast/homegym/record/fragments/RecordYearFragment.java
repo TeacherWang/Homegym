@@ -9,7 +9,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
@@ -25,13 +28,17 @@ import com.runrunfast.homegym.record.RecordDataDate;
 import com.runrunfast.homegym.record.RecordDataPlan;
 import com.runrunfast.homegym.record.RecordDataUnit;
 import com.runrunfast.homegym.record.RecordUtil;
+import com.runrunfast.homegym.record.StatisticalData;
 import com.runrunfast.homegym.utils.DateUtil;
 import com.runrunfast.homegym.utils.Globle;
 
-public class RecordYearFragment extends Fragment {
+public class RecordYearFragment extends Fragment implements OnClickListener{
 	private final String TAG = "RecordYearFragment";
 	
 	private View rootView;
+	
+	private TextView tvTotalDays, tvSelectYear, tvYear;
+	private Button btnAddMonth, btnReduceMonth;
 	
 	private PullToRefreshListView pullToRefreshListView;
 	
@@ -40,6 +47,10 @@ public class RecordYearFragment extends Fragment {
 	private RecordAdapter mRecordAdapter;
 	
 	private UserInfo mUserInfo;
+	
+	private int mSelectYear; // 选中年份
+	
+	private int mThisYear; // 今年
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater,
@@ -55,8 +66,21 @@ public class RecordYearFragment extends Fragment {
 	
 	private void initData() {
 		mUserInfo = AccountMgr.getInstance().mUserInfo;
+		
+		mSelectYear = DateUtil.getThisYear();
+		mThisYear = mSelectYear;
+		
+		tvSelectYear.setText(String.valueOf(mSelectYear));
+		tvYear.setText(mSelectYear + "年");
+		
+		int dayNum = MyFinishDao.getInstance().getTrainDayNumDependYear(Globle.gApplicationContext, mUserInfo.strAccountId, mSelectYear);
+		tvTotalDays.setText(String.valueOf(dayNum) + "天");
+		
 		mBaseRecordDataList = new ArrayList<BaseRecordData>();
+		
 		String currentYearMonth = DateUtil.getDateStrOfYearMonth(DateUtil.getCurrentDate());
+		
+		ArrayList<StatisticalData> statisticalDataList = MyFinishDao.getInstance().getMonthStatisticalDataDependYear(Globle.gApplicationContext, mUserInfo.strAccountId, mSelectYear);
 		
 		ArrayList<String> dateListOfMonth = MyFinishDao.getInstance().getFinishInfoDistinctDateDependsMonth(Globle.gApplicationContext, mUserInfo.strAccountId, currentYearMonth);
 		int dateSize = dateListOfMonth.size();
@@ -189,6 +213,16 @@ public class RecordYearFragment extends Fragment {
 				
 			}
 		});
+		
+		tvSelectYear = (TextView)rootView.findViewById(R.id.tv_record_month_year);
+		tvYear = (TextView)rootView.findViewById(R.id.record_detail_time_text);
+		tvTotalDays = (TextView)rootView.findViewById(R.id.record_detail_time_result_text);
+		
+		btnAddMonth = (Button)rootView.findViewById(R.id.btn_record_add);
+		btnReduceMonth = (Button)rootView.findViewById(R.id.btn_record_reduce);
+		
+		btnAddMonth.setOnClickListener(this);
+		btnReduceMonth.setOnClickListener(this);
 	}
 	
 	// 不要删除，切换fragment用到
@@ -197,5 +231,94 @@ public class RecordYearFragment extends Fragment {
 		super.setMenuVisibility(menuVisible);
 		if (this.getView() != null)
 			this.getView().setVisibility(menuVisible ? View.VISIBLE : View.GONE);
+	}
+
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.btn_record_add:
+			nextYearData();
+			break;
+			
+		case R.id.btn_record_reduce:
+			lastYearData();
+			break;
+
+		default:
+			break;
+		}
+	}
+
+	private void lastYearData() {
+		if(mSelectYear == 1970){
+			return;
+		}
+		
+		mSelectYear--;
+		
+		tvSelectYear.setText(String.valueOf(mSelectYear));
+		tvYear.setText(mSelectYear + "年");
+		
+		int dayNum = MyFinishDao.getInstance().getTrainDayNumDependYear(Globle.gApplicationContext, mUserInfo.strAccountId, mSelectYear);
+		tvTotalDays.setText(String.valueOf(dayNum) + "天");
+		
+		String currentYearMonth;
+		
+		if(mSelectYear == mThisYear){
+			currentYearMonth = DateUtil.getDateStrOfYearMonth(DateUtil.getCurrentDate());
+		}else{
+			currentYearMonth = DateUtil.getStrDateFirstDayDependsYear(mSelectYear);
+		}
+		
+		mBaseRecordDataList.clear();
+		
+		ArrayList<String> dateListOfMonth = MyFinishDao.getInstance().getFinishInfoDistinctDateDependsMonth(Globle.gApplicationContext, mUserInfo.strAccountId, currentYearMonth);
+		int dateSize = dateListOfMonth.size();
+		
+		for(int i=0; i<dateSize; i++){
+			String strDate = dateListOfMonth.get(i);
+			
+			ArrayList<BaseRecordData> baseRecordDataOfDayList = RecordUtil.getRecordDataOfDay(strDate, mUserInfo.strAccountId);
+			mBaseRecordDataList.addAll(baseRecordDataOfDayList);
+		}
+		
+		mRecordAdapter.updateData(mBaseRecordDataList);
+		
+	}
+
+	private void nextYearData() {
+		if(mSelectYear == mThisYear){
+			return;
+		}
+		
+		mSelectYear++;
+		
+		tvSelectYear.setText(String.valueOf(mSelectYear));
+		tvYear.setText(mSelectYear + "年");
+		
+		int dayNum = MyFinishDao.getInstance().getTrainDayNumDependYear(Globle.gApplicationContext, mUserInfo.strAccountId, mSelectYear);
+		tvTotalDays.setText(String.valueOf(dayNum) + "天");
+		
+		String currentYearMonth;
+		
+		if(mSelectYear == mThisYear){
+			currentYearMonth = DateUtil.getDateStrOfYearMonth(DateUtil.getCurrentDate());
+		}else{
+			currentYearMonth = DateUtil.getStrDateFirstDayDependsYear(mSelectYear);
+		}
+		
+		mBaseRecordDataList.clear();
+		
+		ArrayList<String> dateListOfMonth = MyFinishDao.getInstance().getFinishInfoDistinctDateDependsMonth(Globle.gApplicationContext, mUserInfo.strAccountId, currentYearMonth);
+		int dateSize = dateListOfMonth.size();
+		
+		for(int i=0; i<dateSize; i++){
+			String strDate = dateListOfMonth.get(i);
+			
+			ArrayList<BaseRecordData> baseRecordDataOfDayList = RecordUtil.getRecordDataOfDay(strDate, mUserInfo.strAccountId);
+			mBaseRecordDataList.addAll(baseRecordDataOfDayList);
+		}
+		
+		mRecordAdapter.updateData(mBaseRecordDataList);
 	}
 }

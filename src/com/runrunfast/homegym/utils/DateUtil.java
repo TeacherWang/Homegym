@@ -7,13 +7,36 @@ import java.util.Date;
 
 public class DateUtil {
 	
-	//获取当天的年月日
+	/**
+	  * @Method: getCurrentDate
+	  * @Description: 获取当天的年月日
+	  * @return	
+	  * 返回类型：String yyyy-MM-dd
+	  */
 	public static String getCurrentDate() {
 		String pattern = "yyyy-MM-dd";
 		SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
 		Date date = new Date();
 		String dateStr = dateFormat.format(date);
 		return dateStr;
+	}
+	
+	/**
+	  * @Method: getStrDate
+	  * @Description: 根据Date，获取日期字符串
+	  * @param date Date
+	  * @return	
+	  * 返回类型：String yyyy-MM-dd
+	  */
+	public static String getStrDate(Date date){
+		String strDate = "";
+		
+		String pattern = "yyyy-MM-dd";
+		SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
+		
+		strDate = dateFormat.format(date);
+		
+		return strDate;
 	}
 	
 	/**
@@ -62,6 +85,73 @@ public class DateUtil {
 		return dateStr;
 	}
 
+	public static String getStrDateFirstDayDependsYear(int year){
+		Calendar calendar = Calendar.getInstance();
+		
+		calendar.clear();
+		calendar.set(Calendar.YEAR, year);
+		calendar.roll(Calendar.DAY_OF_YEAR, -1);
+		
+		Date date = calendar.getTime();
+		
+		String strDate = getStrDate(date);
+		
+		return strDate;
+	}
+	
+	/**
+	  * @Method: getStrDateFirstDayDependsMonth
+	  * @Description: 根据月份，获取该月第一天日期
+	  * @param month 1-12
+	  * @return	
+	  * 返回类型：String yyyy-MM-dd
+	  */
+	public static String getStrDateFirstDayDependsMonth(int month){
+		String strDate = "";
+		
+		Calendar calendar = Calendar.getInstance();
+		
+		calendar.set(Calendar.MONTH, month - 1);
+		calendar.set(Calendar.DAY_OF_MONTH, 1);
+		
+		Date date = calendar.getTime();
+		
+		strDate = getStrDate(date);
+		
+		return strDate;
+	}
+	
+	/**
+	  * @Method: getThisYear
+	  * @Description: 获取今年
+	  * @return	
+	  * 返回类型：int 
+	  */
+	public static int getThisYear(){
+		Calendar calendar = Calendar.getInstance();
+		
+		return calendar.get(Calendar.YEAR);
+	}
+	
+	/**
+	  * @Method: getMonth
+	  * @Description: 获取本月
+	  * @return	
+	  * 返回类型：int 月份：1-12
+	  */
+	public static int getThisMonth(){
+		Calendar calendar = Calendar.getInstance();
+		
+		return calendar.get(Calendar.MONTH) + 1;
+	}
+	
+	/**
+	  * @Method: getMonth
+	  * @Description: 根据日期获取月份
+	  * @param strDate 格式yyyy-MM-dd
+	  * @return	
+	  * 返回类型：int 月份：1-12
+	  */
 	public static int getMonth(String strDate){
 		Calendar calendar = Calendar.getInstance();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");

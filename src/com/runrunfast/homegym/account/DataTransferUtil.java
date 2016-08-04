@@ -41,6 +41,9 @@ public class DataTransferUtil {
 		numMap.put(7,"七");
 		numMap.put(8,"八");
 		numMap.put(9,"九");
+		numMap.put(10,"十");
+		numMap.put(11,"十一");
+		numMap.put(12,"十二");
 	}
 	
 	public static DataTransferUtil getInstance(){

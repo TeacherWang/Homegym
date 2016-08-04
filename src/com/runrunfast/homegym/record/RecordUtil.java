@@ -9,6 +9,7 @@ public class RecordUtil {
 
 	public static ArrayList<BaseRecordData> getRecordDataOfDay(String strDay, String uid) {
 		ArrayList<BaseRecordData> baseRecordDataForUiList = new ArrayList<BaseRecordData>();
+		// 获取该天记录不同的课程数量
 		ArrayList<String> courseIdList = MyFinishDao.getInstance().getFinishInfoDistinctCourseIdDependsDay(Globle.gApplicationContext, uid, strDay);
 		
 		int courseIdSize = courseIdList.size();

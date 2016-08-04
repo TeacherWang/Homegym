@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.runrunfast.homegym.record.BaseRecordData;
 import com.runrunfast.homegym.record.RecordDataUnit;
+import com.runrunfast.homegym.record.StatisticalData;
 import com.runrunfast.homegym.utils.Const;
 
 import java.util.ArrayList;
@@ -124,14 +125,14 @@ public class MyFinishDao {
 	
 	/**
 	  * @Method: getFinishDayNumDependMonth
-	  * @Description: 获取指定月份的完成的天数
+	  * @Description: 获取指定月份的训练的天数
 	  * @param context
 	  * @param uid
 	  * @param strActualDateOfYearMonth 指定月份，格式：2016-08
 	  * @return	
 	  * 返回类型：int 
 	  */
-	public synchronized int getFinishDayNumDependMonth( Context context, String uid, String strActualDateOfYearMonth ){
+	public synchronized int getTrainDayNumDependMonth( Context context, String uid, String strActualDateOfYearMonth ){
 		int dayNum = 0;
 		SQLiteDatabase db = null;
 		Cursor c = null;
@@ -156,6 +157,133 @@ public class MyFinishDao {
 			}
 		}
 		return dayNum;
+	}
+	
+	/**
+	  * @Method: getFinishDayNumDependYear
+	  * @Description: 获取指定月份的训练的天数
+	  * @param context
+	  * @param uid
+	  * @param year
+	  * @return	
+	  * 返回类型：int 
+	  */
+	public synchronized int getTrainDayNumDependYear( Context context, String uid, int year ){
+		int dayNum = 0;
+		SQLiteDatabase db = null;
+		Cursor c = null;
+		try {
+			DBOpenHelper dbHelper = new DBOpenHelper(context);
+			db = dbHelper.getWritableDatabase();
+			
+			c = db.query(Const.TABLE_FINISH, new String[]{ Const.DB_KEY_DISTINCT + Const.DB_KEY_ACTUAL_DATE }, Const.DB_KEY_UID + " =? and " + Const.DB_KEY_ACTUAL_DATE + " like ? ",
+					new String[]{ uid, "%" + year + "%" }, null, null, null);
+			if(null != c && c.getCount() > 0){
+				dayNum = c.getCount();
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally{
+			if(c != null){
+				c.close();
+			}
+			if(db != null){
+				db.close();
+			}
+		}
+		return dayNum;
+	}
+	
+	/**
+	  * @Method: getDayStatisticalDataDependYearMonth
+	  * @Description: 获取指定月份每天的统计数据
+	  * @param context
+	  * @param uid
+	  * @param strActualDateOfYearMonth 指定月份，格式：2016-08
+	  * @return	
+	  * 返回类型：ArrayList<StatisticalData> 
+	  */
+	public synchronized ArrayList<StatisticalData> getDayStatisticalDataDependYearMonth( Context context, String uid, String strActualDateOfYearMonth ){
+		ArrayList<StatisticalData> statisticalDataList = new ArrayList<StatisticalData>();
+		SQLiteDatabase db = null;
+		Cursor c = null;
+		Cursor cSum = null;
+		try {
+			DBOpenHelper dbHelper = new DBOpenHelper(context);
+			db = dbHelper.getWritableDatabase();
+			// 先找出该月有数据的不同的具体dateDay
+			c = db.query(Const.TABLE_FINISH, new String[]{ Const.DB_KEY_DISTINCT + Const.DB_KEY_ACTUAL_DATE }, Const.DB_KEY_UID + " =? and " + Const.DB_KEY_ACTUAL_DATE + " like ? ",
+					new String[]{ uid, "%" + strActualDateOfYearMonth + "%" }, null, null, null);
+			if(null != c && c.getCount() > 0){
+				while (c.moveToNext()) {
+					// 再根据每天求和
+					String strDate = c.getString(c.getColumnIndex(Const.DB_KEY_ACTUAL_DATE));
+					cSum = db.query(Const.TABLE_FINISH, new String[]{ "SUM("+ Const.DB_KEY_FINISH_TOTAL_KCAL +")" }, Const.DB_KEY_UID + " =? and " + Const.DB_KEY_ACTUAL_DATE + " = ? ",
+							new String[]{ uid, strDate }, null, null, null);
+					if(cSum.moveToNext()){
+						StatisticalData statisticalData = new StatisticalData();
+						statisticalData.strDate = strDate;
+						statisticalData.totalKcal = cSum.getInt(0);
+						statisticalDataList.add(statisticalData);
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally{
+			if(c != null){
+				c.close();
+			}
+			if(cSum != null){
+				cSum.close();
+			}
+			if(db != null){
+				db.close();
+			}
+		}
+		return statisticalDataList;
+	}
+	
+	public synchronized ArrayList<StatisticalData> getMonthStatisticalDataDependYear( Context context, String uid, int year ){
+		ArrayList<StatisticalData> statisticalDataList = new ArrayList<StatisticalData>();
+		SQLiteDatabase db = null;
+		Cursor c = null;
+		Cursor cSum = null;
+		try {
+			DBOpenHelper dbHelper = new DBOpenHelper(context);
+			db = dbHelper.getWritableDatabase();
+			for(int i=0; i<12; i++){
+				// 循环找出比如2016-xx月份是否有数据，有则把该月所有数据的kcal求和
+				String strYearMonth = year + "-" + String.format("%02d", i+1);
+				c = db.query(Const.TABLE_FINISH, null, Const.DB_KEY_UID + " =? and " + Const.DB_KEY_ACTUAL_DATE + " like ? ",
+						new String[]{ uid, "%" + strYearMonth + "%" }, null, null, null);
+				if(null != c && c.getCount() > 0){
+					cSum = db.query(Const.TABLE_FINISH, new String[]{ "SUM("+ Const.DB_KEY_FINISH_TOTAL_KCAL +")" }, Const.DB_KEY_UID + " =? and " + Const.DB_KEY_ACTUAL_DATE + " like ? ",
+							new String[]{ uid, "%" + strYearMonth + "%" }, null, null, null);
+					if(cSum.moveToNext()){
+						StatisticalData statisticalData = new StatisticalData();
+						statisticalData.strDate = strYearMonth;
+						statisticalData.totalKcal = cSum.getInt(0);
+						statisticalDataList.add(statisticalData);
+					}
+				}
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally{
+			if(c != null){
+				c.close();
+			}
+			if(cSum != null){
+				cSum.close();
+			}
+			if(db != null){
+				db.close();
+			}
+		}
+		return statisticalDataList;
 	}
 	
 	public synchronized RecordDataUnit getFinishInfo( Context context, String uid, String strDate, String courseId, String actionId ){

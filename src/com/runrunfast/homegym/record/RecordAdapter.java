@@ -28,6 +28,19 @@ public class RecordAdapter extends BaseAdapter {
 		this.mBaseRecordDataList = baseRecordDataList;
 	}
 
+	private void setData(ArrayList<BaseRecordData> baseRecordDataList){
+		if(baseRecordDataList == null){
+			mBaseRecordDataList = new ArrayList<BaseRecordData>();
+		}else {
+			mBaseRecordDataList = baseRecordDataList;
+		}
+	}
+	
+	public void updateData(ArrayList<BaseRecordData> baseRecordDataList){
+		setData(baseRecordDataList);
+		notifyDataSetChanged();
+	}
+	
 	@Override
 	public int getCount() {
 		return mBaseRecordDataList.size();
