@@ -1,15 +1,12 @@
 package com.runrunfast.homegym.record.fragments;
 
-import java.util.ArrayList;
-
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -31,6 +28,8 @@ import com.runrunfast.homegym.record.RecordUtil;
 import com.runrunfast.homegym.record.StatisticalData;
 import com.runrunfast.homegym.utils.DateUtil;
 import com.runrunfast.homegym.utils.Globle;
+
+import java.util.ArrayList;
 
 public class RecordYearFragment extends Fragment implements OnClickListener{
 	private final String TAG = "RecordYearFragment";
@@ -54,7 +53,7 @@ public class RecordYearFragment extends Fragment implements OnClickListener{
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater,
-			@Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+		 ViewGroup container, Bundle savedInstanceState) {
 		rootView = inflater.inflate(R.layout.fragment_record_year, container, false);
 		
 		initView();

@@ -356,4 +356,9 @@
 	<dimen name="train_action_set_group_num_decr_divider">55dp</dimen>
 	<dimen name="train_action_set_item_height">40dp</dimen>
 	
+	<dimen name="chat_view_height">160dp</dimen>
+	<dimen name="chat_margin_left_right">10dp</dimen>
+	<dimen name="chat_column_width">20dp</dimen>
+	<dimen name="chat_column_space">18dp</dimen>
+	
 </resources>

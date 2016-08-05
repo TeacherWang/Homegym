@@ -100,6 +100,43 @@ public class DateUtil {
 	}
 	
 	/**
+	  * @Method: getDaysByYearMonth
+	  * @Description: 根据 年 月 获取对应的月份 天数
+	  * @param year
+	  * @param month
+	  * @return	
+	  * 返回类型：int 
+	  */
+	public static int getDaysByYearMonth(int year, int month){
+		Calendar a = Calendar.getInstance();  
+        a.set(Calendar.YEAR, year);  
+        a.set(Calendar.MONTH, month - 1);  
+        a.set(Calendar.DATE, 1);  
+        a.roll(Calendar.DATE, -1);  
+        int maxDate = a.get(Calendar.DATE);  
+        return maxDate;  
+	}
+	
+	/**
+	  * @Method: getDayIndexOfMonth
+	  * @Description: 获取日期对应在该月的天数
+	  * @param strDate 格式yyyy-MM-dd
+	  * @return	
+	  * 返回类型：int 
+	  */
+	public static int getDayIndexOfMonth(String strDate){
+		Calendar calendar = Calendar.getInstance();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			calendar.setTime(sdf.parse(strDate));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+        int dayIndex = calendar.get(Calendar.DAY_OF_MONTH);
+        return dayIndex;
+	}
+	
+	/**
 	  * @Method: getStrDateFirstDayDependsMonth
 	  * @Description: 根据月份，获取该月第一天日期
 	  * @param month 1-12

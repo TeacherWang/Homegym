@@ -1,7 +1,7 @@
 package com.runrunfast.homegym.record.fragments;
 
+import android.content.res.Resources;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,8 +9,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
@@ -31,10 +33,26 @@ import com.runrunfast.homegym.record.StatisticalData;
 import com.runrunfast.homegym.utils.DateUtil;
 import com.runrunfast.homegym.utils.Globle;
 
+import lecho.lib.hellocharts.listener.ColumnChartOnValueSelectListener;
+import lecho.lib.hellocharts.model.Axis;
+import lecho.lib.hellocharts.model.Column;
+import lecho.lib.hellocharts.model.ColumnChartData;
+import lecho.lib.hellocharts.model.SelectedValue;
+import lecho.lib.hellocharts.model.SelectedValue.SelectedValueType;
+import lecho.lib.hellocharts.model.SubcolumnValue;
+import lecho.lib.hellocharts.util.ChartUtils;
+import lecho.lib.hellocharts.view.ColumnChartView;
+
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 public class RecordMonthFragment extends Fragment implements OnClickListener{
 	private final String TAG = "RecordMonthFragment";
+	
+	private static final int DEFAULT_DATA = 0;
+	
+	private Resources mResources;
 	
 	private View rootView;
 	
@@ -49,14 +67,26 @@ public class RecordMonthFragment extends Fragment implements OnClickListener{
 	
 	private UserInfo mUserInfo;
 	
+	private int mThisYear;
+	
 	private int mSelectMonth; // 1-12月
 	
 	private int mThisMonth; // 本月
 	
+	// 柱状图
+	private ColumnChartView chart;
+	private ColumnChartData data;
+	private boolean hasAxes = true;
+    private boolean hasAxesNames = true;
+    private boolean hasLabels = false;
+    private boolean hasLabelForSelected = false;
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater,
-			@Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+		 ViewGroup container, Bundle savedInstanceState) {
 		rootView = inflater.inflate(R.layout.fragment_record_month, container, false);
+		
+		mResources = getResources();
 		
 		initView();
 		
@@ -70,14 +100,13 @@ public class RecordMonthFragment extends Fragment implements OnClickListener{
 		
 		mSelectMonth = DateUtil.getThisMonth();
 		mThisMonth = mSelectMonth;
+		mThisYear = Calendar.getInstance().get(Calendar.YEAR);
 		
 		tvSelectMonth.setText(mSelectMonth + "月");
 		tvMonth.setText(DataTransferUtil.numMap.get(mSelectMonth) + "月份");
 		
 		String strCurrentDay = DateUtil.getCurrentDate();
 		String strCurrentYearMonth = DateUtil.getDateStrOfYearMonth(strCurrentDay);
-		
-		ArrayList<StatisticalData> statisticalDataList = MyFinishDao.getInstance().getDayStatisticalDataDependYearMonth(Globle.gApplicationContext, mUserInfo.strAccountId, strCurrentYearMonth);
 		
 		int dayNum = MyFinishDao.getInstance().getTrainDayNumDependMonth(Globle.gApplicationContext, mUserInfo.strAccountId, strCurrentYearMonth);
 		tvTotalDays.setText(String.valueOf(dayNum) + "天");
@@ -90,6 +119,27 @@ public class RecordMonthFragment extends Fragment implements OnClickListener{
 		pullToRefreshListView.setAdapter(mRecordAdapter);
 		
 		pullToRefreshListView.setMode(Mode.BOTH);
+		
+		initChart(strCurrentDay, strCurrentYearMonth);
+	}
+
+	private void initChart(String strCurrentDay, String strCurrentYearMonth) {
+		ArrayList<StatisticalData> statisticalDataList = MyFinishDao.getInstance().getDayStatisticalDataDependYearMonth(Globle.gApplicationContext, mUserInfo.strAccountId, strCurrentYearMonth);
+		
+		int daysOfMonth = DateUtil.getDaysByYearMonth(mThisYear, mSelectMonth);
+		int dayIndexOfMonth = DateUtil.getDayIndexOfMonth(strCurrentDay);
+		
+		int chatHeight = (int) mResources.getDimension(R.dimen.chat_view_height);
+		int columnWidth = (int) mResources.getDimension(R.dimen.chat_column_width);
+		int spaceWidth = (int) mResources.getDimension(R.dimen.chat_column_space);
+		int chatWidth = daysOfMonth * (columnWidth + spaceWidth);
+		
+		LayoutParams params = (LayoutParams) chart.getLayoutParams();
+		params.height = chatHeight;
+		params.width = chatWidth;
+		chart.setLayoutParams(params);
+		
+		generateColumnData(daysOfMonth, dayIndexOfMonth - 1, statisticalDataList);
 	}
 
 	private ArrayList<BaseRecordData> getRecordDataOfDay(String strDay, String uid) {
@@ -160,16 +210,87 @@ public class RecordMonthFragment extends Fragment implements OnClickListener{
 		
 		tvSelectMonth = (TextView)rootView.findViewById(R.id.tv_record_month_year);
 		tvMonth = (TextView)rootView.findViewById(R.id.record_detail_time_text);
+		
+		chart = (ColumnChartView) rootView.findViewById(R.id.chart);
+		
+		chart.setOnValueTouchListener(new ValueTouchListener());
+		chart.setZoomEnabled(false);
+		chart.setValueSelectionEnabled(true);
+//        chart.setScrollEnabled(true);
 	}
+	
+	private void generateColumnData(int daysNum, int highlightPosition, ArrayList<StatisticalData> statisticalDataList) {
+		int statisticSize = statisticalDataList.size();
+		int statisticPosition = 0;
+		int dayIndex = 0;
+		StatisticalData statisticalData = null;
+		if(statisticSize > 0){
+			statisticalData = statisticalDataList.get(statisticPosition);
+			dayIndex = DateUtil.getDayIndexOfMonth(statisticalData.strDate);
+		}
+		
+        int numColumns = daysNum;
+        // Column can have many subcolumns, here by default I use 1 subcolumn in each of 8 columns.
+        List<Column> columns = new ArrayList<Column>();
+        List<SubcolumnValue> values;
+        for (int i = 0; i < numColumns; ++i) {
 
-	// 不要删除，切换fragment用到
-    @Override
-	public void setMenuVisibility(boolean menuVisible) {
-		super.setMenuVisibility(menuVisible);
-		if (this.getView() != null)
-			this.getView().setVisibility(menuVisible ? View.VISIBLE : View.GONE);
-	}
+            values = new ArrayList<SubcolumnValue>();
+        	if(statisticSize > 0 && statisticPosition < statisticSize && (dayIndex - 1) == i){
+        		values.add(new SubcolumnValue(statisticalData.totalKcal, ChartUtils.pickNormalColor()));
+        		statisticPosition++;
+        		if(statisticPosition < statisticSize){
+        			statisticalData = statisticalDataList.get(statisticPosition);
+        			dayIndex = DateUtil.getDayIndexOfMonth(statisticalData.strDate);
+        		}
+        	}else{
+        		values.add(new SubcolumnValue(0, ChartUtils.pickNormalColor()));
+        	}
 
+            Column column = new Column(values);
+            column.setHasLabels(hasLabels);
+            column.setHasLabelsOnlyForSelected(hasLabelForSelected);
+            columns.add(column);
+        }
+
+        data = new ColumnChartData(columns);
+
+        if (hasAxes) {
+            Axis axisX = new Axis();
+            Axis axisY = new Axis().setHasLines(false);
+            if (hasAxesNames) {
+                axisX.setName("日期");
+                axisY.setName("燃脂/千卡");
+            }
+            data.setAxisXBottom(axisX);
+            data.setAxisYLeft(axisY);
+        } else {
+            data.setAxisXBottom(null);
+            data.setAxisYLeft(null);
+        }
+
+        chart.setColumnChartData(data);
+        
+        SelectedValue selectedValue = new SelectedValue(highlightPosition, 0, SelectedValueType.COLUMN);
+		chart.selectValue(selectedValue);
+    }
+
+	private class ValueTouchListener implements ColumnChartOnValueSelectListener {
+
+        @Override
+        public void onValueSelected(int columnIndex, int subcolumnIndex, SubcolumnValue value) {
+            Toast.makeText(getActivity(), "Selected: " + value + ", columnIndex = " + columnIndex + ", subcolumnIndex = " + subcolumnIndex, Toast.LENGTH_SHORT).show();
+            String selectDay = mThisYear + "-" + String.format("%02d", mSelectMonth) + "-" + String.format("%02d", columnIndex + 1);
+            handleDaySelected(selectDay);
+        }
+
+        @Override
+        public void onValueDeselected() {
+        	
+        }
+
+    }
+	
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
@@ -184,6 +305,10 @@ public class RecordMonthFragment extends Fragment implements OnClickListener{
 		default:
 			break;
 		}
+	}
+
+	private void handleDaySelected(String strDateSelectDay) {
+		updateDataDependOnDay(strDateSelectDay);
 	}
 
 	private void lastMonthData() {
@@ -207,7 +332,10 @@ public class RecordMonthFragment extends Fragment implements OnClickListener{
 		
 		String strCurrentYearMonth = DateUtil.getDateStrOfYearMonth(strCurrentDay);
 		
-		updateDataDependOnDay(strCurrentDay, strCurrentYearMonth);
+		int dayNum = MyFinishDao.getInstance().getTrainDayNumDependMonth(Globle.gApplicationContext, mUserInfo.strAccountId, strCurrentYearMonth);
+		tvTotalDays.setText(String.valueOf(dayNum) + "天");
+		
+		updateDataDependOnDay(strCurrentDay);
 	}
 
 	private void nextMonthData() {
@@ -230,15 +358,23 @@ public class RecordMonthFragment extends Fragment implements OnClickListener{
 		
 		String strCurrentYearMonth = DateUtil.getDateStrOfYearMonth(strCurrentDay);
 		
-		updateDataDependOnDay(strCurrentDay, strCurrentYearMonth);
-	}
-	
-	private void updateDataDependOnDay(String strCurrentDay, String strCurrentMonth) {
-		int dayNum = MyFinishDao.getInstance().getTrainDayNumDependMonth(Globle.gApplicationContext, mUserInfo.strAccountId, strCurrentMonth);
+		int dayNum = MyFinishDao.getInstance().getTrainDayNumDependMonth(Globle.gApplicationContext, mUserInfo.strAccountId, strCurrentYearMonth);
 		tvTotalDays.setText(String.valueOf(dayNum) + "天");
 		
-		mBaseRecordDataList.clear();
+		updateDataDependOnDay(strCurrentDay);
+	}
+	
+	private void updateDataDependOnDay(String strCurrentDay) {
+		
 		mBaseRecordDataList = RecordUtil.getRecordDataOfDay(strCurrentDay, mUserInfo.strAccountId);
 		mRecordAdapter.updateData(mBaseRecordDataList);
+	}
+	
+	// 不要删除，切换fragment用到
+    @Override
+	public void setMenuVisibility(boolean menuVisible) {
+		super.setMenuVisibility(menuVisible);
+		if (this.getView() != null)
+			this.getView().setVisibility(menuVisible ? View.VISIBLE : View.GONE);
 	}
 }

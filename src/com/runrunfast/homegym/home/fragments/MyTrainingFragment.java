@@ -1,11 +1,7 @@
 package com.runrunfast.homegym.home.fragments;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,6 +23,8 @@ import com.runrunfast.homegym.home.HomeActivity;
 import com.runrunfast.homegym.utils.Const;
 import com.runrunfast.homegym.utils.Globle;
 
+import java.util.ArrayList;
+
 public class MyTrainingFragment extends Fragment{
 	private final String TAG = "MyTrainingFragment";
 	
@@ -41,7 +39,7 @@ public class MyTrainingFragment extends Fragment{
 	private ICourseAdapterListener mICourseAdapterListener;
 	
 	@Override
-	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		rootView = inflater.inflate(R.layout.fragment_my_training, container, false);
 		
 		initView();
