@@ -29,7 +29,7 @@ public class ActionDao {
 	
 	public static String getActionTableSql(){
 		String sql = "create table if not exists " + Const.TABLE_ACTION
-				+ " (" + Const.DB_KEY_ROW + " INTEGER PRIMARY KEY,"
+				+ " (" + Const.DB_KEY_ID + " INTEGER PRIMARY KEY,"
 				+ Const.DB_KEY_ACTION_ID + " TEXT,"
 				+ Const.DB_KEY_ACTION_NAME + " TEXT,"
 				+ Const.DB_KEY_ACTION_POSITION + " TEXT,"

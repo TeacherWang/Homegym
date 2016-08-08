@@ -28,7 +28,7 @@ public class MyCourseActionDao {
 	
 	public static String getMyCourseTableSql(){
 		String sql = "create table if not exists " + Const.TABLE_MY_COURSE_ACTION
-				+ " (" + Const.DB_KEY_ROW + " INTEGER PRIMARY KEY,"
+				+ " (" + Const.DB_KEY_ID + " INTEGER PRIMARY KEY,"
 				+ Const.DB_KEY_UID + " TEXT,"
 				+ Const.DB_KEY_COURSE_ID + " TEXT,"
 				+ Const.DB_KEY_ACTION_ID + " TEXT,"

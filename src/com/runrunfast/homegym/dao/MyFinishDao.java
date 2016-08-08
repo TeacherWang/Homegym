@@ -30,7 +30,7 @@ public class MyFinishDao {
 	
 	public static String getFinishTableSql(){
 		String sql = "create table if not exists " + Const.TABLE_FINISH
-				+ " (" + Const.DB_KEY_ROW + " INTEGER PRIMARY KEY,"
+				+ " (" + Const.DB_KEY_ID + " INTEGER PRIMARY KEY,"
 				+ Const.DB_KEY_UID + " TEXT,"
 				+ Const.DB_KEY_PLAN_DATE + " TEXT,"
 				+ Const.DB_KEY_COURSE_ID + " TEXT,"

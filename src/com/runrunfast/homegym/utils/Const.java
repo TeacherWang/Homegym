@@ -29,7 +29,7 @@ public class Const {
 	public static final String TABLE_MY_COURSE_ACTION = "my_course_action_table";
 	public static final String TABLE_FINISH = "finish_table";
 	
-	public static final String DB_KEY_ROW = "row";
+	public static final String DB_KEY_ID = "_id";
 	public static final String DB_KEY_COURSE_ID = "course_id";
 	public static final String DB_KEY_COURSE_NAME = "course_name";
 	public static final String DB_KEY_ACTION_IDS = "action_ids";
@@ -50,7 +50,7 @@ public class Const {
 	public static final String DB_KEY_DEFAULT_TOOL_WEIGHT = "default_tool_weight";
 	public static final String DB_KEY_DEFAULT_BURNING = "default_burning"; // 每组动作的消耗卡
 	public static final String DB_KEY_START_DATE = "start_date";
-	public static final String DB_KEY_MY_COURSE_PROGRESS = "my_course_progress"; // 进度--进行中、休息日、已完成
+	public static final String DB_KEY_PROGRESS = "progress"; // 进度--进行中、休息日、已完成
 	
 	public static final String DB_KEY_FINISH_GROUP_NUM = "finish_group_num";
 	public static final String DB_KEY_FINISH_TOTAL_COUNT = "finish_total_count";
