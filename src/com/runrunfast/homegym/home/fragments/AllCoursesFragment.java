@@ -11,6 +11,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.runrunfast.homegym.R;
+import com.runrunfast.homegym.bean.Course;
 import com.runrunfast.homegym.course.CourseAdapter;
 import com.runrunfast.homegym.course.CourseInfo;
 import com.runrunfast.homegym.course.DetailPlanActivity;
@@ -26,7 +27,7 @@ public class AllCoursesFragment extends Fragment {
 	
 	private ListView mAllCoursesListView;
 	
-	private ArrayList<CourseInfo> mAllCoursesList;
+	private ArrayList<Course> mAllCoursesList;
 	
 	private CourseAdapter mAllCoursesAdapter;
 
@@ -49,18 +50,18 @@ public class AllCoursesFragment extends Fragment {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				CourseInfo courseInfo = mAllCoursesList.get(position);
+				Course course = mAllCoursesList.get(position);
 				Intent intent = new Intent(getActivity(), DetailPlanActivity.class);
-				intent.putExtra(Const.KEY_COURSE_INFO, courseInfo);
+				intent.putExtra(Const.KEY_COURSE_INFO, course);
 				startActivity(intent);
 			}
 		});
 	}
 
 	private void initData() {
-		mAllCoursesList = new ArrayList<CourseInfo>();
+		mAllCoursesList = new ArrayList<Course>();
 		
-		mAllCoursesList = CourseDao.getInstance().getCourseInfoListFromDb(Globle.gApplicationContext);
+		mAllCoursesList = CourseDao.getInstance().getCourseListFromDb(Globle.gApplicationContext);
 		
 		mAllCoursesAdapter = new CourseAdapter(getActivity(), mAllCoursesList, false);
 		mAllCoursesListView.setAdapter(mAllCoursesAdapter);

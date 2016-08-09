@@ -8,7 +8,7 @@ public class Const {
 	public static final int DIALOG_REQ_CODE_EXIT_COURSE = 4;
 	
 	// 启动CourseTrainActivity所传参数
-	public static final String KEY_COURSE_INFO = "key_course_info";
+	public static final String KEY_COURSE_INFO = "key_course";
 	public static final String KEY_COURSE_ID = "key_course_id";
 	public static final String KEY_COURSE_NAME = "key_course_name";
 	public static final String KEY_ACTION_ID = "key_action_id";
@@ -35,9 +35,11 @@ public class Const {
 	public static final String DB_KEY_ACTION_IDS = "action_ids";
 	public static final String DB_KEY_DATE_NUM = "date_num";
 	public static final String DB_KEY_DATE_ACTION_IDS = "date_action_ids";
-	public static final String DB_KEY_RECOMMEND = "recommend";
+	public static final String DB_KEY_COURSE_RECOMMEND = "course_recommend";
 	public static final String DB_KEY_COURSE_QUALITY = "course_quality";
-	public static final String DB_KEY_NEW_COURSE = "new_course";
+	public static final String DB_KEY_COURSE_NEW = "course_new";
+	public static final String DB_KEY_COURSE_DETAIL = "course_detail";
+	
 	public static final String DB_KEY_ACTION_ID = "action_id";
 	public static final String DB_KEY_ACTION_NAME = "action_name";
 	public static final String DB_KEY_ACTION_POSITION = "action_position"; // 动作锻炼的部位
@@ -51,6 +53,7 @@ public class Const {
 	public static final String DB_KEY_DEFAULT_BURNING = "default_burning"; // 每组动作的消耗卡
 	public static final String DB_KEY_START_DATE = "start_date";
 	public static final String DB_KEY_PROGRESS = "progress"; // 进度--进行中、休息日、已完成
+	public static final String DB_KEY_DAY_PROGRESS = "day_progress"; // 每天的完成度 -- 已完成、未完成
 	
 	public static final String DB_KEY_FINISH_GROUP_NUM = "finish_group_num";
 	public static final String DB_KEY_FINISH_TOTAL_COUNT = "finish_total_count";

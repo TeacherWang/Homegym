@@ -1,7 +1,5 @@
 package com.runrunfast.homegym.course;
 
-import java.util.ArrayList;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,28 +10,34 @@ import android.widget.TextView;
 
 import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.account.DataTransferUtil;
+import com.runrunfast.homegym.bean.Action;
+import com.runrunfast.homegym.course.CourseTrainActivity.ActionTotalData;
 import com.runrunfast.homegym.utils.DateUtil;
+
+import java.util.ArrayList;
 
 public class CourseTrainAdapter extends BaseAdapter {
 	
-	private ArrayList<ActionInfo> mActinoInfoList;
+	private ArrayList<Action> mActionList;
+	private ArrayList<ActionTotalData> mActionTotalDataList;
 	private LayoutInflater mInflater;
 	private Context mContext;
 	
-	public CourseTrainAdapter(Context context, ArrayList<ActionInfo> actinoInfoList){
+	public CourseTrainAdapter(Context context, ArrayList<Action> actionList, ArrayList<ActionTotalData> actionTotalDataList){
 		this.mContext = context;
-		this.mActinoInfoList = actinoInfoList;
+		this.mActionList = actionList;
+		this.mActionTotalDataList = actionTotalDataList;
 		this.mInflater = LayoutInflater.from(context);
 	}
 	
 	@Override
 	public int getCount() {
-		return mActinoInfoList.size();
+		return mActionList.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
-		return mActinoInfoList.get(position);
+		return mActionList.get(position);
 	}
 
 	@Override
@@ -64,38 +68,39 @@ public class CourseTrainAdapter extends BaseAdapter {
 			holder = (ViewHolder) convertView.getTag();
 		}
 		
-		ActionInfo actionInfo = mActinoInfoList.get(position);
-		holder.tvTrainName.setText(actionInfo.actionName);
-		holder.tvTrainPosition.setText(actionInfo.strTrainPosition);
+		Action action = mActionList.get(position);
+		ActionTotalData actionTotalData = mActionTotalDataList.get(position);
+		holder.tvTrainName.setText(action.action_name);
+		holder.tvTrainPosition.setText(action.action_position);
 		holder.tvTrainActionNum.setText("动作" + DataTransferUtil.numMap.get(position + 1));
-		holder.tvTime.setText(String.valueOf(DateUtil.secToMinute(actionInfo.iTime)) + mContext.getResources().getString(R.string.minute_cn)
-				+ " " + String.valueOf(actionInfo.iDefaultTotalKcal) + mContext.getResources().getString(R.string.kcal_cn));
+		holder.tvTime.setText(String.valueOf(DateUtil.secToMinute(actionTotalData.totalTime)) + mContext.getResources().getString(R.string.minute_cn)
+				+ " " + String.valueOf(actionTotalData.totalKcal) + mContext.getResources().getString(R.string.kcal_cn));
 		holder.tvDiffcult.setText(R.string.difficult);
-		if(actionInfo.iDiffcultLevel == 1){
+		if(action.action_difficult == 1){
 			holder.ivDiffcultLevel1.setVisibility(View.VISIBLE);
 			holder.ivDiffcultLevel2.setVisibility(View.INVISIBLE);
 			holder.ivDiffcultLevel3.setVisibility(View.INVISIBLE);
 			holder.ivDiffcultLevel4.setVisibility(View.INVISIBLE);
 			holder.ivDiffcultLevel5.setVisibility(View.INVISIBLE);
-		}else if(actionInfo.iDiffcultLevel == 2){
+		}else if(action.action_difficult == 2){
 			holder.ivDiffcultLevel1.setVisibility(View.VISIBLE);
 			holder.ivDiffcultLevel2.setVisibility(View.VISIBLE);
 			holder.ivDiffcultLevel3.setVisibility(View.INVISIBLE);
 			holder.ivDiffcultLevel4.setVisibility(View.INVISIBLE);
 			holder.ivDiffcultLevel5.setVisibility(View.INVISIBLE);
-		}else if(actionInfo.iDiffcultLevel == 3){
+		}else if(action.action_difficult == 3){
 			holder.ivDiffcultLevel1.setVisibility(View.VISIBLE);
 			holder.ivDiffcultLevel2.setVisibility(View.VISIBLE);
 			holder.ivDiffcultLevel3.setVisibility(View.VISIBLE);
 			holder.ivDiffcultLevel4.setVisibility(View.INVISIBLE);
 			holder.ivDiffcultLevel5.setVisibility(View.INVISIBLE);
-		}else if(actionInfo.iDiffcultLevel == 4){
+		}else if(action.action_difficult == 4){
 			holder.ivDiffcultLevel1.setVisibility(View.VISIBLE);
 			holder.ivDiffcultLevel2.setVisibility(View.VISIBLE);
 			holder.ivDiffcultLevel3.setVisibility(View.VISIBLE);
 			holder.ivDiffcultLevel4.setVisibility(View.VISIBLE);
 			holder.ivDiffcultLevel5.setVisibility(View.INVISIBLE);
-		}else if(actionInfo.iDiffcultLevel == 5){
+		}else if(action.action_difficult == 5){
 			holder.ivDiffcultLevel1.setVisibility(View.VISIBLE);
 			holder.ivDiffcultLevel2.setVisibility(View.VISIBLE);
 			holder.ivDiffcultLevel3.setVisibility(View.VISIBLE);

@@ -12,6 +12,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.runrunfast.homegym.R;
+import com.runrunfast.homegym.bean.Course;
+import com.runrunfast.homegym.bean.MyCourse;
 import com.runrunfast.homegym.course.CourseAdapter;
 import com.runrunfast.homegym.course.CourseAdapter.ICourseAdapterListener;
 import com.runrunfast.homegym.course.CourseInfo;
@@ -33,8 +35,8 @@ public class MyTrainingFragment extends Fragment{
 	
 	private CourseAdapter mMyCourseAdapter;
 	
-	private ArrayList<CourseInfo> mMyCourseList;
-	private ArrayList<CourseInfo> mRecommedList;
+	private ArrayList<Course> mMyCourseList;
+	private ArrayList<Course> mRecommedList;
 	
 	private ICourseAdapterListener mICourseAdapterListener;
 	
@@ -57,22 +59,16 @@ public class MyTrainingFragment extends Fragment{
 		
 		Log.i(TAG, "onResume");
 		
-		mMyCourseList = MyCourseDao.getInstance().getMyCourseInfoList(Globle.gApplicationContext);
+		mMyCourseList = MyCourseDao.getInstance().getMyCourseListFromDb(Globle.gApplicationContext);
 		if(mMyCourseList.size() > 0){
-			CourseInfo recommendDescipt = new CourseInfo();
-			recommendDescipt.isRecommendDescript = true;
-			mMyCourseList.add(recommendDescipt);
+			mMyCourseList.add(new InvalidCourse(InvalidCourse.COURSE_TYPE_SHOW_RECOMMED_TEXT));
 			
 			mMyCourseList.addAll(mRecommedList);
 			mMyCourseAdapter.updateData(mMyCourseList, false);
 		}else{
-			CourseInfo emptyCourseInfo = new CourseInfo();
-			emptyCourseInfo.isMyCourse = true;
-			mMyCourseList.add(emptyCourseInfo);
+			mMyCourseList.add(new InvalidCourse(InvalidCourse.COURSE_TYPE_EMPTY));
 			
-			CourseInfo recommendDescipt = new CourseInfo();
-			recommendDescipt.isRecommendDescript = true;
-			mMyCourseList.add(recommendDescipt);
+			mMyCourseList.add(new InvalidCourse(InvalidCourse.COURSE_TYPE_SHOW_RECOMMED_TEXT));
 			
 			mMyCourseList.addAll(mRecommedList);
 			mMyCourseAdapter.updateData(mMyCourseList, true);
@@ -84,19 +80,19 @@ public class MyTrainingFragment extends Fragment{
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				CourseInfo courseInfo = mMyCourseList.get(position);
-				if(courseInfo.isRecommendDescript){
+				Course course = mMyCourseList.get(position);
+				if(course instanceof InvalidCourse){
 					return;
 				}
 				
 				Intent intent = null;
 				
-				if(courseInfo.isMyCourse){
+				if(course instanceof MyCourse){
 					intent = new Intent(getActivity(), CourseTrainActivity.class);
 				}else{
 					intent = new Intent(getActivity(), DetailPlanActivity.class);
 				}
-				intent.putExtra(Const.KEY_COURSE_INFO, courseInfo);
+				intent.putExtra(Const.KEY_COURSE_INFO, course);
 				startActivity(intent);
 			}
 		});
@@ -113,12 +109,10 @@ public class MyTrainingFragment extends Fragment{
 	}
 
 	private void initData() {
-		mMyCourseList = MyCourseDao.getInstance().getMyCourseInfoList(Globle.gApplicationContext);
+		mMyCourseList = MyCourseDao.getInstance().getMyCourseListFromDb(Globle.gApplicationContext);
 		
 		if(mMyCourseList.size() == 0){
-			CourseInfo emptyCourseInfo = new CourseInfo();
-			emptyCourseInfo.isMyCourse = true;
-			mMyCourseList.add(emptyCourseInfo);
+			mMyCourseList.add(new InvalidCourse(InvalidCourse.COURSE_TYPE_EMPTY));
 			mMyCourseAdapter = new CourseAdapter(getActivity(), mMyCourseList, true);
 			mMyCourseListView.setAdapter(mMyCourseAdapter);
 		}else{
@@ -126,7 +120,7 @@ public class MyTrainingFragment extends Fragment{
 			mMyCourseListView.setAdapter(mMyCourseAdapter);
 		}
 		
-		mRecommedList = CourseDao.getInstance().getRecommedCourseInfoListFromDb(Globle.gApplicationContext);
+		mRecommedList = CourseDao.getInstance().getRecommedCourseListFromDb(Globle.gApplicationContext);
 	}
 
 	private void initView() {

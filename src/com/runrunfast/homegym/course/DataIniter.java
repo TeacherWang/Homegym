@@ -1,14 +1,18 @@
 package com.runrunfast.homegym.course;
 
-import java.util.ArrayList;
-
+import android.R.integer;
 import android.os.Handler;
 import android.os.HandlerThread;
-import android.util.Log;
 
-import com.runrunfast.homegym.dao.ActionDao;
+import com.runrunfast.homegym.bean.Course;
+import com.runrunfast.homegym.bean.Course.ActionDetail;
+import com.runrunfast.homegym.bean.Course.ActionId;
+import com.runrunfast.homegym.bean.Course.CourseDetail;
+import com.runrunfast.homegym.bean.Course.GroupDetail;
 import com.runrunfast.homegym.dao.CourseDao;
 import com.runrunfast.homegym.utils.Globle;
+
+import java.util.ArrayList;
 
 public class DataIniter {
 	private static final String TAG = "DataInit";
@@ -47,26 +51,235 @@ public class DataIniter {
 	}
 
 	private void initDbData() {
-		ArrayList<CourseInfo> courseInfoList = CourseDao.getInstance().getCourseInfoListFromDb(Globle.gApplicationContext);
-		ArrayList<ActionInfo> actionInfoList = ActionDao.getInstance().getActionInfoListFromDb(Globle.gApplicationContext);
-		if(courseInfoList != null && courseInfoList.size() > 0){
-			Log.d(TAG, "initData, db had data, ignore");
-			return;
+//		ArrayList<CourseInfo> courseInfoList = CourseDao.getInstance().getCourseInfoListFromDb(Globle.gApplicationContext);
+//		ArrayList<ActionInfo> actionInfoList = ActionDao.getInstance().getActionInfoListFromDb(Globle.gApplicationContext);
+//		if(courseInfoList != null && courseInfoList.size() > 0){
+//			Log.d(TAG, "initData, db had data, ignore");
+//			return;
+//		}
+//		// 初始化课程信息，保存数据库
+//		courseInfoList = getInitCourseInfo();
+//		int courseInfoSize = courseInfoList.size();
+//		for(int i=0; i<courseInfoSize; i++){
+//			CourseInfo courseInfo = courseInfoList.get(i);
+//			CourseDao.getInstance().saveCourseInfoToDb(Globle.gApplicationContext, courseInfo);
+//		}
+//		// 初始化动作信息，保存数据库
+//		actionInfoList = getInitActionInfo();
+//		int actionInfoSize = actionInfoList.size();
+//		for(int i=0; i<actionInfoSize; i++){
+//			ActionInfo actionInfo = actionInfoList.get(i);
+//			ActionDao.getInstance().saveActionInfoToDb(Globle.gApplicationContext, actionInfo);
+//		}
+		
+		// 测试数据，初始化
+		ArrayList<Course> courseList = getInitCourse();
+		int courseSize = courseList.size();
+		for(int i=0; i<courseSize; i++){
+			Course course = courseList.get(i);
+			CourseDao.getInstance().saveCourseToDb(Globle.gApplicationContext, course);
 		}
-		// 初始化课程信息，保存数据库
-		courseInfoList = getInitCourseInfo();
-		int courseInfoSize = courseInfoList.size();
-		for(int i=0; i<courseInfoSize; i++){
-			CourseInfo courseInfo = courseInfoList.get(i);
-			CourseDao.getInstance().saveCourseInfoToDb(Globle.gApplicationContext, courseInfo);
-		}
-		// 初始化动作信息，保存数据库
-		actionInfoList = getInitActionInfo();
-		int actionInfoSize = actionInfoList.size();
-		for(int i=0; i<actionInfoSize; i++){
-			ActionInfo actionInfo = actionInfoList.get(i);
-			ActionDao.getInstance().saveActionInfoToDb(Globle.gApplicationContext, actionInfo);
-		}
+	}
+	
+	private ArrayList<Course> getInitCourse(){
+		ArrayList<Course> courseList = new ArrayList<Course>();
+		
+		courseList.add(getCourse1());
+		courseList.add(getCourse2());
+		courseList.add(getCourse3());
+		courseList.add(getCourse4());
+		
+		return courseList;
+	}
+
+	private Course getCourse1() {
+		Course course1 = new Course();
+		course1.course_id = "c1";
+		course1.course_name = "塑性训练";
+		course1.course_recommend = Course.RECOMMED_COURSE;
+		course1.course_quality = Course.QUALITY_EXCELLENT;
+		course1.course_new = Course.NEW_COURSE;
+		
+		course1.action_ids.add(new ActionId("a1"));
+		course1.action_ids.add(new ActionId("a2"));
+		course1.action_ids.add(new ActionId("a3"));
+		
+		// 日期分布
+		CourseDetail courseDetail1 = new CourseDetail(1);
+		courseDetail1.action_detail.add(getActionStengthHigh("a1"));
+		courseDetail1.action_detail.add(getActionStengthHigh("a2"));
+		courseDetail1.action_detail.add(getActionStengthHigh("a3"));
+		
+		CourseDetail courseDetail2 = new CourseDetail(2);
+		courseDetail2.action_detail.add(getActionStengthNormal("a1"));
+		courseDetail2.action_detail.add(getActionStengthHigh("a2"));
+		
+		CourseDetail courseDetail3 = new CourseDetail(4);
+		courseDetail3.action_detail.add(getActionStengthNormal("a1"));
+		courseDetail3.action_detail.add(getActionStengthLow("a3"));
+		
+		CourseDetail courseDetail4 = new CourseDetail(5);
+		courseDetail4.action_detail.add(getActionStengthHigh("a2"));
+		courseDetail4.action_detail.add(getActionStengthHigh("a3"));
+		
+		course1.course_detail.add(courseDetail1);
+		course1.course_detail.add(courseDetail2);
+		course1.course_detail.add(courseDetail3);
+		course1.course_detail.add(courseDetail4);
+		return course1;
+	}
+	
+	private Course getCourse2() {
+		Course course1 = new Course();
+		course1.course_id = "c2";
+		course1.course_name = "21天腹肌雕刻";
+		course1.course_recommend = Course.RECOMMED_COURSE;
+		course1.course_quality = Course.QUALITY_NORMAL;
+		course1.course_new = Course.NORMAL_COURSE;
+		
+		course1.action_ids.add(new ActionId("a1"));
+		course1.action_ids.add(new ActionId("a2"));
+		
+		// 日期分布
+		CourseDetail courseDetail1 = new CourseDetail(1);
+		courseDetail1.action_detail.add(getActionStengthHigh("a1"));
+		courseDetail1.action_detail.add(getActionStengthHigh("a2"));
+		
+		CourseDetail courseDetail2 = new CourseDetail(2);
+		courseDetail2.action_detail.add(getActionStengthNormal("a1"));
+		
+		CourseDetail courseDetail3 = new CourseDetail(3);
+		courseDetail3.action_detail.add(getActionStengthNormal("a2"));
+		
+		course1.course_detail.add(courseDetail1);
+		course1.course_detail.add(courseDetail2);
+		course1.course_detail.add(courseDetail3);
+		return course1;
+	}
+	
+	private Course getCourse3() {
+		Course course1 = new Course();
+		course1.course_id = "c3";
+		course1.course_name = "S型身材速成";
+		course1.course_recommend = Course.NORMAL_COURSE;
+		course1.course_quality = Course.QUALITY_EXCELLENT;
+		course1.course_new = Course.NEW_COURSE;
+		
+		course1.action_ids.add(new ActionId("a1"));
+		course1.action_ids.add(new ActionId("a2"));
+		course1.action_ids.add(new ActionId("a4"));
+		// 日期分布
+		CourseDetail courseDetail1 = new CourseDetail(1);
+		courseDetail1.action_detail.add(getActionStengthHigh("a1"));
+		courseDetail1.action_detail.add(getActionStengthHigh("a2"));
+		courseDetail1.action_detail.add(getActionStengthHigh("a4"));
+		
+		CourseDetail courseDetail2 = new CourseDetail(2);
+		courseDetail2.action_detail.add(getActionStengthNormal("a1"));
+		courseDetail2.action_detail.add(getActionStengthHigh("a2"));
+		
+		CourseDetail courseDetail3 = new CourseDetail(3);
+		courseDetail3.action_detail.add(getActionStengthNormal("a1"));
+		courseDetail3.action_detail.add(getActionStengthLow("a4"));
+		
+		CourseDetail courseDetail4 = new CourseDetail(4);
+		courseDetail4.action_detail.add(getActionStengthHigh("a2"));
+		courseDetail4.action_detail.add(getActionStengthHigh("a4"));
+		
+		course1.course_detail.add(courseDetail1);
+		course1.course_detail.add(courseDetail2);
+		course1.course_detail.add(courseDetail3);
+		course1.course_detail.add(courseDetail4);
+		return course1;
+	}
+	
+	private Course getCourse4() {
+		Course course1 = new Course();
+		course1.course_id = "c4";
+		course1.course_name = "人鱼线训练";
+		course1.course_recommend = Course.NORMAL_COURSE;
+		course1.course_quality = Course.QUALITY_EXCELLENT;
+		course1.course_new = Course.NEW_COURSE;
+		
+		course1.action_ids.add(new ActionId("a1"));
+		course1.action_ids.add(new ActionId("a2"));
+		course1.action_ids.add(new ActionId("a3"));
+		course1.action_ids.add(new ActionId("a4"));
+		course1.action_ids.add(new ActionId("a5"));
+		
+		// 日期分布
+		CourseDetail courseDetail1 = new CourseDetail(1);
+		courseDetail1.action_detail.add(getActionStengthHigh("a1"));
+		courseDetail1.action_detail.add(getActionStengthHigh("a2"));
+		courseDetail1.action_detail.add(getActionStengthHigh("a4"));
+		courseDetail1.action_detail.add(getActionStengthLow("a5"));
+		
+		CourseDetail courseDetail2 = new CourseDetail(2);
+		courseDetail2.action_detail.add(getActionStengthNormal("a1"));
+		courseDetail2.action_detail.add(getActionStengthLow("a2"));
+		courseDetail2.action_detail.add(getActionStengthLow("a3"));
+		courseDetail2.action_detail.add(getActionStengthHigh("a4"));
+		
+		CourseDetail courseDetail3 = new CourseDetail(4);
+		courseDetail3.action_detail.add(getActionStengthHigh("a1"));
+		courseDetail3.action_detail.add(getActionStengthNormal("a4"));
+		courseDetail3.action_detail.add(getActionStengthNormal("a5"));
+		
+		CourseDetail courseDetail4 = new CourseDetail(5);
+		courseDetail4.action_detail.add(getActionStengthLow("a2"));
+		courseDetail4.action_detail.add(getActionStengthNormal("a4"));
+		courseDetail4.action_detail.add(getActionStengthHigh("a5"));
+		
+		CourseDetail courseDetail5 = new CourseDetail(7);
+		courseDetail5.action_detail.add(getActionStengthHigh("a1"));
+		courseDetail5.action_detail.add(getActionStengthNormal("a2"));
+		courseDetail5.action_detail.add(getActionStengthLow("a3"));
+		
+		CourseDetail courseDetail6 = new CourseDetail(8);
+		courseDetail6.action_detail.add(getActionStengthHigh("a2"));
+		courseDetail6.action_detail.add(getActionStengthNormal("a3"));
+		courseDetail6.action_detail.add(getActionStengthLow("a4"));
+		
+		CourseDetail courseDetail7 = new CourseDetail(9);
+		courseDetail7.action_detail.add(getActionStengthNormal("a1"));
+		courseDetail7.action_detail.add(getActionStengthNormal("a2"));
+		courseDetail7.action_detail.add(getActionStengthLow("a3"));
+		courseDetail7.action_detail.add(getActionStengthLow("a5"));
+		
+		course1.course_detail.add(courseDetail1);
+		course1.course_detail.add(courseDetail2);
+		course1.course_detail.add(courseDetail3);
+		course1.course_detail.add(courseDetail4);
+		course1.course_detail.add(courseDetail5);
+		course1.course_detail.add(courseDetail6);
+		course1.course_detail.add(courseDetail7);
+		return course1;
+	}
+	
+	private ActionDetail getActionStengthHigh(String actionName) {
+		ActionDetail actionDetail1 = new ActionDetail(actionName, 4);
+		actionDetail1.group_detail.add(new GroupDetail(12, 10, 100, 60));
+		actionDetail1.group_detail.add(new GroupDetail(10, 15, 150, 50));
+		actionDetail1.group_detail.add(new GroupDetail(10, 15, 200, 50));
+		actionDetail1.group_detail.add(new GroupDetail(8, 20, 250, 40));
+		return actionDetail1;
+	}
+	
+	private ActionDetail getActionStengthNormal(String actionName) {
+		ActionDetail actionDetail1 = new ActionDetail(actionName, 4);
+		actionDetail1.group_detail.add(new GroupDetail(10, 10, 80, 50));
+		actionDetail1.group_detail.add(new GroupDetail(10, 10, 120, 50));
+		actionDetail1.group_detail.add(new GroupDetail(10, 10, 150, 50));
+		actionDetail1.group_detail.add(new GroupDetail(8, 15, 200, 40));
+		return actionDetail1;
+	}
+	
+	private ActionDetail getActionStengthLow(String actionName) {
+		ActionDetail actionDetail1 = new ActionDetail(actionName, 3);
+		actionDetail1.group_detail.add(new GroupDetail(10, 5, 70, 50));
+		actionDetail1.group_detail.add(new GroupDetail(8, 10, 130, 40));
+		actionDetail1.group_detail.add(new GroupDetail(8, 15, 180, 40));
+		return actionDetail1;
 	}
 	
 	private ArrayList<CourseInfo> getInitCourseInfo(){
@@ -138,7 +351,7 @@ public class DataIniter {
 		courseInfo3.courseQuality = CourseInfo.QUALITY_EXCELLENT;
 		courseInfoList.add(courseInfo3);
 		
-		// course3
+		// course4
 		CourseInfo courseInfo4 = new CourseInfo();
 		courseInfo4.courseId = "c4";
 		courseInfo4.isNew = true;

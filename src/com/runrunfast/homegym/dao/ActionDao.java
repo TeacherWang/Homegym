@@ -1,16 +1,16 @@
 package com.runrunfast.homegym.dao;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.runrunfast.homegym.bean.Action;
 import com.runrunfast.homegym.course.ActionInfo;
-import com.runrunfast.homegym.course.CourseInfo;
 import com.runrunfast.homegym.utils.Const;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ActionDao {
 	private volatile static ActionDao instance;
@@ -185,6 +185,125 @@ public class ActionDao {
 			}
 		}
 		return actionInfoList;
+	}
+	
+	// 
+	public String getActionTableSqlStr(){
+		String sql = "create table if not exists " + Const.TABLE_ACTION
+				+ " (" + Const.DB_KEY_ID + " INTEGER PRIMARY KEY,"
+				+ Const.DB_KEY_ACTION_ID + " TEXT,"
+				+ Const.DB_KEY_ACTION_NAME + " TEXT,"
+				+ Const.DB_KEY_ACTION_POSITION + " TEXT,"
+				+ Const.DB_KEY_ACTION_DESCRIPT + " TEXT,"
+				+ Const.DB_KEY_ACTION_DIFFICULT + " INTEGER"
+				+ ");";
+		return sql;
+	}
+	
+	public synchronized void saveActionToDb(Context context, Action action){
+		Cursor c = null;
+		SQLiteDatabase db = null;
+		try {
+			DBOpenHelper dbHelper = new DBOpenHelper(context);
+			db = dbHelper.getWritableDatabase();
+			ContentValues values = new ContentValues();
+			
+			values.put(Const.DB_KEY_ACTION_ID, action.action_id);
+			values.put(Const.DB_KEY_ACTION_NAME, action.action_name);
+			values.put(Const.DB_KEY_ACTION_POSITION, action.action_position);
+			values.put(Const.DB_KEY_ACTION_DESCRIPT, action.action_descript);
+			values.put(Const.DB_KEY_ACTION_DIFFICULT, action.action_difficult);
+			
+			c = db.query(Const.TABLE_ACTION, null, Const.DB_KEY_ACTION_ID + " = ?",
+					new String[] { action.action_id }, null, null, null);
+			if (c.getCount() > 0) {// 查询到数据库有该数据，就更新该行数据
+				db.update(Const.TABLE_ACTION, values, Const.DB_KEY_ACTION_ID + " = ?",
+						new String[] { action.action_id });
+			}else{
+				db.insert(Const.TABLE_ACTION, null, values);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally{
+			if(c != null){
+				c.close();
+			}
+			if(db != null){
+				db.close();
+			}
+		}
+	}
+	
+	public synchronized Action getActionFromDb(Context context, String actionId){
+		Action action = null;
+		SQLiteDatabase db = null;
+		Cursor c = null;
+		
+		try {
+			DBOpenHelper dbHelper = new DBOpenHelper(context);
+			db = dbHelper.getWritableDatabase();
+			
+			c = db.query(Const.TABLE_ACTION, null, Const.DB_KEY_ACTION_ID + "=?", new String[]{ actionId }, null, null, null);
+			if(null != c && c.getCount() > 0){
+				c.moveToNext();
+				
+				action = new Action();
+				
+				action.action_id = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_ID));
+				action.action_name = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_NAME));
+				action.action_position = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_POSITION));
+				action.action_descript = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_DESCRIPT));
+				action.action_difficult = c.getInt(c.getColumnIndex(Const.DB_KEY_ACTION_DIFFICULT));
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally{
+			if(c != null){
+				c.close();
+			}
+			if(db != null){
+				db.close();
+			}
+		}
+		
+		return action;
+	}
+	
+	public synchronized ArrayList<Action> getActionListFromDb(Context context) {
+		ArrayList<Action> actionList = new ArrayList<Action>();
+		SQLiteDatabase db = null;
+		Cursor c = null;
+		try {
+			DBOpenHelper dbHelper = new DBOpenHelper(context);
+			db = dbHelper.getWritableDatabase();
+			
+			c = db.query(Const.TABLE_ACTION, null, null, null, null, null, null);
+			if(null != c && c.getCount() > 0){
+				while (c.moveToNext()) {
+					Action action = new Action();
+					
+					action.action_id = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_ID));
+					action.action_name = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_NAME));
+					action.action_position = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_POSITION));
+					action.action_descript = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_DESCRIPT));
+					action.action_difficult = c.getInt(c.getColumnIndex(Const.DB_KEY_ACTION_DIFFICULT));
+					
+					actionList.add(action);
+				}
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally{
+			if(c != null){
+				c.close();
+			}
+			if(db != null){
+				db.close();
+			}
+		}
+		return actionList;
 	}
 	
 }

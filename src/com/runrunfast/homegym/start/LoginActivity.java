@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.account.AccountMgr;
 import com.runrunfast.homegym.account.AccountMgr.ILoginListener;
+import com.runrunfast.homegym.dao.CourseDao;
 import com.runrunfast.homegym.home.HomeActivity;
 
 public class LoginActivity extends Activity implements OnClickListener, TextWatcher{
@@ -44,6 +45,9 @@ public class LoginActivity extends Activity implements OnClickListener, TextWatc
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
+		
+		CourseDao.getInstance().getCourseListFromDb(this);
+		
 		initView();
 		initListener();
 	}

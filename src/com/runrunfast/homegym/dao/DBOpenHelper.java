@@ -17,20 +17,20 @@ public class DBOpenHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		String courseInfoTable = CourseDao.getCourseTableSql();
-		db.execSQL(courseInfoTable);
+		String courseTable = CourseDao.getInstance().getCourseTableSqlString();
+		db.execSQL(courseTable);
 		
-		String actionInfoTable = ActionDao.getActionTableSql();
-		db.execSQL(actionInfoTable);
-		
-		String myCourseTable = MyCourseDao.getCourseTableSql();
-		db.execSQL(myCourseTable);
-		
-		String myCourseActionTable = MyCourseActionDao.getMyCourseTableSql();
-		db.execSQL(myCourseActionTable);
-		
-		String myFinishTable = MyFinishDao.getFinishTableSql();
-		db.execSQL(myFinishTable);
+//		String actionInfoTable = ActionDao.getActionTableSql();
+//		db.execSQL(actionInfoTable);
+//		
+//		String myCourseTable = MyCourseDao.getCourseTableSql();
+//		db.execSQL(myCourseTable);
+//		
+//		String myCourseActionTable = MyCourseActionDao.getMyCourseTableSql();
+//		db.execSQL(myCourseActionTable);
+//		
+//		String myFinishTable = MyFinishDao.getFinishTableSql();
+//		db.execSQL(myFinishTable);
 		
 		//如果表不存在就创建表
 		String sql = "CREATE TABLE IF NOT EXISTS "

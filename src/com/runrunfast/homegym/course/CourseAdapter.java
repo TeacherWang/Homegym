@@ -12,6 +12,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.runrunfast.homegym.R;
+import com.runrunfast.homegym.bean.Course;
+import com.runrunfast.homegym.bean.MyCourse;
+import com.runrunfast.homegym.home.fragments.InvalidCourse;
 
 import java.util.ArrayList;
 
@@ -24,8 +27,7 @@ public class CourseAdapter extends BaseAdapter {
 	private static final int VIEW_TYPE_COUNT = 2;
 	
 	private LayoutInflater mInflater;
-	private Context mContext;
-	private ArrayList<CourseInfo> mCourseList;
+	private ArrayList<Course> mCourseList;
 	private ICourseAdapterListener mICourseAdapterListener;
 	private boolean mIsMyCourseEmpty;
 	
@@ -37,22 +39,21 @@ public class CourseAdapter extends BaseAdapter {
 		this.mICourseAdapterListener = iCourseAdapterListener;
 	}
 	
-	public CourseAdapter(Context context, ArrayList<CourseInfo> courseList, boolean isMyCourseEmpty){
-		this.mContext = context;
+	public CourseAdapter(Context context, ArrayList<Course> courseList, boolean isMyCourseEmpty){
 		setData(courseList);
 		this.mInflater = LayoutInflater.from(context);
 		this.mIsMyCourseEmpty = isMyCourseEmpty;
 	}
 	
-	private void setData(ArrayList<CourseInfo> courseList){
+	private void setData(ArrayList<Course> courseList){
 		if(courseList == null || courseList.size() <= 0){
-			this.mCourseList = new ArrayList<CourseInfo>();
+			this.mCourseList = new ArrayList<Course>();
 		}else{
 			this.mCourseList = courseList;
 		}
 	}
 	
-	public void updateData(ArrayList<CourseInfo> courseList, boolean isMyCourseEmpty){
+	public void updateData(ArrayList<Course> courseList, boolean isMyCourseEmpty){
 		this.mIsMyCourseEmpty = isMyCourseEmpty;
 		setData(courseList);
 		notifyDataSetChanged();
@@ -80,9 +81,14 @@ public class CourseAdapter extends BaseAdapter {
 	
 	@Override
 	public int getItemViewType(int position) {
-		CourseInfo courseInfo = mCourseList.get(position);
-		if(courseInfo.isRecommendDescript){
-			return LIST_SHOW_RECOMMEND_DESCRIPT;
+		Course course = mCourseList.get(position);
+		if(course instanceof InvalidCourse){
+			InvalidCourse invalidCourse = (InvalidCourse) course;
+			if(invalidCourse.courseType == InvalidCourse.COURSE_TYPE_SHOW_RECOMMED_TEXT){
+				return LIST_SHOW_RECOMMEND_DESCRIPT;
+			}else{
+				return LIST_SHOW_COURSE;
+			}
 		}else{
 			return LIST_SHOW_COURSE;
 		}
@@ -140,18 +146,19 @@ public class CourseAdapter extends BaseAdapter {
 			return convertView;
 		}
 		
-		CourseInfo courseInfo = mCourseList.get(position);
-		if(courseInfo.isMyCourse){
-			handleMyCourse(viewHolder, courseInfo);
+		Course course = mCourseList.get(position);
+		if(course instanceof MyCourse){
+			MyCourse myCourse = (MyCourse) course;
+			handleMyCourse(viewHolder, myCourse);
 		}else{
-			handleCourse(viewHolder, courseInfo);
+			handleCourse(viewHolder, course);
 		}
 		
 		return convertView;
 	}
 
-	private void handleCourse(ViewHolder viewHolder, CourseInfo courseInfo) {
-		if(courseInfo.isNew){
+	private void handleCourse(ViewHolder viewHolder, Course course) {
+		if(course.course_new == Course.NEW_COURSE){
 			viewHolder.courseNewImg.setVisibility(View.VISIBLE);
 		}else{
 			viewHolder.courseNewImg.setVisibility(View.INVISIBLE);
@@ -160,8 +167,8 @@ public class CourseAdapter extends BaseAdapter {
 		viewHolder.tvCourseName.setVisibility(View.VISIBLE);
 		viewHolder.courseProgressImg.setVisibility(View.INVISIBLE);
 		viewHolder.tvProgress.setVisibility(View.INVISIBLE);
-		viewHolder.tvCourseName.setText(courseInfo.courseName);
-		if(courseInfo.courseQuality == CourseInfo.QUALITY_EXCELLENT){
+		viewHolder.tvCourseName.setText(course.course_name);
+		if(course.course_quality == Course.QUALITY_EXCELLENT){
 			viewHolder.tvCourseQuality.setVisibility(View.VISIBLE);
 		}else{
 			viewHolder.tvCourseQuality.setVisibility(View.INVISIBLE);
@@ -172,7 +179,7 @@ public class CourseAdapter extends BaseAdapter {
 	 * @param viewHolder
 	 * @param courseInfo
 	 */
-	private void handleMyCourse(ViewHolder viewHolder, CourseInfo courseInfo) {
+	private void handleMyCourse(ViewHolder viewHolder, MyCourse myCourse) {
 		if(mIsMyCourseEmpty){
 			Log.d(TAG, "handleMyCourse empty");
 			viewHolder.btnAdd.setVisibility(View.VISIBLE);
@@ -201,10 +208,10 @@ public class CourseAdapter extends BaseAdapter {
 		viewHolder.courseNewImg.setVisibility(View.INVISIBLE);
 		viewHolder.tvEmptyDescript.setVisibility(View.INVISIBLE);
 		viewHolder.tvCourseName.setVisibility(View.VISIBLE);
-		viewHolder.tvCourseName.setText(courseInfo.courseName);
+		viewHolder.tvCourseName.setText(myCourse.course_name);
 		viewHolder.tvProgress.setVisibility(View.VISIBLE);
-		setCourseProgress(viewHolder, courseInfo.courseProgress);
-		if(courseInfo.courseQuality == CourseInfo.QUALITY_EXCELLENT){
+		setCourseProgress(viewHolder, myCourse.progress);
+		if(myCourse.course_quality == Course.QUALITY_EXCELLENT){
 			viewHolder.tvCourseQuality.setVisibility(View.VISIBLE);
 		}else{
 			viewHolder.tvCourseQuality.setVisibility(View.INVISIBLE);

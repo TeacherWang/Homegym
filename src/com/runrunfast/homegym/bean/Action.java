@@ -1,9 +1,9 @@
 package com.runrunfast.homegym.bean;
 
 public class Action {
-	public String actionId; // 训练动作id
-	public String actionName;
-	public String trainPosition; // 锻炼的部位
-	public String trainDescript; // 简单描述
-	public int diffcultLevel; // 难度等级
+	public String action_id; // 训练动作id
+	public String action_name;
+	public String action_position; // 锻炼的部位
+	public String action_descript; // 简单描述
+	public int action_difficult; // 难度等级
 }

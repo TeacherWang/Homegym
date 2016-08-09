@@ -1,8 +1,27 @@
 package com.runrunfast.homegym.bean;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MyCourse extends Course {
+	// 课程的进度
+	public static final int COURSE_PROGRESS_ING = 0; // 进行中
+	public static final int COURSE_PROGRESS_REST = 1; // 休息日
+	public static final int COURSE_PROGRESS_FINISH = 2; // 已完成
+	public static final int COURSE_PROGRESS_EXPIRED = 3; // 已过期
+	
+	// 每天的完成情况
+	public static final int DAY_PROGRESS_UNFINISH = 0; // 未完成
+	public static final int DAY_PROGRESS_FINISH = 1; // 已完成
+	
 	public String uid;
-	public String course_id;
 	public int progress;
-	public String startDate;
+	public String start_date;
+	public List<DayProgress> day_progress = new ArrayList<MyCourse.DayProgress>();
+	
+	public static class DayProgress{
+		public String plan_date;
+		public int progress;
+	}
+	
 }

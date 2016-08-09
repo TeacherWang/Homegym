@@ -1,8 +1,5 @@
 package com.runrunfast.homegym.course;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,11 +16,20 @@ import android.widget.Toast;
 import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.account.AccountMgr;
 import com.runrunfast.homegym.account.UserInfo;
+import com.runrunfast.homegym.bean.Action;
+import com.runrunfast.homegym.bean.Course.ActionDetail;
+import com.runrunfast.homegym.bean.Course.ActionId;
+import com.runrunfast.homegym.bean.Course.CourseDetail;
+import com.runrunfast.homegym.bean.Course.GroupDetail;
+import com.runrunfast.homegym.bean.MyCourse;
 import com.runrunfast.homegym.dao.ActionDao;
 import com.runrunfast.homegym.dao.MyCourseActionDao;
 import com.runrunfast.homegym.utils.Const;
 import com.runrunfast.homegym.utils.DateUtil;
 import com.runrunfast.homegym.utils.Globle;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CourseTrainActivity extends Activity implements OnClickListener{
 	
@@ -33,12 +39,12 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 	
 	private CourseTrainAdapter mCourseTrainAdapter;
 	private ListView mCourseTrainListView;
-	private ArrayList<ActionInfo> mCourseActionInfoList;
+	private ArrayList<Action> mActionList;
 	
 	private String mCourseId;
-	private String mCourseName;
-	private List<String> mActionIdList;
-	private CourseInfo mMyCourseInfo;
+	private List<ActionId> mActionIdList;
+	private ArrayList<ActionTotalData> mActionTotalDataList;
+	private MyCourse mMyCourse;
 	private UserInfo mUserInfo;
 	
 	@Override
@@ -67,7 +73,7 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 	}
 	
 	private void jumpToTrainActionSetActivity(int position) {
-		ActionInfo actionInfo = mCourseActionInfoList.get(position);
+		Action actionInfo = mActionList.get(position);
 		String actionId = actionInfo.strActionId;
 		String actionName = actionInfo.actionName;
 		int actionNum = position + 1;
@@ -85,23 +91,24 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 	private void initData() {
 		mUserInfo = AccountMgr.getInstance().mUserInfo;
 		
-		mCourseActionInfoList = new ArrayList<ActionInfo>();
+		mActionList = new ArrayList<Action>();
+		mActionTotalDataList = new ArrayList<ActionTotalData>();
 		
-		mMyCourseInfo = (CourseInfo) getIntent().getSerializableExtra(Const.KEY_COURSE_INFO);
+		mMyCourse = (MyCourse) getIntent().getSerializableExtra(Const.KEY_COURSE_INFO);
 		
-		mCourseId = mMyCourseInfo.courseId;
-		tvTitle.setText(mMyCourseInfo.courseName);
+		mCourseId = mMyCourse.course_id;
+		tvTitle.setText(mMyCourse.course_name);
 		
-		mActionIdList = mMyCourseInfo.actionIds;
+		mActionIdList = mMyCourse.action_ids;
 		int actionIdSize = mActionIdList.size();
 		for(int i=0; i<actionIdSize; i++){
-			ActionInfo actionInfo = MyCourseActionDao.getInstance().getMyCourseActionInfo(Globle.gApplicationContext, mUserInfo.strAccountId, mCourseId, mActionIdList.get(i).trim());
-			ActionInfo baseActionInfo = ActionDao.getInstance().getActionInfoFromDb(Globle.gApplicationContext, mActionIdList.get(i).trim());
-			actionInfo.actionName = baseActionInfo.actionName;
-			actionInfo.strTrainPosition = baseActionInfo.strTrainPosition;
-			actionInfo.strTrainDescript = baseActionInfo.strTrainDescript;
-			actionInfo.iDiffcultLevel = baseActionInfo.iDiffcultLevel;
-			mCourseActionInfoList.add(actionInfo);
+			String actionId = mActionIdList.get(i).action_id;
+			Action action = ActionDao.getInstance().getActionFromDb(Globle.gApplicationContext, actionId);
+			mActionList.add(action);
+			
+			// 计算该动作在该课程中的总时间和总kcal
+			ActionTotalData actionTotalData = getTotalTimeOfActionInMyCourse(actionId);
+			mActionTotalDataList.add(actionTotalData);
 		}
 		
 //		CourseTrainInfo courseTrainInfo1 = new CourseTrainInfo();
@@ -117,10 +124,39 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 //		courseTrainInfo1.iDiffcultLevel = 1;
 //		mCourseActionInfoList.add(courseTrainInfo1);
 		
-		mCourseTrainAdapter = new CourseTrainAdapter(this, mCourseActionInfoList);
+		mCourseTrainAdapter = new CourseTrainAdapter(this, mActionList, mActionTotalDataList);
 		mCourseTrainListView.setAdapter(mCourseTrainAdapter);
 	}
+	
+	private ActionTotalData getTotalTimeOfActionInMyCourse(String actionId){
+		ActionTotalData actionTotalData = new ActionTotalData();
+		int time = 0;
+		int courseDetailNum = mMyCourse.course_detail.size();
+		for(int i=0; i<courseDetailNum; i++){
+			CourseDetail courseDetail = mMyCourse.course_detail.get(i);
+			int actionDetailNum = courseDetail.action_detail.size();
+			for(int j=0; j<actionDetailNum; j++){
+				ActionDetail actionDetail = courseDetail.action_detail.get(j);
+				if( !actionDetail.action_id.equals(actionId) ){
+					continue;
+				}
+				
+				int groupNum = actionDetail.group_detail.size();
+				for(int k=0; k<groupNum; k++){
+					GroupDetail groupDetail = actionDetail.group_detail.get(k);
+					actionTotalData.totalTime = actionTotalData.totalTime + groupDetail.time;
+					actionTotalData.totalKcal = actionTotalData.totalKcal + groupDetail.kcal;
+				}
+			}
+		}
+		
+		return actionTotalData;
+	}
 
+	public static class ActionTotalData{
+		int totalTime;
+		int totalKcal;
+	}
 
 	private void initView() {
 		tvTitle = (TextView)findViewById(R.id.actionbar_title);
