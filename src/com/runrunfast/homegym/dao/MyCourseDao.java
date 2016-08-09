@@ -11,7 +11,7 @@ import com.runrunfast.homegym.account.AccountMgr;
 import com.runrunfast.homegym.bean.Course;
 import com.runrunfast.homegym.bean.MyCourse;
 import com.runrunfast.homegym.bean.Course.ActionId;
-import com.runrunfast.homegym.bean.Course.CourseDetail;
+import com.runrunfast.homegym.bean.Course.CourseDateDistribution;
 import com.runrunfast.homegym.bean.MyCourse.DayProgress;
 import com.runrunfast.homegym.course.CourseInfo;
 import com.runrunfast.homegym.utils.Const;
@@ -258,7 +258,7 @@ public class MyCourseDao {
 			if(null != c && c.getCount() > 0){
 				Gson gson = new Gson();
 				Type typeActionIds = new TypeToken<Collection<ActionId>>(){}.getType();
-				Type typeCourseDetail = new TypeToken<Collection<CourseDetail>>(){}.getType();
+				Type typeCourseDetail = new TypeToken<Collection<CourseDateDistribution>>(){}.getType();
 				Type typeDayProgress = new TypeToken<Collection<DayProgress>>(){}.getType();
 				while (c.moveToNext()) {
 					MyCourse myCourse = new MyCourse();
@@ -310,7 +310,7 @@ public class MyCourseDao {
 			if(null != c && c.getCount() > 0){
 				Gson gson = new Gson();
 				Type typeActionIds = new TypeToken<Collection<ActionId>>(){}.getType();
-				Type typeCourseDetail = new TypeToken<Collection<CourseDetail>>(){}.getType();
+				Type typeCourseDetail = new TypeToken<Collection<CourseDateDistribution>>(){}.getType();
 				Type typeDayProgress = new TypeToken<Collection<DayProgress>>(){}.getType();
 				
 				c.moveToNext();

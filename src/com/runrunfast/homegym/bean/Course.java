@@ -18,8 +18,8 @@ public class Course implements Serializable{
 	public int course_quality;
 	public int course_new;
 	public int course_recommend; // 1为推荐课程,0为普通课程
-	public List<ActionId> action_ids = new ArrayList<ActionId>();
-	public List<CourseDetail> course_detail = new ArrayList<Course.CourseDetail>();
+	public List<ActionDetail> course_actions = new ArrayList<ActionDetail>();
+	public List<CourseDateDistribution> course_date_distribution = new ArrayList<CourseDateDistribution>();
 	
 	public static class ActionId{
 		public String action_id;
@@ -29,16 +29,16 @@ public class Course implements Serializable{
 		}
 	}
 	
-	public static class CourseDetail{
+	public static class CourseDateDistribution{
 		public int day_num;
-		public List<ActionDetail> action_detail = new ArrayList<Course.ActionDetail>();
+		public List<String> action_ids = new ArrayList<String>();
 		
-		public CourseDetail(int dayNum, ArrayList<ActionDetail> action_detail){
+		public CourseDateDistribution(int dayNum, ArrayList<String> action_ids){
 			this.day_num = dayNum;
-			this.action_detail = action_detail;
+			this.action_ids = action_ids;
 		}
 		
-		public CourseDetail(int dayNum){
+		public CourseDateDistribution(int dayNum){
 			this.day_num = dayNum;
 		}
 	}

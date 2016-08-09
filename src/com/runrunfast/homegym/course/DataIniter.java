@@ -7,7 +7,7 @@ import android.os.HandlerThread;
 import com.runrunfast.homegym.bean.Course;
 import com.runrunfast.homegym.bean.Course.ActionDetail;
 import com.runrunfast.homegym.bean.Course.ActionId;
-import com.runrunfast.homegym.bean.Course.CourseDetail;
+import com.runrunfast.homegym.bean.Course.CourseDateDistribution;
 import com.runrunfast.homegym.bean.Course.GroupDetail;
 import com.runrunfast.homegym.dao.CourseDao;
 import com.runrunfast.homegym.utils.Globle;
@@ -105,20 +105,20 @@ public class DataIniter {
 		course1.action_ids.add(new ActionId("a3"));
 		
 		// 日期分布
-		CourseDetail courseDetail1 = new CourseDetail(1);
+		CourseDateDistribution courseDetail1 = new CourseDateDistribution(1);
 		courseDetail1.action_detail.add(getActionStengthHigh("a1"));
 		courseDetail1.action_detail.add(getActionStengthHigh("a2"));
 		courseDetail1.action_detail.add(getActionStengthHigh("a3"));
 		
-		CourseDetail courseDetail2 = new CourseDetail(2);
+		CourseDateDistribution courseDetail2 = new CourseDateDistribution(2);
 		courseDetail2.action_detail.add(getActionStengthNormal("a1"));
 		courseDetail2.action_detail.add(getActionStengthHigh("a2"));
 		
-		CourseDetail courseDetail3 = new CourseDetail(4);
+		CourseDateDistribution courseDetail3 = new CourseDateDistribution(4);
 		courseDetail3.action_detail.add(getActionStengthNormal("a1"));
 		courseDetail3.action_detail.add(getActionStengthLow("a3"));
 		
-		CourseDetail courseDetail4 = new CourseDetail(5);
+		CourseDateDistribution courseDetail4 = new CourseDateDistribution(5);
 		courseDetail4.action_detail.add(getActionStengthHigh("a2"));
 		courseDetail4.action_detail.add(getActionStengthHigh("a3"));
 		
@@ -141,14 +141,14 @@ public class DataIniter {
 		course1.action_ids.add(new ActionId("a2"));
 		
 		// 日期分布
-		CourseDetail courseDetail1 = new CourseDetail(1);
+		CourseDateDistribution courseDetail1 = new CourseDateDistribution(1);
 		courseDetail1.action_detail.add(getActionStengthHigh("a1"));
 		courseDetail1.action_detail.add(getActionStengthHigh("a2"));
 		
-		CourseDetail courseDetail2 = new CourseDetail(2);
+		CourseDateDistribution courseDetail2 = new CourseDateDistribution(2);
 		courseDetail2.action_detail.add(getActionStengthNormal("a1"));
 		
-		CourseDetail courseDetail3 = new CourseDetail(3);
+		CourseDateDistribution courseDetail3 = new CourseDateDistribution(3);
 		courseDetail3.action_detail.add(getActionStengthNormal("a2"));
 		
 		course1.course_detail.add(courseDetail1);
@@ -169,20 +169,20 @@ public class DataIniter {
 		course1.action_ids.add(new ActionId("a2"));
 		course1.action_ids.add(new ActionId("a4"));
 		// 日期分布
-		CourseDetail courseDetail1 = new CourseDetail(1);
+		CourseDateDistribution courseDetail1 = new CourseDateDistribution(1);
 		courseDetail1.action_detail.add(getActionStengthHigh("a1"));
 		courseDetail1.action_detail.add(getActionStengthHigh("a2"));
 		courseDetail1.action_detail.add(getActionStengthHigh("a4"));
 		
-		CourseDetail courseDetail2 = new CourseDetail(2);
+		CourseDateDistribution courseDetail2 = new CourseDateDistribution(2);
 		courseDetail2.action_detail.add(getActionStengthNormal("a1"));
 		courseDetail2.action_detail.add(getActionStengthHigh("a2"));
 		
-		CourseDetail courseDetail3 = new CourseDetail(3);
+		CourseDateDistribution courseDetail3 = new CourseDateDistribution(3);
 		courseDetail3.action_detail.add(getActionStengthNormal("a1"));
 		courseDetail3.action_detail.add(getActionStengthLow("a4"));
 		
-		CourseDetail courseDetail4 = new CourseDetail(4);
+		CourseDateDistribution courseDetail4 = new CourseDateDistribution(4);
 		courseDetail4.action_detail.add(getActionStengthHigh("a2"));
 		courseDetail4.action_detail.add(getActionStengthHigh("a4"));
 		
@@ -208,39 +208,39 @@ public class DataIniter {
 		course1.action_ids.add(new ActionId("a5"));
 		
 		// 日期分布
-		CourseDetail courseDetail1 = new CourseDetail(1);
+		CourseDateDistribution courseDetail1 = new CourseDateDistribution(1);
 		courseDetail1.action_detail.add(getActionStengthHigh("a1"));
 		courseDetail1.action_detail.add(getActionStengthHigh("a2"));
 		courseDetail1.action_detail.add(getActionStengthHigh("a4"));
 		courseDetail1.action_detail.add(getActionStengthLow("a5"));
 		
-		CourseDetail courseDetail2 = new CourseDetail(2);
+		CourseDateDistribution courseDetail2 = new CourseDateDistribution(2);
 		courseDetail2.action_detail.add(getActionStengthNormal("a1"));
 		courseDetail2.action_detail.add(getActionStengthLow("a2"));
 		courseDetail2.action_detail.add(getActionStengthLow("a3"));
 		courseDetail2.action_detail.add(getActionStengthHigh("a4"));
 		
-		CourseDetail courseDetail3 = new CourseDetail(4);
+		CourseDateDistribution courseDetail3 = new CourseDateDistribution(4);
 		courseDetail3.action_detail.add(getActionStengthHigh("a1"));
 		courseDetail3.action_detail.add(getActionStengthNormal("a4"));
 		courseDetail3.action_detail.add(getActionStengthNormal("a5"));
 		
-		CourseDetail courseDetail4 = new CourseDetail(5);
+		CourseDateDistribution courseDetail4 = new CourseDateDistribution(5);
 		courseDetail4.action_detail.add(getActionStengthLow("a2"));
 		courseDetail4.action_detail.add(getActionStengthNormal("a4"));
 		courseDetail4.action_detail.add(getActionStengthHigh("a5"));
 		
-		CourseDetail courseDetail5 = new CourseDetail(7);
+		CourseDateDistribution courseDetail5 = new CourseDateDistribution(7);
 		courseDetail5.action_detail.add(getActionStengthHigh("a1"));
 		courseDetail5.action_detail.add(getActionStengthNormal("a2"));
 		courseDetail5.action_detail.add(getActionStengthLow("a3"));
 		
-		CourseDetail courseDetail6 = new CourseDetail(8);
+		CourseDateDistribution courseDetail6 = new CourseDateDistribution(8);
 		courseDetail6.action_detail.add(getActionStengthHigh("a2"));
 		courseDetail6.action_detail.add(getActionStengthNormal("a3"));
 		courseDetail6.action_detail.add(getActionStengthLow("a4"));
 		
-		CourseDetail courseDetail7 = new CourseDetail(9);
+		CourseDateDistribution courseDetail7 = new CourseDateDistribution(9);
 		courseDetail7.action_detail.add(getActionStengthNormal("a1"));
 		courseDetail7.action_detail.add(getActionStengthNormal("a2"));
 		courseDetail7.action_detail.add(getActionStengthLow("a3"));

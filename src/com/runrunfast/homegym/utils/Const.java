@@ -32,6 +32,8 @@ public class Const {
 	public static final String DB_KEY_ID = "_id";
 	public static final String DB_KEY_COURSE_ID = "course_id";
 	public static final String DB_KEY_COURSE_NAME = "course_name";
+	public static final String DB_KEY_COURSE_ACTIONS = "course_actions";
+	public static final String DB_KEY_COURSE_DATE_DISTRIBUTION = "course_date_distribution";
 	public static final String DB_KEY_ACTION_IDS = "action_ids";
 	public static final String DB_KEY_DATE_NUM = "date_num";
 	public static final String DB_KEY_DATE_ACTION_IDS = "date_action_ids";

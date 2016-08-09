@@ -9,7 +9,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.runrunfast.homegym.bean.Course;
 import com.runrunfast.homegym.bean.Course.ActionId;
-import com.runrunfast.homegym.bean.Course.CourseDetail;
+import com.runrunfast.homegym.bean.Course.CourseDateDistribution;
 import com.runrunfast.homegym.course.CourseInfo;
 import com.runrunfast.homegym.utils.Const;
 
@@ -299,7 +299,7 @@ public class CourseDao {
 			if(null != c && c.getCount() > 0){
 				Gson gson = new Gson();
 				Type typeActionIds = new TypeToken<Collection<ActionId>>(){}.getType();
-				Type typeCourseDetail = new TypeToken<Collection<CourseDetail>>(){}.getType();
+				Type typeCourseDetail = new TypeToken<Collection<CourseDateDistribution>>(){}.getType();
 				while (c.moveToNext()) {
 					Course course = new Course();
 					
@@ -344,7 +344,7 @@ public class CourseDao {
 			if(null != c && c.getCount() > 0){
 				Gson gson = new Gson();
 				Type typeActionIds = new TypeToken<Collection<ActionId>>(){}.getType();
-				Type typeCourseDetail = new TypeToken<Collection<CourseDetail>>(){}.getType();
+				Type typeCourseDetail = new TypeToken<Collection<CourseDateDistribution>>(){}.getType();
 				while (c.moveToNext()) {
 					Course course = new Course();
 					
@@ -389,7 +389,7 @@ public class CourseDao {
 			if(null != c && c.getCount() > 0){
 				Gson gson = new Gson();
 				Type typeActionIds = new TypeToken<Collection<ActionId>>(){}.getType();
-				Type typeCourseDetail = new TypeToken<Collection<CourseDetail>>(){}.getType();
+				Type typeCourseDetail = new TypeToken<Collection<CourseDateDistribution>>(){}.getType();
 				
 				c.moveToNext();
 				

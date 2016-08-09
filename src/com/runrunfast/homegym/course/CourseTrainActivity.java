@@ -19,7 +19,7 @@ import com.runrunfast.homegym.account.UserInfo;
 import com.runrunfast.homegym.bean.Action;
 import com.runrunfast.homegym.bean.Course.ActionDetail;
 import com.runrunfast.homegym.bean.Course.ActionId;
-import com.runrunfast.homegym.bean.Course.CourseDetail;
+import com.runrunfast.homegym.bean.Course.CourseDateDistribution;
 import com.runrunfast.homegym.bean.Course.GroupDetail;
 import com.runrunfast.homegym.bean.MyCourse;
 import com.runrunfast.homegym.dao.ActionDao;
@@ -133,7 +133,7 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 		int time = 0;
 		int courseDetailNum = mMyCourse.course_detail.size();
 		for(int i=0; i<courseDetailNum; i++){
-			CourseDetail courseDetail = mMyCourse.course_detail.get(i);
+			CourseDateDistribution courseDetail = mMyCourse.course_detail.get(i);
 			int actionDetailNum = courseDetail.action_detail.size();
 			for(int j=0; j<actionDetailNum; j++){
 				ActionDetail actionDetail = courseDetail.action_detail.get(j);
