@@ -10,41 +10,51 @@ import android.widget.TextView;
 
 import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.account.DataTransferUtil;
+import com.runrunfast.homegym.bean.Action;
+import com.runrunfast.homegym.bean.Course.ActionDetail;
+import com.runrunfast.homegym.bean.Course.GroupDetail;
 
 import java.util.ArrayList;
 
 public class CurrentDayTrainAdapter extends BaseAdapter {
-	private ArrayList<ActionInfo> mCurrentDayActionInfoList;
+	private ArrayList<ActionDetail> mCurrentDayActionDetailList;
+	private ArrayList<Action> mActionList;
 	private LayoutInflater mInflater;
 	private Context mContext;
 	
-	public CurrentDayTrainAdapter(Context context, ArrayList<ActionInfo> currentDayActionInfos){
+	public CurrentDayTrainAdapter(Context context, ArrayList<ActionDetail> currentDayActionDetails, ArrayList<Action> actions){
 		this.mContext = context;
-		setData(currentDayActionInfos);
+		setData(currentDayActionDetails, actions);
 		this.mInflater = LayoutInflater.from(context);
 	}
 	
-	private void setData(ArrayList<ActionInfo> currentDayActionInfos){
+	private void setData(ArrayList<ActionDetail> currentDayActionInfos, ArrayList<Action> actions){
 		if(currentDayActionInfos == null){
-			this.mCurrentDayActionInfoList = new ArrayList<ActionInfo>();
+			this.mCurrentDayActionDetailList = new ArrayList<ActionDetail>();
 		}else{
-			mCurrentDayActionInfoList = currentDayActionInfos;
+			mCurrentDayActionDetailList = currentDayActionInfos;
+		}
+		
+		if(actions == null){
+			mActionList = new ArrayList<Action>();
+		}else{
+			mActionList = actions;
 		}
 	}
 	
-	public void updateData(ArrayList<ActionInfo> currentDayActionInfos){
-		setData(currentDayActionInfos);
+	public void updateData(ArrayList<ActionDetail> currentDayActionInfos, ArrayList<Action> actions){
+		setData(currentDayActionInfos, actions);
 		notifyDataSetChanged();
 	}
 	
 	@Override
 	public int getCount() {
-		return mCurrentDayActionInfoList.size();
+		return mCurrentDayActionDetailList.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
-		return mCurrentDayActionInfoList.get(position);
+		return mCurrentDayActionDetailList.get(position);
 	}
 
 	@Override
@@ -72,26 +82,27 @@ public class CurrentDayTrainAdapter extends BaseAdapter {
 			holder = (ViewHolder)convertView.getTag();
 		}
 		
-		ActionInfo actionInfo = mCurrentDayActionInfoList.get(position);
-		holder.tvTrainName.setText(actionInfo.actionName);
-		holder.tvGroupNum.setText("共" + actionInfo.defaultGroupNum + "组");
-		int count = actionInfo.defaultCountList.size();
+		ActionDetail actionDetail = mCurrentDayActionDetailList.get(position);
+		Action action = mActionList.get(position);
+		holder.tvTrainName.setText(action.action_name);
+		holder.tvGroupNum.setText("共" + actionDetail.group_num + "组");
 		int totalCount = 0;
-		for(int i=0; i<count; i++){
-			totalCount = totalCount + Integer.parseInt(actionInfo.defaultCountList.get(i).trim());
+		for(int i=0; i<actionDetail.group_num; i++){
+			GroupDetail groupDetail = actionDetail.group_detail.get(i);
+			totalCount = totalCount + groupDetail.count;
 		}
 		holder.tvCountNum.setText(totalCount + mContext.getResources().getString(R.string.count));
 		holder.tvActionNum.setText( "动作" + (String)DataTransferUtil.numMap.get(position + 1));
 		
-		if(actionInfo.iDiffcultLevel == 1){
+		if(action.action_difficult == 1){
 			holder.ivDifficultLevel1.setBackgroundResource(R.drawable.icon_level_black);
 			holder.ivDifficultLevel2.setBackgroundResource(R.drawable.icon_level_while);
 			holder.ivDifficultLevel3.setBackgroundResource(R.drawable.icon_level_while);
-		}else if(actionInfo.iDiffcultLevel == 2){
+		}else if(action.action_difficult == 2){
 			holder.ivDifficultLevel1.setBackgroundResource(R.drawable.icon_level_black);
 			holder.ivDifficultLevel2.setBackgroundResource(R.drawable.icon_level_black);
 			holder.ivDifficultLevel3.setBackgroundResource(R.drawable.icon_level_while);
-		}else if(actionInfo.iDiffcultLevel == 3){
+		}else{
 			holder.ivDifficultLevel1.setBackgroundResource(R.drawable.icon_level_black);
 			holder.ivDifficultLevel2.setBackgroundResource(R.drawable.icon_level_black);
 			holder.ivDifficultLevel3.setBackgroundResource(R.drawable.icon_level_black);

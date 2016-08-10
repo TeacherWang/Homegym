@@ -1,5 +1,8 @@
 package com.runrunfast.homegym.bean;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,35 +21,35 @@ public class Course implements Serializable{
 	public int course_quality;
 	public int course_new;
 	public int course_recommend; // 1为推荐课程,0为普通课程
-	public List<ActionDetail> course_actions = new ArrayList<ActionDetail>();
-	public List<CourseDateDistribution> course_date_distribution = new ArrayList<CourseDateDistribution>();
+//	public List<ActionId> action_ids = new ArrayList<ActionId>();
+	public List<CourseDetail> course_detail = new ArrayList<Course.CourseDetail>();
 	
-	public static class ActionId{
-		public String action_id;
-		
-		public ActionId(String action_id){
-			this.action_id = action_id;
-		}
-	}
+//	public static class ActionId{
+//		public String action_id;
+//		
+//		public ActionId(String action_id){
+//			this.action_id = action_id;
+//		}
+//	}
 	
-	public static class CourseDateDistribution{
+	public static class CourseDetail implements Serializable{
 		public int day_num;
-		public List<String> action_ids = new ArrayList<String>();
+		public List<ActionDetail> action_detail = new ArrayList<Course.ActionDetail>();
 		
-		public CourseDateDistribution(int dayNum, ArrayList<String> action_ids){
+		public CourseDetail(int dayNum, ArrayList<ActionDetail> action_detail){
 			this.day_num = dayNum;
-			this.action_ids = action_ids;
+			this.action_detail = action_detail;
 		}
 		
-		public CourseDateDistribution(int dayNum){
+		public CourseDetail(int dayNum){
 			this.day_num = dayNum;
 		}
 	}
 	
-	public static class ActionDetail{
+	public static class ActionDetail implements Serializable{
 		public String action_id;
 		public int group_num;
-		public List<GroupDetail> group_detail = new ArrayList<Course.GroupDetail>();
+		public List<GroupDetail> group_detail = new ArrayList<GroupDetail>();
 		
 		public ActionDetail(String action_id, int group_num, ArrayList<Course.GroupDetail> group_detail){
 			this.action_id = action_id;
@@ -58,9 +61,10 @@ public class Course implements Serializable{
 			this.action_id = action_id;
 			this.group_num = group_num;
 		}
+
 	}
 	
-	public static class GroupDetail{
+	public static class GroupDetail implements Serializable{
 		public int count;
 		public int weight;
 		public int kcal;

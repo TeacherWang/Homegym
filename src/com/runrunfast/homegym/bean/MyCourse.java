@@ -1,5 +1,6 @@
 package com.runrunfast.homegym.bean;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,9 +18,9 @@ public class MyCourse extends Course {
 	public String uid;
 	public int progress;
 	public String start_date;
-	public List<DayProgress> day_progress = new ArrayList<MyCourse.DayProgress>();
+	public List<DayProgress> day_progress = new ArrayList<DayProgress>();
 	
-	public static class DayProgress{
+	public static class DayProgress implements Serializable{
 		public String plan_date;
 		public int progress;
 	}

@@ -64,14 +64,14 @@ public class MyTrainingFragment extends Fragment{
 			mMyCourseList.add(new InvalidCourse(InvalidCourse.COURSE_TYPE_SHOW_RECOMMED_TEXT));
 			
 			mMyCourseList.addAll(mRecommedList);
-			mMyCourseAdapter.updateData(mMyCourseList, false);
+			mMyCourseAdapter.updateData(mMyCourseList);
 		}else{
 			mMyCourseList.add(new InvalidCourse(InvalidCourse.COURSE_TYPE_EMPTY));
 			
 			mMyCourseList.add(new InvalidCourse(InvalidCourse.COURSE_TYPE_SHOW_RECOMMED_TEXT));
 			
 			mMyCourseList.addAll(mRecommedList);
-			mMyCourseAdapter.updateData(mMyCourseList, true);
+			mMyCourseAdapter.updateData(mMyCourseList);
 		}
 	}
 
@@ -92,7 +92,7 @@ public class MyTrainingFragment extends Fragment{
 				}else{
 					intent = new Intent(getActivity(), DetailPlanActivity.class);
 				}
-				intent.putExtra(Const.KEY_COURSE_INFO, course);
+				intent.putExtra(Const.KEY_COURSE, course);
 				startActivity(intent);
 			}
 		});
@@ -113,10 +113,10 @@ public class MyTrainingFragment extends Fragment{
 		
 		if(mMyCourseList.size() == 0){
 			mMyCourseList.add(new InvalidCourse(InvalidCourse.COURSE_TYPE_EMPTY));
-			mMyCourseAdapter = new CourseAdapter(getActivity(), mMyCourseList, true);
+			mMyCourseAdapter = new CourseAdapter(getActivity(), mMyCourseList);
 			mMyCourseListView.setAdapter(mMyCourseAdapter);
 		}else{
-			mMyCourseAdapter = new CourseAdapter(getActivity(), mMyCourseList, false);
+			mMyCourseAdapter = new CourseAdapter(getActivity(), mMyCourseList);
 			mMyCourseListView.setAdapter(mMyCourseAdapter);
 		}
 		

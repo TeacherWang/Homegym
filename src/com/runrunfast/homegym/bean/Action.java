@@ -1,6 +1,8 @@
 package com.runrunfast.homegym.bean;
 
-public class Action {
+import java.io.Serializable;
+
+public class Action implements Serializable{
 	public String action_id; // 训练动作id
 	public String action_name;
 	public String action_position; // 锻炼的部位

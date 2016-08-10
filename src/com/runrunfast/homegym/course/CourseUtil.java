@@ -1,9 +1,10 @@
 package com.runrunfast.homegym.course;
 
+import com.runrunfast.homegym.bean.Course.CourseDetail;
+import com.runrunfast.homegym.utils.DateUtil;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import com.runrunfast.homegym.utils.DateUtil;
 
 public class CourseUtil {
 	/**
@@ -13,11 +14,12 @@ public class CourseUtil {
 	 * @param dayNumList
 	 * @return
 	 */
-	public static ArrayList<String> getCourseDateList(String strStartDate, List<String> dayNumList){
+	public static ArrayList<String> getCourseDateList(String strStartDate, List<CourseDetail> courseDetails){
 		ArrayList<String> courseDateList = new ArrayList<String>();
-		int dayListSize = dayNumList.size();
+		int dayListSize = courseDetails.size();
 		for(int i=0; i<dayListSize; i++){
-			String dateStr = DateUtil.getDateStrOfDayNumFromStartDate(Integer.parseInt(dayNumList.get(i)), strStartDate);
+			CourseDetail courseDetail = courseDetails.get(i);
+			String dateStr = DateUtil.getDateStrOfDayNumFromStartDate(courseDetail.day_num, strStartDate);
 			courseDateList.add(dateStr);
 		}
 		

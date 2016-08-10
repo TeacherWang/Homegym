@@ -52,7 +52,7 @@ public class AllCoursesFragment extends Fragment {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				Course course = mAllCoursesList.get(position);
 				Intent intent = new Intent(getActivity(), DetailPlanActivity.class);
-				intent.putExtra(Const.KEY_COURSE_INFO, course);
+				intent.putExtra(Const.KEY_COURSE, course);
 				startActivity(intent);
 			}
 		});
@@ -63,7 +63,7 @@ public class AllCoursesFragment extends Fragment {
 		
 		mAllCoursesList = CourseDao.getInstance().getCourseListFromDb(Globle.gApplicationContext);
 		
-		mAllCoursesAdapter = new CourseAdapter(getActivity(), mAllCoursesList, false);
+		mAllCoursesAdapter = new CourseAdapter(getActivity(), mAllCoursesList);
 		mAllCoursesListView.setAdapter(mAllCoursesAdapter);
 	}
 

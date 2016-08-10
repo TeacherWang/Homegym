@@ -1,7 +1,6 @@
 package com.runrunfast.homegym.course;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -19,8 +18,6 @@ import com.runrunfast.homegym.home.fragments.InvalidCourse;
 import java.util.ArrayList;
 
 public class CourseAdapter extends BaseAdapter {
-	private final String TAG = "CourseAdapter";
-	
 	private static final int LIST_SHOW_COURSE 				= 0; // 显示课程信息
 	private static final int LIST_SHOW_RECOMMEND_DESCRIPT 	= 1; // 显示“推荐课程”描述
 	
@@ -29,7 +26,6 @@ public class CourseAdapter extends BaseAdapter {
 	private LayoutInflater mInflater;
 	private ArrayList<Course> mCourseList;
 	private ICourseAdapterListener mICourseAdapterListener;
-	private boolean mIsMyCourseEmpty;
 	
 	public interface ICourseAdapterListener{
 		void onAddCourseClicked();
@@ -39,10 +35,9 @@ public class CourseAdapter extends BaseAdapter {
 		this.mICourseAdapterListener = iCourseAdapterListener;
 	}
 	
-	public CourseAdapter(Context context, ArrayList<Course> courseList, boolean isMyCourseEmpty){
+	public CourseAdapter(Context context, ArrayList<Course> courseList){
 		setData(courseList);
 		this.mInflater = LayoutInflater.from(context);
-		this.mIsMyCourseEmpty = isMyCourseEmpty;
 	}
 	
 	private void setData(ArrayList<Course> courseList){
@@ -53,8 +48,7 @@ public class CourseAdapter extends BaseAdapter {
 		}
 	}
 	
-	public void updateData(ArrayList<Course> courseList, boolean isMyCourseEmpty){
-		this.mIsMyCourseEmpty = isMyCourseEmpty;
+	public void updateData(ArrayList<Course> courseList){
 		setData(courseList);
 		notifyDataSetChanged();
 	}
@@ -142,7 +136,6 @@ public class CourseAdapter extends BaseAdapter {
 		}
 		
 		if(holdType == LIST_SHOW_RECOMMEND_DESCRIPT){
-			Log.d(TAG, "getView, this is recommed descript");
 			return convertView;
 		}
 		
@@ -180,29 +173,30 @@ public class CourseAdapter extends BaseAdapter {
 	 * @param courseInfo
 	 */
 	private void handleMyCourse(ViewHolder viewHolder, MyCourse myCourse) {
-		if(mIsMyCourseEmpty){
-			Log.d(TAG, "handleMyCourse empty");
-			viewHolder.btnAdd.setVisibility(View.VISIBLE);
-			
-			viewHolder.btnAdd.setOnClickListener(new OnClickListener() {
+		if(myCourse instanceof InvalidCourse){
+			InvalidCourse invalidCourse = (InvalidCourse) myCourse;
+			if(invalidCourse.courseType == InvalidCourse.COURSE_TYPE_EMPTY){
+				viewHolder.btnAdd.setVisibility(View.VISIBLE);
 				
-				@Override
-				public void onClick(View v) {
-					if(mICourseAdapterListener != null){
-						mICourseAdapterListener.onAddCourseClicked();
+				viewHolder.btnAdd.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						if(mICourseAdapterListener != null){
+							mICourseAdapterListener.onAddCourseClicked();
+						}
 					}
-				}
-			});
-			
-			viewHolder.courseNewImg.setVisibility(View.INVISIBLE);
-			viewHolder.courseProgressImg.setVisibility(View.INVISIBLE);
-			viewHolder.tvEmptyDescript.setVisibility(View.VISIBLE);
-			viewHolder.tvCourseName.setVisibility(View.INVISIBLE);
-			viewHolder.tvProgress.setVisibility(View.INVISIBLE);
-			viewHolder.tvCourseQuality.setVisibility(View.INVISIBLE);
-			return;
+				});
+				
+				viewHolder.courseNewImg.setVisibility(View.INVISIBLE);
+				viewHolder.courseProgressImg.setVisibility(View.INVISIBLE);
+				viewHolder.tvEmptyDescript.setVisibility(View.VISIBLE);
+				viewHolder.tvCourseName.setVisibility(View.INVISIBLE);
+				viewHolder.tvProgress.setVisibility(View.INVISIBLE);
+				viewHolder.tvCourseQuality.setVisibility(View.INVISIBLE);
+				return;
+			}
 		}
-		Log.d(TAG, "handleMyCourse");
 		
 		viewHolder.btnAdd.setVisibility(View.INVISIBLE);
 		viewHolder.courseNewImg.setVisibility(View.INVISIBLE);
@@ -219,7 +213,6 @@ public class CourseAdapter extends BaseAdapter {
 	}
 
 	private void setCourseProgress(ViewHolder viewHolder, int progerssType) {
-		Log.i(TAG, "setCourseProgress, progerssType = " + progerssType);
 		viewHolder.courseProgressImg.setVisibility(View.VISIBLE);
 		switch (progerssType) {
 		case CourseInfo.PROGRESS_ING:

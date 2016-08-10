@@ -8,8 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.runrunfast.homegym.bean.Course;
-import com.runrunfast.homegym.bean.Course.ActionId;
-import com.runrunfast.homegym.bean.Course.CourseDateDistribution;
+import com.runrunfast.homegym.bean.Course.CourseDetail;
 import com.runrunfast.homegym.course.CourseInfo;
 import com.runrunfast.homegym.utils.Const;
 
@@ -239,7 +238,6 @@ public class CourseDao {
 				+ Const.DB_KEY_COURSE_RECOMMEND + " INTEGER,"
 				+ Const.DB_KEY_COURSE_QUALITY + " INTEGER,"
 				+ Const.DB_KEY_COURSE_NEW + " INTEGER,"
-				+ Const.DB_KEY_ACTION_IDS + " TEXT,"
 				+ Const.DB_KEY_COURSE_DETAIL + " TEXT"
 				+ ");";
 		return sql;
@@ -261,8 +259,8 @@ public class CourseDao {
 			values.put(Const.DB_KEY_COURSE_QUALITY, course.course_quality);
 			values.put(Const.DB_KEY_COURSE_NEW, course.course_new);
 			
-			String actionIdsJson = gson.toJson(course.action_ids);
-			values.put(Const.DB_KEY_ACTION_IDS, actionIdsJson);
+//			String actionIdsJson = gson.toJson(course.action_ids);
+//			values.put(Const.DB_KEY_ACTION_IDS, actionIdsJson);
 			
 			String jsonCourseDetail = gson.toJson(course.course_detail);
 			values.put(Const.DB_KEY_COURSE_DETAIL, jsonCourseDetail);
@@ -298,8 +296,8 @@ public class CourseDao {
 			c = db.query(Const.TABLE_COURSE, null, null, null, null, null, null);
 			if(null != c && c.getCount() > 0){
 				Gson gson = new Gson();
-				Type typeActionIds = new TypeToken<Collection<ActionId>>(){}.getType();
-				Type typeCourseDetail = new TypeToken<Collection<CourseDateDistribution>>(){}.getType();
+//				Type typeActionIds = new TypeToken<Collection<ActionId>>(){}.getType();
+				Type typeCourseDetail = new TypeToken<Collection<CourseDetail>>(){}.getType();
 				while (c.moveToNext()) {
 					Course course = new Course();
 					
@@ -309,8 +307,8 @@ public class CourseDao {
 					course.course_quality = c.getInt(c.getColumnIndex(Const.DB_KEY_COURSE_QUALITY));
 					course.course_new = c.getInt(c.getColumnIndex(Const.DB_KEY_COURSE_NEW));
 					
-					String jsonActionIds = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_IDS));
-					course.action_ids = gson.fromJson(jsonActionIds, typeActionIds);
+//					String jsonActionIds = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_IDS));
+//					course.action_ids = gson.fromJson(jsonActionIds, typeActionIds);
 					
 					String jsonCourseDetail = c.getString(c.getColumnIndex(Const.DB_KEY_COURSE_DETAIL));
 					course.course_detail = gson.fromJson(jsonCourseDetail, typeCourseDetail);
@@ -343,8 +341,8 @@ public class CourseDao {
 			c = db.query(Const.TABLE_COURSE, null, Const.DB_KEY_COURSE_RECOMMEND + "=?", new String[]{ String.valueOf(Course.RECOMMED_COURSE) }, null, null, null);
 			if(null != c && c.getCount() > 0){
 				Gson gson = new Gson();
-				Type typeActionIds = new TypeToken<Collection<ActionId>>(){}.getType();
-				Type typeCourseDetail = new TypeToken<Collection<CourseDateDistribution>>(){}.getType();
+//				Type typeActionIds = new TypeToken<Collection<ActionId>>(){}.getType();
+				Type typeCourseDetail = new TypeToken<Collection<CourseDetail>>(){}.getType();
 				while (c.moveToNext()) {
 					Course course = new Course();
 					
@@ -354,8 +352,8 @@ public class CourseDao {
 					course.course_quality = c.getInt(c.getColumnIndex(Const.DB_KEY_COURSE_QUALITY));
 					course.course_new = c.getInt(c.getColumnIndex(Const.DB_KEY_COURSE_NEW));
 					
-					String jsonActionIds = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_IDS));
-					course.action_ids = gson.fromJson(jsonActionIds, typeActionIds);
+//					String jsonActionIds = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_IDS));
+//					course.action_ids = gson.fromJson(jsonActionIds, typeActionIds);
 					
 					String jsonCourseDetail = c.getString(c.getColumnIndex(Const.DB_KEY_COURSE_DETAIL));
 					course.course_detail = gson.fromJson(jsonCourseDetail, typeCourseDetail);
@@ -388,8 +386,8 @@ public class CourseDao {
 			c = db.query(Const.TABLE_COURSE, null, Const.DB_KEY_COURSE_ID + "=?", new String[]{ courseId }, null, null, null);
 			if(null != c && c.getCount() > 0){
 				Gson gson = new Gson();
-				Type typeActionIds = new TypeToken<Collection<ActionId>>(){}.getType();
-				Type typeCourseDetail = new TypeToken<Collection<CourseDateDistribution>>(){}.getType();
+//				Type typeActionIds = new TypeToken<Collection<ActionId>>(){}.getType();
+				Type typeCourseDetail = new TypeToken<Collection<CourseDetail>>(){}.getType();
 				
 				c.moveToNext();
 				
@@ -401,8 +399,8 @@ public class CourseDao {
 				course.course_quality = c.getInt(c.getColumnIndex(Const.DB_KEY_COURSE_QUALITY));
 				course.course_new = c.getInt(c.getColumnIndex(Const.DB_KEY_COURSE_NEW));
 				
-				String jsonActionIds = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_IDS));
-				course.action_ids = gson.fromJson(jsonActionIds, typeActionIds);
+//				String jsonActionIds = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_IDS));
+//				course.action_ids = gson.fromJson(jsonActionIds, typeActionIds);
 				
 				String jsonCourseDetail = c.getString(c.getColumnIndex(Const.DB_KEY_COURSE_DETAIL));
 				course.course_detail = gson.fromJson(jsonCourseDetail, typeCourseDetail);

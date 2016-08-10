@@ -9,9 +9,8 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.runrunfast.homegym.account.AccountMgr;
 import com.runrunfast.homegym.bean.Course;
+import com.runrunfast.homegym.bean.Course.CourseDetail;
 import com.runrunfast.homegym.bean.MyCourse;
-import com.runrunfast.homegym.bean.Course.ActionId;
-import com.runrunfast.homegym.bean.Course.CourseDateDistribution;
 import com.runrunfast.homegym.bean.MyCourse.DayProgress;
 import com.runrunfast.homegym.course.CourseInfo;
 import com.runrunfast.homegym.utils.Const;
@@ -217,8 +216,8 @@ public class MyCourseDao {
 			
 			Gson gson = new Gson();
 			
-			String actionIdsJson = gson.toJson(myCourse.action_ids);
-			values.put(Const.DB_KEY_ACTION_IDS, actionIdsJson);
+//			String actionIdsJson = gson.toJson(myCourse.action_ids);
+//			values.put(Const.DB_KEY_ACTION_IDS, actionIdsJson);
 			
 			String jsonCourseDetail = gson.toJson(myCourse.course_detail);
 			values.put(Const.DB_KEY_COURSE_DETAIL, jsonCourseDetail);
@@ -257,8 +256,8 @@ public class MyCourseDao {
 			c = db.query(Const.TABLE_MY_COURSE, null, null, null, null, null, null);
 			if(null != c && c.getCount() > 0){
 				Gson gson = new Gson();
-				Type typeActionIds = new TypeToken<Collection<ActionId>>(){}.getType();
-				Type typeCourseDetail = new TypeToken<Collection<CourseDateDistribution>>(){}.getType();
+//				Type typeActionIds = new TypeToken<Collection<ActionId>>(){}.getType();
+				Type typeCourseDetail = new TypeToken<Collection<CourseDetail>>(){}.getType();
 				Type typeDayProgress = new TypeToken<Collection<DayProgress>>(){}.getType();
 				while (c.moveToNext()) {
 					MyCourse myCourse = new MyCourse();
@@ -272,8 +271,8 @@ public class MyCourseDao {
 					myCourse.start_date = c.getString(c.getColumnIndex(Const.DB_KEY_START_DATE));
 					myCourse.progress = c.getInt(c.getColumnIndex(Const.DB_KEY_PROGRESS));
 					
-					String jsonActionIds = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_IDS));
-					myCourse.action_ids = gson.fromJson(jsonActionIds, typeActionIds);
+//					String jsonActionIds = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_IDS));
+//					myCourse.action_ids = gson.fromJson(jsonActionIds, typeActionIds);
 					
 					String jsonCourseDetail = c.getString(c.getColumnIndex(Const.DB_KEY_COURSE_DETAIL));
 					myCourse.course_detail = gson.fromJson(jsonCourseDetail, typeCourseDetail);
@@ -309,8 +308,8 @@ public class MyCourseDao {
 			c = db.query(Const.TABLE_MY_COURSE, null, Const.DB_KEY_COURSE_ID + "=?", new String[]{ courseId }, null, null, null);
 			if(null != c && c.getCount() > 0){
 				Gson gson = new Gson();
-				Type typeActionIds = new TypeToken<Collection<ActionId>>(){}.getType();
-				Type typeCourseDetail = new TypeToken<Collection<CourseDateDistribution>>(){}.getType();
+//				Type typeActionIds = new TypeToken<Collection<ActionId>>(){}.getType();
+				Type typeCourseDetail = new TypeToken<Collection<CourseDetail>>(){}.getType();
 				Type typeDayProgress = new TypeToken<Collection<DayProgress>>(){}.getType();
 				
 				c.moveToNext();
@@ -325,8 +324,8 @@ public class MyCourseDao {
 				myCourse.start_date = c.getString(c.getColumnIndex(Const.DB_KEY_START_DATE));
 				myCourse.progress = c.getInt(c.getColumnIndex(Const.DB_KEY_PROGRESS));
 				
-				String jsonActionIds = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_IDS));
-				myCourse.action_ids = gson.fromJson(jsonActionIds, typeActionIds);
+//				String jsonActionIds = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_IDS));
+//				myCourse.action_ids = gson.fromJson(jsonActionIds, typeActionIds);
 				
 				String jsonCourseDetail = c.getString(c.getColumnIndex(Const.DB_KEY_COURSE_DETAIL));
 				myCourse.course_detail = gson.fromJson(jsonCourseDetail, typeCourseDetail);

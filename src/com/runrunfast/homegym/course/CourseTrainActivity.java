@@ -11,27 +11,28 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.account.AccountMgr;
 import com.runrunfast.homegym.account.UserInfo;
 import com.runrunfast.homegym.bean.Action;
 import com.runrunfast.homegym.bean.Course.ActionDetail;
-import com.runrunfast.homegym.bean.Course.ActionId;
-import com.runrunfast.homegym.bean.Course.CourseDateDistribution;
+import com.runrunfast.homegym.bean.Course.CourseDetail;
 import com.runrunfast.homegym.bean.Course.GroupDetail;
 import com.runrunfast.homegym.bean.MyCourse;
+import com.runrunfast.homegym.bean.MyCourse.DayProgress;
 import com.runrunfast.homegym.dao.ActionDao;
-import com.runrunfast.homegym.dao.MyCourseActionDao;
 import com.runrunfast.homegym.utils.Const;
 import com.runrunfast.homegym.utils.DateUtil;
 import com.runrunfast.homegym.utils.Globle;
 
+import java.io.Serializable;
+import java.sql.Date;
 import java.util.ArrayList;
-import java.util.List;
 
 public class CourseTrainActivity extends Activity implements OnClickListener{
+	
+	public static int REQ_CODE_ACTION_SET = 1;
 	
 	private TextView tvTitle;
 	private Button btnLeft, btnRight;
@@ -41,11 +42,12 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 	private ListView mCourseTrainListView;
 	private ArrayList<Action> mActionList;
 	
-	private String mCourseId;
-	private List<ActionId> mActionIdList;
 	private ArrayList<ActionTotalData> mActionTotalDataList;
+	private CourseDetail mCourseDetail; // 该天的课程详细
+	private ArrayList<ActionDetail> mActionDetailListOfThatDay;
 	private MyCourse mMyCourse;
-	private UserInfo mUserInfo;
+	
+	private int mCurrentDayPosition; // 该天在日期分布的位置
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -73,43 +75,42 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 	}
 	
 	private void jumpToTrainActionSetActivity(int position) {
-		Action actionInfo = mActionList.get(position);
-		String actionId = actionInfo.strActionId;
-		String actionName = actionInfo.actionName;
-		int actionNum = position + 1;
-		String actionDecript = actionInfo.strTrainDescript;
+		Action action = mActionList.get(position);
+		
+		ActionDetail actionDetail = mActionDetailListOfThatDay.get(position);
 		
 		Intent intent = new Intent(CourseTrainActivity.this, ActionSetActivity.class);
-		intent.putExtra(Const.KEY_COURSE_ID, mCourseId);
-		intent.putExtra(Const.KEY_ACTION_ID, actionId);
-		intent.putExtra(Const.KEY_ACTION_NAME, actionName);
-		intent.putExtra(Const.KEY_ACTION_DESCRIPT, actionDecript);
-		intent.putExtra(Const.KEY_ACTION_NUM, actionNum);
-		CourseTrainActivity.this.startActivity(intent);
+		intent.putExtra(Const.KEY_COURSE, mMyCourse);
+		intent.putExtra(Const.KEY_ACTION_DETAIL, actionDetail);
+		intent.putExtra(Const.KEY_DAY_POSITION, mCurrentDayPosition);
+		intent.putExtra(Const.KEY_ACTION_POSITION, position);
+		intent.putExtra(Const.KEY_ACTION, action);
+		intent.putExtra(Const.KEY_ACTION_TOTAL_DATA, mActionTotalDataList.get(position));
+		
+		CourseTrainActivity.this.startActivityForResult(intent, REQ_CODE_ACTION_SET);
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if(requestCode != REQ_CODE_ACTION_SET){
+			return;
+		}
+		if(resultCode != Activity.RESULT_OK){
+			return;
+		}
+		
+		mMyCourse = (MyCourse) data.getSerializableExtra(Const.KEY_COURSE);
+		showAction();
 	}
 
 	private void initData() {
-		mUserInfo = AccountMgr.getInstance().mUserInfo;
-		
 		mActionList = new ArrayList<Action>();
 		mActionTotalDataList = new ArrayList<ActionTotalData>();
 		
-		mMyCourse = (MyCourse) getIntent().getSerializableExtra(Const.KEY_COURSE_INFO);
-		
-		mCourseId = mMyCourse.course_id;
+		mMyCourse = (MyCourse) getIntent().getSerializableExtra(Const.KEY_COURSE);
 		tvTitle.setText(mMyCourse.course_name);
 		
-		mActionIdList = mMyCourse.action_ids;
-		int actionIdSize = mActionIdList.size();
-		for(int i=0; i<actionIdSize; i++){
-			String actionId = mActionIdList.get(i).action_id;
-			Action action = ActionDao.getInstance().getActionFromDb(Globle.gApplicationContext, actionId);
-			mActionList.add(action);
-			
-			// 计算该动作在该课程中的总时间和总kcal
-			ActionTotalData actionTotalData = getTotalTimeOfActionInMyCourse(actionId);
-			mActionTotalDataList.add(actionTotalData);
-		}
+		showAction();
 		
 //		CourseTrainInfo courseTrainInfo1 = new CourseTrainInfo();
 //		courseTrainInfo1.iCourseId = 1;
@@ -123,37 +124,62 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 //		courseTrainInfo1.iKcal = 187;
 //		courseTrainInfo1.iDiffcultLevel = 1;
 //		mCourseActionInfoList.add(courseTrainInfo1);
+	}
+	
+	private void showAction() {
+		// 参加的课程的日期分布
+		String currentDateStr = DateUtil.getCurrentDate();
+		ArrayList<DayProgress> dayProgressList = (ArrayList<DayProgress>) mMyCourse.day_progress;
+		int dayNum = dayProgressList.size();
+		for(int i=0; i<dayNum; i++){
+			DayProgress dayProgress = dayProgressList.get(i);
+			String dateStr = dayProgress.plan_date;
+			
+			if(dateStr.equals(currentDateStr)){
+				mCurrentDayPosition = i; // 当天在课程日期分布中的位置
+				break;
+			}
+		}
+		
+		// 当天的动作集合
+		mCourseDetail = mMyCourse.course_detail.get(mCurrentDayPosition);
+		mActionDetailListOfThatDay = (ArrayList<ActionDetail>) mCourseDetail.action_detail;
+		mActionList.clear();
+		mActionTotalDataList.clear();
+		int actionNum = mActionDetailListOfThatDay.size();
+		for(int i=0; i<actionNum; i++){
+			ActionDetail actionDetail = mActionDetailListOfThatDay.get(i);
+			String actionId = actionDetail.action_id;
+			Action action = ActionDao.getInstance().getActionFromDb(Globle.gApplicationContext, actionId);
+			mActionList.add(action);
+			
+			ActionTotalData actionTotalData = getTotalTimeOfActionInMyCourse(actionDetail);
+			mActionTotalDataList.add(actionTotalData);
+		}
 		
 		mCourseTrainAdapter = new CourseTrainAdapter(this, mActionList, mActionTotalDataList);
 		mCourseTrainListView.setAdapter(mCourseTrainAdapter);
 	}
 	
-	private ActionTotalData getTotalTimeOfActionInMyCourse(String actionId){
+	/**
+	  * @Method: getTotalTimeOfActionInMyCourse
+	  * @Description: 获取该天该动作的总时间和总卡路里
+	  * @param actionDetail
+	  * @return	
+	  * 返回类型：ActionTotalData 
+	  */
+	private ActionTotalData getTotalTimeOfActionInMyCourse(ActionDetail actionDetail){
 		ActionTotalData actionTotalData = new ActionTotalData();
-		int time = 0;
-		int courseDetailNum = mMyCourse.course_detail.size();
-		for(int i=0; i<courseDetailNum; i++){
-			CourseDateDistribution courseDetail = mMyCourse.course_detail.get(i);
-			int actionDetailNum = courseDetail.action_detail.size();
-			for(int j=0; j<actionDetailNum; j++){
-				ActionDetail actionDetail = courseDetail.action_detail.get(j);
-				if( !actionDetail.action_id.equals(actionId) ){
-					continue;
-				}
-				
-				int groupNum = actionDetail.group_detail.size();
-				for(int k=0; k<groupNum; k++){
-					GroupDetail groupDetail = actionDetail.group_detail.get(k);
-					actionTotalData.totalTime = actionTotalData.totalTime + groupDetail.time;
-					actionTotalData.totalKcal = actionTotalData.totalKcal + groupDetail.kcal;
-				}
-			}
+		int groupNum = actionDetail.group_num;
+		for(int i=0; i<groupNum; i++){
+			GroupDetail groupDetail = actionDetail.group_detail.get(i);
+			actionTotalData.totalTime = actionTotalData.totalTime + groupDetail.time;
+			actionTotalData.totalKcal = actionTotalData.totalKcal + groupDetail.kcal;
 		}
-		
 		return actionTotalData;
 	}
 
-	public static class ActionTotalData{
+	public static class ActionTotalData implements Serializable{
 		int totalTime;
 		int totalKcal;
 	}
@@ -197,20 +223,8 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 	}
 
 	private void startTrain() {
-		ArrayList<String> courseDateList = CourseUtil.getCourseDateList(mMyCourseInfo.startDate, mMyCourseInfo.dateNumList);
-		if( !courseDateList.contains(DateUtil.getCurrentDate()) ){
-			Toast.makeText(CourseTrainActivity.this, R.string.today_is_rest_day, Toast.LENGTH_SHORT).show();
-			return;
-		}
-		// 今天有训练，需要知道今天训练的动作列表
-		int dayIndex = courseDateList.indexOf(DateUtil.getCurrentDate());
-		String[] actionIds = mMyCourseInfo.dateActionIdList.get(dayIndex).split(";");
-		String strDate = DateUtil.getCurrentDate();
-		
 		Intent intent = new Intent(this, CourseVideoActivity.class);
-		intent.putExtra(Const.KEY_ACTION_IDS, actionIds);
-		intent.putExtra(Const.KEY_COURSE_ID, mMyCourseInfo.courseId);
-		intent.putExtra(Const.KEY_DATE, strDate);
+		intent.putExtra(Const.KEY_COURSE_DETAIL, mCourseDetail);
 		startActivity(intent);
 	}
 
@@ -218,8 +232,7 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 	private void jumpToTrainDetailActivity() {
 		Intent intent = new Intent(this, DetailPlanActivity.class);
 		
-		intent.putExtra(Const.KEY_COURSE_INFO, mMyCourseInfo);
-		
+		intent.putExtra(Const.KEY_COURSE, mMyCourse);
 		
 		startActivity(intent);
 	}

@@ -8,7 +8,7 @@ public class Const {
 	public static final int DIALOG_REQ_CODE_EXIT_COURSE = 4;
 	
 	// 启动CourseTrainActivity所传参数
-	public static final String KEY_COURSE_INFO = "key_course";
+	public static final String KEY_COURSE = "key_course";
 	public static final String KEY_COURSE_ID = "key_course_id";
 	public static final String KEY_COURSE_NAME = "key_course_name";
 	public static final String KEY_ACTION_ID = "key_action_id";
@@ -17,6 +17,12 @@ public class Const {
 	public static final String KEY_ACTION_DESCRIPT = "key_descript";
 	public static final String KEY_ACTION_NUM = "key_action_num"; // 动作几
 	public static final String KEY_DATE = "key_date";
+	public static final String KEY_COURSE_DETAIL = "key_course_detail";
+	public static final String KEY_ACTION = "key_action";
+	public static final String KEY_ACTION_TOTAL_DATA = "key_action_total_data";
+	public static final String KEY_ACTION_DETAIL = "key_action_detail";
+	public static final String KEY_DAY_POSITION = "key_day_position"; // 该天在课程的位置
+	public static final String KEY_ACTION_POSITION = "key_action_position"; // 该动作在该天中的位置
 	
 	public static final String KEY_COURSE_TOTAL_TIME = "key_course_total_time"; // 实际课程完成的数据
 	public static final String KEY_COURSE_TOTAL_COUNT = "key_course_total_count";
@@ -33,7 +39,6 @@ public class Const {
 	public static final String DB_KEY_COURSE_ID = "course_id";
 	public static final String DB_KEY_COURSE_NAME = "course_name";
 	public static final String DB_KEY_COURSE_ACTIONS = "course_actions";
-	public static final String DB_KEY_COURSE_DATE_DISTRIBUTION = "course_date_distribution";
 	public static final String DB_KEY_ACTION_IDS = "action_ids";
 	public static final String DB_KEY_DATE_NUM = "date_num";
 	public static final String DB_KEY_DATE_ACTION_IDS = "date_action_ids";

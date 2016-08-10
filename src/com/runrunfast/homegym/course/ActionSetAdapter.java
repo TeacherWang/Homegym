@@ -12,30 +12,31 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.runrunfast.homegym.R;
+import com.runrunfast.homegym.bean.Course.GroupDetail;
 
 public class ActionSetAdapter extends BaseAdapter {
 
-	private ArrayList<ActionInfo> mTrainActionInfoList;
+	private ArrayList<GroupDetail> mGroupDetailList;
 	private LayoutInflater mInflater;
 	private Context mContext;
 	
 	private ITrainActionItemListener mITrainActionItemListener;
 	
-	public ActionSetAdapter(Context context, ArrayList<ActionInfo> trainActionInfos){
-		setData(trainActionInfos);
+	public ActionSetAdapter(Context context, ArrayList<GroupDetail> groupDetailList){
+		setData(groupDetailList);
 		this.mInflater = LayoutInflater.from(context);
 		this.mContext = context;
 	}
 	
-	private void setData(ArrayList<ActionInfo> trainActionInfos){
-		if(trainActionInfos == null){
-			mTrainActionInfoList = new ArrayList<ActionInfo>();
+	private void setData(ArrayList<GroupDetail> groupDetailList){
+		if(groupDetailList == null){
+			mGroupDetailList = new ArrayList<GroupDetail>();
 		}else{
-			mTrainActionInfoList = trainActionInfos;
+			mGroupDetailList = groupDetailList;
 		}
 	}
 	
-	public void updateData(ArrayList<ActionInfo> trainActionInfos){
+	public void updateData(ArrayList<GroupDetail> trainActionInfos){
 		setData(trainActionInfos);
 		notifyDataSetChanged();
 	}
@@ -52,13 +53,13 @@ public class ActionSetAdapter extends BaseAdapter {
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
-		return mTrainActionInfoList.size();
+		return mGroupDetailList.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
 		// TODO Auto-generated method stub
-		return mTrainActionInfoList.get(position);
+		return mGroupDetailList.get(position);
 	}
 
 	@Override
@@ -84,17 +85,17 @@ public class ActionSetAdapter extends BaseAdapter {
 			holder = (ViewHolder)convertView.getTag();
 		}
 		
-		ActionInfo trainActionInfo = mTrainActionInfoList.get(position);
+		GroupDetail groupDetail = mGroupDetailList.get(position);
 		
 		if( (position % 2) == 0 ){
 			holder.layout.setBackgroundColor(mContext.getResources().getColor(R.color.my_course_bg));
 		}else{
 			holder.layout.setBackgroundColor(mContext.getResources().getColor(R.color.train_action_set_item_deep_color));
 		}
-		holder.tvGroupNum.setText("第" + trainActionInfo.iGroupNum + "组");
-		holder.tvCount.setText(String.valueOf(trainActionInfo.iCount));
-		holder.tvWeight.setText(String.valueOf(trainActionInfo.iToolWeight));
-		holder.tvKcal.setText(String.valueOf(trainActionInfo.iBurning));
+		holder.tvGroupNum.setText("第" + (position + 1) + "组");
+		holder.tvCount.setText(String.valueOf(groupDetail.count));
+		holder.tvWeight.setText(String.valueOf(groupDetail.weight));
+		holder.tvKcal.setText(String.valueOf(groupDetail.kcal));
 		
 		holder.tvCount.setOnClickListener(new OnClickListener() {
 			

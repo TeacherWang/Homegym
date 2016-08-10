@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -17,8 +18,14 @@ import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.account.AccountMgr;
 import com.runrunfast.homegym.account.DataTransferUtil;
 import com.runrunfast.homegym.account.UserInfo;
+import com.runrunfast.homegym.bean.Action;
+import com.runrunfast.homegym.bean.Course.ActionDetail;
+import com.runrunfast.homegym.bean.Course.CourseDetail;
+import com.runrunfast.homegym.bean.Course.GroupDetail;
+import com.runrunfast.homegym.bean.MyCourse;
 import com.runrunfast.homegym.course.ActionSetAdapter.ITrainActionItemListener;
-import com.runrunfast.homegym.dao.MyCourseActionDao;
+import com.runrunfast.homegym.course.CourseTrainActivity.ActionTotalData;
+import com.runrunfast.homegym.dao.MyCourseDao;
 import com.runrunfast.homegym.utils.ClickUtil;
 import com.runrunfast.homegym.utils.Const;
 import com.runrunfast.homegym.utils.DateUtil;
@@ -39,20 +46,16 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 	private int inputType;
 	
 	private View backView;
+	private TextView tvSave;
 	private TextView tvActionNum, tvTrainName, tvTrainDescript, tvJoinInTeach, tvGroupNum, tvTimeConsume, tvBurning;
 	private Button btnAdd, btnMinus;
 	
-	private String mCourseId;
-	private String mActionId;
-	private String mActionName;
-	private String mActionDescript;
-	private int mActionNum; // 动作几
 	private ListView mListView;
 	
 	private int mConsumeSecond = 500; // 消耗时间
 	private int mTotalBurning; // 总燃脂
 	
-	private ArrayList<ActionInfo> mTrainActionInfoList;
+	private ArrayList<GroupDetail> mGroupDetailList;
 	private ActionSetAdapter mTrainActionSetAdapter;
 	private ITrainActionItemListener mITrainActionItemListener;
 	
@@ -63,11 +66,17 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 	private WheelView wheelOneWheelView;
 	private PopupWindows popWindows;
 	
-	private ActionInfo mTrainActionInfo;
+	private GroupDetail mGroupDetail;
 	private int mCount;
 	private int mToolWeight;
 	
 	private UserInfo mUserInfo;
+	
+	private MyCourse mMyCourse;
+	private ActionDetail mActionDetail;
+	private int mActionPosition;
+	private int mCurrentDayPosition;
+	private ActionTotalData mActionTotalData;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -109,8 +118,8 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 	private void showCountSelectView(int position) {
 		inputType = INPUT_TYPE_COUNT;
 		
-		mTrainActionInfo = mTrainActionInfoList.get(position);
-		int defaultCount = mTrainActionInfo.iCount;
+		mGroupDetail = mGroupDetailList.get(position);
+		int defaultCount = mGroupDetail.count;
 		
 		selectContainer.removeAllViews();
 //		setSelectContainerWidth();
@@ -139,8 +148,8 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 	private void showToolWeightSelectView(int position) {
 		inputType = INPUT_TYPE_TOOL_WEIGHT;
 		
-		mTrainActionInfo = mTrainActionInfoList.get(position);
-		int defaultToolWeight = mTrainActionInfo.iToolWeight;
+		mGroupDetail = mGroupDetailList.get(position);
+		int defaultToolWeight = mGroupDetail.weight;
 		
 		selectContainer.removeAllViews();
 //		setSelectContainerWidth();
@@ -169,47 +178,46 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 	private void initData() {
 		mUserInfo = AccountMgr.getInstance().mUserInfo;
 		
-		mTrainActionInfoList = new ArrayList<ActionInfo>();
+		mGroupDetailList = new ArrayList<GroupDetail>();
+		
+//		intent.putExtra(Const.KEY_COURSE, mMyCourse);
+//		intent.putExtra(Const.KEY_ACTION_DETAIL, actionDetail);
+//		intent.putExtra(Const.KEY_DAY_POSITION, mCurrentDayPosition);
+//		intent.putExtra(Const.KEY_ACTION_POSITION, position);
+//		intent.putExtra(Const.KEY_ACTION, action);
+//		intent.putExtra(Const.KEY_ACTION_TOTAL_DATA, mActionTotalDataList.get(position));
 		
 		Intent intent = getIntent();
-		mCourseId = intent.getStringExtra(Const.KEY_COURSE_ID);
-		mActionId = intent.getStringExtra(Const.KEY_ACTION_ID);
-		mActionName = intent.getStringExtra(Const.KEY_ACTION_NAME);
-		mActionDescript = intent.getStringExtra(Const.KEY_ACTION_DESCRIPT);
-		mActionNum = intent.getIntExtra(Const.KEY_ACTION_NUM, 1);
+		Action action = (Action) intent.getSerializableExtra(Const.KEY_ACTION);
+		int actionPosition = intent.getIntExtra(Const.KEY_ACTION_POSITION, 0);
+		mMyCourse = (MyCourse) intent.getSerializableExtra(Const.KEY_COURSE);
+		mActionDetail = (ActionDetail) intent.getSerializableExtra(Const.KEY_ACTION_DETAIL);
+		mCurrentDayPosition = intent.getIntExtra(Const.KEY_DAY_POSITION, 0);
+		mActionPosition = intent.getIntExtra(Const.KEY_ACTION_POSITION, 0);
+		mActionTotalData = (ActionTotalData) intent.getSerializableExtra(Const.KEY_ACTION_TOTAL_DATA);
 		
-		tvActionNum.setText("动作" + DataTransferUtil.numMap.get(mActionNum));
-		tvTrainName.setText(mActionName);
-		tvTrainDescript.setText(mActionDescript);
+		tvActionNum.setText("动作" + DataTransferUtil.numMap.get(actionPosition + 1));
+		tvTrainName.setText(action.action_name);
+		tvTrainDescript.setText(action.action_descript);
 		
-		ActionInfo myActionInfo = MyCourseActionDao.getInstance().getMyCourseActionInfo(Globle.gApplicationContext, mUserInfo.strAccountId, mCourseId, mActionId);
-		int myActionGroupNum = myActionInfo.defaultGroupNum;
-		List<String> defaultCountList = myActionInfo.defaultCountList;
-		List<String> defaultToolWeightList = myActionInfo.defaultToolWeightList;
-		List<String> defaultBurningList = myActionInfo.defaultBurningList;
- 		
-		for(int i=0; i<myActionGroupNum; i++){
-			ActionInfo trainActionInfo = new ActionInfo();
-			trainActionInfo.iGroupNum = i + 1;
-			trainActionInfo.iCount = Integer.parseInt(defaultCountList.get(i).trim());
-			trainActionInfo.iToolWeight = Integer.parseInt(defaultToolWeightList.get(i).trim());
-			trainActionInfo.iBurning = Integer.parseInt(defaultBurningList.get(i).trim());
-			mTrainActionInfoList.add(trainActionInfo);
-		}
+		mGroupDetailList = (ArrayList<GroupDetail>) mActionDetail.group_detail;
 		
-		mTrainActionSetAdapter = new ActionSetAdapter(this, mTrainActionInfoList);
+		mTrainActionSetAdapter = new ActionSetAdapter(this, mGroupDetailList);
 		mListView.setAdapter(mTrainActionSetAdapter);
 		
-		tvGroupNum.setText(String.valueOf(mTrainActionInfoList.size()));
-		tvTimeConsume.setText(DateUtil.secToTime(myActionInfo.iTime));
+		tvGroupNum.setText(String.valueOf(mGroupDetailList.size()));
+		tvTimeConsume.setText(DateUtil.secToTime(mActionTotalData.totalTime));
 		
-		mTotalBurning = myActionInfo.iDefaultTotalKcal;
+		mTotalBurning = mActionTotalData.totalKcal;
 		tvBurning.setText( String.valueOf(mTotalBurning) );
 	}
 
 	private void initView() {
 		backView = (View)findViewById(R.id.train_action_back_layout);
 		backView.setOnClickListener(this);
+		
+		tvSave = (TextView)findViewById(R.id.train_action_set_save_text);
+		tvSave.setOnClickListener(this);
 		
 		btnAdd = (Button)findViewById(R.id.btn_group_num_add);
 		btnAdd.setOnClickListener(this);
@@ -240,6 +248,8 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.train_action_back_layout:
+			Intent intent = new Intent();
+			setResult(Activity.RESULT_CANCELED);
 			finish();
 			break;
 			
@@ -259,9 +269,33 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 			clickPopConfirm();
 			break;
 			
+		case R.id.train_action_set_save_text:
+			saveNewData();
+			break;
+			
 		default:
 			break;
 		}
+	}
+
+	/**
+	  * @Method: saveNewData
+	  * @Description: 保存设置的数据
+	  * 返回类型：void 
+	  */
+	private void saveNewData() {
+		List<CourseDetail> courseDetails = mMyCourse.course_detail;
+		CourseDetail currentDayCourseDetail = courseDetails.get(mCurrentDayPosition);
+		mMyCourse.course_detail.get(mCurrentDayPosition).action_detail.remove(mActionPosition);
+		mMyCourse.course_detail.get(mCurrentDayPosition).action_detail.add(mActionPosition, mActionDetail);
+		Log.i(TAG, "modify group_num = " + mMyCourse.course_detail.get(mCurrentDayPosition).action_detail.get(mActionPosition).group_num);
+		
+		MyCourseDao.getInstance().saveMyCourseToDb(Globle.gApplicationContext, mUserInfo.strAccountId, mMyCourse);
+		
+		Intent intent = new Intent();
+		intent.putExtra(Const.KEY_COURSE, mMyCourse);
+		setResult(Activity.RESULT_OK);
+		finish();
 	}
 
 	private void clickPopConfirm() {
@@ -274,25 +308,25 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 		
 		switch (inputType) {
 		case INPUT_TYPE_COUNT:
-			mTrainActionInfo.iCount = mCount;
+			mGroupDetail.count = mCount;
 			// 要计算次数跟重量对应的燃脂，公式？还有时间
 //			mTrainActionInfo.iBurning = 公式？
 //			mTotalBurning = mTotalBurning + trainActionInfo.iBurning;
 //			tvTimeConsume.setText(DateUtil.secToTime(mConsumeSecond));
 //			tvBurning.setText(String.valueOf(mTotalBurning));
 			
-			mTrainActionSetAdapter.updateData(mTrainActionInfoList);
+			mTrainActionSetAdapter.updateData(mGroupDetailList);
 			break;
 			
 		case INPUT_TYPE_TOOL_WEIGHT:
-			mTrainActionInfo.iToolWeight = mToolWeight;
+			mGroupDetail.weight = mToolWeight;
 			// 要计算次数跟重量对应的燃脂，公式？还有时间
 //			mTrainActionInfo.iBurning = 公式？
 //			mTotalBurning = mTotalBurning + trainActionInfo.iBurning;
 //			tvTimeConsume.setText(DateUtil.secToTime(mConsumeSecond));
 //			tvBurning.setText(String.valueOf(mTotalBurning));
 			
-			mTrainActionSetAdapter.updateData(mTrainActionInfoList);
+			mTrainActionSetAdapter.updateData(mGroupDetailList);
 			break;
 
 		default:
@@ -305,64 +339,57 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 	}
 
 	private void minusGroupNum() {
-		if(mTrainActionInfoList.size() == 1){
+		if(mGroupDetailList.size() == 1){
 			Log.e(TAG, "addGroupNum, size == 1, return");
 			Toast.makeText(this, R.string.group_num_is_smaller_than_1, Toast.LENGTH_SHORT).show();
 			return;
 		}
 		
-		ActionInfo removeActionInfo = mTrainActionInfoList.get(mTrainActionInfoList.size() - 1);
+		GroupDetail removeGroupDetail = mGroupDetailList.get(mGroupDetailList.size() - 1);
 		
-		mTrainActionInfoList.remove(mTrainActionInfoList.size() - 1);
+		mGroupDetailList.remove(mGroupDetailList.size() - 1);
 		mTrainActionSetAdapter.notifyDataSetChanged();
 		
-		tvGroupNum.setText(String.valueOf(mTrainActionInfoList.size()));
+		tvGroupNum.setText(String.valueOf(mGroupDetailList.size()));
 		mConsumeSecond = mConsumeSecond - 10;
-		mTotalBurning = mTotalBurning - removeActionInfo.iBurning;
+		mTotalBurning = mTotalBurning - removeGroupDetail.kcal;
 		tvTimeConsume.setText(DateUtil.secToTime(mConsumeSecond));
 		tvBurning.setText(String.valueOf(mTotalBurning));
 	}
 
 	private void addGroupNum() {
-		if(mTrainActionInfoList.size() == 9){
+		if(mGroupDetailList.size() == 9){
 			Log.e(TAG, "addGroupNum, size == 9, return");
 			Toast.makeText(this, R.string.group_num_is_bigger_than_9, Toast.LENGTH_SHORT).show();
 			return;
 		}
 		
-		ActionInfo trainActionInfo = new ActionInfo();
-		trainActionInfo.strCourseId = mCourseId;
-		trainActionInfo.strActionId = mActionId;
-		trainActionInfo.iGroupNum = mTrainActionInfoList.size() + 1;
-		trainActionInfo.iCount = 8;
-		trainActionInfo.iToolWeight = 10;
-		trainActionInfo.iBurning = 60;
-		mTrainActionInfoList.add(trainActionInfo);
+		GroupDetail groupDetail = new GroupDetail(8, 10, 60, 10);
+		mActionDetail.group_num = mGroupDetailList.size() + 1;
+		mGroupDetailList.add(groupDetail);
 		
-		int groupNum = mTrainActionInfoList.size();
+		mActionDetail.group_detail = mGroupDetailList;
+		
+		int groupNum = mGroupDetailList.size();
 		
 		mTrainActionSetAdapter.notifyDataSetChanged();
 		
 		tvGroupNum.setText(String.valueOf(groupNum));
 		
 		mConsumeSecond = mConsumeSecond + 10;
-		mTotalBurning = mTotalBurning + trainActionInfo.iBurning;
+		mTotalBurning = mTotalBurning + groupDetail.kcal;
 		tvTimeConsume.setText(DateUtil.secToTime(mConsumeSecond));
 		tvBurning.setText(String.valueOf(mTotalBurning));
-		
-		ActionInfo myActionInfo = new ActionInfo();
-		myActionInfo.strCourseId = mCourseId;
-		myActionInfo.strActionId = mActionId;
-		myActionInfo.iTime = mConsumeSecond;
-		myActionInfo.defaultGroupNum = groupNum;
-		myActionInfo.iDefaultTotalKcal = mTotalBurning;
-		for(int i=0; i<groupNum; i++){
-			ActionInfo actionInfo = mTrainActionInfoList.get(i);
-			myActionInfo.defaultCountList.add(String.valueOf(actionInfo.iCount));
-			myActionInfo.defaultToolWeightList.add(String.valueOf(actionInfo.iToolWeight));
-			myActionInfo.defaultBurningList.add(String.valueOf(actionInfo.iBurning));
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if(keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0){
+			Intent intent = new Intent();
+			setResult(Activity.RESULT_CANCELED);
+			finish();
+			return true;
 		}
-		
-		MyCourseActionDao.getInstance().saveMyCourseActionInfo(Globle.gApplicationContext, mCourseId, myActionInfo);
+		return super.onKeyDown(keyCode, event);
 	}
 }

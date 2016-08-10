@@ -20,14 +20,11 @@ public class DBOpenHelper extends SQLiteOpenHelper {
 		String courseTable = CourseDao.getInstance().getCourseTableSqlString();
 		db.execSQL(courseTable);
 		
-//		String actionInfoTable = ActionDao.getActionTableSql();
-//		db.execSQL(actionInfoTable);
-//		
-//		String myCourseTable = MyCourseDao.getCourseTableSql();
-//		db.execSQL(myCourseTable);
-//		
-//		String myCourseActionTable = MyCourseActionDao.getMyCourseTableSql();
-//		db.execSQL(myCourseActionTable);
+		String myCourseTable = MyCourseDao.getInstance().getCourseTableSqlStr();
+		db.execSQL(myCourseTable);
+		
+		String actionTable = ActionDao.getInstance().getActionTableSqlStr();
+		db.execSQL(actionTable);
 //		
 //		String myFinishTable = MyFinishDao.getFinishTableSql();
 //		db.execSQL(myFinishTable);
