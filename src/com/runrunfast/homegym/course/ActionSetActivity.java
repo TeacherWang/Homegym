@@ -26,6 +26,7 @@ import com.runrunfast.homegym.bean.MyCourse;
 import com.runrunfast.homegym.course.ActionSetAdapter.ITrainActionItemListener;
 import com.runrunfast.homegym.course.CourseTrainActivity.ActionTotalData;
 import com.runrunfast.homegym.dao.MyCourseDao;
+import com.runrunfast.homegym.utils.CalculateUtil;
 import com.runrunfast.homegym.utils.ClickUtil;
 import com.runrunfast.homegym.utils.Const;
 import com.runrunfast.homegym.utils.DateUtil;
@@ -52,8 +53,8 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 	
 	private ListView mListView;
 	
-	private int mConsumeSecond = 500; // 消耗时间
-	private int mTotalBurning; // 总燃脂
+//	private int mConsumeSecond = 500; // 消耗时间
+//	private int mTotalBurning; // 总燃脂
 	
 	private ArrayList<GroupDetail> mGroupDetailList;
 	private ActionSetAdapter mTrainActionSetAdapter;
@@ -207,9 +208,8 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 		
 		tvGroupNum.setText(String.valueOf(mGroupDetailList.size()));
 		tvTimeConsume.setText(DateUtil.secToTime(mActionTotalData.totalTime));
-		
-		mTotalBurning = mActionTotalData.totalKcal;
-		tvBurning.setText( String.valueOf(mTotalBurning) );
+//		mTotalBurning = mActionTotalData.totalKcal;
+		tvBurning.setText( String.valueOf(mActionTotalData.totalKcal) );
 	}
 
 	private void initView() {
@@ -278,6 +278,68 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 		}
 	}
 
+	private void clickPopConfirm() {
+		if(popWindows == null){
+			Log.e(TAG, "clickPopConfirm, popWindows == null");
+			return;
+		}
+		
+		popWindows.dismiss();
+		
+		ActionTotalData actionTotalData = null;
+		switch (inputType) {
+		case INPUT_TYPE_COUNT:
+			mGroupDetail.count = mCount;
+			// 要计算次数跟重量对应的燃脂，公式？还有时间
+			mGroupDetail.kcal = CalculateUtil.calculateTotakKcal(mGroupDetail.count, mGroupDetail.weight);
+			mGroupDetail.time = CalculateUtil.calculateTotalTime(mGroupDetail.count);
+			
+			actionTotalData = getTotalTimeOfActionInMyCourse(mActionDetail);
+			
+			tvTimeConsume.setText(DateUtil.secToTime(actionTotalData.totalTime));
+			tvBurning.setText( String.valueOf(actionTotalData.totalKcal) );
+//			mTrainActionInfo.iBurning = 公式？
+//			mTotalBurning = mTotalBurning + trainActionInfo.iBurning;
+//			tvTimeConsume.setText(DateUtil.secToTime(mConsumeSecond));
+//			tvBurning.setText(String.valueOf(mTotalBurning));
+			
+			mTrainActionSetAdapter.updateData(mGroupDetailList);
+			break;
+			
+		case INPUT_TYPE_TOOL_WEIGHT:
+			mGroupDetail.weight = mToolWeight;
+			// 要计算次数跟重量对应的燃脂，公式？还有时间
+			mGroupDetail.kcal = CalculateUtil.calculateTotakKcal(mGroupDetail.count, mGroupDetail.weight);
+			mGroupDetail.time = CalculateUtil.calculateTotalTime(mGroupDetail.count);
+			
+			actionTotalData = getTotalTimeOfActionInMyCourse(mActionDetail);
+			
+			tvTimeConsume.setText(DateUtil.secToTime(actionTotalData.totalTime));
+			tvBurning.setText( String.valueOf(actionTotalData.totalKcal) );
+//			mTrainActionInfo.iBurning = 公式？
+//			mTotalBurning = mTotalBurning + trainActionInfo.iBurning;
+//			tvTimeConsume.setText(DateUtil.secToTime(mConsumeSecond));
+//			tvBurning.setText(String.valueOf(mTotalBurning));
+			
+			mTrainActionSetAdapter.updateData(mGroupDetailList);
+			break;
+
+		default:
+			break;
+		}
+	}
+
+	private ActionTotalData getTotalTimeOfActionInMyCourse(ActionDetail actionDetail){
+		ActionTotalData actionTotalData = new ActionTotalData();
+		int groupNum = actionDetail.group_num;
+		for(int i=0; i<groupNum; i++){
+			GroupDetail groupDetail = actionDetail.group_detail.get(i);
+			actionTotalData.totalTime = actionTotalData.totalTime + groupDetail.time;
+			actionTotalData.totalKcal = actionTotalData.totalKcal + groupDetail.kcal;
+		}
+		return actionTotalData;
+	}
+	
 	/**
 	  * @Method: saveNewData
 	  * @Description: 保存设置的数据
@@ -294,46 +356,10 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 		
 		Intent intent = new Intent();
 		intent.putExtra(Const.KEY_COURSE, mMyCourse);
-		setResult(Activity.RESULT_OK);
+		setResult(Activity.RESULT_OK, intent);
 		finish();
 	}
-
-	private void clickPopConfirm() {
-		if(popWindows == null){
-			Log.e(TAG, "clickPopConfirm, popWindows == null");
-			return;
-		}
-		
-		popWindows.dismiss();
-		
-		switch (inputType) {
-		case INPUT_TYPE_COUNT:
-			mGroupDetail.count = mCount;
-			// 要计算次数跟重量对应的燃脂，公式？还有时间
-//			mTrainActionInfo.iBurning = 公式？
-//			mTotalBurning = mTotalBurning + trainActionInfo.iBurning;
-//			tvTimeConsume.setText(DateUtil.secToTime(mConsumeSecond));
-//			tvBurning.setText(String.valueOf(mTotalBurning));
-			
-			mTrainActionSetAdapter.updateData(mGroupDetailList);
-			break;
-			
-		case INPUT_TYPE_TOOL_WEIGHT:
-			mGroupDetail.weight = mToolWeight;
-			// 要计算次数跟重量对应的燃脂，公式？还有时间
-//			mTrainActionInfo.iBurning = 公式？
-//			mTotalBurning = mTotalBurning + trainActionInfo.iBurning;
-//			tvTimeConsume.setText(DateUtil.secToTime(mConsumeSecond));
-//			tvBurning.setText(String.valueOf(mTotalBurning));
-			
-			mTrainActionSetAdapter.updateData(mGroupDetailList);
-			break;
-
-		default:
-			break;
-		}
-	}
-
+	
 	private void jumpToVideoDemo() {
 		
 	}
@@ -348,13 +374,17 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 		GroupDetail removeGroupDetail = mGroupDetailList.get(mGroupDetailList.size() - 1);
 		
 		mGroupDetailList.remove(mGroupDetailList.size() - 1);
+		mActionDetail.group_num = mGroupDetailList.size();
+		mActionDetail.group_detail = mGroupDetailList;
+		
 		mTrainActionSetAdapter.notifyDataSetChanged();
 		
 		tvGroupNum.setText(String.valueOf(mGroupDetailList.size()));
-		mConsumeSecond = mConsumeSecond - 10;
-		mTotalBurning = mTotalBurning - removeGroupDetail.kcal;
-		tvTimeConsume.setText(DateUtil.secToTime(mConsumeSecond));
-		tvBurning.setText(String.valueOf(mTotalBurning));
+		
+		ActionTotalData actionTotalData = getTotalTimeOfActionInMyCourse(mActionDetail);
+		
+		tvTimeConsume.setText(DateUtil.secToTime(actionTotalData.totalTime));
+		tvBurning.setText(String.valueOf(actionTotalData.totalKcal));
 	}
 
 	private void addGroupNum() {
@@ -363,30 +393,26 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 			Toast.makeText(this, R.string.group_num_is_bigger_than_9, Toast.LENGTH_SHORT).show();
 			return;
 		}
-		
-		GroupDetail groupDetail = new GroupDetail(8, 10, 60, 10);
-		mActionDetail.group_num = mGroupDetailList.size() + 1;
+		GroupDetail groupDetail = new GroupDetail(8, 10, CalculateUtil.calculateTotakKcal(8, 10), CalculateUtil.calculateTotalTime(8));
 		mGroupDetailList.add(groupDetail);
-		
+		mActionDetail.group_num = mGroupDetailList.size();
 		mActionDetail.group_detail = mGroupDetailList;
-		
-		int groupNum = mGroupDetailList.size();
 		
 		mTrainActionSetAdapter.notifyDataSetChanged();
 		
-		tvGroupNum.setText(String.valueOf(groupNum));
+		tvGroupNum.setText(String.valueOf(mActionDetail.group_num));
 		
-		mConsumeSecond = mConsumeSecond + 10;
-		mTotalBurning = mTotalBurning + groupDetail.kcal;
-		tvTimeConsume.setText(DateUtil.secToTime(mConsumeSecond));
-		tvBurning.setText(String.valueOf(mTotalBurning));
+		ActionTotalData actionTotalData = getTotalTimeOfActionInMyCourse(mActionDetail);
+		
+		tvTimeConsume.setText(DateUtil.secToTime(actionTotalData.totalTime));
+		tvBurning.setText(String.valueOf(actionTotalData.totalKcal));
 	}
 	
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if(keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0){
 			Intent intent = new Intent();
-			setResult(Activity.RESULT_CANCELED);
+			setResult(Activity.RESULT_CANCELED, intent);
 			finish();
 			return true;
 		}

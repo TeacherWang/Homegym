@@ -18,6 +18,7 @@ public class Const {
 	public static final String KEY_ACTION_NUM = "key_action_num"; // 动作几
 	public static final String KEY_DATE = "key_date";
 	public static final String KEY_COURSE_DETAIL = "key_course_detail";
+	public static final String KEY_DAY_PROGRESS_LIST = "key_day_progress_list";
 	public static final String KEY_ACTION = "key_action";
 	public static final String KEY_ACTION_TOTAL_DATA = "key_action_total_data";
 	public static final String KEY_ACTION_DETAIL = "key_action_detail";
@@ -47,6 +48,7 @@ public class Const {
 	public static final String DB_KEY_COURSE_NEW = "course_new";
 	public static final String DB_KEY_COURSE_DETAIL = "course_detail";
 	
+	public static final String DB_KEY_ACTION_DETAIL = "action_detail";
 	public static final String DB_KEY_ACTION_ID = "action_id";
 	public static final String DB_KEY_ACTION_NAME = "action_name";
 	public static final String DB_KEY_ACTION_POSITION = "action_position"; // 动作锻炼的部位
@@ -63,9 +65,9 @@ public class Const {
 	public static final String DB_KEY_DAY_PROGRESS = "day_progress"; // 每天的完成度 -- 已完成、未完成
 	
 	public static final String DB_KEY_FINISH_GROUP_NUM = "finish_group_num";
-	public static final String DB_KEY_FINISH_TOTAL_COUNT = "finish_total_count";
-	public static final String DB_KEY_FINISH_TOTAL_KCAL = "finish_total_kcal";
-	public static final String DB_KEY_FINISH_TOTAL_TIME = "finish_total_time";
+	public static final String DB_KEY_FINISH_COUNT = "finish_count";
+	public static final String DB_KEY_FINISH_KCAL = "finish_kcal";
+	public static final String DB_KEY_FINISH_TIME = "finish_time";
 	public static final String DB_KEY_FINISH_COUNT_SET = "finish_count_set";
 	public static final String DB_KEY_FINISH_TOOLWEIGHT_SET = "finish_toolweight_set";
 	public static final String DB_KEY_FINISH_BURNING_SET = "finish_burning_set";

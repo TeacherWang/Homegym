@@ -11,6 +11,7 @@ import com.runrunfast.homegym.bean.Course.GroupDetail;
 import com.runrunfast.homegym.dao.ActionDao;
 import com.runrunfast.homegym.dao.CourseDao;
 import com.runrunfast.homegym.utils.Globle;
+import com.runrunfast.homegym.utils.CalculateUtil;
 
 import java.util.ArrayList;
 
@@ -244,27 +245,27 @@ public class DataIniter {
 	
 	private ActionDetail getActionStengthHigh(String actionName) {
 		ActionDetail actionDetail1 = new ActionDetail(actionName, 4);
-		actionDetail1.group_detail.add(new GroupDetail(12, 10, 100, 60));
-		actionDetail1.group_detail.add(new GroupDetail(10, 15, 150, 50));
-		actionDetail1.group_detail.add(new GroupDetail(10, 15, 200, 50));
-		actionDetail1.group_detail.add(new GroupDetail(8, 20, 250, 40));
+		actionDetail1.group_detail.add(new GroupDetail(12, 10, CalculateUtil.calculateTotakKcal(12, 10), CalculateUtil.calculateTotalTime(12)));
+		actionDetail1.group_detail.add(new GroupDetail(9, 15, CalculateUtil.calculateTotakKcal(9, 15), CalculateUtil.calculateTotalTime(9)));
+		actionDetail1.group_detail.add(new GroupDetail(7, 15, CalculateUtil.calculateTotakKcal(7, 15), CalculateUtil.calculateTotalTime(7)));
+		actionDetail1.group_detail.add(new GroupDetail(8, 20, CalculateUtil.calculateTotakKcal(8, 20), CalculateUtil.calculateTotalTime(8)));
 		return actionDetail1;
 	}
 	
 	private ActionDetail getActionStengthNormal(String actionName) {
 		ActionDetail actionDetail1 = new ActionDetail(actionName, 4);
-		actionDetail1.group_detail.add(new GroupDetail(10, 10, 80, 50));
-		actionDetail1.group_detail.add(new GroupDetail(10, 10, 120, 50));
-		actionDetail1.group_detail.add(new GroupDetail(10, 10, 150, 50));
-		actionDetail1.group_detail.add(new GroupDetail(8, 15, 200, 40));
+		actionDetail1.group_detail.add(new GroupDetail(10, 10, CalculateUtil.calculateTotakKcal(10, 10), CalculateUtil.calculateTotalTime(10)));
+		actionDetail1.group_detail.add(new GroupDetail(8, 10, CalculateUtil.calculateTotakKcal(8, 10), CalculateUtil.calculateTotalTime(8)));
+		actionDetail1.group_detail.add(new GroupDetail(6, 10, CalculateUtil.calculateTotakKcal(6, 10), CalculateUtil.calculateTotalTime(6)));
+		actionDetail1.group_detail.add(new GroupDetail(5, 15, CalculateUtil.calculateTotakKcal(5, 15), CalculateUtil.calculateTotalTime(5)));
 		return actionDetail1;
 	}
 	
 	private ActionDetail getActionStengthLow(String actionName) {
 		ActionDetail actionDetail1 = new ActionDetail(actionName, 3);
-		actionDetail1.group_detail.add(new GroupDetail(10, 5, 70, 50));
-		actionDetail1.group_detail.add(new GroupDetail(8, 10, 130, 40));
-		actionDetail1.group_detail.add(new GroupDetail(8, 15, 180, 40));
+		actionDetail1.group_detail.add(new GroupDetail(8, 5, CalculateUtil.calculateTotakKcal(8, 5), CalculateUtil.calculateTotalTime(8)));
+		actionDetail1.group_detail.add(new GroupDetail(6, 10, CalculateUtil.calculateTotakKcal(6, 10), CalculateUtil.calculateTotalTime(6)));
+		actionDetail1.group_detail.add(new GroupDetail(4, 15, CalculateUtil.calculateTotakKcal(4, 15), CalculateUtil.calculateTotalTime(4)));
 		return actionDetail1;
 	}
 	

@@ -13,8 +13,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.runrunfast.homegym.R;
-import com.runrunfast.homegym.account.AccountMgr;
-import com.runrunfast.homegym.account.UserInfo;
 import com.runrunfast.homegym.bean.Action;
 import com.runrunfast.homegym.bean.Course.ActionDetail;
 import com.runrunfast.homegym.bean.Course.CourseDetail;
@@ -27,7 +25,6 @@ import com.runrunfast.homegym.utils.DateUtil;
 import com.runrunfast.homegym.utils.Globle;
 
 import java.io.Serializable;
-import java.sql.Date;
 import java.util.ArrayList;
 
 public class CourseTrainActivity extends Activity implements OnClickListener{
@@ -224,7 +221,11 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 
 	private void startTrain() {
 		Intent intent = new Intent(this, CourseVideoActivity.class);
-		intent.putExtra(Const.KEY_COURSE_DETAIL, mCourseDetail);
+		intent.putExtra(Const.KEY_COURSE, mMyCourse);
+		intent.putExtra(Const.KEY_DAY_POSITION, mCurrentDayPosition);
+//		intent.putExtra(Const.KEY_COURSE_DETAIL, mCourseDetail);
+//		intent.putExtra(Const.KEY_COURSE_ID, mMyCourse.course_id);
+//		intent.putExtra(Const.KEY_COURSE_NAME, mMyCourse.course_name);
 		startActivity(intent);
 	}
 

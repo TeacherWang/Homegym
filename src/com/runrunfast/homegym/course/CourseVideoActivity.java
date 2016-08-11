@@ -16,12 +16,16 @@ import com.runrunfast.homegym.BtDevice.BtDeviceMgr;
 import com.runrunfast.homegym.BtDevice.BtDeviceMgr.BLEServiceListener;
 import com.runrunfast.homegym.account.AccountMgr;
 import com.runrunfast.homegym.account.UserInfo;
-import com.runrunfast.homegym.dao.ActionDao;
-import com.runrunfast.homegym.dao.CourseDao;
-import com.runrunfast.homegym.dao.MyCourseActionDao;
+import com.runrunfast.homegym.bean.Course.ActionDetail;
+import com.runrunfast.homegym.bean.Course.CourseDetail;
+import com.runrunfast.homegym.bean.Course.GroupDetail;
+import com.runrunfast.homegym.bean.MyCourse;
+import com.runrunfast.homegym.bean.MyCourse.DayProgress;
+import com.runrunfast.homegym.dao.MyCourseDao;
 import com.runrunfast.homegym.dao.MyFinishDao;
 import com.runrunfast.homegym.home.FinishActivity;
-import com.runrunfast.homegym.record.RecordDataUnit;
+import com.runrunfast.homegym.record.Record;
+import com.runrunfast.homegym.utils.CalculateUtil;
 import com.runrunfast.homegym.utils.Const;
 import com.runrunfast.homegym.utils.DateUtil;
 import com.runrunfast.homegym.utils.Globle;
@@ -36,34 +40,29 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 	private TextView tvCurrentCount, tvTotalCount, tvGroupIndex, tvActionCount, tvTotalGroup;
 	
 	private UserInfo mUserInfo;
-	private String mCourseId;
+	private MyCourse mMyCourse;
+	private int mDayPosition;
+	private DayProgress mDayProgress;
+	private ArrayList<ActionDetail> mActionDetailList;
+	
 	private String mStrPlanDate;
-	private String[] mActionIds;
-	private ArrayList<ActionInfo> myActionInfoList;
 	private int mTotalActionNum; // 总共的动作个数
 	
-	private CourseInfo mCourseInfo;
-	
-	private int mTotalTime = 0; // 总用时，所有动作之和
-	private int mTotalCount = 0; // 总次数，所有动作之和
-	private int mTotalKcal = 0; // 总kcal，所有动作之和
-	
-	private int mActionTime = 0; // 该动作用时
-	private int mActionCount = 0; // 该动作总次数
-	private int mActionKcal = 0; // 该动作总kcal。每完成一次动作，都要保存到mRecordDataUnit中。
-	
 	private int mActionCurrentGroupCount; // 该动作在当前组的次数
-	private int mActionCurrentGroupToolWeight; // 该动作在该组的器械重量
-	private int mActionCurrentGroupBurning; // 该动作在当前组的燃脂
 	
-	private ActionInfo mCurrentActionInfo; // 当前正在进行的动作
-	private int mCurrentActionNum; // 当前正在进行的第几个动作
-	private List<String> mCurrentActionTotalCountList; // 当前正在进行的动作的每组个数
-	private RecordDataUnit mRecordDataUnit; // 当前的记录
-	private int mActionGroupIndex; // 该组动作已经开始的组数。比如第一个动作第二组开始，那么为二
-	private int mActionGroupTotalCount; // 该动作在该组的总次数
+	private ActionDetail mTargetActionDetail; // 当前正在进行的目标动作
+	private ActionDetail mFinishedActionDetail; // 当前已经完成的动作
+	private int mCurrentActionPosition; // 当前正在进行的动作位置，从0开始
+	private GroupDetail mTargetGroupDetail; // 当前动作该组的目标数据
+	private GroupDetail mFinishedGroupDetail; // 当前动作该组的已经完成的数据
+	private List<GroupDetail> mTargetActionGroupDetailList; // 当前正在进行的目标动作的每组数据集合
+	private List<GroupDetail> mFinishedActionGroupDetailList; // 当前已经完成的指定动作的每组数据集合
+	private Record mCurrentRecord; // 当前的记录
+	private int mActionGroupIndex; // 该组动作已经开始的组数。比如第一个动作第一组开始，那么为0，第二组开始，那么为二
+	private int mActionCurrentGroupTotalCount; // 该动作在该组的总次数
 	
-	private ArrayList<RecordDataUnit> mRecordDataUnitList;
+	private List<ActionDetail> mFinishedActionDetailList;
+//	private ArrayList<Record> mRecordList;
 	
 	private BLEServiceListener mBleServiceListener;
 	
@@ -107,73 +106,64 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 	}
 
 	private void handleFinishOnce() {
-		if(mActionGroupIndex > mCurrentActionInfo.defaultGroupNum){
-			Log.e(TAG, "handleFinishOnce, mActionGroupIndex > mCurrentActionInfo.iGroupNum" + 
-					"mActionGroupIndex = " + mActionGroupIndex + ", mCurrentActionInfo.iGroupNum = " + mCurrentActionInfo.iGroupNum);
+		if(mActionGroupIndex > mTargetActionDetail.group_num){
+			Log.e(TAG, "handleFinishOnce, mActionGroupIndex > mCurrentActionDetail.group_num" + 
+					"mActionGroupIndex = " + mActionGroupIndex + ", mCurrentActionDetail.group_num = " + mTargetActionDetail.group_num);
 			return;
 		}
-		
 		// 当前次数小于该组总次数
-		if( mActionCurrentGroupCount < mActionGroupTotalCount ){
+		if( mActionCurrentGroupCount < mActionCurrentGroupTotalCount ){
 			mActionCurrentGroupCount++; // 当前组的次数
-			mActionCurrentGroupToolWeight = Integer.parseInt( mCurrentActionInfo.defaultToolWeightList.get(mActionGroupIndex - 1) );
-			mActionCurrentGroupBurning = mActionCurrentGroupBurning + 10;
 			
-			mActionKcal = mActionKcal + 10; // 该动作消耗的kcal
-			mActionTime = mActionTime + 10; // 该动作总耗时
-			mActionCount++; // 该动作总次数
+			int kcal = CalculateUtil.calculateSingleKcal(mTargetGroupDetail.weight); // 该动作消耗的kcal
 			
-			mTotalCount++; // 总次数
-			mTotalKcal = mTotalKcal + 10; // 总消耗kcal
-			mTotalTime = mTotalTime + 10; // 总耗时
+			mFinishedGroupDetail.kcal = mFinishedGroupDetail.kcal + kcal; // 该动作消耗的kcal
+			mFinishedGroupDetail.count = mFinishedGroupDetail.count + 1;
+			mFinishedGroupDetail.weight = mTargetGroupDetail.weight;
 			
-			mRecordDataUnit.iConsumeTime = mTotalTime;
-			mRecordDataUnit.iCount = mTotalCount;
-			mRecordDataUnit.iGroupCount = mActionGroupIndex;
-			mRecordDataUnit.iTotalKcal = mActionKcal;
+			mCurrentRecord.finish_count = mCurrentRecord.finish_count + 1; // 该次训练的总次数
+			mCurrentRecord.finish_kcal = mCurrentRecord.finish_kcal + kcal; // 该次训练的总kcal
+			mCurrentRecord.finish_time = mCurrentRecord.finish_time + CalculateUtil.calculateSingleTime(); // 该次训练的总耗时
+			
 			updateUi();
 		}
 		// 次数+1后，该组还未结束
-		if(mActionCurrentGroupCount < mActionGroupTotalCount){
+		if(mActionCurrentGroupCount < mActionCurrentGroupTotalCount){
 			
-		}else if(mActionCurrentGroupCount == mActionGroupTotalCount){ // 次数+1后，该组结束
+		}else if(mActionCurrentGroupCount == mActionCurrentGroupTotalCount){ // 次数+1后，该组结束
 			Toast.makeText(CourseVideoActivity.this, "休息一下", Toast.LENGTH_SHORT).show();
 			
-			mRecordDataUnit.finishCountList.add(String.valueOf(mActionCurrentGroupCount));
-			mRecordDataUnit.finishToolWeightList.add(String.valueOf(mActionCurrentGroupToolWeight));
-			mRecordDataUnit.finishBurningList.add(String.valueOf(mActionCurrentGroupBurning));
+			mFinishedActionDetail.group_num = mActionGroupIndex + 1;
+			mFinishedActionGroupDetailList.add(mFinishedGroupDetail);
+			
 			// 该动作还有下一组
-			if(mActionGroupIndex < mCurrentActionInfo.defaultGroupNum){
-				mActionGroupIndex++;
-				mActionGroupTotalCount = Integer.parseInt( mCurrentActionTotalCountList.get(mActionGroupIndex - 1) );
+			mActionGroupIndex++;
+			if(mActionGroupIndex < mTargetActionDetail.group_num ){
+				mFinishedGroupDetail = new GroupDetail();
+				mTargetGroupDetail = mTargetActionGroupDetailList.get(mActionGroupIndex);
+				mActionCurrentGroupTotalCount = mTargetGroupDetail.count;
 				mActionCurrentGroupCount = 0;
-				mActionCurrentGroupBurning = 0;
-//				mActionCurrentGroupToolWeight = 0;
-//				updateUi();
 			}else{ // 当前为最后一组的最后一次
 				Toast.makeText(CourseVideoActivity.this, "该动作结束", Toast.LENGTH_SHORT).show();
 				// 保存到列表
-				mRecordDataUnitList.add(mRecordDataUnit);
-				mFinishedActionIds.add(mActionIds[mCurrentActionNum - 1]);
+				mFinishedActionDetailList.add(mFinishedActionDetail);
+				mFinishedActionIds.add(mFinishedActionDetail.action_id);
 				// 还有下个动作
-				mCurrentActionNum++;
-				if(mCurrentActionNum <= mTotalActionNum){
-					mCurrentActionInfo = myActionInfoList.get(mCurrentActionNum - 1);
-					mRecordDataUnit = new RecordDataUnit();
-					mRecordDataUnit.strCoursId = mCourseId;
-					mRecordDataUnit.strCourseName = mCourseInfo.courseName;
-					mRecordDataUnit.actionId = mCurrentActionInfo.strActionId;
-					mRecordDataUnit.actionName = mCurrentActionInfo.actionName;
-					mRecordDataUnit.strDate = mStrPlanDate;
-					mActionGroupIndex = 1;
-					mActionKcal = 0;
-					mActionCount = 0;
-					mActionTime = 0;
-					mCurrentActionTotalCountList = mCurrentActionInfo.defaultCountList;
-					mActionGroupTotalCount = Integer.parseInt( mCurrentActionTotalCountList.get(mActionGroupIndex - 1) );
+				mCurrentActionPosition++;
+				if( mCurrentActionPosition < mTotalActionNum ){
+					mTargetActionDetail = mActionDetailList.get(mCurrentActionPosition);
+					
+					mFinishedGroupDetail = new GroupDetail();
+					mFinishedActionDetail = new ActionDetail();
+					mFinishedActionDetail.action_id = mTargetActionDetail.action_id;
+					mFinishedActionDetail.group_num = 1;
+					mFinishedActionGroupDetailList = mFinishedActionDetail.group_detail;
+					
+					mActionGroupIndex = 0;
+					mTargetActionGroupDetailList = mTargetActionDetail.group_detail;
+					mTargetGroupDetail = mTargetActionGroupDetailList.get(mActionGroupIndex);
+					mActionCurrentGroupTotalCount = mTargetGroupDetail.count;
 					mActionCurrentGroupCount = 0;
-					mActionCurrentGroupBurning = 0;
-//					updateUi();
 				}else{// 最后一个动作了
 					Toast.makeText(CourseVideoActivity.this, "所有动作做完，课程结束", Toast.LENGTH_SHORT).show();
 					// 保存数据到数据库
@@ -187,54 +177,55 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 	private void initData() {
 		mUserInfo = AccountMgr.getInstance().mUserInfo;
 		
-		mCourseId = getIntent().getStringExtra(Const.KEY_COURSE_ID);
-		mActionIds = getIntent().getStringArrayExtra(Const.KEY_ACTION_IDS);
-		mStrPlanDate = getIntent().getStringExtra(Const.KEY_DATE);
+		mFinishedActionGroupDetailList = new ArrayList<GroupDetail>();
+		mFinishedGroupDetail = new GroupDetail();
 		
-		mCourseInfo = CourseDao.getInstance().getCourseInfoFromDb(Globle.gApplicationContext, mCourseId);
+		mMyCourse = (MyCourse) getIntent().getSerializableExtra(Const.KEY_COURSE);
+		mDayPosition = getIntent().getIntExtra(Const.KEY_DAY_POSITION, 0);
 		
-		myActionInfoList = new ArrayList<ActionInfo>();
+		CourseDetail courseDetail = mMyCourse.course_detail.get(mDayPosition);
+		
+		mActionDetailList = (ArrayList<ActionDetail>) courseDetail.action_detail;
+		
+		List<DayProgress> day_progress = mMyCourse.day_progress;
+		mDayProgress = day_progress.get(mDayPosition);
+		mStrPlanDate = mDayProgress.plan_date;
+		
 		mFinishedActionIds = new ArrayList<String>();;
 		
 		// 获取动作列表
-		mTotalActionNum = mActionIds.length;
-		for(int i=0; i<mTotalActionNum; i++){
-			ActionInfo myActionInfo = MyCourseActionDao.getInstance().getMyCourseActionInfo
-					(Globle.gApplicationContext, mUserInfo.strAccountId, mCourseId, mActionIds[i]);
-			ActionInfo actionInfo = ActionDao.getInstance().getActionInfoFromDb(Globle.gApplicationContext, mActionIds[i]);
-			myActionInfo.actionName = actionInfo.actionName;
-			
-			myActionInfoList.add(myActionInfo);
-		}
+		mTotalActionNum = mActionDetailList.size();
 		
-		// 初始化记录完成的数据。每完成一次动作，就会有个RecordDataUnit来更新数据，当全部组数做完或者要中途退出时，把当前数据加到list中，然后保存到数据库并上传后台
-		mRecordDataUnitList = new ArrayList<RecordDataUnit>();
+		mCurrentActionPosition = 0; // 第一个动作
+		mTargetActionDetail = mActionDetailList.get(mCurrentActionPosition);
 		
-		mCurrentActionNum = 1; // 第一个动作
-		mCurrentActionInfo = myActionInfoList.get(mCurrentActionNum - 1);
-		mActionGroupIndex = 1;
-		mActionKcal = 0;
-		mCurrentActionTotalCountList = mCurrentActionInfo.defaultCountList;
-		mActionGroupTotalCount = Integer.parseInt( mCurrentActionTotalCountList.get(mActionGroupIndex - 1) );
+		mFinishedActionDetail = new ActionDetail();
+		mFinishedActionDetail.action_id = mTargetActionDetail.action_id;
+		mFinishedActionDetail.group_num = 1;
+		mFinishedActionGroupDetailList = mFinishedActionDetail.group_detail;
+		
+		mActionGroupIndex = 0;
+		mTargetActionGroupDetailList = mTargetActionDetail.group_detail;
+		mTargetGroupDetail = mTargetActionGroupDetailList.get(mActionGroupIndex);
+		mActionCurrentGroupTotalCount = mTargetGroupDetail.count;
 		mActionCurrentGroupCount = 0;
-		mTotalKcal = 0;
 		
-		mRecordDataUnit = new RecordDataUnit();
-		mRecordDataUnit.strCoursId = mCourseId;
-		mRecordDataUnit.strCourseName = mCourseInfo.courseName;
-		mRecordDataUnit.actionId = mCurrentActionInfo.strActionId;
-		mRecordDataUnit.actionName = mCurrentActionInfo.actionName;
-		mRecordDataUnit.strDate = mStrPlanDate;
+		mCurrentRecord = new Record();
+		mCurrentRecord.course_id = mMyCourse.course_id;
+		mCurrentRecord.course_name = mMyCourse.course_name;
+		mCurrentRecord.plan_date = mStrPlanDate;
+		mCurrentRecord.finish_group_num = mActionGroupIndex + 1; // 完成的组数
+		mFinishedActionDetailList = mCurrentRecord.action_detail;
 		
 		updateUi();
 	}
 
 	private void updateUi() {
-		tvTotalCount.setText(String.valueOf(mActionGroupTotalCount));
+		tvTotalCount.setText(String.valueOf(mActionCurrentGroupTotalCount));
 		tvCurrentCount.setText(String.valueOf(mActionCurrentGroupCount));
-		tvGroupIndex.setText("第" + mActionGroupIndex + "组");
-		tvActionCount.setText("动作" + mCurrentActionNum);
-		tvTotalGroup.setText("共" + mCurrentActionInfo.defaultGroupNum + "组");
+		tvGroupIndex.setText("第" + (mActionGroupIndex + 1) + "组");
+		tvActionCount.setText("动作" + (mCurrentActionPosition + 1));
+		tvTotalGroup.setText("共" + mTargetActionDetail.group_num + "组");
 	}
 
 	private void initView() {
@@ -255,7 +246,7 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.btn_finished:
-			handleCourseFinished();
+			handleInterupt();
 			break;
 			
 		case R.id.btn_finish_once:
@@ -268,38 +259,48 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 		}
 	}
 
+	private void handleInterupt() {
+		if(mFinishedGroupDetail.count > 0){
+			mFinishedActionDetail.group_num = mActionGroupIndex + 1;
+			mFinishedActionGroupDetailList.add(mFinishedGroupDetail);
+			mFinishedActionDetailList.add(mFinishedActionDetail);
+		}
+		mCurrentRecord.actual_date = DateUtil.getCurrentDate();
+		MyFinishDao.getInstance().saveRecordToDb(Globle.gApplicationContext, mUserInfo.strAccountId, mCurrentRecord);
+		
+		Intent intent = new Intent(this, FinishActivity.class);
+		intent.putExtra(FinishActivity.KEY_FINISH_OR_UNFINISH, FinishActivity.TYPE_UNFINISH);
+		intent.putStringArrayListExtra(Const.KEY_ACTION_IDS, mFinishedActionIds);
+		
+		intent.putExtra(Const.KEY_COURSE_TOTAL_TIME, mCurrentRecord.finish_time);
+		intent.putExtra(Const.KEY_COURSE_TOTAL_COUNT, mCurrentRecord.finish_count);
+		intent.putExtra(Const.KEY_COURSE_TOTAL_BURNING, mCurrentRecord.finish_kcal);
+		intent.putExtra(Const.KEY_COURSE_ID, mMyCourse.course_id);
+		
+		startActivity(intent);
+		finish();
+	}
+
 	/**
 	  * @Method: handleCourseFinished
 	  * @Description: 完成训练	
 	  * 返回类型：void 
 	  */
 	private void handleCourseFinished() {
-		if(mActionCurrentGroupCount != 0){
-			mRecordDataUnit.finishCountList.add(String.valueOf(mActionCurrentGroupCount));
-			mRecordDataUnit.finishToolWeightList.add(String.valueOf(mActionCurrentGroupToolWeight));
-			mRecordDataUnit.finishBurningList.add(String.valueOf(mActionCurrentGroupBurning));
-			
-			mRecordDataUnitList.add(mRecordDataUnit);
-		}
-		int recordSize = mRecordDataUnitList.size();
-		for(int i=0; i<recordSize; i++){
-			RecordDataUnit recordDataUnit = mRecordDataUnitList.get(i);
-			MyFinishDao.getInstance().saveFinishInfoToDb(Globle.gApplicationContext, mUserInfo.strAccountId, recordDataUnit, DateUtil.getCurrentDate());
-		}
+		mCurrentRecord.actual_date = DateUtil.getCurrentDate();
+		MyFinishDao.getInstance().saveRecordToDb(Globle.gApplicationContext, mUserInfo.strAccountId, mCurrentRecord);
+		
+		mDayProgress.progress = MyCourse.DAY_PROGRESS_FINISH;
+		MyCourseDao.getInstance().saveMyCourseDayProgress(Globle.gApplicationContext, mUserInfo.strAccountId, mMyCourse);
 		
 		Intent intent = new Intent(this, FinishActivity.class);
-		if(isFinished){
-			intent.putExtra(FinishActivity.KEY_FINISH_OR_UNFINISH, FinishActivity.TYPE_FINISH);
-			intent.putExtra(Const.KEY_ACTION_IDS, mActionIds);
-		}else{
-			intent.putExtra(FinishActivity.KEY_FINISH_OR_UNFINISH, FinishActivity.TYPE_UNFINISH);
-			intent.putStringArrayListExtra(Const.KEY_ACTION_IDS, mFinishedActionIds);
-		}
+		intent.putExtra(FinishActivity.KEY_FINISH_OR_UNFINISH, FinishActivity.TYPE_FINISH);
+		intent.putExtra(Const.KEY_ACTION_IDS, mFinishedActionIds);
 		
-		intent.putExtra(Const.KEY_COURSE_TOTAL_TIME, mTotalTime);
-		intent.putExtra(Const.KEY_COURSE_TOTAL_COUNT, mTotalCount);
-		intent.putExtra(Const.KEY_COURSE_TOTAL_BURNING, mTotalKcal);
-		intent.putExtra(Const.KEY_COURSE_ID, mCourseId);
+		intent.putExtra(Const.KEY_COURSE_TOTAL_TIME, mCurrentRecord.finish_time);
+		intent.putExtra(Const.KEY_COURSE_TOTAL_COUNT, mCurrentRecord.finish_count);
+		intent.putExtra(Const.KEY_COURSE_TOTAL_BURNING, mCurrentRecord.finish_kcal);
+		intent.putExtra(Const.KEY_COURSE_ID, mMyCourse.course_id);
 		
 		startActivity(intent);
 		finish();

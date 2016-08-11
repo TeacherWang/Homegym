@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 单个动作的完成情况
+ * 指定日期单次训练的完成情况
  *
  */
 public class RecordDataUnit extends RecordDataDate{

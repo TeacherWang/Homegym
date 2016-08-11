@@ -10,10 +10,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.runrunfast.homegym.R;
-import com.runrunfast.homegym.course.ActionInfo;
-import com.runrunfast.homegym.course.CourseInfo;
+import com.runrunfast.homegym.bean.Action;
 import com.runrunfast.homegym.dao.ActionDao;
-import com.runrunfast.homegym.dao.CourseDao;
 import com.runrunfast.homegym.utils.Const;
 import com.runrunfast.homegym.utils.DateUtil;
 import com.runrunfast.homegym.utils.Globle;
@@ -28,7 +26,7 @@ public class FinishActivity extends Activity {
 	
 	private ListView mHadFinishListView;
 	private HadFinishAdapter mHadFinishAdapter;
-	private ArrayList<ActionInfo> mActionInfoList;
+	private ArrayList<Action> mActionList;
 	
 	private FrameLayout mFinishDataContainer;
 	private View mFinishedView;
@@ -41,7 +39,7 @@ public class FinishActivity extends Activity {
 	private int mTotalTime;
 	private int mTotalCount;
 	private int mTotalKcal;
-	private String mCourseId;
+	private String mCourseName;
 	private ArrayList<String> mActionIdList;
 	
 	@Override
@@ -75,24 +73,23 @@ public class FinishActivity extends Activity {
 		mTotalTime = intent.getIntExtra(Const.KEY_COURSE_TOTAL_TIME, 0);
 		mTotalCount = intent.getIntExtra(Const.KEY_COURSE_TOTAL_COUNT, 0);
 		mTotalKcal = intent.getIntExtra(Const.KEY_COURSE_TOTAL_BURNING, 0);
-		mCourseId = intent.getStringExtra(Const.KEY_COURSE_ID);
+		mCourseName = intent.getStringExtra(Const.KEY_COURSE_NAME);
 		mActionIdList = intent.getStringArrayListExtra(Const.KEY_ACTION_IDS);
 		
-		CourseInfo courseInfo = CourseDao.getInstance().getCourseInfoFromDb(Globle.gApplicationContext, mCourseId);
-		tvFinishCourseName.setText(courseInfo.courseName);
+		tvFinishCourseName.setText(mCourseName);
 		tvFinishActionTime.setText(DateUtil.secToTime(mTotalTime));
 		tvFinishActionCount.setText(String.valueOf(mTotalCount));
 		tvFinishActionBurning.setText(String.valueOf(mTotalKcal));
 		
-		mActionInfoList = new ArrayList<ActionInfo>();
+		mActionList = new ArrayList<Action>();
 		int actionSize = mActionIdList.size();
 		for(int i=0; i<actionSize; i++){
 			String actionId = mActionIdList.get(i);
-			ActionInfo actionInfo = ActionDao.getInstance().getActionInfoFromDb(Globle.gApplicationContext, actionId);
-			mActionInfoList.add(actionInfo);
+			Action action = ActionDao.getInstance().getActionFromDb(Globle.gApplicationContext, actionId);
+			mActionList.add(action);
 		}
 	
-		mHadFinishAdapter = new HadFinishAdapter(this, mActionInfoList);
+		mHadFinishAdapter = new HadFinishAdapter(this, mActionList);
 		mHadFinishListView.setAdapter(mHadFinishAdapter);
 	}
 

@@ -1,11 +1,5 @@
 package com.runrunfast.homegym.home;
 
-import java.util.ArrayList;
-
-import com.runrunfast.homegym.R;
-import com.runrunfast.homegym.account.DataTransferUtil;
-import com.runrunfast.homegym.course.ActionInfo;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,12 +8,19 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.runrunfast.homegym.R;
+import com.runrunfast.homegym.account.DataTransferUtil;
+import com.runrunfast.homegym.bean.Action;
+import com.runrunfast.homegym.course.ActionInfo;
+
+import java.util.ArrayList;
+
 public class HadFinishAdapter extends BaseAdapter {
 
 	private LayoutInflater mInflater;
-	private ArrayList<ActionInfo> mHadFinishInfoList;
+	private ArrayList<Action> mHadFinishInfoList;
 	
-	public HadFinishAdapter(Context context, ArrayList<ActionInfo> hadfinishList){
+	public HadFinishAdapter(Context context, ArrayList<Action> hadfinishList){
 		this.mHadFinishInfoList = hadfinishList;
 		this.mInflater = LayoutInflater.from(context);
 	}
@@ -54,10 +55,10 @@ public class HadFinishAdapter extends BaseAdapter {
 			holder = (ViewHolder) convertView.getTag();
 		}
 		
-		ActionInfo hadFinishInfo = mHadFinishInfoList.get(position);
+		Action hadFinishInfo = mHadFinishInfoList.get(position);
 		
 //		holder.ivBg.setBackgroundResource(resid)
-		holder.tvActionName.setText(hadFinishInfo.actionName);
+		holder.tvActionName.setText(hadFinishInfo.action_name);
 		holder.tvAction.setText("动作" + DataTransferUtil.numMap.get(position + 1));
 		
 		return convertView;

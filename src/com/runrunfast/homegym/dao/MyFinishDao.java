@@ -5,13 +5,19 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.runrunfast.homegym.bean.Course.ActionDetail;
 import com.runrunfast.homegym.record.BaseRecordData;
+import com.runrunfast.homegym.record.Record;
 import com.runrunfast.homegym.record.RecordDataUnit;
 import com.runrunfast.homegym.record.StatisticalData;
 import com.runrunfast.homegym.utils.Const;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 
 public class MyFinishDao {
 	private volatile static MyFinishDao instance;
@@ -38,9 +44,9 @@ public class MyFinishDao {
 				+ Const.DB_KEY_ACTION_ID + " TEXT,"
 				+ Const.DB_KEY_ACTION_NAME + " TEXT,"
 				+ Const.DB_KEY_FINISH_GROUP_NUM + " INTEGER,"
-				+ Const.DB_KEY_FINISH_TOTAL_COUNT + " INTEGER,"
-				+ Const.DB_KEY_FINISH_TOTAL_KCAL + " INTEGER,"
-				+ Const.DB_KEY_FINISH_TOTAL_TIME + " INTEGER,"
+				+ Const.DB_KEY_FINISH_COUNT + " INTEGER,"
+				+ Const.DB_KEY_FINISH_KCAL + " INTEGER,"
+				+ Const.DB_KEY_FINISH_TIME + " INTEGER,"
 				+ Const.DB_KEY_FINISH_COUNT_SET + " TEXT,"
 				+ Const.DB_KEY_FINISH_TOOLWEIGHT_SET + " TEXT,"
 				+ Const.DB_KEY_FINISH_BURNING_SET + " TEXT,"
@@ -65,9 +71,9 @@ public class MyFinishDao {
 			values.put(Const.DB_KEY_ACTION_ID, recordDataDate.actionId);
 			values.put(Const.DB_KEY_ACTION_NAME, recordDataDate.actionName);
 			values.put(Const.DB_KEY_FINISH_GROUP_NUM, recordDataDate.iGroupCount);
-			values.put(Const.DB_KEY_FINISH_TOTAL_COUNT, recordDataDate.iCount);
-			values.put(Const.DB_KEY_FINISH_TOTAL_KCAL, recordDataDate.iTotalKcal);
-			values.put(Const.DB_KEY_FINISH_TOTAL_TIME, recordDataDate.iConsumeTime);
+			values.put(Const.DB_KEY_FINISH_COUNT, recordDataDate.iCount);
+			values.put(Const.DB_KEY_FINISH_KCAL, recordDataDate.iTotalKcal);
+			values.put(Const.DB_KEY_FINISH_TIME, recordDataDate.iConsumeTime);
 			values.put(Const.DB_KEY_FINISH_COUNT_SET, recordDataDate.finishCountList.toString());
 			values.put(Const.DB_KEY_FINISH_TOOLWEIGHT_SET, recordDataDate.finishToolWeightList.toString());
 			values.put(Const.DB_KEY_FINISH_BURNING_SET, recordDataDate.finishBurningList.toString());
@@ -219,7 +225,7 @@ public class MyFinishDao {
 				while (c.moveToNext()) {
 					// 再根据每天求和
 					String strDate = c.getString(c.getColumnIndex(Const.DB_KEY_ACTUAL_DATE));
-					cSum = db.query(Const.TABLE_FINISH, new String[]{ "SUM("+ Const.DB_KEY_FINISH_TOTAL_KCAL +")" }, Const.DB_KEY_UID + " =? and " + Const.DB_KEY_ACTUAL_DATE + " = ? ",
+					cSum = db.query(Const.TABLE_FINISH, new String[]{ "SUM("+ Const.DB_KEY_FINISH_KCAL +")" }, Const.DB_KEY_UID + " =? and " + Const.DB_KEY_ACTUAL_DATE + " = ? ",
 							new String[]{ uid, strDate }, null, null, null);
 					if(cSum.moveToNext()){
 						StatisticalData statisticalData = new StatisticalData();
@@ -259,7 +265,7 @@ public class MyFinishDao {
 				c = db.query(Const.TABLE_FINISH, null, Const.DB_KEY_UID + " =? and " + Const.DB_KEY_ACTUAL_DATE + " like ? ",
 						new String[]{ uid, "%" + strYearMonth + "%" }, null, null, null);
 				if(null != c && c.getCount() > 0){
-					cSum = db.query(Const.TABLE_FINISH, new String[]{ "SUM("+ Const.DB_KEY_FINISH_TOTAL_KCAL +")" }, Const.DB_KEY_UID + " =? and " + Const.DB_KEY_ACTUAL_DATE + " like ? ",
+					cSum = db.query(Const.TABLE_FINISH, new String[]{ "SUM("+ Const.DB_KEY_FINISH_KCAL +")" }, Const.DB_KEY_UID + " =? and " + Const.DB_KEY_ACTUAL_DATE + " like ? ",
 							new String[]{ uid, "%" + strYearMonth + "%" }, null, null, null);
 					if(cSum.moveToNext()){
 						StatisticalData statisticalData = new StatisticalData();
@@ -306,9 +312,9 @@ public class MyFinishDao {
 				recordDataUnit.actionId = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_ID));
 				recordDataUnit.actionName = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_NAME));
 				recordDataUnit.iGroupCount = c.getInt(c.getColumnIndex(Const.DB_KEY_FINISH_GROUP_NUM));
-				recordDataUnit.iCount = c.getInt(c.getColumnIndex(Const.DB_KEY_FINISH_TOTAL_COUNT));
-				recordDataUnit.iTotalKcal = c.getInt(c.getColumnIndex(Const.DB_KEY_FINISH_TOTAL_KCAL));
-				recordDataUnit.iConsumeTime = c.getInt(c.getColumnIndex(Const.DB_KEY_FINISH_TOTAL_TIME));
+				recordDataUnit.iCount = c.getInt(c.getColumnIndex(Const.DB_KEY_FINISH_COUNT));
+				recordDataUnit.iTotalKcal = c.getInt(c.getColumnIndex(Const.DB_KEY_FINISH_KCAL));
+				recordDataUnit.iConsumeTime = c.getInt(c.getColumnIndex(Const.DB_KEY_FINISH_TIME));
 				
 				String tempCountString = c.getString(c.getColumnIndex(Const.DB_KEY_FINISH_COUNT_SET));
 				String finishCountString = tempCountString.substring(1, tempCountString.length() - 1).replace(" ", "");
@@ -365,9 +371,9 @@ public class MyFinishDao {
 					recordDataUnit.actionId = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_ID));
 					recordDataUnit.actionName = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_NAME));
 					recordDataUnit.iGroupCount = c.getInt(c.getColumnIndex(Const.DB_KEY_FINISH_GROUP_NUM));
-					recordDataUnit.iCount = c.getInt(c.getColumnIndex(Const.DB_KEY_FINISH_TOTAL_COUNT));
-					recordDataUnit.iTotalKcal = c.getInt(c.getColumnIndex(Const.DB_KEY_FINISH_TOTAL_KCAL));
-					recordDataUnit.iConsumeTime = c.getInt(c.getColumnIndex(Const.DB_KEY_FINISH_TOTAL_TIME));
+					recordDataUnit.iCount = c.getInt(c.getColumnIndex(Const.DB_KEY_FINISH_COUNT));
+					recordDataUnit.iTotalKcal = c.getInt(c.getColumnIndex(Const.DB_KEY_FINISH_KCAL));
+					recordDataUnit.iConsumeTime = c.getInt(c.getColumnIndex(Const.DB_KEY_FINISH_TIME));
 					
 					String tempCountString = c.getString(c.getColumnIndex(Const.DB_KEY_FINISH_COUNT_SET));
 					String finishCountString = tempCountString.substring(1, tempCountString.length() - 1).replace(" ", "");
@@ -429,9 +435,9 @@ public class MyFinishDao {
 					recordDataUnit.actionId = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_ID));
 					recordDataUnit.actionName = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_NAME));
 					recordDataUnit.iGroupCount = c.getInt(c.getColumnIndex(Const.DB_KEY_FINISH_GROUP_NUM));
-					recordDataUnit.iCount = c.getInt(c.getColumnIndex(Const.DB_KEY_FINISH_TOTAL_COUNT));
-					recordDataUnit.iTotalKcal = c.getInt(c.getColumnIndex(Const.DB_KEY_FINISH_TOTAL_KCAL));
-					recordDataUnit.iConsumeTime = c.getInt(c.getColumnIndex(Const.DB_KEY_FINISH_TOTAL_TIME));
+					recordDataUnit.iCount = c.getInt(c.getColumnIndex(Const.DB_KEY_FINISH_COUNT));
+					recordDataUnit.iTotalKcal = c.getInt(c.getColumnIndex(Const.DB_KEY_FINISH_KCAL));
+					recordDataUnit.iConsumeTime = c.getInt(c.getColumnIndex(Const.DB_KEY_FINISH_TIME));
 					
 					String tempCountString = c.getString(c.getColumnIndex(Const.DB_KEY_FINISH_COUNT_SET));
 					String finishCountString = tempCountString.substring(1, tempCountString.length() - 1).replace(" ", "");
@@ -574,9 +580,9 @@ public class MyFinishDao {
 					recordDataUnit.actionId = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_ID));
 					recordDataUnit.actionName = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_NAME));
 					recordDataUnit.iGroupCount = c.getInt(c.getColumnIndex(Const.DB_KEY_FINISH_GROUP_NUM));
-					recordDataUnit.iCount = c.getInt(c.getColumnIndex(Const.DB_KEY_FINISH_TOTAL_COUNT));
-					recordDataUnit.iTotalKcal = c.getInt(c.getColumnIndex(Const.DB_KEY_FINISH_TOTAL_KCAL));
-					recordDataUnit.iConsumeTime = c.getInt(c.getColumnIndex(Const.DB_KEY_FINISH_TOTAL_TIME));
+					recordDataUnit.iCount = c.getInt(c.getColumnIndex(Const.DB_KEY_FINISH_COUNT));
+					recordDataUnit.iTotalKcal = c.getInt(c.getColumnIndex(Const.DB_KEY_FINISH_KCAL));
+					recordDataUnit.iConsumeTime = c.getInt(c.getColumnIndex(Const.DB_KEY_FINISH_TIME));
 					
 					String tempCountString = c.getString(c.getColumnIndex(Const.DB_KEY_FINISH_COUNT_SET));
 					String finishCountString = tempCountString.substring(1, tempCountString.length() - 1).replace(" ", "");
@@ -637,9 +643,9 @@ public class MyFinishDao {
 					recordDataUnit.actionId = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_ID));
 					recordDataUnit.actionName = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_NAME));
 					recordDataUnit.iGroupCount = c.getInt(c.getColumnIndex(Const.DB_KEY_FINISH_GROUP_NUM));
-					recordDataUnit.iCount = c.getInt(c.getColumnIndex(Const.DB_KEY_FINISH_TOTAL_COUNT));
-					recordDataUnit.iTotalKcal = c.getInt(c.getColumnIndex(Const.DB_KEY_FINISH_TOTAL_KCAL));
-					recordDataUnit.iConsumeTime = c.getInt(c.getColumnIndex(Const.DB_KEY_FINISH_TOTAL_TIME));
+					recordDataUnit.iCount = c.getInt(c.getColumnIndex(Const.DB_KEY_FINISH_COUNT));
+					recordDataUnit.iTotalKcal = c.getInt(c.getColumnIndex(Const.DB_KEY_FINISH_KCAL));
+					recordDataUnit.iConsumeTime = c.getInt(c.getColumnIndex(Const.DB_KEY_FINISH_TIME));
 					
 					String tempCountString = c.getString(c.getColumnIndex(Const.DB_KEY_FINISH_COUNT_SET));
 					String finishCountString = tempCountString.substring(1, tempCountString.length() - 1).replace(" ", "");
@@ -670,6 +676,104 @@ public class MyFinishDao {
 			}
 		}
 		return recordDataUnitList;
+	}
+	
+	public String getFinishTableSqlStr(){
+		String sql = "create table if not exists " + Const.TABLE_FINISH
+				+ " (" + Const.DB_KEY_ID + " INTEGER PRIMARY KEY,"
+				+ Const.DB_KEY_UID + " TEXT,"
+				+ Const.DB_KEY_PLAN_DATE + " TEXT,"
+				+ Const.DB_KEY_COURSE_ID + " TEXT,"
+				+ Const.DB_KEY_COURSE_NAME + " TEXT,"
+				+ Const.DB_KEY_FINISH_GROUP_NUM + " INTEGER,"
+				+ Const.DB_KEY_FINISH_COUNT + " INTEGER,"
+				+ Const.DB_KEY_FINISH_KCAL + " INTEGER,"
+				+ Const.DB_KEY_FINISH_TIME + " INTEGER,"
+				+ Const.DB_KEY_ACTION_DETAIL + " TEXT,"
+				+ Const.DB_KEY_ACTUAL_DATE + " TEXT"
+				+ ");";
+		return sql;
+	}
+	
+	public synchronized void saveRecordToDb( Context context, String uid, Record record ){
+		Cursor c = null;
+		SQLiteDatabase db = null;
+		Gson gson = new Gson();
+		try {
+			DBOpenHelper dbHelper = new DBOpenHelper(context);
+			db = dbHelper.getWritableDatabase();
+			ContentValues values = new ContentValues();
+			
+			values.put(Const.DB_KEY_UID, uid);
+			values.put(Const.DB_KEY_PLAN_DATE, record.plan_date);
+			values.put(Const.DB_KEY_COURSE_ID, record.course_id);
+			values.put(Const.DB_KEY_COURSE_NAME, record.course_name);
+			values.put(Const.DB_KEY_FINISH_GROUP_NUM, record.finish_group_num);
+			values.put(Const.DB_KEY_FINISH_COUNT, record.finish_count);
+			values.put(Const.DB_KEY_FINISH_KCAL, record.finish_kcal);
+			values.put(Const.DB_KEY_FINISH_TIME, record.finish_kcal);
+			
+			String jsonActionDetail = gson.toJson(record.action_detail);
+			values.put(Const.DB_KEY_ACTION_DETAIL, jsonActionDetail);
+			
+			values.put(Const.DB_KEY_ACTUAL_DATE, record.actual_date);
+			
+			// 不用更新，直接插入保存
+			db.insert(Const.TABLE_FINISH, null, values);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally{
+			if(c != null){
+				c.close();
+			}
+			if(db != null){
+				db.close();
+			}
+		}
+	}
+	
+	public synchronized ArrayList<Record> getRecordListFromDb(Context context, String uid){
+		ArrayList<Record> recordList = new ArrayList<Record>();
+		SQLiteDatabase db = null;
+		Cursor c = null;
+		try {
+			DBOpenHelper dbHelper = new DBOpenHelper(context);
+			db = dbHelper.getWritableDatabase();
+			
+			c = db.query(Const.TABLE_FINISH, null, Const.DB_KEY_UID + " =? ",
+					new String[]{ uid }, null, null, null);
+			if(null != c && c.getCount() > 0){
+				Gson gson = new Gson();
+				Type typeActionDetail = new TypeToken<Collection<ActionDetail>>(){}.getType();
+				while (c.moveToNext() ) {
+					Record record = new Record();
+					record.uid = c.getString(c.getColumnIndex(Const.DB_KEY_UID));
+					record.course_id = c.getString(c.getColumnIndex(Const.DB_KEY_COURSE_ID));
+					record.course_name = c.getString(c.getColumnIndex(Const.DB_KEY_COURSE_NAME));
+					record.finish_group_num = c.getInt(c.getColumnIndex(Const.DB_KEY_FINISH_GROUP_NUM));
+					record.finish_count = c.getInt(c.getColumnIndex(Const.DB_KEY_FINISH_COUNT));
+					record.finish_kcal = c.getInt(c.getColumnIndex(Const.DB_KEY_FINISH_KCAL));
+					record.finish_time = c.getInt(c.getColumnIndex(Const.DB_KEY_FINISH_TIME));
+					record.actual_date = c.getString(c.getColumnIndex(Const.DB_KEY_ACTUAL_DATE));
+					
+					String jsonActionDetail = c.getString(c.getColumnIndex(Const.DB_KEY_COURSE_DETAIL));
+					record.action_detail = gson.fromJson(jsonActionDetail, typeActionDetail);
+					
+					recordList.add(record);
+				}
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally{
+			if(c != null){
+				c.close();
+			}
+			if(db != null){
+				db.close();
+			}
+		}
+		return recordList;
 	}
 	
 }

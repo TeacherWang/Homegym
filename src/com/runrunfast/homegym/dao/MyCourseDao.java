@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -20,6 +21,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class MyCourseDao {
+	private final String TAG = "MyCourseDao";
+	
 	private volatile static MyCourseDao instance;
 	private static Object lockObject = new Object();
 	
@@ -185,7 +188,6 @@ public class MyCourseDao {
 				+ Const.DB_KEY_COURSE_RECOMMEND + " INTEGER,"
 				+ Const.DB_KEY_COURSE_QUALITY + " INTEGER,"
 				+ Const.DB_KEY_COURSE_NEW + " INTEGER,"
-				+ Const.DB_KEY_ACTION_IDS + " TEXT,"
 				+ Const.DB_KEY_COURSE_DETAIL + " TEXT,"
 				+ Const.DB_KEY_START_DATE + " TEXT,"
 				+ Const.DB_KEY_PROGRESS + " INTEGER,"
@@ -193,8 +195,6 @@ public class MyCourseDao {
 				+ ");";
 		return sql;
 	}
-	
-	//
 	
 	public synchronized void saveMyCourseToDb(Context context, String uid, MyCourse myCourse){
 		Cursor c = null;
@@ -232,6 +232,39 @@ public class MyCourseDao {
 						new String[] { uid, myCourse.course_id });
 			}else{
 				db.insert(Const.TABLE_MY_COURSE, null, values);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally{
+			if(c != null){
+				c.close();
+			}
+			if(db != null){
+				db.close();
+			}
+		}
+	}
+	
+	public synchronized void saveMyCourseDayProgress(Context context, String uid, MyCourse myCourse){
+		Cursor c = null;
+		SQLiteDatabase db = null;
+		try {
+			DBOpenHelper dbHelper = new DBOpenHelper(context);
+			db = dbHelper.getWritableDatabase();
+			ContentValues values = new ContentValues();
+			
+			Gson gson = new Gson();
+			
+			String dayProgressJson = gson.toJson(myCourse.day_progress);
+			values.put(Const.DB_KEY_DAY_PROGRESS, dayProgressJson);
+			
+			c = db.query(Const.TABLE_MY_COURSE, null, Const.DB_KEY_UID + " = ? and " + Const.DB_KEY_COURSE_ID + " =?",
+					new String[] { uid, myCourse.course_id }, null, null, null);
+			if (c.getCount() > 0) {// 查询到数据库有该数据，就更新该行数据
+				db.update(Const.TABLE_MY_COURSE, values, Const.DB_KEY_UID + " = ? and " + Const.DB_KEY_COURSE_ID + " =?",
+						new String[] { uid, myCourse.course_id });
+			}else{
+				Log.e(TAG, "saveMyCourseDayProgress, not find my course! courseId = " + myCourse.course_id);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -308,7 +341,6 @@ public class MyCourseDao {
 			c = db.query(Const.TABLE_MY_COURSE, null, Const.DB_KEY_COURSE_ID + "=?", new String[]{ courseId }, null, null, null);
 			if(null != c && c.getCount() > 0){
 				Gson gson = new Gson();
-//				Type typeActionIds = new TypeToken<Collection<ActionId>>(){}.getType();
 				Type typeCourseDetail = new TypeToken<Collection<CourseDetail>>(){}.getType();
 				Type typeDayProgress = new TypeToken<Collection<DayProgress>>(){}.getType();
 				
@@ -323,9 +355,6 @@ public class MyCourseDao {
 				myCourse.course_new = c.getInt(c.getColumnIndex(Const.DB_KEY_COURSE_NEW));
 				myCourse.start_date = c.getString(c.getColumnIndex(Const.DB_KEY_START_DATE));
 				myCourse.progress = c.getInt(c.getColumnIndex(Const.DB_KEY_PROGRESS));
-				
-//				String jsonActionIds = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_IDS));
-//				myCourse.action_ids = gson.fromJson(jsonActionIds, typeActionIds);
 				
 				String jsonCourseDetail = c.getString(c.getColumnIndex(Const.DB_KEY_COURSE_DETAIL));
 				myCourse.course_detail = gson.fromJson(jsonCourseDetail, typeCourseDetail);
