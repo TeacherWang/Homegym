@@ -11,6 +11,22 @@
         
     </RelativeLayout>
     
+    <HorizontalScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+            <lecho.lib.hellocharts.view.ColumnChartView
+		        android:id="@+id/chart"
+		        android:layout_marginLeft="@dimen/chat_margin_left_right"
+		        android:layout_marginRight="@dimen/chat_margin_left_right"
+		        android:layout_width="wrap_content"
+		        android:layout_height="@dimen/chat_view_height" >
+		    </lecho.lib.hellocharts.view.ColumnChartView>
+        </LinearLayout>
+    </HorizontalScrollView>
+    
     <View 
         android:layout_width="match_parent"
         android:layout_height="1px"

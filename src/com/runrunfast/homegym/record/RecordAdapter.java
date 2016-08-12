@@ -64,9 +64,9 @@ public class RecordAdapter extends BaseAdapter {
 	@Override
 	public int getItemViewType(int position) {
 		BaseRecordData baseRecordData = mBaseRecordDataList.get(position);
-		if(baseRecordData.iDataType == BaseRecordData.DATA_TYPE_HAVE_DATE){
+		if(baseRecordData instanceof RecordDataDate){
 			return LIST_SHOW_DATE;
-		}else if(baseRecordData.iDataType == BaseRecordData.DATA_TYPE_ONLY_HAVE_COURSE){
+		}else if(baseRecordData instanceof RecordDataCourse){
 			return LIST_SHOW_ONLY_COURSE;
 		}else {
 			return LIST_SHOW_ONLY_TRAIN;
@@ -146,13 +146,13 @@ public class RecordAdapter extends BaseAdapter {
 			break;
 			
 		case LIST_SHOW_ONLY_COURSE:
-			RecordDataPlan recordDataPlan = (RecordDataPlan)baseRecordData;
+			RecordDataCourse recordDataPlan = (RecordDataCourse)baseRecordData;
 			recordCourseViewHolder.tvCourseName.setText(recordDataPlan.strCourseName);
 			recordCourseViewHolder.tvCourseConsumeTime.setText(DateUtil.secToTime(recordDataPlan.iConsumeTime));
 			break;
 			
 		case LIST_SHOW_ONLY_TRAIN:
-			RecordDataUnit recordDataUnit = (RecordDataUnit)baseRecordData;
+			RecordDataAction recordDataUnit = (RecordDataAction)baseRecordData;
 			recordTrainViewHolder.ivTrain.setBackgroundResource(R.drawable.record_action1);
 			recordTrainViewHolder.tvTrainName.setText(recordDataUnit.actionName);
 			recordTrainViewHolder.tvTrainCount.setText(String.valueOf(recordDataUnit.iGroupCount) + "组");
