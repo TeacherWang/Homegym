@@ -142,9 +142,6 @@ public class RecordActivity extends FragmentActivity implements OnClickListener{
 	}
 	
 	private void showShare() {
-		Intent intent = new Intent(this, FinishActivity.class);
-		intent.putExtra(FinishActivity.KEY_FINISH_OR_UNFINISH, FinishActivity.TYPE_UNFINISH);
-		startActivity(intent);
 	}
 	
 	FragmentPagerAdapter mFragmentPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {

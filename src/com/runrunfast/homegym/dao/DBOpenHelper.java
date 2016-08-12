@@ -25,9 +25,12 @@ public class DBOpenHelper extends SQLiteOpenHelper {
 		
 		String actionTable = ActionDao.getInstance().getActionTableSqlStr();
 		db.execSQL(actionTable);
-//		
-		String myFinishTable = MyFinishDao.getInstance().getFinishTableSqlStr();
+
+		String myFinishTable = MyTrainRecordDao.getInstance().getFinishTableSqlStr();
 		db.execSQL(myFinishTable);
+		
+		String myTotalRecordTable = MyTotalRecordDao.getInstance().getMyTotalRecordSqlStr();
+		db.execSQL(myTotalRecordTable);
 		
 		//如果表不存在就创建表
 		String sql = "CREATE TABLE IF NOT EXISTS "

@@ -269,101 +269,6 @@ public class DataIniter {
 		return actionDetail1;
 	}
 	
-	private ArrayList<CourseInfo> getInitCourseInfo(){
-		ArrayList<CourseInfo> courseInfoList = new ArrayList<CourseInfo>();
-		// course1
-		CourseInfo courseInfo1 = new CourseInfo();
-		courseInfo1.courseId = "c1";
-		courseInfo1.isNew = false;
-		courseInfo1.courseName = "塑性训练";
-		
-		courseInfo1.actionIds.add("a1");
-		courseInfo1.actionIds.add("a2");
-		courseInfo1.actionIds.add("a3");
-		
-		courseInfo1.dateNumList.add("1");
-		courseInfo1.dateNumList.add("2");
-		courseInfo1.dateNumList.add("4");
-		courseInfo1.dateNumList.add("5");
-		
-		courseInfo1.dateActionIdList.add("a1;a2;a3");
-		courseInfo1.dateActionIdList.add("a1;a2");
-		courseInfo1.dateActionIdList.add("a1;a3");
-		courseInfo1.dateActionIdList.add("a2;a3");
-		
-		courseInfo1.isRecommend = true;
-		courseInfo1.courseQuality = CourseInfo.QUALITY_EXCELLENT;
-		courseInfoList.add(courseInfo1);
-		
-		// course2
-		CourseInfo courseInfo2 = new CourseInfo();
-		courseInfo2.courseId = "c2";
-		courseInfo2.isNew = false;
-		courseInfo2.courseName = "21天腹肌雕刻";
-		
-		courseInfo2.actionIds.add("a1");
-		courseInfo2.actionIds.add("a2");
-		
-		courseInfo2.dateNumList.add("1");
-		courseInfo2.dateNumList.add("2");
-		courseInfo2.dateNumList.add("3");
-		
-		courseInfo2.dateActionIdList.add("a1;a2");
-		courseInfo2.dateActionIdList.add("a1");
-		courseInfo2.dateActionIdList.add("a2");
-		
-		courseInfo2.isRecommend = true;
-		courseInfo2.courseQuality = CourseInfo.QUALITY_NORMAL;
-		courseInfoList.add(courseInfo2);
-		
-		// course3
-		CourseInfo courseInfo3 = new CourseInfo();
-		courseInfo3.courseId = "c3";
-		courseInfo3.isNew = true;
-		courseInfo3.courseName = "S型身材速成";
-		
-		courseInfo3.actionIds.add("a1");
-		courseInfo3.actionIds.add("a2");
-		courseInfo3.actionIds.add("a4");
-		
-		courseInfo3.dateNumList.add("1");
-		courseInfo3.dateNumList.add("2");
-		courseInfo3.dateNumList.add("3");
-		
-		courseInfo3.dateActionIdList.add("a1;a2;a4");
-		courseInfo3.dateActionIdList.add("a1;a2");
-		courseInfo3.dateActionIdList.add("a2;a4");
-		
-		courseInfo3.isRecommend = false;
-		courseInfo3.courseQuality = CourseInfo.QUALITY_EXCELLENT;
-		courseInfoList.add(courseInfo3);
-		
-		// course4
-		CourseInfo courseInfo4 = new CourseInfo();
-		courseInfo4.courseId = "c4";
-		courseInfo4.isNew = true;
-		courseInfo4.courseName = "人鱼线训练";
-		
-		courseInfo4.actionIds.add("a1");
-		courseInfo4.actionIds.add("a2");
-		courseInfo4.actionIds.add("a3");
-		courseInfo4.actionIds.add("a4");
-		
-		courseInfo4.dateNumList.add("1");
-		courseInfo4.dateNumList.add("2");
-		courseInfo4.dateNumList.add("3");
-		
-		courseInfo4.dateActionIdList.add("a1;a2;a3;a4");
-		courseInfo4.dateActionIdList.add("a1;a2;a3");
-		courseInfo4.dateActionIdList.add("a2;a3;a4");
-		
-		courseInfo4.isRecommend = false;
-		courseInfo4.courseQuality = CourseInfo.QUALITY_EXCELLENT;
-		courseInfoList.add(courseInfo4);
-		
-		return courseInfoList;
-	}
-	
 	private ArrayList<Action> getInitActionList(){
 		ArrayList<Action> actionInfoList = new ArrayList<Action>();
 		
@@ -400,7 +305,7 @@ public class DataIniter {
 		// action1
 		Action actionInfo4 = new Action();
 		actionInfo4.action_id = "a4";
-		actionInfo4.action_name = "坐姿推举";
+		actionInfo4.action_name = "引体向上";
 		actionInfo4.action_position = "背部 腰部";
 		actionInfo4.action_descript = "坚持训练将锻炼到胸大肌和三角肌";
 		actionInfo4.action_difficult = 1;

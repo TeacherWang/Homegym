@@ -22,12 +22,9 @@ import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.account.AccountMgr;
 import com.runrunfast.homegym.account.DataTransferUtil;
 import com.runrunfast.homegym.account.UserInfo;
-import com.runrunfast.homegym.dao.MyFinishDao;
+import com.runrunfast.homegym.dao.MyTrainRecordDao;
 import com.runrunfast.homegym.record.BaseRecordData;
 import com.runrunfast.homegym.record.RecordAdapter;
-import com.runrunfast.homegym.record.RecordDataDate;
-import com.runrunfast.homegym.record.RecordDataPlan;
-import com.runrunfast.homegym.record.RecordDataUnit;
 import com.runrunfast.homegym.record.RecordUtil;
 import com.runrunfast.homegym.record.StatisticalData;
 import com.runrunfast.homegym.utils.DateUtil;
@@ -49,8 +46,6 @@ import java.util.List;
 
 public class RecordMonthFragment extends Fragment implements OnClickListener{
 	private final String TAG = "RecordMonthFragment";
-	
-	private static final int DEFAULT_DATA = 0;
 	
 	private Resources mResources;
 	
@@ -108,12 +103,12 @@ public class RecordMonthFragment extends Fragment implements OnClickListener{
 		String strCurrentDay = DateUtil.getCurrentDate();
 		String strCurrentYearMonth = DateUtil.getDateStrOfYearMonth(strCurrentDay);
 		
-		int dayNum = MyFinishDao.getInstance().getTrainDayNumDependMonth(Globle.gApplicationContext, mUserInfo.strAccountId, strCurrentYearMonth);
+		int dayNum = MyTrainRecordDao.getInstance().getTrainDayNumDependMonth(Globle.gApplicationContext, mUserInfo.strAccountId, strCurrentYearMonth);
 		tvTotalDays.setText(String.valueOf(dayNum) + "天");
 		
 		mBaseRecordDataList = new ArrayList<BaseRecordData>();
 		
-		mBaseRecordDataList = RecordUtil.getRecordDataOfDay(strCurrentDay, mUserInfo.strAccountId);
+		mBaseRecordDataList = RecordUtil.getBaseRecordDataList(strCurrentYearMonth, mUserInfo.strAccountId);
 		
 		mRecordAdapter = new RecordAdapter(getActivity(), mBaseRecordDataList);
 		pullToRefreshListView.setAdapter(mRecordAdapter);
@@ -124,7 +119,7 @@ public class RecordMonthFragment extends Fragment implements OnClickListener{
 	}
 
 	private void initChart(String strCurrentDay, String strCurrentYearMonth) {
-		ArrayList<StatisticalData> statisticalDataList = MyFinishDao.getInstance().getDayStatisticalDataDependYearMonth(Globle.gApplicationContext, mUserInfo.strAccountId, strCurrentYearMonth);
+		ArrayList<StatisticalData> statisticalDataList = MyTrainRecordDao.getInstance().getDayStatisticalDataDependYearMonth(Globle.gApplicationContext, mUserInfo.strAccountId, strCurrentYearMonth);
 		
 		int daysOfMonth = DateUtil.getDaysByYearMonth(mThisYear, mSelectMonth);
 		int dayIndexOfMonth = DateUtil.getDayIndexOfMonth(strCurrentDay);
@@ -142,53 +137,53 @@ public class RecordMonthFragment extends Fragment implements OnClickListener{
 		generateColumnData(daysOfMonth, dayIndexOfMonth - 1, statisticalDataList);
 	}
 
-	private ArrayList<BaseRecordData> getRecordDataOfDay(String strDay, String uid) {
-		ArrayList<BaseRecordData> baseRecordDataForUiList = new ArrayList<BaseRecordData>();
-		ArrayList<String> courseIdList = MyFinishDao.getInstance().getFinishInfoDistinctCourseIdDependsDay(Globle.gApplicationContext, uid, strDay);
-		
-		int courseIdSize = courseIdList.size();
-		// 根据不同的课程id，组成界面需要的不同的list
-		for(int i=0; i<courseIdSize; i++){
-			String courseId = courseIdList.get(i);
-			ArrayList<BaseRecordData> baseRecordDataList = MyFinishDao.getInstance().getFinishInfoList(Globle.gApplicationContext, uid, courseId, strDay);
-			// 取出第一个课程的第一个，组成界面显示的时间课程信息头
-			RecordDataUnit firstDataUnit = (RecordDataUnit) baseRecordDataList.get(0);
-			if(i == 0){
-				RecordDataDate recordDataDate = new RecordDataDate();
-				recordDataDate.strDate = strDay;
-				recordDataDate.strCourseName = firstDataUnit.strCourseName;
-				
-				int dataSize = baseRecordDataList.size();
-				int totalConsumeTime = 0;
-				for(int j=0; j<dataSize; j++){
-					RecordDataUnit recordDataUnit = (RecordDataUnit) baseRecordDataList.get(j);
-					totalConsumeTime = totalConsumeTime + recordDataUnit.iConsumeTime;
-				}
-				recordDataDate.iConsumeTime = totalConsumeTime;
-				
-				baseRecordDataList.add(0, recordDataDate);
-//				mBaseRecordDataList.addAll(baseRecordDataList);
-				baseRecordDataForUiList.addAll(baseRecordDataList);
-			}else{// 取出其他课程的第一个，组成界面显示的课程信息头
-				RecordDataPlan recordDataPlan = new RecordDataPlan();
-				recordDataPlan.strCoursId = firstDataUnit.strCoursId;
-				recordDataPlan.strCourseName = firstDataUnit.strCourseName;
-				
-				int dataSize = baseRecordDataList.size();
-				int totalConsumeTime = 0;
-				for(int j=0; j<dataSize; j++){
-					RecordDataUnit recordDataUnit = (RecordDataUnit) baseRecordDataList.get(j);
-					totalConsumeTime = totalConsumeTime + recordDataUnit.iConsumeTime;
-				}
-				recordDataPlan.iConsumeTime = totalConsumeTime;
-				baseRecordDataList.add(0, recordDataPlan);
-//				mBaseRecordDataList.addAll(baseRecordDataList);
-				baseRecordDataForUiList.addAll(baseRecordDataList);
-			}
-		}
-		
-		return baseRecordDataForUiList;
-	}
+//	private ArrayList<BaseRecordData> getRecordDataOfDay(String strDay, String uid) {
+//		ArrayList<BaseRecordData> baseRecordDataForUiList = new ArrayList<BaseRecordData>();
+//		ArrayList<String> courseIdList = MyFinishDao.getInstance().getFinishInfoDistinctCourseIdDependsDay(Globle.gApplicationContext, uid, strDay);
+//		
+//		int courseIdSize = courseIdList.size();
+//		// 根据不同的课程id，组成界面需要的不同的list
+//		for(int i=0; i<courseIdSize; i++){
+//			String courseId = courseIdList.get(i);
+//			ArrayList<BaseRecordData> baseRecordDataList = MyFinishDao.getInstance().getFinishInfoList(Globle.gApplicationContext, uid, courseId, strDay);
+//			// 取出第一个课程的第一个，组成界面显示的时间课程信息头
+//			RecordDataAction firstDataUnit = (RecordDataAction) baseRecordDataList.get(0);
+//			if(i == 0){
+//				RecordDataDate recordDataDate = new RecordDataDate();
+//				recordDataDate.strDate = strDay;
+//				recordDataDate.strCourseName = firstDataUnit.strCourseName;
+//				
+//				int dataSize = baseRecordDataList.size();
+//				int totalConsumeTime = 0;
+//				for(int j=0; j<dataSize; j++){
+//					RecordDataAction recordDataUnit = (RecordDataAction) baseRecordDataList.get(j);
+//					totalConsumeTime = totalConsumeTime + recordDataUnit.iConsumeTime;
+//				}
+//				recordDataDate.iConsumeTime = totalConsumeTime;
+//				
+//				baseRecordDataList.add(0, recordDataDate);
+////				mBaseRecordDataList.addAll(baseRecordDataList);
+//				baseRecordDataForUiList.addAll(baseRecordDataList);
+//			}else{// 取出其他课程的第一个，组成界面显示的课程信息头
+//				RecordDataCourse recordDataPlan = new RecordDataCourse();
+//				recordDataPlan.strCoursId = firstDataUnit.strCoursId;
+//				recordDataPlan.strCourseName = firstDataUnit.strCourseName;
+//				
+//				int dataSize = baseRecordDataList.size();
+//				int totalConsumeTime = 0;
+//				for(int j=0; j<dataSize; j++){
+//					RecordDataAction recordDataUnit = (RecordDataAction) baseRecordDataList.get(j);
+//					totalConsumeTime = totalConsumeTime + recordDataUnit.iConsumeTime;
+//				}
+//				recordDataPlan.iConsumeTime = totalConsumeTime;
+//				baseRecordDataList.add(0, recordDataPlan);
+////				mBaseRecordDataList.addAll(baseRecordDataList);
+//				baseRecordDataForUiList.addAll(baseRecordDataList);
+//			}
+//		}
+//		
+//		return baseRecordDataForUiList;
+//	}
 
 	private void initView() {
 		pullToRefreshListView = (PullToRefreshListView)rootView.findViewById(R.id.record_month_pull_refresh_list);
@@ -332,7 +327,7 @@ public class RecordMonthFragment extends Fragment implements OnClickListener{
 		
 		String strCurrentYearMonth = DateUtil.getDateStrOfYearMonth(strCurrentDay);
 		
-		int dayNum = MyFinishDao.getInstance().getTrainDayNumDependMonth(Globle.gApplicationContext, mUserInfo.strAccountId, strCurrentYearMonth);
+		int dayNum = MyTrainRecordDao.getInstance().getTrainDayNumDependMonth(Globle.gApplicationContext, mUserInfo.strAccountId, strCurrentYearMonth);
 		tvTotalDays.setText(String.valueOf(dayNum) + "天");
 		
 		updateDataDependOnDay(strCurrentDay);
@@ -358,7 +353,7 @@ public class RecordMonthFragment extends Fragment implements OnClickListener{
 		
 		String strCurrentYearMonth = DateUtil.getDateStrOfYearMonth(strCurrentDay);
 		
-		int dayNum = MyFinishDao.getInstance().getTrainDayNumDependMonth(Globle.gApplicationContext, mUserInfo.strAccountId, strCurrentYearMonth);
+		int dayNum = MyTrainRecordDao.getInstance().getTrainDayNumDependMonth(Globle.gApplicationContext, mUserInfo.strAccountId, strCurrentYearMonth);
 		tvTotalDays.setText(String.valueOf(dayNum) + "天");
 		
 		updateDataDependOnDay(strCurrentDay);
@@ -366,8 +361,8 @@ public class RecordMonthFragment extends Fragment implements OnClickListener{
 	
 	private void updateDataDependOnDay(String strCurrentDay) {
 		
-		mBaseRecordDataList = RecordUtil.getRecordDataOfDay(strCurrentDay, mUserInfo.strAccountId);
-		mRecordAdapter.updateData(mBaseRecordDataList);
+//		mBaseRecordDataList = RecordUtil.getRecordDataOfDay(strCurrentDay, mUserInfo.strAccountId);
+//		mRecordAdapter.updateData(mBaseRecordDataList);
 	}
 	
 	// 不要删除，切换fragment用到

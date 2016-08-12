@@ -22,9 +22,9 @@ import com.runrunfast.homegym.bean.Course.GroupDetail;
 import com.runrunfast.homegym.bean.MyCourse;
 import com.runrunfast.homegym.bean.MyCourse.DayProgress;
 import com.runrunfast.homegym.dao.MyCourseDao;
-import com.runrunfast.homegym.dao.MyFinishDao;
+import com.runrunfast.homegym.dao.MyTrainRecordDao;
 import com.runrunfast.homegym.home.FinishActivity;
-import com.runrunfast.homegym.record.Record;
+import com.runrunfast.homegym.record.TrainRecord;
 import com.runrunfast.homegym.utils.CalculateUtil;
 import com.runrunfast.homegym.utils.Const;
 import com.runrunfast.homegym.utils.DateUtil;
@@ -57,7 +57,7 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 	private GroupDetail mFinishedGroupDetail; // 当前动作该组的已经完成的数据
 	private List<GroupDetail> mTargetActionGroupDetailList; // 当前正在进行的目标动作的每组数据集合
 	private List<GroupDetail> mFinishedActionGroupDetailList; // 当前已经完成的指定动作的每组数据集合
-	private Record mCurrentRecord; // 当前的记录
+	private TrainRecord mCurrentRecord; // 当前的记录
 	private int mActionGroupIndex; // 该组动作已经开始的组数。比如第一个动作第一组开始，那么为0，第二组开始，那么为二
 	private int mActionCurrentGroupTotalCount; // 该动作在该组的总次数
 	
@@ -210,11 +210,11 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 		mActionCurrentGroupTotalCount = mTargetGroupDetail.count;
 		mActionCurrentGroupCount = 0;
 		
-		mCurrentRecord = new Record();
+		mCurrentRecord = new TrainRecord();
 		mCurrentRecord.course_id = mMyCourse.course_id;
 		mCurrentRecord.course_name = mMyCourse.course_name;
 		mCurrentRecord.plan_date = mStrPlanDate;
-		mCurrentRecord.finish_group_num = mActionGroupIndex + 1; // 完成的组数
+//		mCurrentRecord.finish_group_num = mActionGroupIndex + 1; // 完成的组数
 		mFinishedActionDetailList = mCurrentRecord.action_detail;
 		
 		updateUi();
@@ -266,7 +266,7 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 			mFinishedActionDetailList.add(mFinishedActionDetail);
 		}
 		mCurrentRecord.actual_date = DateUtil.getCurrentDate();
-		MyFinishDao.getInstance().saveRecordToDb(Globle.gApplicationContext, mUserInfo.strAccountId, mCurrentRecord);
+		MyTrainRecordDao.getInstance().saveRecordToDb(Globle.gApplicationContext, mUserInfo.strAccountId, mCurrentRecord);
 		
 		Intent intent = new Intent(this, FinishActivity.class);
 		intent.putExtra(FinishActivity.KEY_FINISH_OR_UNFINISH, FinishActivity.TYPE_UNFINISH);
@@ -288,7 +288,7 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 	  */
 	private void handleCourseFinished() {
 		mCurrentRecord.actual_date = DateUtil.getCurrentDate();
-		MyFinishDao.getInstance().saveRecordToDb(Globle.gApplicationContext, mUserInfo.strAccountId, mCurrentRecord);
+		MyTrainRecordDao.getInstance().saveRecordToDb(Globle.gApplicationContext, mUserInfo.strAccountId, mCurrentRecord);
 		
 		mDayProgress.progress = MyCourse.DAY_PROGRESS_FINISH;
 		MyCourseDao.getInstance().saveMyCourseDayProgress(Globle.gApplicationContext, mUserInfo.strAccountId, mMyCourse);

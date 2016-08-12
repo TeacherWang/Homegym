@@ -10,9 +10,9 @@ import android.widget.TextView;
 import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.account.AccountMgr;
 import com.runrunfast.homegym.account.UserInfo;
-import com.runrunfast.homegym.dao.MyFinishDao;
+import com.runrunfast.homegym.dao.MyTrainRecordDao;
 import com.runrunfast.homegym.record.BaseRecordData;
-import com.runrunfast.homegym.record.RecordDataUnit;
+import com.runrunfast.homegym.record.RecordDataAction;
 import com.runrunfast.homegym.utils.DateUtil;
 import com.runrunfast.homegym.utils.Globle;
 
@@ -40,18 +40,18 @@ public class RecordTotalFragment extends Fragment {
 	private void initData() {
 		mUserInfo = AccountMgr.getInstance().mUserInfo;
 		
-		ArrayList<BaseRecordData> baseRecordDataList = MyFinishDao.getInstance().getFinishInfoList(Globle.gApplicationContext, mUserInfo.strAccountId);
+		ArrayList<BaseRecordData> baseRecordDataList = MyTrainRecordDao.getInstance().getFinishInfoList(Globle.gApplicationContext, mUserInfo.strAccountId);
 		int totalKcal = 0;
 		int totalTime = 0;
 		int totalCount = 0;
-		int totalDays =  MyFinishDao.getInstance().getFinishDayNum(Globle.gApplicationContext, mUserInfo.strAccountId);
+		int totalDays =  MyTrainRecordDao.getInstance().getFinishDayNum(Globle.gApplicationContext, mUserInfo.strAccountId);
 		
 		int dataSize = baseRecordDataList.size();
 		for(int i=0; i<dataSize; i++){
-			RecordDataUnit unitRecordData = (RecordDataUnit) baseRecordDataList.get(i);
+			RecordDataAction unitRecordData = (RecordDataAction) baseRecordDataList.get(i);
 			totalKcal = totalKcal + unitRecordData.iTotalKcal;
-			totalTime = totalTime + unitRecordData.iConsumeTime;
-			totalCount = totalCount + unitRecordData.iCount;
+//			totalTime = totalTime + unitRecordData.iConsumeTime;
+//			totalCount = totalCount + unitRecordData.iCount;
 		}
 		
 		tvTotalCount.setText(String.valueOf(totalCount));

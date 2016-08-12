@@ -34,7 +34,8 @@ public class Const {
 	public static final String TABLE_ACTION = "action_table";
 	public static final String TABLE_MY_COURSE = "my_course_table";
 	public static final String TABLE_MY_COURSE_ACTION = "my_course_action_table";
-	public static final String TABLE_FINISH = "finish_table";
+	public static final String TABLE_MY_TRAIN_RECORD = "my_train_record_table";
+	public static final String TABLE_MY_TOTAL_RECORD = "my_total_record_table";
 	
 	public static final String DB_KEY_ID = "_id";
 	public static final String DB_KEY_COURSE_ID = "course_id";
@@ -74,6 +75,13 @@ public class Const {
 	public static final String DB_KEY_PLAN_DATE = "plan_date"; // 计划的时间
 	public static final String DB_KEY_ACTUAL_DATE = "actual_date"; // 实际完成的时间
 	public static final String DB_KEY_DATE_PROGRESS = "date_progress"; // 指定日期的完成情况：未完成，已完成
+	
+	public static final String DB_KEY_TOTAL_KCAL = "total_kcal";
+	public static final String DB_KEY_TOTAL_TIME = "total_time";
+	public static final String DB_KEY_TOTAL_COUNT = "total_count";
+	public static final String DB_KEY_TOTAL_TRAIN_COUNT = "total_train_count";
+	public static final String DB_KEY_TOTAL_DAYS = "total_days";
+	public static final String DB_KEY_TOTAL_FOOD = "total_food";
 	
 	public static final String DB_KEY_UID = "uid";
 	public static final String DB_KEY_NICK = "nick";

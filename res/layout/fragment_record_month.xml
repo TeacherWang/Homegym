@@ -25,7 +25,7 @@
 		        android:layout_height="@dimen/chat_view_height" >
 		    </lecho.lib.hellocharts.view.ColumnChartView>
         </LinearLayout>
-    </HorizontalScrollView>
+    </HorizontalScrollView> 
     
 <!--     <lecho.lib.hellocharts.view.ColumnChartView -->
 <!-- 	    android:id="@+id/chart" -->
