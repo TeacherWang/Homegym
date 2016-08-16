@@ -11,21 +11,44 @@
         
     </RelativeLayout>
     
-    <HorizontalScrollView
+    <TextView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
-        <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:text="@string/kcal_cn"
+        android:textColor="@color/record_detail_text_color"
+        android:textSize="@dimen/chat_date_size" />
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/chat_margin_left_right"
+        android:paddingRight="@dimen/chat_margin_left_right">
+        <HorizontalScrollView
+            android:id="@+id/record_chart_scollview"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:scrollbars="none"
+	        android:fadingEdge="none"
+	        android:overScrollMode="never" >
+	        <LinearLayout
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content" >
+		       	<com.runrunfast.homegym.widget.HistogramView
+			       	android:id="@+id/record_chart"
+			        android:layout_width="match_parent"
+			        android:layout_height="@dimen/chat_view_height"/>
+	        </LinearLayout>
+	    </HorizontalScrollView> 
+	    <TextView
+		    android:layout_below="@id/record_chart_scollview"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-            <lecho.lib.hellocharts.view.ColumnChartView
-		        android:id="@+id/chart"
-		        android:layout_marginLeft="@dimen/chat_margin_left_right"
-		        android:layout_marginRight="@dimen/chat_margin_left_right"
-		        android:layout_width="wrap_content"
-		        android:layout_height="@dimen/chat_view_height" >
-		    </lecho.lib.hellocharts.view.ColumnChartView>
-        </LinearLayout>
-    </HorizontalScrollView>
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="@string/date"
+            android:textColor="@color/record_detail_text_color"
+            android:textSize="@dimen/chat_date_size" />      
+    </RelativeLayout>
     
     <View 
         android:layout_width="match_parent"

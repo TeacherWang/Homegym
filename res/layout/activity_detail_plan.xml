@@ -7,17 +7,6 @@
     <include layout="@layout/home_actionbar"
         android:id="@+id/detail_plan_home_actionbar"/>
     
-    <Button 
-        android:id="@+id/btn_start_train"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/course_start_train_btn_height"
-        android:layout_alignParentBottom="true"
-        android:text="@string/start_train"
-        android:textColor="@color/white"
-        android:textSize="@dimen/bt_cancel_pair_text_size"
-        android:background="@drawable/bt_start_train_corner_rect"
-        android:clickable="true"/>
-    
     <RelativeLayout
         android:id="@+id/calendar_layout"
         android:layout_below="@id/detail_plan_home_actionbar"
@@ -77,33 +66,47 @@
         android:textSize="@dimen/detail_plan_current_day_text_size"
         android:background="@color/transparent" />
     
-    <Button 
-        android:id="@+id/btn_join_in_train"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/detail_plan_join_btn_height"
-        android:layout_alignParentBottom="true"
-        android:text="@string/join_train"
-        android:textColor="@color/white"
-        android:textSize="@dimen/join_in_text_size"
-        android:background="@drawable/bt_start_train_corner_rect" />
-    
     <RelativeLayout
+        android:id="@+id/have_actions_layout"
         android:layout_below="@id/current_day_text"
-        android:layout_above="@id/btn_join_in_train"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white" >
-        
+        <Button 
+	        android:id="@+id/btn_join_in_train"
+	        android:layout_width="match_parent"
+	        android:layout_height="@dimen/detail_plan_join_btn_height"
+	        android:layout_alignParentBottom="true"
+	        android:text="@string/join_train"
+	        android:textColor="@color/white"
+	        android:textSize="@dimen/join_in_text_size"
+	        android:background="@drawable/bt_start_train_corner_rect" />
         <ListView
             android:id="@+id/course_train_list"
+            android:layout_above="@id/btn_join_in_train"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/detail_plan_list_margin_left_right"
             android:layout_marginRight="@dimen/detail_plan_list_margin_left_right"
             android:divider="@color/account_divider_color"
             android:dividerHeight="1px" >
             
         </ListView>
+    </RelativeLayout>
+    
+    <RelativeLayout
+        android:id="@+id/rest_day_layout"
+        android:layout_below="@id/current_day_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/rest_day"
+            android:textSize="@dimen/detail_rest_day"
+            android:textColor="@color/black" />
         
     </RelativeLayout>
     

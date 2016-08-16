@@ -203,6 +203,39 @@ public class DateUtil {
 	}
 	
 	/**
+	  * @Method: getMonth
+	  * @Description: 根据日期获取月份
+	  * @param strDate 格式yyyy-MM
+	  * @return	
+	  * 返回类型：int 月份：1-12
+	  */
+	public static int getMonthOfYearMonth(String strYearMonth){
+		Calendar calendar = Calendar.getInstance();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+		try {
+			calendar.setTime(sdf.parse(strYearMonth));
+			return ( calendar.get(Calendar.MONTH) + 1 ) ;
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		return -1;
+	}
+	
+	public static int getDayOfMonth(String strDate){
+		Calendar calendar = Calendar.getInstance();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			calendar.setTime(sdf.parse(strDate));
+			return ( calendar.get(Calendar.DAY_OF_MONTH) ) ;
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		return -1;
+	}
+	
+	/**
 	  * @Method: getDateStrOfYearMonth
 	  * @Description: 获取年月，比如2016-08-03，获取为2016-08
 	  * @param strDate 日期，比如2016-08-03

@@ -12,6 +12,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.runrunfast.homegym.R;
@@ -41,6 +42,7 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 	
 	private Resources mResources;
 	
+	private RelativeLayout haveActionsLayout, restDayLayout;
 	private TextView tvTitle;
 	private Button btnLeft, btnRight;
 	private Button btnJoin;
@@ -108,11 +110,15 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 	private void handleCalendarClick(String dateFormat) {
 		if( mCourseDateList.contains(dateFormat) ){
 			int datePosition = mCourseDateList.indexOf(dateFormat);
-			handleCourseActionDaysDistribution(datePosition);
+			updateActionsDependDayPosition(datePosition, mCourse);
+			
+			showActions();
 			mCurrentDayTrainAdapter.updateData(mActionDetailListOfThatDay, mActionsOfThatDay);
 		}else{
 			mActionDetailListOfThatDay.clear();
 			mActionsOfThatDay.clear();
+			
+			showRest();
 			mCurrentDayTrainAdapter.updateData(mActionDetailListOfThatDay, mActionsOfThatDay);
 		}
 	}
@@ -127,6 +133,8 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 		mActionDetailListOfThatDay = new ArrayList<ActionDetail>();
 		mCourseDateList = new ArrayList<String>();
 		
+		String currentDateStr = DateUtil.getCurrentDate();
+		
 		isCourseExist = isCourseExist();
 		MyCourse myCourse = MyCourseDao.getInstance().getMyCourseFromDb(Globle.gApplicationContext, mCourseId);
 		if(myCourse != null){
@@ -140,25 +148,44 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 			btnJoin.setText(R.string.start_train);
 			btnRight.setVisibility(View.VISIBLE);
 			
-			handleMyCourseActionDaysDistribution(myCourse.start_date);
-//			// 把间隔天数转换为日期集合
-//			mCourseDateList = CourseUtil.getCourseDateList(myCourse.start_date, mMyCourse.course_detail);
+			handleMyCourseActionDaysDistribution(currentDateStr);
 		}else{
 			btnJoin.setText(R.string.join_train);
 			btnRight.setVisibility(View.INVISIBLE);
 			
-			handleCourseActionDaysDistribution(0);
-//			//把间隔天数转换为日期集合
-//			mCourseDateList = CourseUtil.getCourseDateList(DateUtil.getCurrentDate(), mCourse.course_detail);
+			handleCourseActionDaysDistribution(0, currentDateStr);
 		}
 		
 		tvCalendarDate.setText(kCalendar.getCalendarYear() + mResources.getString(R.string.year)
 				+ kCalendar.getCalendarMonth() + mResources.getString(R.string.month));
 		
+		if(mCourseDateList.contains(currentDateStr)){
+			showActions();
+		}else{
+			showRest();
+		}
 		mCurrentDayTrainAdapter = new CurrentDayTrainAdapter(this, mActionDetailListOfThatDay, mActionsOfThatDay);
 		mCurrentDayListView.setAdapter(mCurrentDayTrainAdapter);
-		
-//		setCalendar();
+	}
+	
+	/**
+	  * @Method: showActions
+	  * @Description: 显示动作列表布局
+	  * 返回类型：void 
+	  */
+	private void showActions(){
+		haveActionsLayout.setVisibility(View.VISIBLE);
+		restDayLayout.setVisibility(View.INVISIBLE);
+	}
+	
+	/**
+	  * @Method: showRest
+	  * @Description: 显示休息日
+	  * 返回类型：void 
+	  */
+	private void showRest(){
+		haveActionsLayout.setVisibility(View.INVISIBLE);
+		restDayLayout.setVisibility(View.VISIBLE);
 	}
 
 	@SuppressLint("ResourceAsColor")
@@ -172,9 +199,8 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 	  * @Description: 一般课程指定日期的动作集合	
 	  * 返回类型：void 
 	  */
-	private void handleCourseActionDaysDistribution(int position) {
+	private void handleCourseActionDaysDistribution(int position, String currentDateStr) {
 		// 课程的日期分布
-		String currentDateStr = DateUtil.getCurrentDate();
 		int dayNum = mCourse.course_detail.size();
 		for(int i=0; i<dayNum; i++){
 			CourseDetail courseDetail = mCourse.course_detail.get(i);
@@ -183,42 +209,41 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 			kCalendar.setCalendarDayTextColor(dateStr, mResources.getColor(R.color.calendar_have_course)); // 标注计划的日期
 		}
 		
+		updateActionsDependDayPosition(position, mCourse);
+	}
+
+	/**
+	  * @Method: updateActionsDependDayPosition
+	  * @Description: 根据日期位置重新获取动作集合
+	  * @param position	
+	  * 返回类型：void 
+	  */
+	private void updateActionsDependDayPosition(int position, Course course) {
+		mActionDetailListOfThatDay.clear();
+		mActionsOfThatDay.clear();
 		// 当天的动作集合
-		mActionDetailListOfThatDay = (ArrayList<ActionDetail>) mCourse.course_detail.get(position).action_detail;
-		int actionNum = mActionDetailListOfThatDay.size();
+		ArrayList<ActionDetail> actionDetails = (ArrayList<ActionDetail>) mCourse.course_detail.get(position).action_detail;
+		int actionNum = actionDetails.size();
+		
 		for(int i=0; i<actionNum; i++){
-			ActionDetail actionDetail = mActionDetailListOfThatDay.get(i);
+			ActionDetail actionDetail = actionDetails.get(i);
+			mActionDetailListOfThatDay.add(actionDetail);
+			
 			String actionId = actionDetail.action_id;
 			Action action = ActionDao.getInstance().getActionFromDb(Globle.gApplicationContext, actionId);
 			mActionsOfThatDay.add(action);
 		}
-				
-				
-				
-				
-		
-//		String actionString = mCourse.dateActionIdList.get(position).trim();
-//		
-//		mActionInfoListOfThatDay.clear();
-//		mActionIdsOfThatDay = actionString.split(";");// 获取第position + 1天的动作集合{a1,a2,a3}
-//		int actionSize = mActionIdsOfThatDay.length;
-//		for(int i=0; i<actionSize; i++){
-//			String actionId = mActionIdsOfThatDay[i].trim();
-//			ActionInfo actionInfo = ActionDao.getInstance().getActionInfoFromDb(Globle.gApplicationContext, actionId);
-//			mActionInfoListOfThatDay.add(actionInfo);
-//		}
 	}
 
 	/**
 	  * @Method: handleMyCourseActionDaysDistribution
 	  * @Description: 我参加的课程指定日期的动作集合	
-	  * @param myCourseStartDateStr	开始的日期
+	  * @param currentDateStr	当天日期
 	  * 返回类型：void 
 	  */
-	private void handleMyCourseActionDaysDistribution(String myCourseStartDateStr) {
+	private void handleMyCourseActionDaysDistribution(String currentDateStr) {
 		// 参加的课程的日期分布
 		int currentDayPosition = -1;
-		String currentDateStr = DateUtil.getCurrentDate();
 		ArrayList<DayProgress> dayProgressList = (ArrayList<DayProgress>) mMyCourse.day_progress;
 		int dayNum = dayProgressList.size();
 		for(int i=0; i<dayNum; i++){
@@ -241,36 +266,8 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 		}
 		
 		// 当天的动作集合
-		mActionDetailListOfThatDay = (ArrayList<ActionDetail>) mMyCourse.course_detail.get(currentDayPosition).action_detail;
-		int actionNum = mActionDetailListOfThatDay.size();
-		for(int i=0; i<actionNum; i++){
-			ActionDetail actionDetail = mActionDetailListOfThatDay.get(i);
-			String actionId = actionDetail.action_id;
-			Action action = ActionDao.getInstance().getActionFromDb(Globle.gApplicationContext, actionId);
-			mActionsOfThatDay.add(action);
-		}
+		updateActionsDependDayPosition(currentDayPosition, mCourse);
 		
-//		// 获取当天跟开始日期的间隔天数，1为当天，2为第二天，以此类推
-//		int currentDayNumBetweenStartDay = DateUtil.getDaysNumBetweenCurrentDayAndStartDay(myCourseStartDateStr);
-//		// 如果天数集合不包含当天的，那么界面显示休息日
-//		if( !mCourseInfo.dateNumList.contains(String.valueOf(currentDayNumBetweenStartDay)) ){
-//			Log.d(TAG, "handleMyCourseActionDaysDistribution, my course dateNumList not have current day, ignore");
-//			return;
-//		}
-		
-//		// 天数集合中含当天，那么取出当天在集合中的位置，并根据位置，取出对应的动作集合，如{a1,a2}
-//		int dayNumPosition = mCourseInfo.dateNumList.indexOf(String.valueOf(currentDayNumBetweenStartDay));
-//		String actionString = mCourseInfo.dateActionIdList.get(dayNumPosition).trim();
-//		
-//		mActionIdsOfThatDay = actionString.split(";");// 获取指定日期的动作集合，如{a1,a2}
-//		int actionSize = mActionIdsOfThatDay.length;
-//		for(int i=0; i<actionSize; i++){
-//			String actionId = mActionIdsOfThatDay[i].trim();
-//			ActionInfo myActionInfo = MyCourseActionDao.getInstance().getMyCourseActionInfo(Globle.gApplicationContext, mUserInfo.strAccountId, mCourseId, actionId);
-//			ActionInfo actionInfo = ActionDao.getInstance().getActionInfoFromDb(Globle.gApplicationContext, actionId);
-//			myActionInfo.actionName = actionInfo.actionName;
-//			mActionInfoListOfThatDay.add(myActionInfo);
-//		}
 //		// 测试，默认第一天完成
 //		kCalendar.addMark(myCourseStartDateStr, 0);
 	}
@@ -311,6 +308,9 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 		
 		btnJoin = (Button)findViewById(R.id.btn_join_in_train);
 		btnJoin.setOnClickListener(this);
+		
+		haveActionsLayout = (RelativeLayout)findViewById(R.id.have_actions_layout);
+		restDayLayout = (RelativeLayout)findViewById(R.id.rest_day_layout);
 	}
 
 	@Override

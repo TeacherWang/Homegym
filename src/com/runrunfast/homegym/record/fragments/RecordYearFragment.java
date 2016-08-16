@@ -1,5 +1,6 @@
 package com.runrunfast.homegym.record.fragments;
 
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.LinearLayout.LayoutParams;
 
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
@@ -17,22 +19,25 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.account.AccountMgr;
+import com.runrunfast.homegym.account.DataTransferUtil;
 import com.runrunfast.homegym.account.UserInfo;
 import com.runrunfast.homegym.dao.MyTrainRecordDao;
 import com.runrunfast.homegym.record.BaseRecordData;
 import com.runrunfast.homegym.record.RecordAdapter;
-import com.runrunfast.homegym.record.RecordDataDate;
-import com.runrunfast.homegym.record.RecordDataCourse;
-import com.runrunfast.homegym.record.RecordDataAction;
 import com.runrunfast.homegym.record.RecordUtil;
 import com.runrunfast.homegym.record.StatisticalData;
 import com.runrunfast.homegym.utils.DateUtil;
+import com.runrunfast.homegym.utils.DensityUtil;
 import com.runrunfast.homegym.utils.Globle;
+import com.runrunfast.homegym.widget.HistogramView;
+import com.runrunfast.homegym.widget.HistogramView.Bar;
 
 import java.util.ArrayList;
 
 public class RecordYearFragment extends Fragment implements OnClickListener{
 	private final String TAG = "RecordYearFragment";
+	
+	private Resources mResources;
 	
 	private View rootView;
 	
@@ -51,9 +56,16 @@ public class RecordYearFragment extends Fragment implements OnClickListener{
 	
 	private int mThisYear; // 今年
 	
+	// 柱状图
+	private HistogramView mHistogramView;
+	
+	private int screenWidth;
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater,
 		 ViewGroup container, Bundle savedInstanceState) {
+		mResources = getResources();
+		
 		rootView = inflater.inflate(R.layout.fragment_record_year, container, false);
 		
 		initView();
@@ -79,120 +91,62 @@ public class RecordYearFragment extends Fragment implements OnClickListener{
 		
 		String currentYearMonth = DateUtil.getDateStrOfYearMonth(DateUtil.getCurrentDate());
 		
-		ArrayList<StatisticalData> statisticalDataList = MyTrainRecordDao.getInstance().getMonthStatisticalDataDependYear(Globle.gApplicationContext, mUserInfo.strAccountId, mSelectYear);
-		
 		mBaseRecordDataList = RecordUtil.getBaseRecordDataList(currentYearMonth, mUserInfo.strAccountId);
 		
 		mRecordAdapter = new RecordAdapter(getActivity(), mBaseRecordDataList);
 		pullToRefreshListView.setAdapter(mRecordAdapter);
 		pullToRefreshListView.setMode(Mode.PULL_FROM_END);
+		
+		initChart(mSelectYear);
 	}
 
-//	private void addDate2PlanB() {
-//		RecordDataCourse recordDataPlan = new RecordDataCourse();
-//		recordDataPlan.strCoursId = "c4";
-//		recordDataPlan.strCourseName = "腹肌雕刻计划2";
-//		recordDataPlan.iConsumeTime = 2300;
-//		mBaseRecordDataList.add(recordDataPlan);
-//		
-//		RecordDataAction recordDataUnit = new RecordDataAction();
-//		recordDataUnit.strCoursId = "c4";
-//		recordDataUnit.strCourseName = "腹肌雕刻计划2";
-//		recordDataUnit.actionId = "a1";
-//		recordDataUnit.actionName = "平板式推举";
-//		recordDataUnit.iGroupCount = 5;
-//		recordDataUnit.iTotalKcal = 29;
-//		mBaseRecordDataList.add(recordDataUnit);
-//		
-//		RecordDataAction recordDataUnit2 = new RecordDataAction();
-//		recordDataUnit2.strCoursId = "c4";
-//		recordDataUnit2.strCourseName = "腹肌雕刻计划2";
-//		recordDataUnit2.actionId = "a2";
-//		recordDataUnit2.actionName = "站式卧推举";
-//		recordDataUnit2.iGroupCount = 6;
-//		recordDataUnit2.iTotalKcal = 179;
-//		mBaseRecordDataList.add(recordDataUnit2);
-//	}
-//
-//	private void addDate2PlanA() {
-//		RecordDataDate recordDataDate = new RecordDataDate();
-//		recordDataDate.strDate = DateUtil.getCurrentDate();
-//		recordDataDate.strCoursId = "c3";
-//		recordDataDate.strCourseName = "21天增肌计划2";
-//		recordDataDate.iConsumeTime = 2800;
-//		mBaseRecordDataList.add(recordDataDate);
-//		
-//		RecordDataAction recordDataUnit = new RecordDataAction();
-//		recordDataUnit.strCoursId = "c3";
-//		recordDataUnit.strCourseName = "21天增肌计划2";
-//		recordDataUnit.actionId = "a1";
-//		recordDataUnit.actionName = "平板式推举";
-//		recordDataUnit.iGroupCount = 8;
-//		recordDataUnit.iTotalKcal = 434;
-//		mBaseRecordDataList.add(recordDataUnit);
-//		
-//		RecordDataAction recordDataUnit2 = new RecordDataAction();
-//		recordDataUnit2.strCoursId = "c3";
-//		recordDataUnit2.strCourseName = "21天增肌计划2";
-//		recordDataUnit2.actionId = "a1";
-//		recordDataUnit2.actionName = "站式卧推举";
-//		recordDataUnit2.iGroupCount = 3;
-//		recordDataUnit2.iTotalKcal = 479;
-//		mBaseRecordDataList.add(recordDataUnit2);
-//	}
-//
-//	private void addPlanA() {
-//		RecordDataDate recordDataDate = new RecordDataDate();
-//		recordDataDate.strDate = DateUtil.getCurrentDate();
-//		recordDataDate.strCoursId = "c1";
-//		recordDataDate.strCourseName = "21天增肌计划";
-//		recordDataDate.iConsumeTime = 1000;
-//		mBaseRecordDataList.add(recordDataDate);
-//		
-//		RecordDataAction recordDataUnit = new RecordDataAction();
-//		recordDataUnit.strCoursId = "c1";
-//		recordDataUnit.strCourseName = "21天增肌计划";
-//		recordDataUnit.actionId = "a1";
-//		recordDataUnit.actionName = "平板式推举";
-//		recordDataUnit.iGroupCount = 2;
-//		recordDataUnit.iTotalKcal = 49;
-//		mBaseRecordDataList.add(recordDataUnit);
-//		
-//		RecordDataAction recordDataUnit2 = new RecordDataAction();
-//		recordDataUnit2.strCoursId = "c2";
-//		recordDataUnit2.strCourseName = "21天增肌计划";
-//		recordDataUnit2.actionId = "a1";
-//		recordDataUnit2.actionName = "站式卧推举";
-//		recordDataUnit2.iGroupCount = 3;
-//		recordDataUnit2.iTotalKcal = 79;
-//		mBaseRecordDataList.add(recordDataUnit2);
-//	}
-//	
-//	private void addPlanB() {
-//		RecordDataCourse recordDataPlan = new RecordDataCourse();
-//		recordDataPlan.strCoursId = "c2";
-//		recordDataPlan.strCourseName = "腹肌雕刻计划";
-//		recordDataPlan.iConsumeTime = 1000;
-//		mBaseRecordDataList.add(recordDataPlan);
-//		
-//		RecordDataAction recordDataUnit = new RecordDataAction();
-//		recordDataUnit.strCoursId = "c2";
-//		recordDataUnit.strCourseName = "腹肌雕刻计划";
-//		recordDataUnit.actionId = "a1";
-//		recordDataUnit.actionName = "平板式推举";
-//		recordDataUnit.iGroupCount = 5;
-//		recordDataUnit.iTotalKcal = 29;
-//		mBaseRecordDataList.add(recordDataUnit);
-//		
-//		RecordDataAction recordDataUnit2 = new RecordDataAction();
-//		recordDataUnit2.strCoursId = "c2";
-//		recordDataUnit2.strCourseName = "腹肌雕刻计划";
-//		recordDataUnit2.actionId = "a2";
-//		recordDataUnit2.actionName = "站式卧推举";
-//		recordDataUnit2.iGroupCount = 6;
-//		recordDataUnit2.iTotalKcal = 179;
-//		mBaseRecordDataList.add(recordDataUnit2);
-//	}
+	private void initChart(int selectYear) {
+		ArrayList<StatisticalData> statisticalDataList = MyTrainRecordDao.getInstance().getMonthStatisticalDataDependYear(Globle.gApplicationContext, mUserInfo.strAccountId, selectYear);
+		generateHistogramBar(statisticalDataList);
+	}
+	
+	private void generateHistogramBar(ArrayList<StatisticalData> statisticalDataList) {
+		ArrayList<Bar> barList = new ArrayList<HistogramView.Bar>();
+		int maxValue = 0;
+		int dataSize = statisticalDataList.size();
+		for(int i=0; i<dataSize; i++){
+			StatisticalData statisticalData = statisticalDataList.get(i);
+			if(statisticalData.totalKcal > maxValue){
+				maxValue = statisticalData.totalKcal;
+			}
+		}
+		
+		for(int i=0; i<dataSize; i++){
+			StatisticalData statisticalData = statisticalDataList.get(i);
+			int month = DateUtil.getMonthOfYearMonth(statisticalData.strDate); // 格式：2016-08
+			String bootomText = DataTransferUtil.numMap.get(month) + "月";
+			float ratio = (float)statisticalData.totalKcal / (float)maxValue;
+			
+			Log.i("RecordMonthFragment", "generateHistogramBar, ratio = " + ratio);
+			int color = mResources.getColor(R.color.chart_color_normal);
+			if(i == 0){
+				color = mResources.getColor(R.color.chart_color_normal);
+			}else{
+				color = mResources.getColor(R.color.chart_color_select);
+			}
+			
+			Bar bar = mHistogramView.new Bar(i+1, ratio, color, bootomText, String.valueOf(statisticalData.totalKcal));
+			barList.add(bar);
+		}
+		
+		LayoutParams params = (LayoutParams) mHistogramView.getLayoutParams();
+		int padding = (int) mResources.getDimension(R.dimen.chat_margin_left_right);
+		int layoutWidth = screenWidth - padding * 2;
+		int contentWidth = (int) (dataSize * 2 * mResources.getDimension(R.dimen.chat_column_width) + mResources.getDimension(R.dimen.chat_column_width));
+		if(contentWidth < layoutWidth){
+			params.width = layoutWidth;
+		}else{
+			params.width = contentWidth;
+		}
+		mHistogramView.setLayoutParams(params);
+		
+		mHistogramView.setBarLists(barList);
+	}
 	
 	private void initView() {
 		pullToRefreshListView = (PullToRefreshListView)rootView.findViewById(R.id.record_month_pull_refresh_list);
@@ -214,6 +168,10 @@ public class RecordYearFragment extends Fragment implements OnClickListener{
 		
 		btnAddMonth.setOnClickListener(this);
 		btnReduceMonth.setOnClickListener(this);
+		
+		mHistogramView = (HistogramView)rootView.findViewById(R.id.record_chart);
+		
+		screenWidth = DensityUtil.getScreenWidth(getActivity());
 	}
 	
 	// 不要删除，切换fragment用到
@@ -262,11 +220,10 @@ public class RecordYearFragment extends Fragment implements OnClickListener{
 		}
 		
 		mBaseRecordDataList.clear();
-		
 		mBaseRecordDataList = RecordUtil.getBaseRecordDataList(currentYearMonth, mUserInfo.strAccountId);
-		
 		mRecordAdapter.updateData(mBaseRecordDataList);
 		
+		initChart(mSelectYear);
 	}
 
 	private void nextYearData() {
@@ -291,9 +248,9 @@ public class RecordYearFragment extends Fragment implements OnClickListener{
 		}
 		
 		mBaseRecordDataList.clear();
-		
 		mBaseRecordDataList = RecordUtil.getBaseRecordDataList(currentYearMonth, mUserInfo.strAccountId);
-		
 		mRecordAdapter.updateData(mBaseRecordDataList);
+		
+		initChart(mSelectYear);
 	}
 }

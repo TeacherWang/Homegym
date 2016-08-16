@@ -357,8 +357,11 @@
 	<dimen name="train_action_set_item_height">40dp</dimen>
 	
 	<dimen name="chat_view_height">160dp</dimen>
-	<dimen name="chat_margin_left_right">10dp</dimen>
+	<dimen name="chat_margin_left_right">15dp</dimen>
 	<dimen name="chat_column_width">20dp</dimen>
 	<dimen name="chat_column_space">18dp</dimen>
+	<dimen name="chat_date_size">12sp</dimen>
+	
+	<dimen name="detail_rest_day">20sp</dimen>
 	
 </resources>

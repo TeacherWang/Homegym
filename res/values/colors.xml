@@ -93,6 +93,9 @@
     <color name="train_action_set_item_deep_color">#eaeaea</color>
     
     <color name="calendar_have_course">#d94d01</color>
-    <color name="calendar_day_select">#f6f6f6</color>
+    <color name="calendar_day_select">#e3e3e3</color>
+    
+    <color name="chart_color_normal">#32c574</color>
+    <color name="chart_color_select">#118202</color>
     
 </resources>

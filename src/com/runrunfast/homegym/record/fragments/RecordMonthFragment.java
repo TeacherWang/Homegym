@@ -28,21 +28,16 @@ import com.runrunfast.homegym.record.RecordAdapter;
 import com.runrunfast.homegym.record.RecordUtil;
 import com.runrunfast.homegym.record.StatisticalData;
 import com.runrunfast.homegym.utils.DateUtil;
+import com.runrunfast.homegym.utils.DensityUtil;
 import com.runrunfast.homegym.utils.Globle;
+import com.runrunfast.homegym.widget.HistogramView;
+import com.runrunfast.homegym.widget.HistogramView.Bar;
 
 import lecho.lib.hellocharts.listener.ColumnChartOnValueSelectListener;
-import lecho.lib.hellocharts.model.Axis;
-import lecho.lib.hellocharts.model.Column;
-import lecho.lib.hellocharts.model.ColumnChartData;
-import lecho.lib.hellocharts.model.SelectedValue;
-import lecho.lib.hellocharts.model.SelectedValue.SelectedValueType;
 import lecho.lib.hellocharts.model.SubcolumnValue;
-import lecho.lib.hellocharts.util.ChartUtils;
-import lecho.lib.hellocharts.view.ColumnChartView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 public class RecordMonthFragment extends Fragment implements OnClickListener{
 	private final String TAG = "RecordMonthFragment";
@@ -69,12 +64,17 @@ public class RecordMonthFragment extends Fragment implements OnClickListener{
 	private int mThisMonth; // 本月
 	
 	// 柱状图
-	private ColumnChartView chart;
-	private ColumnChartData data;
-	private boolean hasAxes = true;
-    private boolean hasAxesNames = true;
-    private boolean hasLabels = false;
-    private boolean hasLabelForSelected = false;
+	private HistogramView mHistogramView;
+	
+	private int screenWidth;
+	
+	// 柱状图
+//	private ColumnChartView chart;
+//	private ColumnChartData data;
+//	private boolean hasAxes = true;
+//    private boolean hasAxesNames = true;
+//    private boolean hasLabels = false;
+//    private boolean hasLabelForSelected = false;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater,
@@ -115,75 +115,57 @@ public class RecordMonthFragment extends Fragment implements OnClickListener{
 		
 		pullToRefreshListView.setMode(Mode.BOTH);
 		
-		initChart(strCurrentDay, strCurrentYearMonth);
+		initChart(strCurrentYearMonth);
 	}
 
-	private void initChart(String strCurrentDay, String strCurrentYearMonth) {
+	private void initChart(String strCurrentYearMonth) {
 		ArrayList<StatisticalData> statisticalDataList = MyTrainRecordDao.getInstance().getDayStatisticalDataDependYearMonth(Globle.gApplicationContext, mUserInfo.strAccountId, strCurrentYearMonth);
-		
-		int daysOfMonth = DateUtil.getDaysByYearMonth(mThisYear, mSelectMonth);
-		int dayIndexOfMonth = DateUtil.getDayIndexOfMonth(strCurrentDay);
-		
-		int chatHeight = (int) mResources.getDimension(R.dimen.chat_view_height);
-		int columnWidth = (int) mResources.getDimension(R.dimen.chat_column_width);
-		int spaceWidth = (int) mResources.getDimension(R.dimen.chat_column_space);
-		int chatWidth = daysOfMonth * (columnWidth + spaceWidth);
-		
-		LayoutParams params = (LayoutParams) chart.getLayoutParams();
-		params.height = chatHeight;
-		params.width = chatWidth;
-		chart.setLayoutParams(params);
-		
-		generateColumnData(daysOfMonth, dayIndexOfMonth - 1, statisticalDataList);
+		generateHistogramBar(statisticalDataList);
 	}
 
-//	private ArrayList<BaseRecordData> getRecordDataOfDay(String strDay, String uid) {
-//		ArrayList<BaseRecordData> baseRecordDataForUiList = new ArrayList<BaseRecordData>();
-//		ArrayList<String> courseIdList = MyFinishDao.getInstance().getFinishInfoDistinctCourseIdDependsDay(Globle.gApplicationContext, uid, strDay);
-//		
-//		int courseIdSize = courseIdList.size();
-//		// 根据不同的课程id，组成界面需要的不同的list
-//		for(int i=0; i<courseIdSize; i++){
-//			String courseId = courseIdList.get(i);
-//			ArrayList<BaseRecordData> baseRecordDataList = MyFinishDao.getInstance().getFinishInfoList(Globle.gApplicationContext, uid, courseId, strDay);
-//			// 取出第一个课程的第一个，组成界面显示的时间课程信息头
-//			RecordDataAction firstDataUnit = (RecordDataAction) baseRecordDataList.get(0);
+	private void generateHistogramBar(ArrayList<StatisticalData> statisticalDataList) {
+		ArrayList<Bar> barList = new ArrayList<HistogramView.Bar>();
+		int maxValue = 0;
+		int dataSize = statisticalDataList.size();
+		for(int i=0; i<dataSize; i++){
+			StatisticalData statisticalData = statisticalDataList.get(i);
+			if(statisticalData.totalKcal > maxValue){
+				maxValue = statisticalData.totalKcal;
+			}
+		}
+		
+		for(int i=0; i<dataSize; i++){
+			StatisticalData statisticalData = statisticalDataList.get(i);
+			int month = DateUtil.getMonth(statisticalData.strDate);
+			int dayOfMonth = DateUtil.getDayOfMonth(statisticalData.strDate);
+			String bootomText = month + "/" + dayOfMonth;
+			float ratio = (float)statisticalData.totalKcal / (float)maxValue;
+			
+			Log.i("RecordMonthFragment", "generateHistogramBar, ratio = " + ratio);
+			int color = mResources.getColor(R.color.chart_color_normal);
 //			if(i == 0){
-//				RecordDataDate recordDataDate = new RecordDataDate();
-//				recordDataDate.strDate = strDay;
-//				recordDataDate.strCourseName = firstDataUnit.strCourseName;
-//				
-//				int dataSize = baseRecordDataList.size();
-//				int totalConsumeTime = 0;
-//				for(int j=0; j<dataSize; j++){
-//					RecordDataAction recordDataUnit = (RecordDataAction) baseRecordDataList.get(j);
-//					totalConsumeTime = totalConsumeTime + recordDataUnit.iConsumeTime;
-//				}
-//				recordDataDate.iConsumeTime = totalConsumeTime;
-//				
-//				baseRecordDataList.add(0, recordDataDate);
-////				mBaseRecordDataList.addAll(baseRecordDataList);
-//				baseRecordDataForUiList.addAll(baseRecordDataList);
-//			}else{// 取出其他课程的第一个，组成界面显示的课程信息头
-//				RecordDataCourse recordDataPlan = new RecordDataCourse();
-//				recordDataPlan.strCoursId = firstDataUnit.strCoursId;
-//				recordDataPlan.strCourseName = firstDataUnit.strCourseName;
-//				
-//				int dataSize = baseRecordDataList.size();
-//				int totalConsumeTime = 0;
-//				for(int j=0; j<dataSize; j++){
-//					RecordDataAction recordDataUnit = (RecordDataAction) baseRecordDataList.get(j);
-//					totalConsumeTime = totalConsumeTime + recordDataUnit.iConsumeTime;
-//				}
-//				recordDataPlan.iConsumeTime = totalConsumeTime;
-//				baseRecordDataList.add(0, recordDataPlan);
-////				mBaseRecordDataList.addAll(baseRecordDataList);
-//				baseRecordDataForUiList.addAll(baseRecordDataList);
+//				color = mResources.getColor(R.color.chart_color_normal);
+//			}else{
+//				color = mResources.getColor(R.color.chart_color_select);
 //			}
-//		}
-//		
-//		return baseRecordDataForUiList;
-//	}
+			
+			Bar bar = mHistogramView.new Bar(i+1, ratio, color, bootomText, String.valueOf(statisticalData.totalKcal));
+			barList.add(bar);
+		}
+		
+		LayoutParams params = (LayoutParams) mHistogramView.getLayoutParams();
+		int padding = (int) mResources.getDimension(R.dimen.chat_margin_left_right);
+		int layoutWidth = screenWidth - padding * 2;
+		int contentWidth = (int) (dataSize * 2 * mResources.getDimension(R.dimen.chat_column_width) + mResources.getDimension(R.dimen.chat_column_width));
+		if(contentWidth < layoutWidth){
+			params.width = layoutWidth;
+		}else{
+			params.width = contentWidth;
+		}
+		mHistogramView.setLayoutParams(params);
+		
+		mHistogramView.setBarLists(barList);
+	}
 
 	private void initView() {
 		pullToRefreshListView = (PullToRefreshListView)rootView.findViewById(R.id.record_month_pull_refresh_list);
@@ -206,70 +188,11 @@ public class RecordMonthFragment extends Fragment implements OnClickListener{
 		tvSelectMonth = (TextView)rootView.findViewById(R.id.tv_record_month_year);
 		tvMonth = (TextView)rootView.findViewById(R.id.record_detail_time_text);
 		
-		chart = (ColumnChartView) rootView.findViewById(R.id.chart);
+		mHistogramView = (HistogramView)rootView.findViewById(R.id.record_chart);
 		
-		chart.setOnValueTouchListener(new ValueTouchListener());
-		chart.setZoomEnabled(false);
-		chart.setValueSelectionEnabled(true);
-//        chart.setScrollEnabled(true);
+		screenWidth = DensityUtil.getScreenWidth(getActivity());
 	}
 	
-	private void generateColumnData(int daysNum, int highlightPosition, ArrayList<StatisticalData> statisticalDataList) {
-		int statisticSize = statisticalDataList.size();
-		int statisticPosition = 0;
-		int dayIndex = 0;
-		StatisticalData statisticalData = null;
-		if(statisticSize > 0){
-			statisticalData = statisticalDataList.get(statisticPosition);
-			dayIndex = DateUtil.getDayIndexOfMonth(statisticalData.strDate);
-		}
-		
-        int numColumns = daysNum;
-        // Column can have many subcolumns, here by default I use 1 subcolumn in each of 8 columns.
-        List<Column> columns = new ArrayList<Column>();
-        List<SubcolumnValue> values;
-        for (int i = 0; i < numColumns; ++i) {
-
-            values = new ArrayList<SubcolumnValue>();
-        	if(statisticSize > 0 && statisticPosition < statisticSize && (dayIndex - 1) == i){
-        		values.add(new SubcolumnValue(statisticalData.totalKcal, ChartUtils.pickNormalColor()));
-        		statisticPosition++;
-        		if(statisticPosition < statisticSize){
-        			statisticalData = statisticalDataList.get(statisticPosition);
-        			dayIndex = DateUtil.getDayIndexOfMonth(statisticalData.strDate);
-        		}
-        	}else{
-        		values.add(new SubcolumnValue(0, ChartUtils.pickNormalColor()));
-        	}
-
-            Column column = new Column(values);
-            column.setHasLabels(hasLabels);
-            column.setHasLabelsOnlyForSelected(hasLabelForSelected);
-            columns.add(column);
-        }
-
-        data = new ColumnChartData(columns);
-
-        if (hasAxes) {
-            Axis axisX = new Axis();
-            Axis axisY = new Axis().setHasLines(false);
-            if (hasAxesNames) {
-                axisX.setName("日期");
-                axisY.setName("燃脂/千卡");
-            }
-            data.setAxisXBottom(axisX);
-            data.setAxisYLeft(axisY);
-        } else {
-            data.setAxisXBottom(null);
-            data.setAxisYLeft(null);
-        }
-
-        chart.setColumnChartData(data);
-        
-        SelectedValue selectedValue = new SelectedValue(highlightPosition, 0, SelectedValueType.COLUMN);
-		chart.selectValue(selectedValue);
-    }
-
 	private class ValueTouchListener implements ColumnChartOnValueSelectListener {
 
         @Override
@@ -303,7 +226,8 @@ public class RecordMonthFragment extends Fragment implements OnClickListener{
 	}
 
 	private void handleDaySelected(String strDateSelectDay) {
-		updateDataDependOnDay(strDateSelectDay);
+		String strCurrentYearMonth = DateUtil.getDateStrOfYearMonth(strDateSelectDay);
+		updateDataDependOnDay(strCurrentYearMonth);
 	}
 
 	private void lastMonthData() {
@@ -330,7 +254,9 @@ public class RecordMonthFragment extends Fragment implements OnClickListener{
 		int dayNum = MyTrainRecordDao.getInstance().getTrainDayNumDependMonth(Globle.gApplicationContext, mUserInfo.strAccountId, strCurrentYearMonth);
 		tvTotalDays.setText(String.valueOf(dayNum) + "天");
 		
-		updateDataDependOnDay(strCurrentDay);
+		updateDataDependOnDay(strCurrentYearMonth);
+		
+		initChart(strCurrentYearMonth);
 	}
 
 	private void nextMonthData() {
@@ -356,13 +282,16 @@ public class RecordMonthFragment extends Fragment implements OnClickListener{
 		int dayNum = MyTrainRecordDao.getInstance().getTrainDayNumDependMonth(Globle.gApplicationContext, mUserInfo.strAccountId, strCurrentYearMonth);
 		tvTotalDays.setText(String.valueOf(dayNum) + "天");
 		
-		updateDataDependOnDay(strCurrentDay);
+		updateDataDependOnDay(strCurrentYearMonth);
+		
+		initChart(strCurrentYearMonth);
 	}
 	
-	private void updateDataDependOnDay(String strCurrentDay) {
+	private void updateDataDependOnDay(String strCurrentYearMonth) {
 		
-//		mBaseRecordDataList = RecordUtil.getRecordDataOfDay(strCurrentDay, mUserInfo.strAccountId);
-//		mRecordAdapter.updateData(mBaseRecordDataList);
+		mBaseRecordDataList = RecordUtil.getBaseRecordDataList(strCurrentYearMonth, mUserInfo.strAccountId);
+		
+		mRecordAdapter.updateData(mBaseRecordDataList);
 	}
 	
 	// 不要删除，切换fragment用到
