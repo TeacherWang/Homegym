@@ -76,6 +76,8 @@
     <string name="recommended_courses">推荐课程</string>
     <string name="course_progress_ing">进行中</string>
     <string name="course_rest_day">休息日</string>
+    <string name="course_finished">已完成</string>
+    <string name="course_expired">已过期</string>
     <string name="today_is_rest_day">今天是休息日</string>
     <string name="trainnig_record">训练记录</string>
     <string name="join_train">加入训练</string>
@@ -84,6 +86,8 @@
     <string name="exit_train">退出训练</string>
     <string name="current_day_train_content">当天训练内容</string>
     <string name="exit_train_or_not">是否确认要退出本课程</string>
+    
+    <string name="this_mycourse_is_expired">该计划已过期</string>
     
     <string name="group_num_is_bigger_than_9">不能超过9组</string>
     <string name="group_num_is_smaller_than_1">不能小于1组</string>

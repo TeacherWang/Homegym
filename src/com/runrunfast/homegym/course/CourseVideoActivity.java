@@ -42,6 +42,7 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 	private UserInfo mUserInfo;
 	private MyCourse mMyCourse;
 	private int mDayPosition;
+	private List<DayProgress> mDayProgresseList;
 	private DayProgress mDayProgress;
 	private ArrayList<ActionDetail> mActionDetailList;
 	
@@ -187,8 +188,8 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 		
 		mActionDetailList = (ArrayList<ActionDetail>) courseDetail.action_detail;
 		
-		List<DayProgress> day_progress = mMyCourse.day_progress;
-		mDayProgress = day_progress.get(mDayPosition);
+		mDayProgresseList = mMyCourse.day_progress;
+		mDayProgress = mDayProgresseList.get(mDayPosition);
 		mStrPlanDate = mDayProgress.plan_date;
 		
 		mFinishedActionIds = new ArrayList<String>();;
@@ -292,6 +293,20 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 		
 		mDayProgress.progress = MyCourse.DAY_PROGRESS_FINISH;
 		MyCourseDao.getInstance().saveMyCourseDayProgress(Globle.gApplicationContext, mUserInfo.strAccountId, mMyCourse);
+		
+		int courseProgress = MyCourse.COURSE_PROGRESS_FINISH;
+		int daySize = mDayProgresseList.size();
+		for(int i=0; i<daySize; i++){
+			DayProgress dayProgress = mDayProgresseList.get(i);
+			if(dayProgress.progress == MyCourse.DAY_PROGRESS_UNFINISH){
+				courseProgress = MyCourse.COURSE_PROGRESS_ING;
+				break;
+			}
+		}
+		
+		if(courseProgress == MyCourse.COURSE_PROGRESS_FINISH){
+			MyCourseDao.getInstance().saveMyCourseProgress(Globle.gApplicationContext, mUserInfo.strAccountId, mMyCourse.course_id, courseProgress);
+		}
 		
 		Intent intent = new Intent(this, FinishActivity.class);
 		intent.putExtra(FinishActivity.KEY_FINISH_OR_UNFINISH, FinishActivity.TYPE_FINISH);

@@ -69,6 +69,8 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 	private ArrayList<ActionDetail> mActionDetailListOfThatDay; // 指定某天的ActionDetail集合
 	private ArrayList<Action> mActionsOfThatDay; // 指定某天的动作信息集合
 	
+	private int mSelectDayPosition; // 该天在日期分布的位置
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -219,6 +221,8 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 	  * 返回类型：void 
 	  */
 	private void updateActionsDependDayPosition(int position, Course course) {
+		mSelectDayPosition = position;
+		
 		mActionDetailListOfThatDay.clear();
 		mActionsOfThatDay.clear();
 		// 当天的动作集合
@@ -265,8 +269,13 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 			}
 		}
 		
-		// 当天的动作集合
-		updateActionsDependDayPosition(currentDayPosition, mCourse);
+		if(currentDayPosition == -1){
+			// 休息日
+			showRest();
+		}else{
+			// 当天的动作集合
+			updateActionsDependDayPosition(currentDayPosition, mCourse);
+		}
 		
 //		// 测试，默认第一天完成
 //		kCalendar.addMark(myCourseStartDateStr, 0);
@@ -367,13 +376,20 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 			prepareToSaveMyCourse();
 			btnRight.setVisibility(View.VISIBLE);
 			btnJoin.setText(R.string.start_train);
+			isMyCourse = true;
 		}
 		// 本地不存在此课程视频等信息
 		else{
-			// 先下载
-			
+			startTrain();
 		}
 		
+	}
+	
+	private void startTrain() {
+		Intent intent = new Intent(this, CourseVideoActivity.class);
+		intent.putExtra(Const.KEY_COURSE, mMyCourse);
+		intent.putExtra(Const.KEY_DAY_POSITION, mSelectDayPosition);
+		startActivity(intent);
 	}
 
 	private void prepareToSaveMyCourse() {

@@ -39,6 +39,18 @@ public class DateUtil {
 		return strDate;
 	}
 	
+	public static long getMillsFromStrDate(String strDate){
+		String pattern = "yyyy-MM-dd";
+		SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+		try {
+			long mills = sdf.parse(strDate).getTime();
+			return mills;
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
 	/**
 	  * @Method: parseCurrentDateToDays
 	  * @Description: 把当天的日期转换成距参数yyyyMMdd的天数

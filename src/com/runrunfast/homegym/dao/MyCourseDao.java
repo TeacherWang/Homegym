@@ -245,6 +245,14 @@ public class MyCourseDao {
 		}
 	}
 	
+	/**
+	  * @Method: saveMyCourseDayProgress
+	  * @Description: 保存每天的进度
+	  * @param context
+	  * @param uid
+	  * @param myCourse	
+	  * 返回类型：void 
+	  */
 	public synchronized void saveMyCourseDayProgress(Context context, String uid, MyCourse myCourse){
 		Cursor c = null;
 		SQLiteDatabase db = null;
@@ -265,6 +273,36 @@ public class MyCourseDao {
 						new String[] { uid, myCourse.course_id });
 			}else{
 				Log.e(TAG, "saveMyCourseDayProgress, not find my course! courseId = " + myCourse.course_id);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally{
+			if(c != null){
+				c.close();
+			}
+			if(db != null){
+				db.close();
+			}
+		}
+	}
+	
+	public synchronized void saveMyCourseProgress(Context context, String uid, String courseId, int progress){
+		Cursor c = null;
+		SQLiteDatabase db = null;
+		try {
+			DBOpenHelper dbHelper = new DBOpenHelper(context);
+			db = dbHelper.getWritableDatabase();
+			ContentValues values = new ContentValues();
+			
+			values.put(Const.DB_KEY_PROGRESS, progress);
+			
+			c = db.query(Const.TABLE_MY_COURSE, null, Const.DB_KEY_UID + " = ? and " + Const.DB_KEY_COURSE_ID + " =?",
+					new String[] { uid, courseId }, null, null, null);
+			if (c.getCount() > 0) {// 查询到数据库有该数据，就更新该行数据
+				db.update(Const.TABLE_MY_COURSE, values, Const.DB_KEY_UID + " = ? and " + Const.DB_KEY_COURSE_ID + " =?",
+						new String[] { uid, courseId });
+			}else{
+				Log.e(TAG, "saveMyCourseDayProgress, not find my course! courseId = " + courseId);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
