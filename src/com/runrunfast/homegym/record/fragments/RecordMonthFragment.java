@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
@@ -33,9 +32,6 @@ import com.runrunfast.homegym.utils.Globle;
 import com.runrunfast.homegym.widget.HistogramView;
 import com.runrunfast.homegym.widget.HistogramView.Bar;
 import com.runrunfast.homegym.widget.HistogramView.OnClickCountListener;
-
-import lecho.lib.hellocharts.listener.ColumnChartOnValueSelectListener;
-import lecho.lib.hellocharts.model.SubcolumnValue;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -214,27 +210,14 @@ public class RecordMonthFragment extends Fragment implements OnClickListener{
 			public void onSingleClick(int position) {
 				StatisticalData statisticalData = mStatisticalDataList.get(position);
 				Log.i(TAG, "onSingleClick, select date = " + statisticalData.strDate);
+				
+//				String selectDay = mThisYear + "-" + String.format("%02d", mSelectMonth) + "-" + String.format("%02d", columnIndex + 1);
+//	            handleDaySelected(selectDay);
 			}
 		};
 		mHistogramView.setOnClickCountListener(mOnClickCountListener);
 	}
 
-	private class ValueTouchListener implements ColumnChartOnValueSelectListener {
-
-        @Override
-        public void onValueSelected(int columnIndex, int subcolumnIndex, SubcolumnValue value) {
-            Toast.makeText(getActivity(), "Selected: " + value + ", columnIndex = " + columnIndex + ", subcolumnIndex = " + subcolumnIndex, Toast.LENGTH_SHORT).show();
-            String selectDay = mThisYear + "-" + String.format("%02d", mSelectMonth) + "-" + String.format("%02d", columnIndex + 1);
-            handleDaySelected(selectDay);
-        }
-
-        @Override
-        public void onValueDeselected() {
-        	
-        }
-
-    }
-	
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
