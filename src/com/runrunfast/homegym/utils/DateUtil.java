@@ -295,6 +295,22 @@ public class DateUtil {
         return timeStr;
     }
     
+    // a integer to xx:xx
+    public static String secToMinuteSecond(int time) {
+        String timeStr = null;
+        int hour = 0;
+        int minute = 0;
+        int second = 0;
+        if (time <= 0){
+            return "00:00";
+        }else {
+            minute = time / 60;
+            second = time % 60;
+            timeStr = unitFormat(minute) + ":" + unitFormat(second);
+        }
+        return timeStr;
+    }
+    
     /**
       * @Method: secToMinute
       * @Description: 秒转成分钟数

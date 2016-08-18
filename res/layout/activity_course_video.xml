@@ -3,59 +3,137 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
     
-    <Button android:id="@+id/btn_finished"
+    <io.vov.vitamio.widget.VideoView
+        android:id="@+id/surface_view"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:text="结束"/>
+        android:layout_height="wrap_content" />
     
-    <Button android:id="@+id/btn_finish_once"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="动作完成一次"/>
+	<RelativeLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent" >
+	    <TextView 
+	        android:id="@+id/train_course_name_text"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_centerHorizontal="true"
+	        android:layout_marginTop="@dimen/action_demo_name_margin_top"
+	        android:textSize="@dimen/action_demo_name_size"
+	        android:textColor="@color/white"/>
+	    
+	    <TextView 
+	        android:id="@+id/train_action_name_text"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginLeft="@dimen/course_video_course_name_margin_left"
+	        android:layout_centerVertical="true"
+	        android:textSize="@dimen/course_video_action_name_size"
+	        android:textColor="@color/white"/>
+	    
+	    <TextView
+	        android:id="@+id/course_video_time_text"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_centerHorizontal="true"
+	        android:layout_alignParentBottom="true"
+	        android:layout_marginBottom="@dimen/course_video_time_margin_bottom" />
+	    
+	    <RelativeLayout
+	        android:layout_width="167dp"
+	        android:layout_height="90dp"
+	        android:layout_alignParentBottom="true"
+	        android:layout_marginBottom="@dimen/course_video_group_margin_bottom"
+	        android:layout_marginLeft="@dimen/course_video_group_margin_left" >
+	        <ImageView 
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:background="@drawable/video_group"/>
+	        <!-- 圆形直径90dp -->
+	        <RelativeLayout
+	            android:layout_width="90dp"
+	            android:layout_height="90dp">
+	            <TextView 
+		            android:id="@+id/course_video_count_text"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_centerInParent="true"
+		            android:textSize="@dimen/course_video_group_count_size"
+		            android:textColor="@color/white"/>
+	        </RelativeLayout>
+	        
+	        <TextView 
+	            android:id="@+id/course_video_group_index_text"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_alignParentBottom="true"
+	            android:layout_alignParentRight="true"
+	            android:layout_marginRight="@dimen/course_video_group_index_margin_right"
+	            android:layout_marginBottom="@dimen/course_video_group_index_margin_bottom"
+	            android:textSize="@dimen/course_video_group_index_size"
+	            android:textColor="@color/white"/>
+	        
+	    </RelativeLayout>
+	    
+	</RelativeLayout>    
     
-    <LinearLayout
-        android:layout_below="@id/btn_finished"
-        android:layout_marginTop="20dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
-        <TextView
-            android:id="@+id/current_count_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="0" />
-        <TextView
-            android:id="@+id/current_count_slash_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="/" />
-        <TextView
-            android:id="@+id/current_total_count_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="12"  />
+    <RelativeLayout
+        android:layout_below="@id/surface_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
         
-        <TextView
-            android:id="@+id/current_gropu_count_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:text="第一组"  />
-        
-        <TextView
-            android:id="@+id/current_action_count_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:text="动作一"  />
-        
-        <TextView
-            android:id="@+id/current_action_total_group_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:text="共几组"  />
-    </LinearLayout>
-
+        <Button android:id="@+id/btn_finished"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentRight="true"
+	        android:text="结束"/>
+	    
+	    <Button android:id="@+id/btn_finish_once"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="动作完成一次"/>
+	    
+	    <LinearLayout
+	        android:layout_below="@id/btn_finished"
+	        android:layout_marginTop="20dp"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal" >
+	        <TextView
+	            android:id="@+id/current_count_text"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="0" />
+	        <TextView
+	            android:id="@+id/current_count_slash_text"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="/" />
+	        <TextView
+	            android:id="@+id/current_total_count_text"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="12"  />
+	        
+	        <TextView
+	            android:id="@+id/current_gropu_count_text"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_marginLeft="20dp"
+	            android:text="第一组"  />
+	        
+	        <TextView
+	            android:id="@+id/current_action_count_text"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_marginLeft="20dp"
+	            android:text="动作一"  />
+	        
+	        <TextView
+	            android:id="@+id/current_action_total_group_text"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_marginLeft="20dp"
+	            android:text="共几组"  />
+	    </LinearLayout>
+    </RelativeLayout>
+    
 </RelativeLayout>

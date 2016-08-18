@@ -147,7 +147,14 @@
             android:name="com.runrunfast.homegym.course.CourseVideoActivity"
             android:theme="@android:style/Theme.NoTitleBar"
             android:configChanges="keyboard|keyboardHidden|orientation"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="landscape" >
+        </activity>
+        
+        <activity
+            android:name="com.runrunfast.homegym.course.ActionDemoActivity"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:configChanges="keyboard|keyboardHidden|orientation"
+            android:screenOrientation="landscape" >
         </activity>
         
         <service android:name="com.runrunfast.ble.BLEService" >

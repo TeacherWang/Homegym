@@ -25,7 +25,6 @@ import com.runrunfast.homegym.bean.Course.CourseDetail;
 import com.runrunfast.homegym.bean.MyCourse;
 import com.runrunfast.homegym.bean.MyCourse.DayProgress;
 import com.runrunfast.homegym.dao.ActionDao;
-import com.runrunfast.homegym.dao.MyCourseActionDao;
 import com.runrunfast.homegym.dao.MyCourseDao;
 import com.runrunfast.homegym.utils.Const;
 import com.runrunfast.homegym.utils.DateUtil;
@@ -363,8 +362,7 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 		Log.i(TAG, "resultCode = " + resultCode);
 		if(requestCode == Const.DIALOG_REQ_CODE_EXIT_COURSE && resultCode == DialogActivity.RSP_CONFIRM){
 			// 删除本地数据
-			MyCourseDao.getInstance().deleteMyCourse(Globle.gApplicationContext, mUserInfo.strAccountId, mCourseId);
-			MyCourseActionDao.getInstance().deleteMyCourseAction(Globle.gApplicationContext, mUserInfo.strAccountId, mCourseId);
+			MyCourseDao.getInstance().deleteMyCourseFromDb(Globle.gApplicationContext, mUserInfo.strAccountId, mCourseId);
 			// 退出界面
 			exitTrain();
 		}
@@ -393,9 +391,9 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 	}
 
 	private void prepareToSaveMyCourse() {
-		MyCourse myCourse = createMyCourseFromCourse();
+		mMyCourse = createMyCourseFromCourse();
 		
-		MyCourseDao.getInstance().saveMyCourseToDb(Globle.gApplicationContext, AccountMgr.getInstance().mUserInfo.strAccountId, myCourse);
+		MyCourseDao.getInstance().saveMyCourseToDb(Globle.gApplicationContext, AccountMgr.getInstance().mUserInfo.strAccountId, mMyCourse);
 	}
 	
 	private MyCourse createMyCourseFromCourse(){
