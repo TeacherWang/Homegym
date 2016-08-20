@@ -1,6 +1,7 @@
 package com.runrunfast.homegym.course;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -23,6 +24,8 @@ public class CourseAdapter extends BaseAdapter {
 	
 	private static final int VIEW_TYPE_COUNT = 2;
 	
+	private Resources mResources;
+	
 	private LayoutInflater mInflater;
 	private ArrayList<Course> mCourseList;
 	private ICourseAdapterListener mICourseAdapterListener;
@@ -36,6 +39,7 @@ public class CourseAdapter extends BaseAdapter {
 	}
 	
 	public CourseAdapter(Context context, ArrayList<Course> courseList){
+		mResources = context.getResources();
 		setData(courseList);
 		this.mInflater = LayoutInflater.from(context);
 	}
@@ -215,14 +219,28 @@ public class CourseAdapter extends BaseAdapter {
 	private void setCourseProgress(ViewHolder viewHolder, int progerssType) {
 		viewHolder.courseProgressImg.setVisibility(View.VISIBLE);
 		switch (progerssType) {
-		case CourseInfo.PROGRESS_ING:
+		case MyCourse.COURSE_PROGRESS_ING:
 			viewHolder.courseProgressImg.setBackgroundResource(R.drawable.home_state_going);
 			viewHolder.tvProgress.setText(R.string.course_progress_ing);
+			viewHolder.tvProgress.setTextColor(mResources.getColor(R.color.white));
 			break;
 			
-		case CourseInfo.PROGRESS_REST:
+		case MyCourse.COURSE_PROGRESS_REST:
 			viewHolder.courseProgressImg.setBackgroundResource(R.drawable.home_state_going);
 			viewHolder.tvProgress.setText(R.string.course_rest_day);
+			viewHolder.tvProgress.setTextColor(mResources.getColor(R.color.white));
+			break;
+			
+		case MyCourse.COURSE_PROGRESS_EXPIRED:
+			viewHolder.courseProgressImg.setBackgroundResource(R.drawable.home_state_going);
+			viewHolder.tvProgress.setText(R.string.course_expired);
+			viewHolder.tvProgress.setTextColor(mResources.getColor(R.color.course_expire_text));
+			break;
+			
+		case MyCourse.COURSE_PROGRESS_FINISH:
+			viewHolder.courseProgressImg.setBackgroundResource(R.drawable.home_state_finish);
+			viewHolder.tvProgress.setText(R.string.course_finished);
+			viewHolder.tvProgress.setTextColor(mResources.getColor(R.color.white));
 			break;
 
 		default:

@@ -73,6 +73,7 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 	
 	private UserInfo mUserInfo;
 	
+	private Action mAction;
 	private MyCourse mMyCourse;
 	private ActionDetail mActionDetail;
 	private int mActionPosition;
@@ -181,15 +182,8 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 		
 		mGroupDetailList = new ArrayList<GroupDetail>();
 		
-//		intent.putExtra(Const.KEY_COURSE, mMyCourse);
-//		intent.putExtra(Const.KEY_ACTION_DETAIL, actionDetail);
-//		intent.putExtra(Const.KEY_DAY_POSITION, mCurrentDayPosition);
-//		intent.putExtra(Const.KEY_ACTION_POSITION, position);
-//		intent.putExtra(Const.KEY_ACTION, action);
-//		intent.putExtra(Const.KEY_ACTION_TOTAL_DATA, mActionTotalDataList.get(position));
-		
 		Intent intent = getIntent();
-		Action action = (Action) intent.getSerializableExtra(Const.KEY_ACTION);
+		mAction = (Action) intent.getSerializableExtra(Const.KEY_ACTION);
 		int actionPosition = intent.getIntExtra(Const.KEY_ACTION_POSITION, 0);
 		mMyCourse = (MyCourse) intent.getSerializableExtra(Const.KEY_COURSE);
 		mActionDetail = (ActionDetail) intent.getSerializableExtra(Const.KEY_ACTION_DETAIL);
@@ -198,8 +192,8 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 		mActionTotalData = (ActionTotalData) intent.getSerializableExtra(Const.KEY_ACTION_TOTAL_DATA);
 		
 		tvActionNum.setText("动作" + DataTransferUtil.numMap.get(actionPosition + 1));
-		tvTrainName.setText(action.action_name);
-		tvTrainDescript.setText(action.action_descript);
+		tvTrainName.setText(mAction.action_name);
+		tvTrainDescript.setText(mAction.action_descript);
 		
 		mGroupDetailList = (ArrayList<GroupDetail>) mActionDetail.group_detail;
 		
@@ -361,7 +355,9 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 	}
 	
 	private void jumpToVideoDemo() {
-		
+		Intent intent = new Intent(this, ActionDemoActivity.class);
+		intent.putExtra(Const.KEY_ACTION, mAction);
+		startActivity(intent);
 	}
 
 	private void minusGroupNum() {

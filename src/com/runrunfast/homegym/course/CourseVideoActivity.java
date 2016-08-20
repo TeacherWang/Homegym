@@ -4,8 +4,12 @@ import android.app.Activity;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
@@ -15,12 +19,15 @@ import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.BtDevice.BtDeviceMgr;
 import com.runrunfast.homegym.BtDevice.BtDeviceMgr.BLEServiceListener;
 import com.runrunfast.homegym.account.AccountMgr;
+import com.runrunfast.homegym.account.DataTransferUtil;
 import com.runrunfast.homegym.account.UserInfo;
+import com.runrunfast.homegym.bean.Action;
 import com.runrunfast.homegym.bean.Course.ActionDetail;
 import com.runrunfast.homegym.bean.Course.CourseDetail;
 import com.runrunfast.homegym.bean.Course.GroupDetail;
 import com.runrunfast.homegym.bean.MyCourse;
 import com.runrunfast.homegym.bean.MyCourse.DayProgress;
+import com.runrunfast.homegym.dao.ActionDao;
 import com.runrunfast.homegym.dao.MyCourseDao;
 import com.runrunfast.homegym.dao.MyTrainRecordDao;
 import com.runrunfast.homegym.home.FinishActivity;
@@ -30,18 +37,36 @@ import com.runrunfast.homegym.utils.Const;
 import com.runrunfast.homegym.utils.DateUtil;
 import com.runrunfast.homegym.utils.Globle;
 
+import io.vov.vitamio.MediaPlayer;
+import io.vov.vitamio.widget.MediaController;
+import io.vov.vitamio.widget.VideoView;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class CourseVideoActivity extends Activity implements OnClickListener{
 	private final String TAG = "CourseVideoActivity";
 	
+	private static final int MSG_ONE_SECOND = 1;
+	
+	private static final int DELAY_SECOND = 1000;
+	
+	private Timer mTimer;
+	private int mTimeSecond = 0;
+	
 	private Button btnFinished, btnFinishOnce;
 	private TextView tvCurrentCount, tvTotalCount, tvGroupIndex, tvActionCount, tvTotalGroup;
+	private TextView tvCourseName, tvActionName, tvGroupCount, tvGroupNum, tvTime;
+	
+	private VideoView mVideoView;
+	private String mVideoPath;
 	
 	private UserInfo mUserInfo;
 	private MyCourse mMyCourse;
 	private int mDayPosition;
+	private List<DayProgress> mDayProgresseList;
 	private DayProgress mDayProgress;
 	private ArrayList<ActionDetail> mActionDetailList;
 	
@@ -50,6 +75,7 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 	
 	private int mActionCurrentGroupCount; // 该动作在当前组的次数
 	
+	private Action mAction; // 当前动作的基本信息
 	private ActionDetail mTargetActionDetail; // 当前正在进行的目标动作
 	private ActionDetail mFinishedActionDetail; // 当前已经完成的动作
 	private int mCurrentActionPosition; // 当前正在进行的动作位置，从0开始
@@ -62,7 +88,6 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 	private int mActionCurrentGroupTotalCount; // 该动作在该组的总次数
 	
 	private List<ActionDetail> mFinishedActionDetailList;
-//	private ArrayList<Record> mRecordList;
 	
 	private BLEServiceListener mBleServiceListener;
 	
@@ -72,6 +97,8 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,  WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		
 		setContentView(R.layout.activity_course_video);
 		
 		initView();
@@ -152,6 +179,8 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 				mCurrentActionPosition++;
 				if( mCurrentActionPosition < mTotalActionNum ){
 					mTargetActionDetail = mActionDetailList.get(mCurrentActionPosition);
+					mAction = ActionDao.getInstance().getActionFromDb(Globle.gApplicationContext, mTargetActionDetail.action_id);
+					tvActionName.setText( (mCurrentActionPosition + 1) + "." + mAction.action_name);
 					
 					mFinishedGroupDetail = new GroupDetail();
 					mFinishedActionDetail = new ActionDetail();
@@ -175,6 +204,8 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 	}
 
 	private void initData() {
+		mVideoPath = Environment.getExternalStorageDirectory()+"/video.mp4";
+		
 		mUserInfo = AccountMgr.getInstance().mUserInfo;
 		
 		mFinishedActionGroupDetailList = new ArrayList<GroupDetail>();
@@ -183,12 +214,14 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 		mMyCourse = (MyCourse) getIntent().getSerializableExtra(Const.KEY_COURSE);
 		mDayPosition = getIntent().getIntExtra(Const.KEY_DAY_POSITION, 0);
 		
+		tvCourseName.setText(mMyCourse.course_name);
+		
 		CourseDetail courseDetail = mMyCourse.course_detail.get(mDayPosition);
 		
 		mActionDetailList = (ArrayList<ActionDetail>) courseDetail.action_detail;
 		
-		List<DayProgress> day_progress = mMyCourse.day_progress;
-		mDayProgress = day_progress.get(mDayPosition);
+		mDayProgresseList = mMyCourse.day_progress;
+		mDayProgress = mDayProgresseList.get(mDayPosition);
 		mStrPlanDate = mDayProgress.plan_date;
 		
 		mFinishedActionIds = new ArrayList<String>();;
@@ -198,6 +231,8 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 		
 		mCurrentActionPosition = 0; // 第一个动作
 		mTargetActionDetail = mActionDetailList.get(mCurrentActionPosition);
+		mAction = ActionDao.getInstance().getActionFromDb(Globle.gApplicationContext, mTargetActionDetail.action_id);
+		tvActionName.setText( (mCurrentActionPosition + 1) + "." + mAction.action_name);
 		
 		mFinishedActionDetail = new ActionDetail();
 		mFinishedActionDetail.action_id = mTargetActionDetail.action_id;
@@ -214,13 +249,65 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 		mCurrentRecord.course_id = mMyCourse.course_id;
 		mCurrentRecord.course_name = mMyCourse.course_name;
 		mCurrentRecord.plan_date = mStrPlanDate;
-//		mCurrentRecord.finish_group_num = mActionGroupIndex + 1; // 完成的组数
 		mFinishedActionDetailList = mCurrentRecord.action_detail;
 		
 		updateUi();
+		
+		startVideo();
+		
+		mTimer = new Timer();
+		
+		tvTime.setText(DateUtil.secToMinuteSecond(mTimeSecond));
+	}
+
+	private TimerTask mTimerTask = new TimerTask() {
+		
+		@Override
+		public void run() {
+			Message msg = new Message();
+			msg.what = MSG_ONE_SECOND;
+			mHandler.sendMessage(msg);
+		}
+	};
+	
+	private Handler mHandler = new Handler(){
+		public void handleMessage(android.os.Message msg) {
+			switch (msg.what) {
+			case MSG_ONE_SECOND:
+				mTimeSecond++;
+				tvTime.setText(DateUtil.secToMinuteSecond(mTimeSecond));
+				break;
+
+			default:
+				break;
+			}
+		};
+	};
+	
+	private void startVideo() {
+		/*
+		 * Alternatively,for streaming media you can use
+		 * mVideoView.setVideoURI(Uri.parse(URLstring));
+		 */
+		mVideoView.setVideoPath(mVideoPath);
+		mVideoView.setMediaController(new MediaController(this));
+		mVideoView.requestFocus();
+		
+		mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+			@Override
+			public void onPrepared(MediaPlayer mediaPlayer) {
+				// optional need Vitamio 4.0
+				mediaPlayer.setPlaybackSpeed(1.0f);
+				
+				mTimer.scheduleAtFixedRate(mTimerTask, DELAY_SECOND, DELAY_SECOND);
+			}
+		});
 	}
 
 	private void updateUi() {
+		tvGroupCount.setText( String.valueOf(mActionCurrentGroupCount) + "/" + String.valueOf(mActionCurrentGroupTotalCount) );
+		tvGroupNum.setText("第" + DataTransferUtil.numMap.get(mActionGroupIndex + 1) + "组");
+		
 		tvTotalCount.setText(String.valueOf(mActionCurrentGroupTotalCount));
 		tvCurrentCount.setText(String.valueOf(mActionCurrentGroupCount));
 		tvGroupIndex.setText("第" + (mActionGroupIndex + 1) + "组");
@@ -240,6 +327,13 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 		tvGroupIndex = (TextView)findViewById(R.id.current_gropu_count_text);
 		tvActionCount = (TextView)findViewById(R.id.current_action_count_text);
 		tvTotalGroup = (TextView)findViewById(R.id.current_action_total_group_text);
+		
+		mVideoView = (VideoView)findViewById(R.id.surface_view);
+		tvCourseName = (TextView)findViewById(R.id.train_course_name_text);
+		tvActionName = (TextView)findViewById(R.id.train_action_name_text);
+		tvGroupCount = (TextView)findViewById(R.id.course_video_count_text);
+		tvGroupNum = (TextView)findViewById(R.id.course_video_group_index_text);
+		tvTime = (TextView)findViewById(R.id.course_video_time_text);
 	}
 
 	@Override
@@ -292,6 +386,20 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 		
 		mDayProgress.progress = MyCourse.DAY_PROGRESS_FINISH;
 		MyCourseDao.getInstance().saveMyCourseDayProgress(Globle.gApplicationContext, mUserInfo.strAccountId, mMyCourse);
+		
+		int courseProgress = MyCourse.COURSE_PROGRESS_FINISH;
+		int daySize = mDayProgresseList.size();
+		for(int i=0; i<daySize; i++){
+			DayProgress dayProgress = mDayProgresseList.get(i);
+			if(dayProgress.progress == MyCourse.DAY_PROGRESS_UNFINISH){
+				courseProgress = MyCourse.COURSE_PROGRESS_ING;
+				break;
+			}
+		}
+		
+		if(courseProgress == MyCourse.COURSE_PROGRESS_FINISH){
+			MyCourseDao.getInstance().saveMyCourseProgress(Globle.gApplicationContext, mUserInfo.strAccountId, mMyCourse.course_id, courseProgress);
+		}
 		
 		Intent intent = new Intent(this, FinishActivity.class);
 		intent.putExtra(FinishActivity.KEY_FINISH_OR_UNFINISH, FinishActivity.TYPE_FINISH);

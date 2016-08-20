@@ -364,4 +364,16 @@
 	
 	<dimen name="detail_rest_day">20sp</dimen>
 	
+	<dimen name="action_demo_name_margin_top">11dp</dimen>
+	<dimen name="action_demo_name_size">18sp</dimen>
+	<dimen name="course_video_course_name_margin_left">15dp</dimen>
+	<dimen name="course_video_action_name_size">15sp</dimen>
+	<dimen name="course_video_group_margin_bottom">49dp</dimen>
+	<dimen name="course_video_group_margin_left">30dp</dimen>
+	<dimen name="course_video_group_count_size">24sp</dimen>
+	<dimen name="course_video_group_index_size">18sp</dimen>
+	<dimen name="course_video_group_index_margin_right">10dp</dimen>
+	<dimen name="course_video_group_index_margin_bottom">3dp</dimen>
+	<dimen name="course_video_time_margin_bottom">22dp</dimen>
+	
 </resources>

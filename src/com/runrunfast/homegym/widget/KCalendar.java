@@ -40,7 +40,8 @@ public class KCalendar extends ViewFlipper implements
 	public static final int COLOR_TX_WEEK_TITLE = Color.parseColor("#231815"); // 星期标题文字颜色
 	public static final int COLOR_TX_THIS_MONTH_DAY = Color.parseColor("#231815"); // 当前月日历数字颜色
 	public static final int COLOR_TX_OTHER_MONTH_DAY = Color.parseColor("#a09d9d"); // 其他月日历数字颜色
-	public static final int COLOR_TX_THIS_DAY = Color.parseColor("#d94d01"); // 当天日历数字颜色
+//	public static final int COLOR_TX_THIS_DAY = Color.parseColor("#d94d01"); // 当天日历数字颜色
+	public static final int COLOR_TX_THIS_DAY = Color.parseColor("#231815"); // 当天日历数字颜色
 	public static final int COLOR_BG_THIS_DAY = Color.parseColor("#ffffff"); // 当天日历背景颜色
 	public static final int COLOR_BG_CALENDAR = Color.parseColor("#ffffff"); // 日历背景色
 

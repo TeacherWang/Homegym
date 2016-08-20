@@ -55,7 +55,8 @@ public class Const {
 	public static final String DB_KEY_ACTION_POSITION = "action_position"; // 动作锻炼的部位
 	public static final String DB_KEY_ACTION_DESCRIPT = "action_descript"; // 动作的描述
 	public static final String DB_KEY_ACTION_DIFFICULT = "action_difficult"; // 动作的难度
-	public static final String DB_KEY_ACTION_DEFAULT_TOTAL_KCAL = "action_default_total_kcal"; // 动作的默认总消耗卡
+	public static final String DB_KEY_ACTION_URL = "action_url"; // 动作的下载地址
+	public static final String DB_KEY_ACTION_LOCAL_FILE = "action_local_file"; // 动作的本地地址
 	public static final String DB_KEY_DEFAULT_TIME = "default_time";
 	public static final String DB_KEY_DEFAULT_GROUP_NUM = "default_group_num";
 	public static final String DB_KEY_DEFAULT_COUNT = "default_count";

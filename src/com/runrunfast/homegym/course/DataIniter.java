@@ -1,5 +1,6 @@
 package com.runrunfast.homegym.course;
 
+import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
 
@@ -279,6 +280,7 @@ public class DataIniter {
 		actionInfo1.action_position = "背部 腰部";
 		actionInfo1.action_descript = "坚持训练将锻炼到胸大肌和三角肌";
 		actionInfo1.action_difficult = 1;
+		actionInfo1.action_local_file = Environment.getExternalStorageDirectory()+"/video.mp4";
 		
 		actionInfoList.add(actionInfo1);
 		
@@ -289,6 +291,7 @@ public class DataIniter {
 		actionInfo2.action_position = "背部 手臂";
 		actionInfo2.action_descript = "坚持训练将锻炼到肱二头肌和三角肌";
 		actionInfo2.action_difficult = 2;
+		actionInfo2.action_local_file = Environment.getExternalStorageDirectory()+"/video.mp4";
 		
 		actionInfoList.add(actionInfo2);
 		
@@ -299,6 +302,7 @@ public class DataIniter {
 		actionInfo3.action_position = "背部 腰部";
 		actionInfo3.action_descript = "坚持训练将锻炼到腹肌";
 		actionInfo3.action_difficult = 3;
+		actionInfo3.action_local_file = Environment.getExternalStorageDirectory()+"/video.mp4";
 		
 		actionInfoList.add(actionInfo3);
 		
@@ -309,6 +313,7 @@ public class DataIniter {
 		actionInfo4.action_position = "背部 腰部";
 		actionInfo4.action_descript = "坚持训练将锻炼到胸大肌和三角肌";
 		actionInfo4.action_difficult = 1;
+		actionInfo4.action_local_file = Environment.getExternalStorageDirectory()+"/video.mp4";
 		
 		actionInfoList.add(actionInfo4);
 		
@@ -319,6 +324,7 @@ public class DataIniter {
 		actionInfo5.action_position = "背部 腰部";
 		actionInfo5.action_descript = "坚持训练将锻炼到胸大肌和三角肌";
 		actionInfo5.action_difficult = 2;
+		actionInfo5.action_local_file = Environment.getExternalStorageDirectory()+"/video.mp4";
 		
 		actionInfoList.add(actionInfo5);
 		

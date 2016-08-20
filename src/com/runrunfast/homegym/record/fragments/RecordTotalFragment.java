@@ -11,12 +11,8 @@ import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.account.AccountMgr;
 import com.runrunfast.homegym.account.UserInfo;
 import com.runrunfast.homegym.dao.MyTrainRecordDao;
-import com.runrunfast.homegym.record.BaseRecordData;
-import com.runrunfast.homegym.record.RecordDataAction;
 import com.runrunfast.homegym.utils.DateUtil;
 import com.runrunfast.homegym.utils.Globle;
-
-import java.util.ArrayList;
 
 public class RecordTotalFragment extends Fragment {
 	private UserInfo mUserInfo;
@@ -40,19 +36,17 @@ public class RecordTotalFragment extends Fragment {
 	private void initData() {
 		mUserInfo = AccountMgr.getInstance().mUserInfo;
 		
-		ArrayList<BaseRecordData> baseRecordDataList = MyTrainRecordDao.getInstance().getFinishInfoList(Globle.gApplicationContext, mUserInfo.strAccountId);
 		int totalKcal = 0;
 		int totalTime = 0;
 		int totalCount = 0;
 		int totalDays =  MyTrainRecordDao.getInstance().getFinishDayNum(Globle.gApplicationContext, mUserInfo.strAccountId);
 		
-		int dataSize = baseRecordDataList.size();
-		for(int i=0; i<dataSize; i++){
-			RecordDataAction unitRecordData = (RecordDataAction) baseRecordDataList.get(i);
-			totalKcal = totalKcal + unitRecordData.iTotalKcal;
+//		for(int i=0; i<dataSize; i++){
+//			RecordDataAction unitRecordData = (RecordDataAction) baseRecordDataList.get(i);
+//			totalKcal = totalKcal + unitRecordData.iTotalKcal;
 //			totalTime = totalTime + unitRecordData.iConsumeTime;
 //			totalCount = totalCount + unitRecordData.iCount;
-		}
+//		}
 		
 		tvTotalCount.setText(String.valueOf(totalCount));
 		tvTotalKcal.setText(String.valueOf(totalKcal));

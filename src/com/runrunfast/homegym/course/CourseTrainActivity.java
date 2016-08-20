@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.runrunfast.homegym.R;
@@ -34,6 +35,7 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 	private TextView tvTitle;
 	private Button btnLeft, btnRight;
 	private Button btnStartTrain;
+	private RelativeLayout mActionLayout, mRestDayLayout;
 	
 	private CourseTrainAdapter mCourseTrainAdapter;
 	private ListView mCourseTrainListView;
@@ -107,20 +109,15 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 		mMyCourse = (MyCourse) getIntent().getSerializableExtra(Const.KEY_COURSE);
 		tvTitle.setText(mMyCourse.course_name);
 		
-		showAction();
-		
-//		CourseTrainInfo courseTrainInfo1 = new CourseTrainInfo();
-//		courseTrainInfo1.iCourseId = 1;
-//		courseTrainInfo1.strCrouseName = "21天增肌训练";
-//		courseTrainInfo1.iTrainId = 1;
-//		courseTrainInfo1.strTrainName = "平板卧推举";
-//		courseTrainInfo1.strActionNum = "动作一";
-//		courseTrainInfo1.strTrainPosition = "背部 胸部";
-//		courseTrainInfo1.strTrainDescript = "坚持训练将锻炼到胸大肌和三角肌";
-//		courseTrainInfo1.iTime = 15;
-//		courseTrainInfo1.iKcal = 187;
-//		courseTrainInfo1.iDiffcultLevel = 1;
-//		mCourseActionInfoList.add(courseTrainInfo1);
+		// 判断是否是休息日
+		if(mMyCourse.progress == MyCourse.COURSE_PROGRESS_REST){
+			mActionLayout.setVisibility(View.GONE);
+			mRestDayLayout.setVisibility(View.VISIBLE);
+		}else{
+			mActionLayout.setVisibility(View.VISIBLE);
+			mRestDayLayout.setVisibility(View.GONE);
+			showAction();
+		}
 	}
 	
 	private void showAction() {
@@ -196,6 +193,9 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 		
 		btnStartTrain = (Button)findViewById(R.id.btn_start_train);
 		btnStartTrain.setOnClickListener(this);
+		
+		mActionLayout = (RelativeLayout)findViewById(R.id.course_train_action_layout);
+		mRestDayLayout = (RelativeLayout)findViewById(R.id.course_train_rest_day_layout);
 	}
 
 
@@ -223,12 +223,8 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 		Intent intent = new Intent(this, CourseVideoActivity.class);
 		intent.putExtra(Const.KEY_COURSE, mMyCourse);
 		intent.putExtra(Const.KEY_DAY_POSITION, mCurrentDayPosition);
-//		intent.putExtra(Const.KEY_COURSE_DETAIL, mCourseDetail);
-//		intent.putExtra(Const.KEY_COURSE_ID, mMyCourse.course_id);
-//		intent.putExtra(Const.KEY_COURSE_NAME, mMyCourse.course_name);
 		startActivity(intent);
 	}
-
 
 	private void jumpToTrainDetailActivity() {
 		Intent intent = new Intent(this, DetailPlanActivity.class);

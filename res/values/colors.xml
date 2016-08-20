@@ -98,4 +98,6 @@
     <color name="chart_color_normal">#32c574</color>
     <color name="chart_color_select">#118202</color>
     
+    <color name="course_expire_text">#c60505</color>
+    
 </resources>

@@ -31,6 +31,7 @@ import com.runrunfast.homegym.utils.DensityUtil;
 import com.runrunfast.homegym.utils.Globle;
 import com.runrunfast.homegym.widget.HistogramView;
 import com.runrunfast.homegym.widget.HistogramView.Bar;
+import com.runrunfast.homegym.widget.HistogramView.OnClickCountListener;
 
 import java.util.ArrayList;
 
@@ -58,6 +59,9 @@ public class RecordYearFragment extends Fragment implements OnClickListener{
 	
 	// 柱状图
 	private HistogramView mHistogramView;
+	private OnClickCountListener mOnClickCountListener;
+	
+	private ArrayList<StatisticalData> mStatisticalDataList;
 	
 	private int screenWidth;
 	
@@ -101,8 +105,8 @@ public class RecordYearFragment extends Fragment implements OnClickListener{
 	}
 
 	private void initChart(int selectYear) {
-		ArrayList<StatisticalData> statisticalDataList = MyTrainRecordDao.getInstance().getMonthStatisticalDataDependYear(Globle.gApplicationContext, mUserInfo.strAccountId, selectYear);
-		generateHistogramBar(statisticalDataList);
+		mStatisticalDataList = MyTrainRecordDao.getInstance().getMonthStatisticalDataDependYear(Globle.gApplicationContext, mUserInfo.strAccountId, selectYear);
+		generateHistogramBar(mStatisticalDataList);
 	}
 	
 	private void generateHistogramBar(ArrayList<StatisticalData> statisticalDataList) {
@@ -128,16 +132,36 @@ public class RecordYearFragment extends Fragment implements OnClickListener{
 				color = mResources.getColor(R.color.chart_color_normal);
 			}else{
 				color = mResources.getColor(R.color.chart_color_select);
+				mHistogramView.setSelectPosition(i);
 			}
 			
 			Bar bar = mHistogramView.new Bar(i+1, ratio, color, bootomText, String.valueOf(statisticalData.totalKcal));
 			barList.add(bar);
 		}
 		
+//		for(int i=0; i<31; i++){
+//			StatisticalData statisticalData = statisticalDataList.get(0);
+//			int month = DateUtil.getMonthOfYearMonth(statisticalData.strDate); // 格式：2016-08
+//			String bootomText = DataTransferUtil.numMap.get(month) + "月";
+//			float ratio = (float)statisticalData.totalKcal / (float)maxValue;
+//			
+//			Log.i("RecordMonthFragment", "generateHistogramBar, ratio = " + ratio);
+//			int color = mResources.getColor(R.color.chart_color_normal);
+//			if(i == 0){
+//				color = mResources.getColor(R.color.chart_color_normal);
+//			}else{
+//				color = mResources.getColor(R.color.chart_color_select);
+//				mHistogramView.setSelectPosition(i);
+//			}
+//			
+//			Bar bar = mHistogramView.new Bar(i+1, ratio, color, bootomText, String.valueOf(statisticalData.totalKcal));
+//			barList.add(bar);
+//		}
+		
 		LayoutParams params = (LayoutParams) mHistogramView.getLayoutParams();
 		int padding = (int) mResources.getDimension(R.dimen.chat_margin_left_right);
 		int layoutWidth = screenWidth - padding * 2;
-		int contentWidth = (int) (dataSize * 2 * mResources.getDimension(R.dimen.chat_column_width) + mResources.getDimension(R.dimen.chat_column_width));
+		int contentWidth = (int) (barList.size() * 2 * mResources.getDimension(R.dimen.chat_column_width) + mResources.getDimension(R.dimen.chat_column_width));
 		if(contentWidth < layoutWidth){
 			params.width = layoutWidth;
 		}else{
@@ -170,18 +194,27 @@ public class RecordYearFragment extends Fragment implements OnClickListener{
 		btnReduceMonth.setOnClickListener(this);
 		
 		mHistogramView = (HistogramView)rootView.findViewById(R.id.record_chart);
+		initHistogramViewClickListener();
 		
 		screenWidth = DensityUtil.getScreenWidth(getActivity());
 	}
 	
-	// 不要删除，切换fragment用到
-    @Override
-	public void setMenuVisibility(boolean menuVisible) {
-		super.setMenuVisibility(menuVisible);
-		if (this.getView() != null)
-			this.getView().setVisibility(menuVisible ? View.VISIBLE : View.GONE);
+	private void initHistogramViewClickListener() {
+		mOnClickCountListener = new OnClickCountListener() {
+			
+			@Override
+			public void onSingleClick(int position) {
+				StatisticalData statisticalData = mStatisticalDataList.get(position);
+				Log.i(TAG, "onSingleClick, select date = " + statisticalData.strDate);
+				
+				mBaseRecordDataList.clear();
+				mBaseRecordDataList = RecordUtil.getBaseRecordDataList(statisticalData.strDate, mUserInfo.strAccountId);
+				mRecordAdapter.updateData(mBaseRecordDataList);
+			}
+		};
+		mHistogramView.setOnClickCountListener(mOnClickCountListener);
 	}
-
+	
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
@@ -252,5 +285,13 @@ public class RecordYearFragment extends Fragment implements OnClickListener{
 		mRecordAdapter.updateData(mBaseRecordDataList);
 		
 		initChart(mSelectYear);
+	}
+	
+	// 不要删除，切换fragment用到
+    @Override
+	public void setMenuVisibility(boolean menuVisible) {
+		super.setMenuVisibility(menuVisible);
+		if (this.getView() != null)
+			this.getView().setVisibility(menuVisible ? View.VISIBLE : View.GONE);
 	}
 }

@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
@@ -32,9 +31,7 @@ import com.runrunfast.homegym.utils.DensityUtil;
 import com.runrunfast.homegym.utils.Globle;
 import com.runrunfast.homegym.widget.HistogramView;
 import com.runrunfast.homegym.widget.HistogramView.Bar;
-
-import lecho.lib.hellocharts.listener.ColumnChartOnValueSelectListener;
-import lecho.lib.hellocharts.model.SubcolumnValue;
+import com.runrunfast.homegym.widget.HistogramView.OnClickCountListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -55,6 +52,8 @@ public class RecordMonthFragment extends Fragment implements OnClickListener{
 	
 	private RecordAdapter mRecordAdapter;
 	
+	private ArrayList<StatisticalData> mStatisticalDataList;
+	
 	private UserInfo mUserInfo;
 	
 	private int mThisYear;
@@ -67,6 +66,8 @@ public class RecordMonthFragment extends Fragment implements OnClickListener{
 	private HistogramView mHistogramView;
 	
 	private int screenWidth;
+	
+	private OnClickCountListener mOnClickCountListener;
 	
 	// 柱状图
 //	private ColumnChartView chart;
@@ -119,8 +120,8 @@ public class RecordMonthFragment extends Fragment implements OnClickListener{
 	}
 
 	private void initChart(String strCurrentYearMonth) {
-		ArrayList<StatisticalData> statisticalDataList = MyTrainRecordDao.getInstance().getDayStatisticalDataDependYearMonth(Globle.gApplicationContext, mUserInfo.strAccountId, strCurrentYearMonth);
-		generateHistogramBar(statisticalDataList);
+		mStatisticalDataList = MyTrainRecordDao.getInstance().getDayStatisticalDataDependYearMonth(Globle.gApplicationContext, mUserInfo.strAccountId, strCurrentYearMonth);
+		generateHistogramBar(mStatisticalDataList);
 	}
 
 	private void generateHistogramBar(ArrayList<StatisticalData> statisticalDataList) {
@@ -152,6 +153,13 @@ public class RecordMonthFragment extends Fragment implements OnClickListener{
 			Bar bar = mHistogramView.new Bar(i+1, ratio, color, bootomText, String.valueOf(statisticalData.totalKcal));
 			barList.add(bar);
 		}
+		
+//		for(int i=0; i<31; i++){
+//			int color = mResources.getColor(R.color.chart_color_normal);
+//			
+//			Bar bar = mHistogramView.new Bar(i+1, 0.5f, color, (i+1) + "", String.valueOf(100));
+//			barList.add(bar);
+//		}
 		
 		LayoutParams params = (LayoutParams) mHistogramView.getLayoutParams();
 		int padding = (int) mResources.getDimension(R.dimen.chat_margin_left_right);
@@ -189,26 +197,27 @@ public class RecordMonthFragment extends Fragment implements OnClickListener{
 		tvMonth = (TextView)rootView.findViewById(R.id.record_detail_time_text);
 		
 		mHistogramView = (HistogramView)rootView.findViewById(R.id.record_chart);
+		mHistogramView.setCanClickable(false);
+		initHistogramViewClickListener();
 		
 		screenWidth = DensityUtil.getScreenWidth(getActivity());
 	}
 	
-	private class ValueTouchListener implements ColumnChartOnValueSelectListener {
+	private void initHistogramViewClickListener() {
+		mOnClickCountListener = new OnClickCountListener() {
+			
+			@Override
+			public void onSingleClick(int position) {
+				StatisticalData statisticalData = mStatisticalDataList.get(position);
+				Log.i(TAG, "onSingleClick, select date = " + statisticalData.strDate);
+				
+//				String selectDay = mThisYear + "-" + String.format("%02d", mSelectMonth) + "-" + String.format("%02d", columnIndex + 1);
+//	            handleDaySelected(selectDay);
+			}
+		};
+		mHistogramView.setOnClickCountListener(mOnClickCountListener);
+	}
 
-        @Override
-        public void onValueSelected(int columnIndex, int subcolumnIndex, SubcolumnValue value) {
-            Toast.makeText(getActivity(), "Selected: " + value + ", columnIndex = " + columnIndex + ", subcolumnIndex = " + subcolumnIndex, Toast.LENGTH_SHORT).show();
-            String selectDay = mThisYear + "-" + String.format("%02d", mSelectMonth) + "-" + String.format("%02d", columnIndex + 1);
-            handleDaySelected(selectDay);
-        }
-
-        @Override
-        public void onValueDeselected() {
-        	
-        }
-
-    }
-	
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
