@@ -41,7 +41,7 @@ public class ActionDemoActivity extends Activity {
 	}
 
 	private void startVideo() {
-		String path = mAction.action_local_file;
+		String path = mAction.action_video_local.get(0);
 		
 		/*
 		 * Alternatively,for streaming media you can use
@@ -56,7 +56,6 @@ public class ActionDemoActivity extends Activity {
 			public void onPrepared(MediaPlayer mediaPlayer) {
 				// optional need Vitamio 4.0
 				mediaPlayer.setPlaybackSpeed(1.0f);
-				mediaPlayer.setLooping(true);
 			}
 		});
 	}

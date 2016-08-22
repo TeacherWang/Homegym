@@ -111,7 +111,7 @@ public class RecordYearFragment extends Fragment implements OnClickListener{
 	
 	private void generateHistogramBar(ArrayList<StatisticalData> statisticalDataList) {
 		ArrayList<Bar> barList = new ArrayList<HistogramView.Bar>();
-		int maxValue = 0;
+		float maxValue = 0;
 		int dataSize = statisticalDataList.size();
 		for(int i=0; i<dataSize; i++){
 			StatisticalData statisticalData = statisticalDataList.get(i);
@@ -135,7 +135,7 @@ public class RecordYearFragment extends Fragment implements OnClickListener{
 				mHistogramView.setSelectPosition(i);
 			}
 			
-			Bar bar = mHistogramView.new Bar(i+1, ratio, color, bootomText, String.valueOf(statisticalData.totalKcal));
+			Bar bar = mHistogramView.new Bar(i+1, ratio, color, bootomText, DataTransferUtil.getInstance().getTwoDecimalData(statisticalData.totalKcal));
 			barList.add(bar);
 		}
 		

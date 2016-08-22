@@ -10,8 +10,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.account.AccountMgr;
@@ -100,7 +98,8 @@ public class MyTrainingFragment extends Fragment{
 				continue;
 			}
 			// 如果当天时间已经超过课程的最后日期，则设置为已过期
-			if(DateUtil.getMillsFromStrDate(currentDay) > DateUtil.getMillsFromStrDate(lastDayProgress.plan_date)){
+			String planDate = DateUtil.getDateStrOfDayNumFromStartDate(lastDayProgress.day_num, myCourse.start_date);
+			if(DateUtil.getMillsFromStrDate(currentDay) > DateUtil.getMillsFromStrDate(planDate)){
 				myCourse.progress = MyCourse.COURSE_PROGRESS_EXPIRED;
 				MyCourseDao.getInstance().saveMyCourseProgress(Globle.gApplicationContext, mUserInfo.strAccountId, myCourse.course_id, myCourse.progress);
 				continue;
@@ -110,7 +109,8 @@ public class MyTrainingFragment extends Fragment{
 			int daySize = dayProgresseList.size();
 			for(int j=0; j<daySize; j++){
 				DayProgress dayProgress = dayProgresseList.get(j);
-				if(dayProgress.plan_date.equals(currentDay)){
+				String dayPlanDate = DateUtil.getDateStrOfDayNumFromStartDate(dayProgress.day_num, myCourse.start_date);
+				if(dayPlanDate.equals(currentDay)){
 					myCourse.progress = MyCourse.COURSE_PROGRESS_ING;
 					break;
 				}
@@ -148,10 +148,10 @@ public class MyTrainingFragment extends Fragment{
 		Intent intent = null;
 		
 		if(course instanceof MyCourse){
-			if(((MyCourse) course).progress == MyCourse.COURSE_PROGRESS_EXPIRED){
-				Toast.makeText(getActivity(), R.string.this_mycourse_is_expired, Toast.LENGTH_SHORT).show();
-				return;
-			}
+//			if(((MyCourse) course).progress == MyCourse.COURSE_PROGRESS_EXPIRED){
+//				Toast.makeText(getActivity(), R.string.this_mycourse_is_expired, Toast.LENGTH_SHORT).show();
+//				return;
+//			}
 			intent = new Intent(getActivity(), CourseTrainActivity.class);
 		}else{
 			intent = new Intent(getActivity(), DetailPlanActivity.class);

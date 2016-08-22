@@ -73,20 +73,17 @@ public class MyCourseDao {
 			
 			Gson gson = new Gson();
 			
-//			String actionIdsJson = gson.toJson(myCourse.action_ids);
-//			values.put(Const.DB_KEY_ACTION_IDS, actionIdsJson);
-			
 			String jsonCourseDetail = gson.toJson(myCourse.course_detail);
 			values.put(Const.DB_KEY_COURSE_DETAIL, jsonCourseDetail);
 			
 			String dayProgressJson = gson.toJson(myCourse.day_progress);
 			values.put(Const.DB_KEY_DAY_PROGRESS, dayProgressJson);
 			
-			c = db.query(Const.TABLE_MY_COURSE, null, Const.DB_KEY_UID + " = ? and " + Const.DB_KEY_COURSE_ID + " =?",
-					new String[] { uid, myCourse.course_id }, null, null, null);
+			c = db.query(Const.TABLE_MY_COURSE, null, Const.DB_KEY_UID + " = ? and " + Const.DB_KEY_COURSE_ID + " =? and " + Const.DB_KEY_START_DATE + " =?" ,
+					new String[] { uid, myCourse.course_id, myCourse.start_date }, null, null, null);
 			if (c.getCount() > 0) {// 查询到数据库有该数据，就更新该行数据
-				db.update(Const.TABLE_MY_COURSE, values, Const.DB_KEY_UID + " = ? and " + Const.DB_KEY_COURSE_ID + " =?",
-						new String[] { uid, myCourse.course_id });
+				db.update(Const.TABLE_MY_COURSE, values, Const.DB_KEY_UID + " = ? and " + Const.DB_KEY_COURSE_ID + " =? and " + Const.DB_KEY_START_DATE + " =?",
+						new String[] { uid, myCourse.course_id, myCourse.start_date });
 			}else{
 				db.insert(Const.TABLE_MY_COURSE, null, values);
 			}
@@ -272,16 +269,16 @@ public class MyCourseDao {
 		return myCourse;
 	}
 	
-	public synchronized void deleteMyCourseFromDb(Context context, String uid, String courseId ){
+	public synchronized void deleteMyCourseFromDb(Context context, String uid, String courseId, String startDate ){
 		SQLiteDatabase db = null;
 		Cursor c = null;
 		try {
 			DBOpenHelper dbHelper = new DBOpenHelper(context);
 			db = dbHelper.getWritableDatabase();
 			
-			c = db.query(Const.TABLE_MY_COURSE, null, Const.DB_KEY_UID + "=? and " + Const.DB_KEY_COURSE_ID + "=?", new String[]{ uid, courseId }, null, null, null);
+			c = db.query(Const.TABLE_MY_COURSE, null, Const.DB_KEY_UID + "=? and " + Const.DB_KEY_COURSE_ID + "=? and " + Const.DB_KEY_START_DATE + "=?", new String[]{ uid, courseId, startDate }, null, null, null);
 			if(null != c && c.getCount() > 0){
-				db.delete(Const.TABLE_MY_COURSE, Const.DB_KEY_UID + "=? and " + Const.DB_KEY_COURSE_ID + "=?", new String[]{ uid, courseId });
+				db.delete(Const.TABLE_MY_COURSE, Const.DB_KEY_UID + "=? and " + Const.DB_KEY_COURSE_ID + "=? and " + Const.DB_KEY_START_DATE + "=?", new String[]{ uid, courseId, startDate });
 			}
 			
 		} catch (Exception e) {

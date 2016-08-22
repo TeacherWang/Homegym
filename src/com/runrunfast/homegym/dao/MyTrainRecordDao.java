@@ -175,7 +175,7 @@ public class MyTrainRecordDao {
 					if(cSum.moveToNext()){
 						StatisticalData statisticalData = new StatisticalData();
 						statisticalData.strDate = strDate;
-						statisticalData.totalKcal = cSum.getInt(0);
+						statisticalData.totalKcal = cSum.getFloat(0);
 						statisticalDataList.add(statisticalData);
 					}
 				}
@@ -215,7 +215,7 @@ public class MyTrainRecordDao {
 					if(cSum.moveToNext()){
 						StatisticalData statisticalData = new StatisticalData();
 						statisticalData.strDate = strYearMonth;
-						statisticalData.totalKcal = cSum.getInt(0);
+						statisticalData.totalKcal = cSum.getFloat(0);
 						statisticalDataList.add(statisticalData);
 					}
 				}

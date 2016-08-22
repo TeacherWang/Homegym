@@ -1,6 +1,10 @@
 package com.runrunfast.homegym.account;
 
+import android.text.TextUtils;
+import android.util.Log;
+
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -8,10 +12,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import android.text.TextUtils;
-import android.util.Log;
 
 /**
  * @author TeacherWang
@@ -262,6 +262,19 @@ public class DataTransferUtil {
 	
 	public String getBigNum(int num){
 		return (String) numMap.get(num);
+	}
+	
+	/**
+	  * @Method: getTwoDecimalData
+	  * @Description: 保留两位小数
+	  * @param data
+	  * @return	
+	  * 返回类型：String 
+	  */
+	public String getTwoDecimalData(float data){
+		DecimalFormat decimalFormat=new DecimalFormat("0.00");//构造方法的字符格式这里如果小数不足2位,会以0补足.
+		String value = decimalFormat.format(data);//format 返回的是字符串
+		return value;
 	}
 	
 }

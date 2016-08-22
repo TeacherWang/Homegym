@@ -53,6 +53,7 @@
     <View 
         android:layout_width="match_parent"
         android:layout_height="1px"
+        android:layout_marginTop="5dp"
         android:background="@color/record_total_divider"/>
 
     <RelativeLayout

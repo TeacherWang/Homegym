@@ -64,8 +64,11 @@
         
         <TextView
             android:id="@+id/train_action_descript_text"
+            android:layout_toLeftOf="@+id/train_action_join_in_text"
+            android:layout_alignParentLeft="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
             android:layout_marginLeft="@dimen/train_action_set_name_margin_left"
             android:layout_marginTop="@dimen/train_action_set_descript_margin_top"
             android:text="坚持锻炼balalalaala"
@@ -115,33 +118,33 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/train_action_set_recommend"
         android:orientation="horizontal" >
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:orientation="vertical" >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/train_action_set_consume_margin_top"
-                android:text="@string/finish_time"
-                android:textSize="@dimen/train_action_set_consume_size"
-                android:textColor="@color/record_date_color" />
-            <TextView
-                android:id="@+id/train_action_time_num_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/train_action_set_consume_num_margin_top"
-                android:textColor="@color/black"
-                android:textSize="@dimen/train_action_set_consume_num_size" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/train_action_set_consume_num_margin_top"
-                android:text="@string/minute"
-                android:textColor="@color/record_date_color" />
-        </LinearLayout>
+<!--         <LinearLayout -->
+<!--             android:layout_width="0dp" -->
+<!--             android:layout_height="wrap_content" -->
+<!--             android:layout_weight="1" -->
+<!--             android:gravity="center_horizontal" -->
+<!--             android:orientation="vertical" > -->
+<!--             <TextView -->
+<!--                 android:layout_width="wrap_content" -->
+<!--                 android:layout_height="wrap_content" -->
+<!--                 android:layout_marginTop="@dimen/train_action_set_consume_margin_top" -->
+<!--                 android:text="@string/finish_time" -->
+<!--                 android:textSize="@dimen/train_action_set_consume_size" -->
+<!--                 android:textColor="@color/record_date_color" /> -->
+<!--             <TextView -->
+<!--                 android:id="@+id/train_action_time_num_text" -->
+<!--                 android:layout_width="wrap_content" -->
+<!--                 android:layout_height="wrap_content" -->
+<!--                 android:layout_marginTop="@dimen/train_action_set_consume_num_margin_top" -->
+<!--                 android:textColor="@color/black" -->
+<!--                 android:textSize="@dimen/train_action_set_consume_num_size" /> -->
+<!--             <TextView -->
+<!--                 android:layout_width="wrap_content" -->
+<!--                 android:layout_height="wrap_content" -->
+<!--                 android:layout_marginTop="@dimen/train_action_set_consume_num_margin_top" -->
+<!--                 android:text="@string/minute" -->
+<!--                 android:textColor="@color/record_date_color" /> -->
+<!--         </LinearLayout> -->
         
         <View
             android:layout_width="2px"

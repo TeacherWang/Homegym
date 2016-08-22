@@ -246,27 +246,27 @@ public class DataIniter {
 	
 	private ActionDetail getActionStengthHigh(String actionName) {
 		ActionDetail actionDetail1 = new ActionDetail(actionName, 4);
-		actionDetail1.group_detail.add(new GroupDetail(12, 10, CalculateUtil.calculateTotakKcal(12, 10), CalculateUtil.calculateTotalTime(12)));
-		actionDetail1.group_detail.add(new GroupDetail(9, 15, CalculateUtil.calculateTotakKcal(9, 15), CalculateUtil.calculateTotalTime(9)));
-		actionDetail1.group_detail.add(new GroupDetail(7, 15, CalculateUtil.calculateTotakKcal(7, 15), CalculateUtil.calculateTotalTime(7)));
-		actionDetail1.group_detail.add(new GroupDetail(8, 20, CalculateUtil.calculateTotakKcal(8, 20), CalculateUtil.calculateTotalTime(8)));
+		actionDetail1.group_detail.add(new GroupDetail(12, 10, CalculateUtil.calculateTotakKcal(12, 10, 0.33f, 2.7f)));
+		actionDetail1.group_detail.add(new GroupDetail(9, 15, CalculateUtil.calculateTotakKcal(9, 15, 0.33f, 2.7f)));
+		actionDetail1.group_detail.add(new GroupDetail(7, 15, CalculateUtil.calculateTotakKcal(7, 15, 0.33f, 2.7f)));
+		actionDetail1.group_detail.add(new GroupDetail(8, 20, CalculateUtil.calculateTotakKcal(8, 20, 0.33f, 2.7f)));
 		return actionDetail1;
 	}
 	
 	private ActionDetail getActionStengthNormal(String actionName) {
 		ActionDetail actionDetail1 = new ActionDetail(actionName, 4);
-		actionDetail1.group_detail.add(new GroupDetail(10, 10, CalculateUtil.calculateTotakKcal(10, 10), CalculateUtil.calculateTotalTime(10)));
-		actionDetail1.group_detail.add(new GroupDetail(8, 10, CalculateUtil.calculateTotakKcal(8, 10), CalculateUtil.calculateTotalTime(8)));
-		actionDetail1.group_detail.add(new GroupDetail(6, 10, CalculateUtil.calculateTotakKcal(6, 10), CalculateUtil.calculateTotalTime(6)));
-		actionDetail1.group_detail.add(new GroupDetail(5, 15, CalculateUtil.calculateTotakKcal(5, 15), CalculateUtil.calculateTotalTime(5)));
+		actionDetail1.group_detail.add(new GroupDetail(10, 10, CalculateUtil.calculateTotakKcal(10, 10, 0.33f, 2.7f)));
+		actionDetail1.group_detail.add(new GroupDetail(8, 10, CalculateUtil.calculateTotakKcal(8, 10, 0.33f, 2.7f)));
+		actionDetail1.group_detail.add(new GroupDetail(6, 10, CalculateUtil.calculateTotakKcal(6, 10, 0.33f, 2.7f)));
+		actionDetail1.group_detail.add(new GroupDetail(5, 15, CalculateUtil.calculateTotakKcal(5, 15, 0.33f, 2.7f)));
 		return actionDetail1;
 	}
 	
 	private ActionDetail getActionStengthLow(String actionName) {
 		ActionDetail actionDetail1 = new ActionDetail(actionName, 3);
-		actionDetail1.group_detail.add(new GroupDetail(8, 5, CalculateUtil.calculateTotakKcal(8, 5), CalculateUtil.calculateTotalTime(8)));
-		actionDetail1.group_detail.add(new GroupDetail(6, 10, CalculateUtil.calculateTotakKcal(6, 10), CalculateUtil.calculateTotalTime(6)));
-		actionDetail1.group_detail.add(new GroupDetail(4, 15, CalculateUtil.calculateTotakKcal(4, 15), CalculateUtil.calculateTotalTime(4)));
+		actionDetail1.group_detail.add(new GroupDetail(8, 5, CalculateUtil.calculateTotakKcal(8, 5, 0.33f, 2.7f)));
+		actionDetail1.group_detail.add(new GroupDetail(6, 10, CalculateUtil.calculateTotakKcal(6, 10, 0.33f, 2.7f)));
+		actionDetail1.group_detail.add(new GroupDetail(4, 15, CalculateUtil.calculateTotakKcal(4, 15, 0.33f, 2.7f)));
 		return actionDetail1;
 	}
 	
@@ -280,7 +280,9 @@ public class DataIniter {
 		actionInfo1.action_position = "背部 腰部";
 		actionInfo1.action_descript = "坚持训练将锻炼到胸大肌和三角肌";
 		actionInfo1.action_difficult = 1;
-		actionInfo1.action_local_file = Environment.getExternalStorageDirectory()+"/video.mp4";
+		actionInfo1.action_h = 0.33f;
+		actionInfo1.action_b = 2.7f;
+		actionInfo1.action_video_local.add(Environment.getExternalStorageDirectory()+"/video.mp4");
 		
 		actionInfoList.add(actionInfo1);
 		
@@ -291,7 +293,9 @@ public class DataIniter {
 		actionInfo2.action_position = "背部 手臂";
 		actionInfo2.action_descript = "坚持训练将锻炼到肱二头肌和三角肌";
 		actionInfo2.action_difficult = 2;
-		actionInfo2.action_local_file = Environment.getExternalStorageDirectory()+"/video.mp4";
+		actionInfo2.action_h = 0.33f;
+		actionInfo2.action_b = 2.7f;
+		actionInfo2.action_video_local.add(Environment.getExternalStorageDirectory()+"/video.mp4");
 		
 		actionInfoList.add(actionInfo2);
 		
@@ -302,7 +306,9 @@ public class DataIniter {
 		actionInfo3.action_position = "背部 腰部";
 		actionInfo3.action_descript = "坚持训练将锻炼到腹肌";
 		actionInfo3.action_difficult = 3;
-		actionInfo3.action_local_file = Environment.getExternalStorageDirectory()+"/video.mp4";
+		actionInfo3.action_h = 0.33f;
+		actionInfo3.action_b = 2.7f;
+		actionInfo3.action_video_local.add(Environment.getExternalStorageDirectory()+"/video.mp4");
 		
 		actionInfoList.add(actionInfo3);
 		
@@ -313,7 +319,9 @@ public class DataIniter {
 		actionInfo4.action_position = "背部 腰部";
 		actionInfo4.action_descript = "坚持训练将锻炼到胸大肌和三角肌";
 		actionInfo4.action_difficult = 1;
-		actionInfo4.action_local_file = Environment.getExternalStorageDirectory()+"/video.mp4";
+		actionInfo4.action_h = 0.33f;
+		actionInfo4.action_b = 2.7f;
+		actionInfo4.action_video_local.add(Environment.getExternalStorageDirectory()+"/video.mp4");
 		
 		actionInfoList.add(actionInfo4);
 		
@@ -324,7 +332,9 @@ public class DataIniter {
 		actionInfo5.action_position = "背部 腰部";
 		actionInfo5.action_descript = "坚持训练将锻炼到胸大肌和三角肌";
 		actionInfo5.action_difficult = 2;
-		actionInfo5.action_local_file = Environment.getExternalStorageDirectory()+"/video.mp4";
+		actionInfo5.action_h = 0.33f;
+		actionInfo5.action_b = 2.7f;
+		actionInfo5.action_video_local.add(Environment.getExternalStorageDirectory()+"/video.mp4");
 		
 		actionInfoList.add(actionInfo5);
 		

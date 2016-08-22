@@ -3,6 +3,7 @@ package com.runrunfast.homegym.record;
 import java.util.ArrayList;
 
 import com.runrunfast.homegym.R;
+import com.runrunfast.homegym.account.DataTransferUtil;
 import com.runrunfast.homegym.utils.DateUtil;
 
 import android.content.Context;
@@ -106,7 +107,6 @@ public class RecordAdapter extends BaseAdapter {
 				convertView = mInflater.inflate(R.layout.record_train, null);
 				recordTrainViewHolder = new RecordTrainViewHolder();
 				
-				recordTrainViewHolder.ivTrain = (ImageView)convertView.findViewById(R.id.record_detail_train_img);
 				recordTrainViewHolder.tvTrainName = (TextView)convertView.findViewById(R.id.record_detail_train_name);
 				recordTrainViewHolder.tvTrainCount = (TextView)convertView.findViewById(R.id.record_detail_train_group_count_text);
 				recordTrainViewHolder.tvTrainKcal = (TextView)convertView.findViewById(R.id.record_detail_train_kcal);
@@ -153,10 +153,9 @@ public class RecordAdapter extends BaseAdapter {
 			
 		case LIST_SHOW_ONLY_TRAIN:
 			RecordDataAction recordDataUnit = (RecordDataAction)baseRecordData;
-			recordTrainViewHolder.ivTrain.setBackgroundResource(R.drawable.record_action1);
 			recordTrainViewHolder.tvTrainName.setText(recordDataUnit.actionName);
-			recordTrainViewHolder.tvTrainCount.setText(String.valueOf(recordDataUnit.iGroupCount) + "组");
-			recordTrainViewHolder.tvTrainKcal.setText(String.valueOf(recordDataUnit.iTotalKcal) + "千卡");
+			recordTrainViewHolder.tvTrainCount.setText(String.valueOf(recordDataUnit.groupCount) + "组");
+			recordTrainViewHolder.tvTrainKcal.setText(DataTransferUtil.getInstance().getTwoDecimalData(recordDataUnit.totalKcal) + "千卡");
 			break;
 
 		default:
@@ -178,7 +177,6 @@ public class RecordAdapter extends BaseAdapter {
 	}
 	
 	class RecordTrainViewHolder{
-		ImageView ivTrain;
 		TextView tvTrainName;
 		TextView tvTrainCount;
 		TextView tvTrainKcal;

@@ -1,7 +1,6 @@
 package com.runrunfast.homegym.widget;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,9 +15,12 @@ public class DialogActivity extends Activity {
 	public static final int RSP_CANCEL = 1;
 	public static final int RSP_CONFIRM = 2;
 	
+	public static final String KEY_CONTENT_COLOR = "key_content_color";
 	public static final String KEY_CONTENT = "key_content";
 	public static final String KEY_CANCEL = "key_cancel";
 	public static final String KEY_CONFIRM = "key_confirm";
+	
+	private TextView tvContent;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -29,13 +31,19 @@ public class DialogActivity extends Activity {
 	}
 
 	private void setData() {
+		int colorId = getIntent().getIntExtra(KEY_CONTENT_COLOR, -1);
 		String content = getIntent().getStringExtra(KEY_CONTENT);
 		String cancel = getIntent().getStringExtra(KEY_CANCEL);
 		String confirm = getIntent().getStringExtra(KEY_CONFIRM);
 		
 		Log.d(TAG, "onNewIntent, content = " + content + ", cancel = " + cancel + ", confirm = " + confirm);
 		
-		((TextView)findViewById(R.id.dialog_content_text)).setText(content);
+		tvContent = (TextView)findViewById(R.id.dialog_content_text);
+		tvContent.setText(content);
+		if(colorId != -1){
+			tvContent.setTextColor(colorId);
+		}
+		
 		((Button)findViewById(R.id.dialog_cancel)).setText(cancel);
 		((Button)findViewById(R.id.dialog_confirm)).setText(confirm);
 	}

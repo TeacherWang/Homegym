@@ -29,7 +29,6 @@ import com.runrunfast.homegym.dao.MyCourseDao;
 import com.runrunfast.homegym.utils.CalculateUtil;
 import com.runrunfast.homegym.utils.ClickUtil;
 import com.runrunfast.homegym.utils.Const;
-import com.runrunfast.homegym.utils.DateUtil;
 import com.runrunfast.homegym.utils.Globle;
 import com.runrunfast.homegym.widget.PopupWindows;
 import com.runrunfast.homegym.widget.WheelView;
@@ -48,7 +47,8 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 	
 	private View backView;
 	private TextView tvSave;
-	private TextView tvActionNum, tvTrainName, tvTrainDescript, tvJoinInTeach, tvGroupNum, tvTimeConsume, tvBurning;
+	private TextView tvActionNum, tvTrainName, tvTrainDescript, tvJoinInTeach, tvGroupNum, tvBurning;
+//	private TextView tvTimeConsume;
 	private Button btnAdd, btnMinus;
 	
 	private ListView mListView;
@@ -195,15 +195,17 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 		tvTrainName.setText(mAction.action_name);
 		tvTrainDescript.setText(mAction.action_descript);
 		
+//		tvTrainDescript.setText("坚持训练坚持训练坚持训练坚持训练坚持训练坚持训练坚持训练坚持训练坚持训练坚持训练坚持训练坚持训练坚持训练坚持训练坚持训练");
+		
 		mGroupDetailList = (ArrayList<GroupDetail>) mActionDetail.group_detail;
 		
 		mTrainActionSetAdapter = new ActionSetAdapter(this, mGroupDetailList);
 		mListView.setAdapter(mTrainActionSetAdapter);
 		
 		tvGroupNum.setText(String.valueOf(mGroupDetailList.size()));
-		tvTimeConsume.setText(DateUtil.secToTime(mActionTotalData.totalTime));
+//		tvTimeConsume.setText(DateUtil.secToTime(mActionTotalData.totalTime));
 //		mTotalBurning = mActionTotalData.totalKcal;
-		tvBurning.setText( String.valueOf(mActionTotalData.totalKcal) );
+		tvBurning.setText( DataTransferUtil.getInstance().getTwoDecimalData(mActionTotalData.totalKcal) );
 	}
 
 	private void initView() {
@@ -224,7 +226,7 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 		tvTrainDescript = (TextView)findViewById(R.id.train_action_descript_text);
 		tvJoinInTeach = (TextView)findViewById(R.id.train_action_join_in_text);
 		tvJoinInTeach.setOnClickListener(this);
-		tvTimeConsume = (TextView)findViewById(R.id.train_action_time_num_text);
+//		tvTimeConsume = (TextView)findViewById(R.id.train_action_time_num_text);
 		tvBurning = (TextView)findViewById(R.id.train_action_burning_num_text);
 		
 		mListView = (ListView)findViewById(R.id.train_action_list);
@@ -242,7 +244,6 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.train_action_back_layout:
-			Intent intent = new Intent();
 			setResult(Activity.RESULT_CANCELED);
 			finish();
 			break;
@@ -284,14 +285,13 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 		switch (inputType) {
 		case INPUT_TYPE_COUNT:
 			mGroupDetail.count = mCount;
-			// 要计算次数跟重量对应的燃脂，公式？还有时间
-			mGroupDetail.kcal = CalculateUtil.calculateTotakKcal(mGroupDetail.count, mGroupDetail.weight);
-			mGroupDetail.time = CalculateUtil.calculateTotalTime(mGroupDetail.count);
+			// 要计算次数跟重量对应的燃脂，公式？
+			mGroupDetail.kcal = CalculateUtil.calculateTotakKcal(mGroupDetail.count, mGroupDetail.weight, mAction.action_h, mAction.action_b);
 			
 			actionTotalData = getTotalTimeOfActionInMyCourse(mActionDetail);
 			
-			tvTimeConsume.setText(DateUtil.secToTime(actionTotalData.totalTime));
-			tvBurning.setText( String.valueOf(actionTotalData.totalKcal) );
+//			tvTimeConsume.setText(DateUtil.secToTime(actionTotalData.totalTime));
+			tvBurning.setText( DataTransferUtil.getInstance().getTwoDecimalData(actionTotalData.totalKcal) );
 //			mTrainActionInfo.iBurning = 公式？
 //			mTotalBurning = mTotalBurning + trainActionInfo.iBurning;
 //			tvTimeConsume.setText(DateUtil.secToTime(mConsumeSecond));
@@ -303,13 +303,11 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 		case INPUT_TYPE_TOOL_WEIGHT:
 			mGroupDetail.weight = mToolWeight;
 			// 要计算次数跟重量对应的燃脂，公式？还有时间
-			mGroupDetail.kcal = CalculateUtil.calculateTotakKcal(mGroupDetail.count, mGroupDetail.weight);
-			mGroupDetail.time = CalculateUtil.calculateTotalTime(mGroupDetail.count);
+			mGroupDetail.kcal = CalculateUtil.calculateTotakKcal(mGroupDetail.count, mGroupDetail.weight, mAction.action_h, mAction.action_b);
 			
 			actionTotalData = getTotalTimeOfActionInMyCourse(mActionDetail);
 			
-			tvTimeConsume.setText(DateUtil.secToTime(actionTotalData.totalTime));
-			tvBurning.setText( String.valueOf(actionTotalData.totalKcal) );
+			tvBurning.setText( DataTransferUtil.getInstance().getTwoDecimalData(actionTotalData.totalKcal) );
 //			mTrainActionInfo.iBurning = 公式？
 //			mTotalBurning = mTotalBurning + trainActionInfo.iBurning;
 //			tvTimeConsume.setText(DateUtil.secToTime(mConsumeSecond));
@@ -328,7 +326,6 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 		int groupNum = actionDetail.group_num;
 		for(int i=0; i<groupNum; i++){
 			GroupDetail groupDetail = actionDetail.group_detail.get(i);
-			actionTotalData.totalTime = actionTotalData.totalTime + groupDetail.time;
 			actionTotalData.totalKcal = actionTotalData.totalKcal + groupDetail.kcal;
 		}
 		return actionTotalData;
@@ -379,8 +376,7 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 		
 		ActionTotalData actionTotalData = getTotalTimeOfActionInMyCourse(mActionDetail);
 		
-		tvTimeConsume.setText(DateUtil.secToTime(actionTotalData.totalTime));
-		tvBurning.setText(String.valueOf(actionTotalData.totalKcal));
+		tvBurning.setText(DataTransferUtil.getInstance().getTwoDecimalData(actionTotalData.totalKcal));
 	}
 
 	private void addGroupNum() {
@@ -389,7 +385,7 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 			Toast.makeText(this, R.string.group_num_is_bigger_than_9, Toast.LENGTH_SHORT).show();
 			return;
 		}
-		GroupDetail groupDetail = new GroupDetail(8, 10, CalculateUtil.calculateTotakKcal(8, 10), CalculateUtil.calculateTotalTime(8));
+		GroupDetail groupDetail = new GroupDetail(8, 10, CalculateUtil.calculateTotakKcal(8, 10, mAction.action_h, mAction.action_b));
 		mGroupDetailList.add(groupDetail);
 		mActionDetail.group_num = mGroupDetailList.size();
 		mActionDetail.group_detail = mGroupDetailList;
@@ -400,8 +396,7 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 		
 		ActionTotalData actionTotalData = getTotalTimeOfActionInMyCourse(mActionDetail);
 		
-		tvTimeConsume.setText(DateUtil.secToTime(actionTotalData.totalTime));
-		tvBurning.setText(String.valueOf(actionTotalData.totalKcal));
+		tvBurning.setText(DataTransferUtil.getInstance().getTwoDecimalData(actionTotalData.totalKcal));
 	}
 	
 	@Override

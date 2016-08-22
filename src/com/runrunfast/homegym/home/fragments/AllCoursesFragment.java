@@ -13,7 +13,6 @@ import android.widget.ListView;
 import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.bean.Course;
 import com.runrunfast.homegym.course.CourseAdapter;
-import com.runrunfast.homegym.course.CourseInfo;
 import com.runrunfast.homegym.course.DetailPlanActivity;
 import com.runrunfast.homegym.dao.CourseDao;
 import com.runrunfast.homegym.utils.Const;

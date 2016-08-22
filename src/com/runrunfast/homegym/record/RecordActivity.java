@@ -42,7 +42,8 @@ public class RecordActivity extends FragmentActivity implements OnClickListener{
 	private void initView() {
 		findViewById(R.id.actionbar_left_btn).setBackgroundResource(R.drawable.nav_back);
 		btnShare = (Button)findViewById(R.id.actionbar_right_btn);
-		btnShare.setBackgroundResource(R.drawable.record_share);
+		btnShare.setVisibility(View.INVISIBLE);
+//		btnShare.setBackgroundResource(R.drawable.record_share);
 		((TextView)findViewById(R.id.actionbar_title)).setText(R.string.trainnig_record);
 //		ivSelectImg = (ImageView)findViewById(R.id.record_selection_img);
 		

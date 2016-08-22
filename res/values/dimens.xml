@@ -169,7 +169,7 @@
 	
 	<!-- dialog -->
 	<dimen name="dialog_width">250dp</dimen>
-	<dimen name="dialog_height">140dp</dimen>
+	<dimen name="dialog_height">160dp</dimen>
 	<dimen name="dialog_btn_height">47dp</dimen>
 	<dimen name="dialog_content_text_height">93dp</dimen>
 	<dimen name="dialog_btn_text_size">15sp</dimen>
