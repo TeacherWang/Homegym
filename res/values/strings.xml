@@ -88,6 +88,7 @@
     <string name="exit_train_or_not">是否确认要退出本课程</string>
     
     <string name="unfinish_train">您未完成本次训练，坚持才是胜利！</string>
+    <string name="finish_train">恭喜您，完成训练！</string>
     
     <string name="this_mycourse_is_expired">该计划已过期</string>
     
@@ -177,6 +178,9 @@
 	<string name="had_finished_train">已完成训练</string>
 	
 	<string name="rest_day">今天休息！</string>
+	
+	<string name="demo_end">教学结束</string>
+	<string name="replay">重播</string>
 	
 	<string-array name="sex">
 	    <item >男</item>

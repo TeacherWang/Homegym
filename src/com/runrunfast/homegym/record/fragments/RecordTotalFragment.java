@@ -10,7 +10,8 @@ import android.widget.TextView;
 import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.account.AccountMgr;
 import com.runrunfast.homegym.account.UserInfo;
-import com.runrunfast.homegym.dao.MyTrainRecordDao;
+import com.runrunfast.homegym.dao.MyTotalRecordDao;
+import com.runrunfast.homegym.record.TotalRecord;
 import com.runrunfast.homegym.utils.DateUtil;
 import com.runrunfast.homegym.utils.Globle;
 
@@ -19,7 +20,7 @@ public class RecordTotalFragment extends Fragment {
 	
 	private View rootView;
 	
-	private TextView tvTotalKcal, tvTotalTimeHour, tvTotalFinishCount, tvTotalCount, tvTotalDays;
+	private TextView tvTotalKcal, tvTotalTimeHour, tvTotalDays;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater,
@@ -36,29 +37,16 @@ public class RecordTotalFragment extends Fragment {
 	private void initData() {
 		mUserInfo = AccountMgr.getInstance().mUserInfo;
 		
-		int totalKcal = 0;
-		int totalTime = 0;
-		int totalCount = 0;
-		int totalDays =  MyTrainRecordDao.getInstance().getFinishDayNum(Globle.gApplicationContext, mUserInfo.strAccountId);
+		TotalRecord totalRecord = MyTotalRecordDao.getInstance().getMyTotalRecordFromDb(Globle.gApplicationContext, mUserInfo.strAccountId);
 		
-//		for(int i=0; i<dataSize; i++){
-//			RecordDataAction unitRecordData = (RecordDataAction) baseRecordDataList.get(i);
-//			totalKcal = totalKcal + unitRecordData.iTotalKcal;
-//			totalTime = totalTime + unitRecordData.iConsumeTime;
-//			totalCount = totalCount + unitRecordData.iCount;
-//		}
-		
-		tvTotalCount.setText(String.valueOf(totalCount));
-		tvTotalKcal.setText(String.valueOf(totalKcal));
-		tvTotalDays.setText(String.valueOf(totalDays));
-		tvTotalTimeHour.setText(DateUtil.secToHour(totalTime));
+		tvTotalKcal.setText(String.valueOf(totalRecord.total_kcal));
+		tvTotalDays.setText(String.valueOf(totalRecord.total_days));
+		tvTotalTimeHour.setText(DateUtil.secToHour(totalRecord.total_time));
 	}
 
 	private void initView() {
 		tvTotalKcal = (TextView)rootView.findViewById(R.id.record_total_consume_number_text);
 		tvTotalTimeHour = (TextView)rootView.findViewById(R.id.record_total_finish_time_text);
-		tvTotalFinishCount = (TextView)rootView.findViewById(R.id.record_total_finish_count_text); // 完成的次数
-		tvTotalCount = (TextView)rootView.findViewById(R.id.record_total_train_total_count); // 不管完成没完成，一共训练的次数
 		tvTotalDays = (TextView)rootView.findViewById(R.id.record_total_finish_days_text);
 	}
 

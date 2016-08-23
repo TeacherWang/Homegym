@@ -40,6 +40,7 @@ import com.runrunfast.homegym.utils.Const;
 import com.runrunfast.homegym.utils.DateUtil;
 import com.runrunfast.homegym.utils.Globle;
 import com.runrunfast.homegym.widget.DialogActivity;
+import com.runrunfast.homegym.widget.HorizonDialogActivity;
 
 import io.vov.vitamio.MediaPlayer;
 import io.vov.vitamio.widget.MediaController;
@@ -60,6 +61,7 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 	private static final int REST_TIME = 5; // 休息时间 秒
 	
 	private Timer mTimer;
+	private VideoTimerTask mVideoTimerTask;
 	private int mTimeSecond = 0;
 	
 	private Button btnFinishOnce;
@@ -223,7 +225,7 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 			}else{// 最后一个动作了
 				Toast.makeText(CourseVideoActivity.this, "所有动作做完，课程结束", Toast.LENGTH_SHORT).show();
 				// 保存数据到数据库
-				handleCourseFinished();
+				prepareCourseFinished();
 			}
 		}
 	}
@@ -295,7 +297,8 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 		startVideo(mVideoPath);
 		
 		mTimer = new Timer();
-		mTimer.scheduleAtFixedRate(mTimerTask, DELAY_SECOND, DELAY_SECOND);
+		mVideoTimerTask = new VideoTimerTask();
+		mTimer.scheduleAtFixedRate(mVideoTimerTask, DELAY_SECOND, DELAY_SECOND);
 		tvTime.setText(DateUtil.secToMinuteSecond(mTimeSecond));
 	}
 
@@ -314,15 +317,15 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 		});
 	}
 
-	private TimerTask mTimerTask = new TimerTask() {
-		
+	private class VideoTimerTask extends TimerTask{
+
 		@Override
 		public void run() {
 			Message msg = new Message();
 			msg.what = MSG_ONE_SECOND;
 			mHandler.sendMessage(msg);
 		}
-	};
+	}
 	
 	private Handler mHandler = new Handler(){
 		public void handleMessage(android.os.Message msg) {
@@ -369,7 +372,9 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 		rlHaveRest.setVisibility(View.GONE);
 		
 		ivExit = (ImageView)findViewById(R.id.video_exit_img);
+		ivExit.setOnClickListener(this);
 		ivBluetooth = (ImageView)findViewById(R.id.video_bluetooth_img);
+		ivBluetooth.setOnClickListener(this);
 	}
 
 	@Override
@@ -394,16 +399,13 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 	}
 
 	private void handleInterupt() {
-		mHandler.removeMessages(MSG_ONE_SECOND);
-		
-		
-		
-		
-		handleCourseUnfinish();
+		mVideoTimerTask.cancel();
+		mVideoView.pause();
+		showExitDialog();
 	}
 	
 	private void showExitDialog() {
-		Intent intent = new Intent(this, DialogActivity.class);
+		Intent intent = new Intent(this, HorizonDialogActivity.class);
 		intent.putExtra(DialogActivity.KEY_CONTENT_COLOR, mResources.getColor(R.color.bt_device_connected_color));
 		intent.putExtra(DialogActivity.KEY_CONTENT, mResources.getString(R.string.unfinish_train));
 		intent.putExtra(DialogActivity.KEY_CANCEL, mResources.getString(R.string.exit));
@@ -413,7 +415,23 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		
+		if(requestCode == Const.DIALOG_REQ_CODE_EXIT_TRAIN){
+			if(resultCode == DialogActivity.RSP_CONFIRM){
+				mVideoView.start();
+				mVideoTimerTask = new VideoTimerTask();
+				mTimer.scheduleAtFixedRate(mVideoTimerTask, DELAY_SECOND, DELAY_SECOND);
+			}else{
+				mVideoView.stopPlayback();
+				mVideoView.suspend();
+				mVideoTimerTask.cancel();
+				releaseTimer();
+				handleCourseUnfinish();
+			}
+		}else if(requestCode == Const.DIALOG_REQ_CODE_FINISH_TRAIN){
+			if(resultCode == DialogActivity.RSP_CONFIRM){
+				handleCourseFinished();
+			}
+		}
 	}
 
 	private void handleCourseUnfinish() {
@@ -456,9 +474,24 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 	  * @Description: 完成训练	
 	  * 返回类型：void 
 	  */
-	private void handleCourseFinished() {
-		mHandler.removeMessages(MSG_ONE_SECOND);
+	private void prepareCourseFinished() {
+		mVideoTimerTask.cancel();
+		mVideoView.stopPlayback();
+		mVideoView.suspend();
+		releaseTimer();
 		
+		showFinishedDialog();
+	}
+	
+	private void showFinishedDialog() {
+		Intent intent = new Intent(this, HorizonDialogActivity.class);
+		intent.putExtra(DialogActivity.KEY_CONTENT_COLOR, mResources.getColor(R.color.bt_device_connected_color));
+		intent.putExtra(DialogActivity.KEY_CONTENT, mResources.getString(R.string.finish_train));
+		intent.putExtra(DialogActivity.KEY_CONFIRM, mResources.getString(R.string.confirm));
+		startActivityForResult(intent, Const.DIALOG_REQ_CODE_FINISH_TRAIN);
+	}
+
+	private void handleCourseFinished() {
 		float totalKcal = 0;
 		int finishedActionSize = mFinishedActionDetailList.size();
 		for(int i=0; i<finishedActionSize; i++){
@@ -502,6 +535,19 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 		
 		startActivity(intent);
 		finish();
+	}
+	
+	private void releaseTimer(){
+		if(mTimer != null){
+			mTimer.cancel();
+			mTimer.purge();
+			mTimer = null;
+		}
+	}
+	
+	@Override
+	public void onBackPressed() {
+		handleInterupt();
 	}
 	
 }

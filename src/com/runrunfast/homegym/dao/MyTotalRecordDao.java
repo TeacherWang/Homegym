@@ -30,8 +30,6 @@ public class MyTotalRecordDao {
 				+ Const.DB_KEY_UID + " TEXT,"
 				+ Const.DB_KEY_TOTAL_KCAL + " INTEGER,"
 				+ Const.DB_KEY_TOTAL_TIME + " INTEGER,"
-				+ Const.DB_KEY_TOTAL_COUNT + " INTEGER,"
-				+ Const.DB_KEY_TOTAL_TRAIN_COUNT + " INTEGER,"
 				+ Const.DB_KEY_TOTAL_DAYS + " INTEGER,"
 				+ Const.DB_KEY_TOTAL_FOOD + " INTEGER"
 				+ ");";
@@ -44,14 +42,11 @@ public class MyTotalRecordDao {
 		try {
 			DBOpenHelper dbHelper = new DBOpenHelper(context);
 			db = dbHelper.getWritableDatabase();
-//			Gson gson = new Gson();
 			ContentValues values = new ContentValues();
 			
 			values.put(Const.DB_KEY_UID, totalRecord.uid);
 			values.put(Const.DB_KEY_TOTAL_KCAL, totalRecord.total_kcal);
 			values.put(Const.DB_KEY_TOTAL_TIME, totalRecord.total_time);
-			values.put(Const.DB_KEY_TOTAL_COUNT, totalRecord.total_count);
-			values.put(Const.DB_KEY_TOTAL_TRAIN_COUNT, totalRecord.total_train_count);
 			values.put(Const.DB_KEY_TOTAL_DAYS, totalRecord.total_days);
 			values.put(Const.DB_KEY_TOTAL_FOOD, totalRecord.total_food);
 			
@@ -76,7 +71,7 @@ public class MyTotalRecordDao {
 	}
 	
 	public synchronized TotalRecord getMyTotalRecordFromDb(Context context, String uid){
-		TotalRecord totalRecord = null;
+		TotalRecord totalRecord = new TotalRecord();
 		SQLiteDatabase db = null;
 		Cursor c = null;
 		try {
@@ -87,12 +82,9 @@ public class MyTotalRecordDao {
 			if(null != c && c.getCount() > 0){
 				c.moveToNext();
 				
-				totalRecord = new TotalRecord();
 				totalRecord.uid = uid;
 				totalRecord.total_kcal = c.getInt(c.getColumnIndex(Const.DB_KEY_TOTAL_KCAL));
 				totalRecord.total_time = c.getInt(c.getColumnIndex(Const.DB_KEY_TOTAL_TIME));
-				totalRecord.total_count = c.getInt(c.getColumnIndex(Const.DB_KEY_TOTAL_COUNT));
-				totalRecord.total_train_count = c.getInt(c.getColumnIndex(Const.DB_KEY_TOTAL_TRAIN_COUNT));
 				totalRecord.total_days = c.getInt(c.getColumnIndex(Const.DB_KEY_TOTAL_DAYS));
 				totalRecord.total_food = c.getInt(c.getColumnIndex(Const.DB_KEY_TOTAL_FOOD));
 			}

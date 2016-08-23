@@ -5,6 +5,7 @@
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
     <color name="black_30_transparent">#4d000000</color>
+    <color name="black_50_transparent">#80000000</color>
     
     <!-- 启动界面 -->
     <color name="start_register_bg">#e6ffffff</color>
