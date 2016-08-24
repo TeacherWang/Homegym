@@ -47,7 +47,7 @@ public class DataIniter {
 			
 			@Override
 			public void run() {
-				initDbData();
+//				initDbData();
 			}
 		});
 	}

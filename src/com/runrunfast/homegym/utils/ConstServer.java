@@ -1,11 +1,11 @@
-package com.runrunfast.homegym.start;
+package com.runrunfast.homegym.utils;
 
-public class ConstLogin {
-	public static final String SERVER = "http://bikeme.duapp.com/";
-	public static final String SERVER_TEST = "http://bikemetest.duapp.com/";
+public class ConstServer {
+	public static final String LOGIN_SERVER = "http://bikeme.duapp.com/";
+	public static final String LOGIN_SERVER_TEST = "http://bikemetest.duapp.com/";
 	
-	public static final String URL_LOGIN = SERVER_TEST + "Login";
-	public static final String URL_IDENTIFY = SERVER_TEST + "servlet/PhoneRegisterServlet";
+	public static final String URL_LOGIN = LOGIN_SERVER_TEST + "Login";
+	public static final String URL_IDENTIFY = LOGIN_SERVER_TEST + "servlet/PhoneRegisterServlet";
 	
 	// 登录类型
 	public static final String KEY_TYPE = "type";
@@ -40,4 +40,19 @@ public class ConstLogin {
 	
 	// 登录成功的广播
 	public static final String ACTION_LOGIN_SUC = "action_login_suc";
+	
+	/*
+	 * 课程的后台接口
+	 */
+	public static final String COURSE_SERVER = "http://training.duapp.com/";
+	
+	/**
+	  * @Fields URL_GET_COURSE_INFO : 获取课程信息
+	  */
+	public static final String URL_GET_COURSE_INFO = COURSE_SERVER + "getCourseInfo";
+	/**
+	  * @Fields URL_GET_ACTION_INFO : 获取动作信息
+	  */
+	public static final String URL_GET_ACTION_INFO = COURSE_SERVER + "getActionInfo";
+	
 }

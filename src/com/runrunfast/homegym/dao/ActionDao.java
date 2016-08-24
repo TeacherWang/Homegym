@@ -120,8 +120,8 @@ public class ActionDao {
 				Gson gson = new Gson();
 				Type typeVideoUrl = new TypeToken<Collection<String>>(){}.getType();
 				Type typeVideoLocal = new TypeToken<Collection<String>>(){}.getType();
-				Type typeAudioUrl = new TypeToken<Collection<AudioLocation>>(){}.getType();
-				Type typeAudioLocal = new TypeToken<Collection<AudioLocation>>(){}.getType();
+				Type typeAudioUrl = new TypeToken<AudioLocation>(){}.getType();
+				Type typeAudioLocal = new TypeToken<AudioLocation>(){}.getType();
 				action = new Action();
 				
 				action.action_id = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_ID));
@@ -175,8 +175,8 @@ public class ActionDao {
 				Gson gson = new Gson();
 				Type typeVideoUrl = new TypeToken<Collection<String>>(){}.getType();
 				Type typeVideoLocal = new TypeToken<Collection<String>>(){}.getType();
-				Type typeAudioUrl = new TypeToken<Collection<AudioLocation>>(){}.getType();
-				Type typeAudioLocal = new TypeToken<Collection<AudioLocation>>(){}.getType();
+				Type typeAudioUrl = new TypeToken<AudioLocation>(){}.getType();
+				Type typeAudioLocal = new TypeToken<AudioLocation>(){}.getType();
 				while (c.moveToNext()) {
 					Action action = new Action();
 					

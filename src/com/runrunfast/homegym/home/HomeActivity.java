@@ -15,10 +15,16 @@ import android.widget.TextView;
 
 import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.BtDevice.BtDeviceActivity;
+import com.runrunfast.homegym.bean.Course;
+import com.runrunfast.homegym.course.CourseServerMgr;
+import com.runrunfast.homegym.dao.CourseDao;
 import com.runrunfast.homegym.home.fragments.AllCoursesFragment;
 import com.runrunfast.homegym.home.fragments.MeFragment;
 import com.runrunfast.homegym.home.fragments.MyTrainingFragment;
 import com.runrunfast.homegym.record.RecordActivity;
+import com.runrunfast.homegym.utils.Globle;
+
+import java.util.ArrayList;
 
 public class HomeActivity extends FragmentActivity{
 	private final String TAG = "HomeActivity";
@@ -45,9 +51,19 @@ public class HomeActivity extends FragmentActivity{
 		mResources = getResources();
 		initView();
 		
+		initData();
+		
 		switchFragment(FRAGMENT_MY_TRAINING);
 	}
 	
+	private void initData() {
+		ArrayList<Course> courseList = CourseDao.getInstance().getCourseListFromDb(Globle.gApplicationContext);
+//		if(courseList == null || courseList.size() <=0 ){
+			CourseServerMgr.getInstance().getCourseInfoFromServer();
+//		}
+			CourseServerMgr.getInstance().getActionInfoFromServer();
+	}
+
 	private void initView() {
 		tvTitle = (TextView)findViewById(R.id.actionbar_title);
 		tvTitle.setVisibility(View.INVISIBLE);
