@@ -1,5 +1,9 @@
 package com.runrunfast.homegym.utils;
 
+import android.os.Environment;
+
+import java.io.File;
+
 public class ConstServer {
 	public static final String LOGIN_SERVER = "http://bikeme.duapp.com/";
 	public static final String LOGIN_SERVER_TEST = "http://bikemetest.duapp.com/";
@@ -54,5 +58,9 @@ public class ConstServer {
 	  * @Fields URL_GET_ACTION_INFO : 获取动作信息
 	  */
 	public static final String URL_GET_ACTION_INFO = COURSE_SERVER + "getActionInfo";
+	
+	
+	public static final String SDCARD_ROOT = Environment.getExternalStorageDirectory().getAbsolutePath();
+	public static final String SDCARD_HOMEGYM_ROOT = SDCARD_ROOT + File.separator + "runrunfast" + File.separator + "homegym" + File.separator;
 	
 }

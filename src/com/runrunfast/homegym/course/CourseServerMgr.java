@@ -124,7 +124,7 @@ public class CourseServerMgr {
 			}
 			@Override
 			public void onError(Throwable throwable, boolean arg1) {
-				Log.e(TAG, "getCourseInfoFromServer, onError, throwable is : " + throwable);
+				Log.e(TAG, "getActionInfoFromServer, onError, throwable is : " + throwable);
 				
 				notifyGetCourseInfoFail();
 			}
@@ -141,7 +141,7 @@ public class CourseServerMgr {
 		ServerActionData serverActionData = gson.fromJson(result, typeServerActionData);
 		
 		if(serverActionData == null){
-			Log.e(TAG, "handleGetCourseInfoSuc, serverActionData is null");
+			Log.e(TAG, "handleGetActionInfoSuc, serverActionData is null");
 			return;
 		}
 		
