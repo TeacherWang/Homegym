@@ -8,10 +8,13 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.account.DataTransferUtil;
 import com.runrunfast.homegym.bean.Action;
 import com.runrunfast.homegym.course.CourseTrainActivity.ActionTotalData;
+import com.runrunfast.homegym.utils.AnimateFirstDisplayListener;
+import com.runrunfast.homegym.utils.BitmapUtils;
 
 import java.util.ArrayList;
 
@@ -51,6 +54,7 @@ public class CourseTrainAdapter extends BaseAdapter {
 			convertView = mInflater.inflate(R.layout.course_training_item, null);
 			holder = new ViewHolder();
 			
+			holder.ivBg = (ImageView)convertView.findViewById(R.id.action_img);
 			holder.tvTrainName = (TextView)convertView.findViewById(R.id.course_train_name_text);
 			holder.tvTrainActionNum = (TextView)convertView.findViewById(R.id.course_train_action_num_text);
 			holder.tvTrainPosition = (TextView)convertView.findViewById(R.id.course_train_position_text);
@@ -72,6 +76,11 @@ public class CourseTrainAdapter extends BaseAdapter {
 		holder.tvTrainActionNum.setText("动作" + DataTransferUtil.numMap.get(position + 1));
 		holder.tvKcal.setText( DataTransferUtil.getInstance().getTwoDecimalData(actionTotalData.totalKcal) + mContext.getResources().getString(R.string.kcal_cn) );
 		holder.tvDiffcult.setText(R.string.difficult);
+		
+		ImageLoader.getInstance().displayImage(action.action_img_url,
+				holder.ivBg, BitmapUtils.initActionImageLoader(),
+				new AnimateFirstDisplayListener());
+		
 		if(action.action_difficult == 1){
 			holder.ivDiffcultLevel1.setVisibility(View.VISIBLE);
 			holder.ivDiffcultLevel2.setVisibility(View.INVISIBLE);
@@ -90,6 +99,7 @@ public class CourseTrainAdapter extends BaseAdapter {
 	}
 
 	class ViewHolder{
+		public ImageView ivBg;
 		public TextView tvTrainName;
 		public TextView tvTrainActionNum;
 		public TextView tvTrainPosition;

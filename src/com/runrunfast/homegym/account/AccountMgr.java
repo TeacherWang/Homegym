@@ -288,10 +288,10 @@ public class AccountMgr {
 		}
 		
 		RequestParams params = new RequestParams(ConstServer.URL_LOGIN);
-		params.addBodyParameter(ConstServer.KEY_TYPE, ConstServer.TYPE_REGISTER);
-		params.addBodyParameter(ConstServer.KEY_USER_NAME, phoneNum);
-		params.addBodyParameter(ConstServer.KEY_PASSWORD, pwd);
-		params.addBodyParameter(ConstServer.KEY_IDENTIFY, verifyCode);
+		params.addParameter(ConstServer.KEY_TYPE, ConstServer.TYPE_REGISTER);
+		params.addParameter(ConstServer.KEY_USER_NAME, phoneNum);
+		params.addParameter(ConstServer.KEY_PASSWORD, pwd);
+		params.addParameter(ConstServer.KEY_IDENTIFY, verifyCode);
 		
 		x.http().get(params, new Callback.CommonCallback<String>() {
 
@@ -358,9 +358,9 @@ public class AccountMgr {
 	
 	public void login(String userName, String pwd){
 		RequestParams params = new RequestParams(ConstServer.URL_LOGIN);
-		params.addBodyParameter(ConstServer.KEY_TYPE, ConstServer.TYPE_LOGIN);
-		params.addBodyParameter(ConstServer.KEY_USER_NAME, userName);
-		params.addBodyParameter(ConstServer.KEY_PASSWORD, pwd);
+		params.addParameter(ConstServer.KEY_TYPE, ConstServer.TYPE_LOGIN);
+		params.addParameter(ConstServer.KEY_USER_NAME, userName);
+		params.addParameter(ConstServer.KEY_PASSWORD, pwd);
 		
 		x.http().get(params, new Callback.CommonCallback<String>() {
 
@@ -425,10 +425,10 @@ public class AccountMgr {
 
 	public void resetPwd(String userName, String verifyCode, String pwd){
 		RequestParams params = new RequestParams(ConstServer.URL_LOGIN);
-		params.addBodyParameter(ConstServer.KEY_TYPE, ConstServer.TYPE_RESET);
-		params.addBodyParameter(ConstServer.KEY_USER_NAME, userName);
-		params.addBodyParameter(ConstServer.KEY_PASSWORD, pwd);
-		params.addBodyParameter(ConstServer.KEY_IDENTIFY, verifyCode);
+		params.addParameter(ConstServer.KEY_TYPE, ConstServer.TYPE_RESET);
+		params.addParameter(ConstServer.KEY_USER_NAME, userName);
+		params.addParameter(ConstServer.KEY_PASSWORD, pwd);
+		params.addParameter(ConstServer.KEY_IDENTIFY, verifyCode);
 		
 		x.http().get(params, new Callback.CommonCallback<String>() {
 

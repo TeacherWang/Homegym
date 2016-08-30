@@ -36,7 +36,7 @@ public class MyTotalRecordDao {
 		return sql;
 	}
 
-	public synchronized void saveMyTotalRecordToDb(Context context, TotalRecord totalRecord){
+	public synchronized void saveMyTotalRecordToDb(Context context, TotalRecord totalRecord, String uid){
 		Cursor c = null;
 		SQLiteDatabase db = null;
 		try {
@@ -44,20 +44,19 @@ public class MyTotalRecordDao {
 			db = dbHelper.getWritableDatabase();
 			ContentValues values = new ContentValues();
 			
-			values.put(Const.DB_KEY_UID, totalRecord.uid);
+			values.put(Const.DB_KEY_UID, uid);
 			values.put(Const.DB_KEY_TOTAL_KCAL, totalRecord.total_kcal);
 			values.put(Const.DB_KEY_TOTAL_TIME, totalRecord.total_time);
 			values.put(Const.DB_KEY_TOTAL_DAYS, totalRecord.total_days);
 			values.put(Const.DB_KEY_TOTAL_FOOD, totalRecord.total_food);
 			
 			c = db.query(Const.TABLE_MY_TOTAL_RECORD, null, Const.DB_KEY_UID + " = ? ",
-					new String[] { totalRecord.uid }, null, null, null);
+					new String[] { uid }, null, null, null);
 			if (c.getCount() > 0) {// 查询到数据库有该数据，删除
-				db.delete(Const.TABLE_MY_TOTAL_RECORD, Const.DB_KEY_UID + " = ? ", new String[] { totalRecord.uid });
+				db.update(Const.TABLE_MY_TOTAL_RECORD, values, Const.DB_KEY_UID + " = ? ", new String[] { uid });
+			}else{
+				db.insert(Const.TABLE_MY_TOTAL_RECORD, null, values);
 			}
-			// 再插入新的
-			db.insert(Const.TABLE_MY_TOTAL_RECORD, null, values);
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally{
@@ -82,7 +81,6 @@ public class MyTotalRecordDao {
 			if(null != c && c.getCount() > 0){
 				c.moveToNext();
 				
-				totalRecord.uid = uid;
 				totalRecord.total_kcal = c.getInt(c.getColumnIndex(Const.DB_KEY_TOTAL_KCAL));
 				totalRecord.total_time = c.getInt(c.getColumnIndex(Const.DB_KEY_TOTAL_TIME));
 				totalRecord.total_days = c.getInt(c.getColumnIndex(Const.DB_KEY_TOTAL_DAYS));

@@ -21,6 +21,8 @@ import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.account.AccountMgr;
 import com.runrunfast.homegym.account.DataTransferUtil;
 import com.runrunfast.homegym.account.UserInfo;
+import com.runrunfast.homegym.course.CourseServerMgr;
+import com.runrunfast.homegym.course.CourseServerMgr.IRequestDetailDataListener;
 import com.runrunfast.homegym.dao.MyTrainRecordDao;
 import com.runrunfast.homegym.record.BaseRecordData;
 import com.runrunfast.homegym.record.RecordAdapter;
@@ -62,6 +64,8 @@ public class RecordMonthFragment extends Fragment implements OnClickListener{
 	
 	private int mThisMonth; // 本月
 	
+	private String mStrSelectYearMonth;
+	
 	// 柱状图
 	private HistogramView mHistogramView;
 	
@@ -77,6 +81,8 @@ public class RecordMonthFragment extends Fragment implements OnClickListener{
 //    private boolean hasLabels = false;
 //    private boolean hasLabelForSelected = false;
 	
+	private IRequestDetailDataListener mIRequestDetailDataListener;
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater,
 		 ViewGroup container, Bundle savedInstanceState) {
@@ -88,9 +94,35 @@ public class RecordMonthFragment extends Fragment implements OnClickListener{
 		
 		initData();
 		
+		initCourseServerListener();
+		
 		return rootView;
 	}
 	
+	private void initCourseServerListener() {
+		mIRequestDetailDataListener = new IRequestDetailDataListener() {
+			
+			@Override
+			public void onRequestDetailDataSuc(String strStartDate) {
+				handleServerData(strStartDate);
+			}
+			
+			@Override
+			public void onRequestDetailDataFail() {
+				
+			}
+		};
+		CourseServerMgr.getInstance().addRequestDetailDataObserver(mIRequestDetailDataListener);
+	}
+
+	private void handleServerData(String strStartDate) {
+		String serverDateYearMonth = DateUtil.getDateStrOfYearMonth(strStartDate);
+		Log.i(TAG, "handleServerData, server startDate = " + strStartDate + ", mStrSelectYearMonth = " + mStrSelectYearMonth);
+		if(serverDateYearMonth.equals(mStrSelectYearMonth)){
+			updateData();
+		}
+	}
+
 	private void initData() {
 		mUserInfo = AccountMgr.getInstance().mUserInfo;
 		
@@ -102,21 +134,23 @@ public class RecordMonthFragment extends Fragment implements OnClickListener{
 		tvMonth.setText(DataTransferUtil.numMap.get(mSelectMonth) + "月份");
 		
 		String strCurrentDay = DateUtil.getCurrentDate();
-		String strCurrentYearMonth = DateUtil.getDateStrOfYearMonth(strCurrentDay);
+		mStrSelectYearMonth = DateUtil.getDateStrOfYearMonth(strCurrentDay);
 		
-		int dayNum = MyTrainRecordDao.getInstance().getTrainDayNumDependMonth(Globle.gApplicationContext, mUserInfo.strAccountId, strCurrentYearMonth);
+		int dayNum = MyTrainRecordDao.getInstance().getTrainDayNumDependMonth(Globle.gApplicationContext, mUserInfo.strAccountId, mStrSelectYearMonth);
 		tvTotalDays.setText(String.valueOf(dayNum) + "天");
 		
 		mBaseRecordDataList = new ArrayList<BaseRecordData>();
 		
-		mBaseRecordDataList = RecordUtil.getBaseRecordDataList(strCurrentYearMonth, mUserInfo.strAccountId);
+		mBaseRecordDataList = RecordUtil.getBaseRecordDataList(mStrSelectYearMonth, mUserInfo.strAccountId);
 		
 		mRecordAdapter = new RecordAdapter(getActivity(), mBaseRecordDataList);
 		pullToRefreshListView.setAdapter(mRecordAdapter);
 		
-		pullToRefreshListView.setMode(Mode.BOTH);
+		pullToRefreshListView.setMode(Mode.DISABLED);
 		
-		initChart(strCurrentYearMonth);
+		initChart(mStrSelectYearMonth);
+		
+		CourseServerMgr.getInstance().requestDetailData(mUserInfo.strAccountId, mStrSelectYearMonth + "-01", mStrSelectYearMonth + "-31");
 	}
 
 	private void initChart(String strCurrentYearMonth) {
@@ -258,14 +292,20 @@ public class RecordMonthFragment extends Fragment implements OnClickListener{
 			strCurrentDay = DateUtil.getStrDateFirstDayDependsMonth(mSelectMonth);
 		}
 		
-		String strCurrentYearMonth = DateUtil.getDateStrOfYearMonth(strCurrentDay);
+		mStrSelectYearMonth = DateUtil.getDateStrOfYearMonth(strCurrentDay);
 		
-		int dayNum = MyTrainRecordDao.getInstance().getTrainDayNumDependMonth(Globle.gApplicationContext, mUserInfo.strAccountId, strCurrentYearMonth);
+		int dayNum = MyTrainRecordDao.getInstance().getTrainDayNumDependMonth(Globle.gApplicationContext, mUserInfo.strAccountId, mStrSelectYearMonth);
 		tvTotalDays.setText(String.valueOf(dayNum) + "天");
 		
-		updateDataDependOnDay(strCurrentYearMonth);
+		CourseServerMgr.getInstance().requestDetailData(mUserInfo.strAccountId, mStrSelectYearMonth + "-01", mStrSelectYearMonth + "-31");
 		
-		initChart(strCurrentYearMonth);
+		updateData();
+	}
+
+	private void updateData() {
+		updateDataDependOnDay(mStrSelectYearMonth);
+		
+		initChart(mStrSelectYearMonth);
 	}
 
 	private void nextMonthData() {
@@ -278,22 +318,22 @@ public class RecordMonthFragment extends Fragment implements OnClickListener{
 		tvSelectMonth.setText(mSelectMonth + "月");
 		tvMonth.setText(DataTransferUtil.numMap.get(mSelectMonth) + "月份");
 		
-		String strCurrentDay;
+		String strSelectDay;
 		
 		if( mSelectMonth == mThisMonth ){
-			strCurrentDay = DateUtil.getCurrentDate();
+			strSelectDay = DateUtil.getCurrentDate();
 		}else{
-			strCurrentDay = DateUtil.getStrDateFirstDayDependsMonth(mSelectMonth);
+			strSelectDay = DateUtil.getStrDateFirstDayDependsMonth(mSelectMonth);
 		}
 		
-		String strCurrentYearMonth = DateUtil.getDateStrOfYearMonth(strCurrentDay);
+		mStrSelectYearMonth = DateUtil.getDateStrOfYearMonth(strSelectDay);
 		
-		int dayNum = MyTrainRecordDao.getInstance().getTrainDayNumDependMonth(Globle.gApplicationContext, mUserInfo.strAccountId, strCurrentYearMonth);
+		int dayNum = MyTrainRecordDao.getInstance().getTrainDayNumDependMonth(Globle.gApplicationContext, mUserInfo.strAccountId, mStrSelectYearMonth);
 		tvTotalDays.setText(String.valueOf(dayNum) + "天");
 		
-		updateDataDependOnDay(strCurrentYearMonth);
+		CourseServerMgr.getInstance().requestDetailData(mUserInfo.strAccountId, mStrSelectYearMonth + "-01", mStrSelectYearMonth + "-31");
 		
-		initChart(strCurrentYearMonth);
+		updateData();
 	}
 	
 	private void updateDataDependOnDay(String strCurrentYearMonth) {
@@ -301,6 +341,14 @@ public class RecordMonthFragment extends Fragment implements OnClickListener{
 		mBaseRecordDataList = RecordUtil.getBaseRecordDataList(strCurrentYearMonth, mUserInfo.strAccountId);
 		
 		mRecordAdapter.updateData(mBaseRecordDataList);
+	}
+	
+	@Override
+	public void onDestroyView() {
+		if(mIRequestDetailDataListener != null){
+			CourseServerMgr.getInstance().removeRequestDetailDataObserver(mIRequestDetailDataListener);
+		}
+		super.onDestroyView();
 	}
 	
 	// 不要删除，切换fragment用到

@@ -1,7 +1,6 @@
 package com.runrunfast.homegym.record;
 
 public class TotalRecord {
-	public String uid;
 	public float total_kcal;
 	public int total_time;
 	public int total_days;

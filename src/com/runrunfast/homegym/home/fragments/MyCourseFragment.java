@@ -19,6 +19,9 @@ import com.runrunfast.homegym.bean.MyCourse;
 import com.runrunfast.homegym.bean.MyCourse.DayProgress;
 import com.runrunfast.homegym.course.CourseAdapter;
 import com.runrunfast.homegym.course.CourseAdapter.ICourseAdapterListener;
+import com.runrunfast.homegym.course.CourseServerMgr.IDownloadTrainPlanLister;
+import com.runrunfast.homegym.course.CourseServerMgr.IGetCourseFromServerListener;
+import com.runrunfast.homegym.course.CourseServerMgr;
 import com.runrunfast.homegym.course.CourseTrainActivity;
 import com.runrunfast.homegym.course.DetailPlanActivity;
 import com.runrunfast.homegym.dao.CourseDao;
@@ -31,7 +34,7 @@ import com.runrunfast.homegym.utils.Globle;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyTrainingFragment extends Fragment{
+public class MyCourseFragment extends Fragment{
 	private final String TAG = "MyTrainingFragment";
 	
 	private View rootView;
@@ -47,6 +50,9 @@ public class MyTrainingFragment extends Fragment{
 	
 	private UserInfo mUserInfo;
 	
+	private IGetCourseFromServerListener mIGetCourseFromServerListener;
+	private IDownloadTrainPlanLister mIDownloadTrainPlanLister;
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		rootView = inflater.inflate(R.layout.fragment_my_training, container, false);
@@ -57,15 +63,55 @@ public class MyTrainingFragment extends Fragment{
 		
 		initListener();
 		
+		initCourseServerListener();
+		
 		return rootView;
 	}
 	
+	private void initCourseServerListener() {
+		mIGetCourseFromServerListener = new IGetCourseFromServerListener() {
+			
+			@Override
+			public void onGetCourseSucFromServer() {
+				Log.i(TAG, "onGetCourseSucFromServer");
+				
+				getData();
+			}
+			
+			@Override
+			public void onGetCoruseFailFromServer() {
+				
+			}
+		};
+		CourseServerMgr.getInstance().addGetCourseFromServerObserver(mIGetCourseFromServerListener);
+		
+		mIDownloadTrainPlanLister = new IDownloadTrainPlanLister() {
+			
+			@Override
+			public void onDownloadTrainPlanSuc() {
+				Log.i(TAG, "onDownloadTrainPlanSuc");
+				
+				getData();
+			}
+			
+			@Override
+			public void onDownloadTrainPlanFail() {
+				
+			}
+		};
+		CourseServerMgr.getInstance().addDownloadTrainPlanObserver(mIDownloadTrainPlanLister);
+	}
+
 	@Override
 	public void onResume() {
 		super.onResume();
 		
 		Log.i(TAG, "onResume");
 		
+		getData();
+	}
+
+	private void getData() {
 		mMyCourseList = MyCourseDao.getInstance().getMyCourseListFromDb(Globle.gApplicationContext);
 		if(mMyCourseList.size() > 0){
 			// 根据当天日期保存课程是否过期
@@ -180,6 +226,19 @@ public class MyTrainingFragment extends Fragment{
 	private void initView() {
 		mMyCourseListView = (ListView)rootView.findViewById(R.id.my_course_listview);
 //		mRecommedCourseListView = (ListView)rootView.findViewById(R.id.course_recommed_listview);
+	}
+	
+	@Override
+	public void onDestroyView() {
+		if(mIGetCourseFromServerListener != null){
+			CourseServerMgr.getInstance().removeGetCourseFromServerObserver(mIGetCourseFromServerListener);
+		}
+		
+		if(mIDownloadTrainPlanLister != null){
+			CourseServerMgr.getInstance().removeDownloadTrainPlanObserver(mIDownloadTrainPlanLister);
+		}
+		
+		super.onDestroyView();
 	}
 	
 	// 不要删除，切换fragment用到

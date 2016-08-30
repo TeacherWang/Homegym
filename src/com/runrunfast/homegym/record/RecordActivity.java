@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.home.FinishActivity;
-import com.runrunfast.homegym.home.fragments.MyTrainingFragment;
+import com.runrunfast.homegym.home.fragments.MyCourseFragment;
 import com.runrunfast.homegym.record.fragments.RecordMonthFragment;
 import com.runrunfast.homegym.record.fragments.RecordTotalFragment;
 import com.runrunfast.homegym.record.fragments.RecordYearFragment;
@@ -160,7 +160,7 @@ public class RecordActivity extends FragmentActivity implements OnClickListener{
 				return new RecordTotalFragment();
 
 			default:
-				return new MyTrainingFragment();
+				return new MyCourseFragment();
 			}
 		}
 

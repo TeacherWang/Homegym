@@ -91,7 +91,7 @@
 	<dimen name="course_train_margin_top">5dp</dimen>
 	<dimen name="course_train_list_margin_top">8dp</dimen>
 	<dimen name="course_train_list_margin_left_right">4dp</dimen>
-	<dimen name="course_train_imgbg_height">120dp</dimen>
+	<dimen name="course_train_img_height">120dp</dimen>
 	<dimen name="course_train_name_size">24sp</dimen>
 	<dimen name="course_train_action_num_size">14sp</dimen>
 	<dimen name="course_train_decrip_size">12sp</dimen>

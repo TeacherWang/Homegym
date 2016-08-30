@@ -11,10 +11,14 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.bean.Course;
 import com.runrunfast.homegym.bean.MyCourse;
 import com.runrunfast.homegym.home.fragments.InvalidCourse;
+import com.runrunfast.homegym.utils.AnimateFirstDisplayListener;
+import com.runrunfast.homegym.utils.BitmapUtils;
 
 import java.util.ArrayList;
 
@@ -170,8 +174,12 @@ public class CourseAdapter extends BaseAdapter {
 		}else{
 			viewHolder.tvCourseQuality.setVisibility(View.INVISIBLE);
 		}
+		
+		ImageLoader.getInstance().displayImage(course.course_img_url,
+				viewHolder.courseImg, BitmapUtils.initCourseImageLoader(),
+				new AnimateFirstDisplayListener());
 	}
-
+	
 	/**
 	 * @param viewHolder
 	 * @param courseInfo
@@ -192,6 +200,7 @@ public class CourseAdapter extends BaseAdapter {
 					}
 				});
 				
+				viewHolder.courseImg.setBackgroundResource(R.drawable.home_add);
 				viewHolder.courseNewImg.setVisibility(View.INVISIBLE);
 				viewHolder.courseProgressImg.setVisibility(View.INVISIBLE);
 				viewHolder.tvEmptyDescript.setVisibility(View.VISIBLE);
@@ -214,6 +223,10 @@ public class CourseAdapter extends BaseAdapter {
 		}else{
 			viewHolder.tvCourseQuality.setVisibility(View.INVISIBLE);
 		}
+		ImageLoader.getInstance().getDiscCache();
+		ImageLoader.getInstance().displayImage(myCourse.course_img_url,
+				viewHolder.courseImg, BitmapUtils.initCourseImageLoader(),
+				new AnimateFirstDisplayListener());
 	}
 
 	private void setCourseProgress(ViewHolder viewHolder, int progerssType) {

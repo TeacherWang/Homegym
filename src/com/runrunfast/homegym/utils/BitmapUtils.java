@@ -5,8 +5,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapFactory.Options;
 import android.os.Environment;
+import android.os.Handler;
 
-import com.runrunfast.homegym.account.UserInfo;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
+import com.runrunfast.homegym.R;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -14,6 +17,29 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 
 public class BitmapUtils {
+	
+	public static final DisplayImageOptions initCourseImageLoader() {
+		DisplayImageOptions options = new DisplayImageOptions.Builder()
+				.showStubImage(R.drawable.home_add)
+				.showImageForEmptyUri(R.drawable.home_add)
+				.showImageOnFail(R.drawable.home_add)
+				.cacheInMemory(true)
+				.cacheOnDisc(true)
+				.resetViewBeforeLoading(true).handler(new Handler())
+				.displayer(new RoundedBitmapDisplayer(0)).build();
+		return options;
+	}
+	
+	public static final DisplayImageOptions initActionImageLoader() {
+		DisplayImageOptions options = new DisplayImageOptions.Builder()
+				.showStubImage(R.drawable.course_action_pic_1)
+				.showImageForEmptyUri(R.drawable.course_action_pic_1)
+				.showImageOnFail(R.drawable.course_action_pic_1)
+				.cacheInMemory(true).cacheOnDisc(true)
+				.resetViewBeforeLoading(true).handler(new Handler())
+				.displayer(new RoundedBitmapDisplayer(0)).build();
+		return options;
+	}
 	
 	public static void saveBitmapToSDcard(Bitmap bitmap, String strFileDir, String strFileName) {
 		try {

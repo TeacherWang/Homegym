@@ -8,6 +8,7 @@ public class Const {
 	public static final int DIALOG_REQ_CODE_EXIT_COURSE = 4; // 退出课程
 	public static final int DIALOG_REQ_CODE_EXIT_TRAIN = 5; // 中途退出训练
 	public static final int DIALOG_REQ_CODE_FINISH_TRAIN = 6; // 完成训练
+	public static final int DIALOG_REQ_CODE_SAVE =7; // 确定保存？
 	
 	// 启动CourseTrainActivity所传参数
 	public static final String KEY_COURSE = "key_course";
@@ -105,5 +106,10 @@ public class Const {
 	
 	
 	public static final String DB_KEY_DISTINCT = "DISTINCT ";
+	
+	
+	
+	public static final String DB_KEY_TRAIN_DATA = "traindata";
+	public static final String DB_KEY_END_DATE = "end_data";
 	
 }

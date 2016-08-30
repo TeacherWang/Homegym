@@ -19,7 +19,7 @@ public class Action implements Serializable{
 	public AudioLocation action_audio_url = new Action.AudioLocation(); // jsonArray格式，音频下载地址
 	public AudioLocation action_audio_local = new Action.AudioLocation();
 	
-	public static class AudioLocation{
+	public static class AudioLocation implements Serializable{
 		public String rest; // 休息
 		public String change_side; // 换边
 		public String action_explain; // 动作讲解

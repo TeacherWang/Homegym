@@ -59,6 +59,41 @@ public class ConstServer {
 	  */
 	public static final String URL_GET_ACTION_INFO = COURSE_SERVER + "getActionInfo";
 	
+	/**
+	  * @Fields URL_JOIN_COURSE : 参加课程
+	  */
+	public static final String URL_JOIN_COURSE = COURSE_SERVER + "joinCourse";
+	
+	/**
+	  * @Fields URL_DELETE_COURSE : 退出课程
+	  */
+	public static final String URL_DELETE_COURSE = COURSE_SERVER + "deleteCourse";
+	
+	/**
+	  * @Fields URL_UPLOAD_TRAIN_PLAN : 上传定制计划
+	  */
+	public static final String URL_UPLOAD_TRAIN_PLAN = COURSE_SERVER + "uploadTrainPlan";
+	
+	/**
+	  * @Fields URL_DOWNLOAD_TRAIN_PLAN : 同步定制计划
+	  */
+	public static final String URL_DOWNLOAD_TRAIN_PLAN = COURSE_SERVER + "downloadTrainPlan";
+	
+	/**
+	  * @Fields URL_RECORD_DATA : 上传本次训练数据
+	  */
+	public static final String URL_RECORD_DATA = COURSE_SERVER + "record_data";
+	
+	/**
+	  * @Fields URL_REQUEST_TOTAL_DATA : 请求总的完成情况
+	  */
+	public static final String URL_REQUEST_TOTAL_DATA = COURSE_SERVER + "requestTotalData";
+	
+	/**
+	  * @Fields URL_REQUEST_DETAIL_DATA : 请求详细完成情况
+	  */
+	public static final String URL_REQUEST_DETAIL_DATA = COURSE_SERVER + "requestDetailData";
+	
 	
 	public static final String SDCARD_ROOT = Environment.getExternalStorageDirectory().getAbsolutePath();
 	public static final String SDCARD_HOMEGYM_ROOT = SDCARD_ROOT + File.separator + "runrunfast" + File.separator + "homegym" + File.separator;

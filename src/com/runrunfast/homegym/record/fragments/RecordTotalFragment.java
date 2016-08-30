@@ -10,6 +10,8 @@ import android.widget.TextView;
 import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.account.AccountMgr;
 import com.runrunfast.homegym.account.UserInfo;
+import com.runrunfast.homegym.course.CourseServerMgr;
+import com.runrunfast.homegym.course.CourseServerMgr.IRequestTotalDataListener;
 import com.runrunfast.homegym.dao.MyTotalRecordDao;
 import com.runrunfast.homegym.record.TotalRecord;
 import com.runrunfast.homegym.utils.DateUtil;
@@ -20,7 +22,9 @@ public class RecordTotalFragment extends Fragment {
 	
 	private View rootView;
 	
-	private TextView tvTotalKcal, tvTotalTimeHour, tvTotalDays;
+	private TextView tvTotalKcal, tvTotalTimeHour, tvTotalDays, tvFood;
+	
+	private IRequestTotalDataListener mIRequestTotalDataListener;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater,
@@ -31,25 +35,59 @@ public class RecordTotalFragment extends Fragment {
 		
 		initData();
 		
+		initCourseServerListener();
+		
 		return rootView;
 	}
 	
+	private void initCourseServerListener() {
+		mIRequestTotalDataListener = new IRequestTotalDataListener() {
+			
+			@Override
+			public void onRequestTotalDataSuc(TotalRecord totalRecord) {
+				setUiData(totalRecord);
+			}
+			
+			@Override
+			public void onRequestTotalDataFail() {
+				
+			}
+		};
+		CourseServerMgr.getInstance().addRequestTotalDataObserver(mIRequestTotalDataListener);
+	}
+
 	private void initData() {
 		mUserInfo = AccountMgr.getInstance().mUserInfo;
 		
 		TotalRecord totalRecord = MyTotalRecordDao.getInstance().getMyTotalRecordFromDb(Globle.gApplicationContext, mUserInfo.strAccountId);
 		
+		setUiData(totalRecord);
+		
+		CourseServerMgr.getInstance().requestTotalData(mUserInfo.strAccountId);
+	}
+
+	private void setUiData(TotalRecord totalRecord) {
 		tvTotalKcal.setText(String.valueOf(totalRecord.total_kcal));
 		tvTotalDays.setText(String.valueOf(totalRecord.total_days));
 		tvTotalTimeHour.setText(DateUtil.secToHour(totalRecord.total_time));
+		tvFood.setText(totalRecord.total_food + "个汉堡包");
 	}
 
 	private void initView() {
 		tvTotalKcal = (TextView)rootView.findViewById(R.id.record_total_consume_number_text);
 		tvTotalTimeHour = (TextView)rootView.findViewById(R.id.record_total_finish_time_text);
 		tvTotalDays = (TextView)rootView.findViewById(R.id.record_total_finish_days_text);
+		tvFood = (TextView)rootView.findViewById(R.id.record_total_equal_result_text);
 	}
 
+	@Override
+	public void onDestroyView() {
+		if(mIRequestTotalDataListener != null){
+			CourseServerMgr.getInstance().removeRequestTotalDataObserver(mIRequestTotalDataListener);
+		}
+		super.onDestroyView();
+	}
+	
 	// 不要删除，切换fragment用到
     @Override
 	public void setMenuVisibility(boolean menuVisible) {

@@ -329,7 +329,6 @@ public class MyTrainRecordDao {
 				Type typeActionDetail = new TypeToken<Collection<ActionDetail>>(){}.getType();
 				while (c.moveToNext() ) {
 					TrainRecord record = new TrainRecord();
-					record.uid = c.getString(c.getColumnIndex(Const.DB_KEY_UID));
 					record.course_id = c.getString(c.getColumnIndex(Const.DB_KEY_COURSE_ID));
 					record.course_name = c.getString(c.getColumnIndex(Const.DB_KEY_COURSE_NAME));
 					record.finish_count = c.getInt(c.getColumnIndex(Const.DB_KEY_FINISH_COUNT));
@@ -372,7 +371,6 @@ public class MyTrainRecordDao {
 				Type typeActionDetail = new TypeToken<Collection<ActionDetail>>(){}.getType();
 				while (c.moveToNext() ) {
 					TrainRecord record = new TrainRecord();
-					record.uid = c.getString(c.getColumnIndex(Const.DB_KEY_UID));
 					record.course_id = c.getString(c.getColumnIndex(Const.DB_KEY_COURSE_ID));
 					record.course_name = c.getString(c.getColumnIndex(Const.DB_KEY_COURSE_NAME));
 					record.finish_count = c.getInt(c.getColumnIndex(Const.DB_KEY_FINISH_COUNT));

@@ -18,6 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.BtDevice.BtDeviceMgr;
 import com.runrunfast.homegym.BtDevice.BtDeviceMgr.BLEServiceListener;
@@ -30,6 +31,7 @@ import com.runrunfast.homegym.bean.Course.CourseDetail;
 import com.runrunfast.homegym.bean.Course.GroupDetail;
 import com.runrunfast.homegym.bean.MyCourse;
 import com.runrunfast.homegym.bean.MyCourse.DayProgress;
+import com.runrunfast.homegym.course.CourseServerMgr.IUpdateRecordListener;
 import com.runrunfast.homegym.dao.ActionDao;
 import com.runrunfast.homegym.dao.MyCourseDao;
 import com.runrunfast.homegym.dao.MyTrainRecordDao;
@@ -107,6 +109,10 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 	private boolean isRest = false;
 	private boolean isPrepareNextAction = false; // 该动作完成，正在准备下一个动作
 	
+	private IUpdateRecordListener mIUpdateRecordListener;
+	
+	private boolean isPause = false;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -121,6 +127,24 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 		initData();
 		
 		initListener();
+		
+		initCourseServerListener();
+	}
+
+	private void initCourseServerListener() {
+		mIUpdateRecordListener = new IUpdateRecordListener() {
+			
+			@Override
+			public void onUpdateRecordSuc() {
+				Toast.makeText(CourseVideoActivity.this, "上传数据成功", Toast.LENGTH_SHORT).show();
+			}
+			
+			@Override
+			public void onUpdateRecordFail() {
+				Toast.makeText(CourseVideoActivity.this, "上传数据失败", Toast.LENGTH_SHORT).show();
+			}
+		};
+		CourseServerMgr.getInstance().addUpdateRecordObserver(mIUpdateRecordListener);
 	}
 
 	private void initListener() {
@@ -128,6 +152,10 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 			
 			@Override
 			public void onReedSwitch() {
+				if(isPause){
+					Log.d(TAG, "onReedSwitch, isShowDialog, dont handle");
+					return;
+				}
 				handleFinishOnce();
 			}
 			
@@ -399,6 +427,8 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 	}
 
 	private void handleInterupt() {
+		isPause = true;
+		
 		mVideoTimerTask.cancel();
 		mVideoView.pause();
 		showExitDialog();
@@ -417,6 +447,8 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if(requestCode == Const.DIALOG_REQ_CODE_EXIT_TRAIN){
 			if(resultCode == DialogActivity.RSP_CONFIRM){
+				isPause = false;
+				
 				mVideoView.start();
 				mVideoTimerTask = new VideoTimerTask();
 				mTimer.scheduleAtFixedRate(mVideoTimerTask, DELAY_SECOND, DELAY_SECOND);
@@ -456,6 +488,8 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 		mCurrentRecord.actual_date = DateUtil.getCurrentDate();
 		MyTrainRecordDao.getInstance().saveRecordToDb(Globle.gApplicationContext, mUserInfo.strAccountId, mCurrentRecord);
 		
+		uploadRecord();
+		
 		Intent intent = new Intent(this, FinishActivity.class);
 		intent.putExtra(FinishActivity.KEY_FINISH_OR_UNFINISH, FinishActivity.TYPE_UNFINISH);
 		intent.putStringArrayListExtra(Const.KEY_ACTION_IDS, mFinishedActionIds);
@@ -475,6 +509,8 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 	  * 返回类型：void 
 	  */
 	private void prepareCourseFinished() {
+		isPause = true;
+		
 		mVideoTimerTask.cancel();
 		mVideoView.stopPlayback();
 		mVideoView.suspend();
@@ -520,7 +556,13 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 			}
 		}
 		
+		uploadRecord();
+		
 		if(courseProgress == MyCourse.COURSE_PROGRESS_FINISH){
+			mMyCourse.progress = courseProgress;
+			
+			uploadTrainPlan();
+			
 			MyCourseDao.getInstance().saveMyCourseProgress(Globle.gApplicationContext, mUserInfo.strAccountId, mMyCourse.course_id, courseProgress);
 		}
 		
@@ -536,6 +578,20 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 		startActivity(intent);
 		finish();
 	}
+
+	private void uploadTrainPlan() {
+		Gson gson = new Gson();
+		
+		String courseDetailStr = gson.toJson(mMyCourse.course_detail);
+		String dayProgress = gson.toJson(mMyCourse.day_progress);
+		
+		CourseServerMgr.getInstance().uploadTrainPlan(mUserInfo.strAccountId, mMyCourse.course_id, courseDetailStr, mMyCourse.progress, dayProgress);
+	}
+	
+	private void uploadRecord(){
+		Gson gson = new Gson();
+		CourseServerMgr.getInstance().updateRecord(mUserInfo.strAccountId, gson.toJson(mCurrentRecord));
+	}
 	
 	private void releaseTimer(){
 		if(mTimer != null){
@@ -548,6 +604,12 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 	@Override
 	public void onBackPressed() {
 		handleInterupt();
+	}
+	
+	@Override
+	protected void onDestroy() {
+		CourseServerMgr.getInstance().removeUpdateRecordObserver(mIUpdateRecordListener);
+		super.onDestroy();
 	}
 	
 }

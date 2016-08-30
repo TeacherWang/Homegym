@@ -3,6 +3,7 @@ package com.runrunfast.homegym.home.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,8 @@ import android.widget.ListView;
 import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.bean.Course;
 import com.runrunfast.homegym.course.CourseAdapter;
+import com.runrunfast.homegym.course.CourseServerMgr;
+import com.runrunfast.homegym.course.CourseServerMgr.IGetCourseFromServerListener;
 import com.runrunfast.homegym.course.DetailPlanActivity;
 import com.runrunfast.homegym.dao.CourseDao;
 import com.runrunfast.homegym.utils.Const;
@@ -21,6 +24,7 @@ import com.runrunfast.homegym.utils.Globle;
 import java.util.ArrayList;
 
 public class AllCoursesFragment extends Fragment {
+	private final String TAG = "AllCoursesFragment";
 	
 	private View rootView;
 	
@@ -29,6 +33,8 @@ public class AllCoursesFragment extends Fragment {
 	private ArrayList<Course> mAllCoursesList;
 	
 	private CourseAdapter mAllCoursesAdapter;
+	
+	private IGetCourseFromServerListener mIGetCourseFromServerListener;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater,
@@ -41,7 +47,32 @@ public class AllCoursesFragment extends Fragment {
 		
 		initListener();
 		
+		initCourseServerListener();
+		
 		return rootView;
+	}
+	
+	private void initCourseServerListener() {
+		mIGetCourseFromServerListener = new IGetCourseFromServerListener() {
+			
+			@Override
+			public void onGetCourseSucFromServer() {
+				Log.i(TAG, "onGetCourseSucFromServer");
+				
+				getData();
+			}
+			
+			@Override
+			public void onGetCoruseFailFromServer() {
+				
+			}
+		};
+		CourseServerMgr.getInstance().addGetCourseFromServerObserver(mIGetCourseFromServerListener);
+	}
+
+	private void getData() {
+		mAllCoursesList = CourseDao.getInstance().getCourseListFromDb(Globle.gApplicationContext);
+		mAllCoursesAdapter.updateData(mAllCoursesList);
 	}
 
 	private void initListener() {
