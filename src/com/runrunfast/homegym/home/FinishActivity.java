@@ -10,6 +10,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.runrunfast.homegym.R;
+import com.runrunfast.homegym.account.DataTransferUtil;
 import com.runrunfast.homegym.bean.Action;
 import com.runrunfast.homegym.dao.ActionDao;
 import com.runrunfast.homegym.utils.Const;
@@ -38,7 +39,7 @@ public class FinishActivity extends Activity {
 	
 	private int mTotalTime;
 	private int mTotalCount;
-	private int mTotalKcal;
+	private float mTotalKcal;
 	private String mCourseName;
 	private ArrayList<String> mActionIdList;
 	
@@ -72,14 +73,14 @@ public class FinishActivity extends Activity {
 		Intent intent = getIntent();
 		mTotalTime = intent.getIntExtra(Const.KEY_COURSE_TOTAL_TIME, 0);
 		mTotalCount = intent.getIntExtra(Const.KEY_COURSE_TOTAL_COUNT, 0);
-		mTotalKcal = intent.getIntExtra(Const.KEY_COURSE_TOTAL_BURNING, 0);
+		mTotalKcal = intent.getFloatExtra(Const.KEY_COURSE_TOTAL_BURNING, 0);
 		mCourseName = intent.getStringExtra(Const.KEY_COURSE_NAME);
 		mActionIdList = intent.getStringArrayListExtra(Const.KEY_ACTION_IDS);
 		
 		tvFinishCourseName.setText(mCourseName);
 		tvFinishActionTime.setText(DateUtil.secToTime(mTotalTime));
 		tvFinishActionCount.setText(String.valueOf(mTotalCount));
-		tvFinishActionBurning.setText(String.valueOf(mTotalKcal));
+		tvFinishActionBurning.setText(DataTransferUtil.getInstance().getTwoDecimalData(mTotalKcal));
 		
 		mActionList = new ArrayList<Action>();
 		int actionSize = mActionIdList.size();
@@ -95,6 +96,7 @@ public class FinishActivity extends Activity {
 
 	private void initView() {
 		findViewById(R.id.actionbar_left_btn).setBackgroundResource(R.drawable.nav_back);
+		findViewById(R.id.actionbar_right_btn).setVisibility(View.INVISIBLE);
 		
 		mHadFinishListView = (ListView)findViewById(R.id.had_finished_train_list);
 		mFinishDataContainer = (FrameLayout)findViewById(R.id.finish_data_container);

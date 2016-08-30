@@ -18,6 +18,8 @@ public class Course implements Serializable{
 	public int course_quality;
 	public int course_new;
 	public int course_recommend; // 1为推荐课程,0为普通课程
+	public String course_img_url;
+	public String course_img_local;
 	public List<CourseDetail> course_detail = new ArrayList<Course.CourseDetail>();
 	
 	public static class CourseDetail implements Serializable{
@@ -57,18 +59,16 @@ public class Course implements Serializable{
 	public static class GroupDetail implements Serializable{
 		public int count;
 		public int weight;
-		public int kcal;
-		public int time;
+		public float kcal;
 		
 		public GroupDetail(){
 			
 		}
 		
-		public GroupDetail(int count, int weight, int kcal, int time){
+		public GroupDetail(int count, int weight, float kcal){
 			this.count = count;
 			this.weight = weight;
 			this.kcal = kcal;
-			this.time = time;
 		}
 		
 	}

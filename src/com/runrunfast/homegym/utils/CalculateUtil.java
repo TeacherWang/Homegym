@@ -1,32 +1,18 @@
 package com.runrunfast.homegym.utils;
 
-import android.R.integer;
 
 public class CalculateUtil {
-
 	/**
 	  * @Method: calculateKcal
-	  * @Description: 根据数量和重量计算kcal
+	  * @Description: 根据数量和重量计算kcal。公式a((m+b)*h)/133.89，m为(用户选择的重量-5)；a为count；h为铁块高度；b为初始阻力
 	  * @param count
 	  * @param weight
 	  * @return	
-	  * 返回类型：int 
+	  * 返回类型：float 
 	  */
-	public static int calculateTotakKcal(int count, int weight){
-		int kcal = weight * 10 * count;
+	public static float calculateTotakKcal(int count, int weight, float actionH, float actionB){
+		float kcal = count * ((weight - 5) + actionB) * actionH / 133.89f;
 		return kcal;
-	}
-	
-	/**
-	  * @Method: calculateTime
-	  * @Description: 根据数量计算时间
-	  * @param count
-	  * @return	
-	  * 返回类型：int 
-	  */
-	public static int calculateTotalTime(int count){
-		int time = count * 5;
-		return time;
 	}
 	
 	public static int calculateSingleKcal(int weight){

@@ -7,7 +7,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.runrunfast.homegym.R;
-import com.runrunfast.homegym.start.ConstLogin;
+import com.runrunfast.homegym.utils.ConstServer;
 import com.runrunfast.homegym.utils.Globle;
 import com.runrunfast.homegym.utils.PrefUtils;
 
@@ -217,9 +217,9 @@ public class AccountMgr {
 			return;
 		}
 		
-		RequestParams params = new RequestParams(ConstLogin.URL_IDENTIFY);
-		params.addQueryStringParameter(ConstLogin.KEY_TYPE, ConstLogin.TYPE_GET_IDENTY_NUM);
-		params.addQueryStringParameter(ConstLogin.KEY_PHONE, phoneNum);
+		RequestParams params = new RequestParams(ConstServer.URL_IDENTIFY);
+		params.addQueryStringParameter(ConstServer.KEY_TYPE, ConstServer.TYPE_GET_IDENTY_NUM);
+		params.addQueryStringParameter(ConstServer.KEY_PHONE, phoneNum);
 		x.http().get(params, new Callback.CommonCallback<String>() {
 
 			@Override
@@ -246,11 +246,11 @@ public class AccountMgr {
 		JSONObject object;
 		try {
 			object = new JSONObject(result);
-			String ret = object.optString(ConstLogin.RET);
-			boolean ifPhone = object.optBoolean(ConstLogin.IFPHONE);
-			boolean status = object.optBoolean(ConstLogin.STATUS);
+			String ret = object.optString(ConstServer.RET);
+			boolean ifPhone = object.optBoolean(ConstServer.IFPHONE);
+			boolean status = object.optBoolean(ConstServer.STATUS);
 			
-			if( Integer.parseInt(ret) != ConstLogin.RET_OK || !ifPhone || !status ){
+			if( Integer.parseInt(ret) != ConstServer.RET_OK || !ifPhone || !status ){
 				notifyGetIdentifyCodeFail(mResources.getString(R.string.get_verify_code_fail));
 				return;
 			}
@@ -287,11 +287,11 @@ public class AccountMgr {
 			return;
 		}
 		
-		RequestParams params = new RequestParams(ConstLogin.URL_LOGIN);
-		params.addBodyParameter(ConstLogin.KEY_TYPE, ConstLogin.TYPE_REGISTER);
-		params.addBodyParameter(ConstLogin.KEY_USER_NAME, phoneNum);
-		params.addBodyParameter(ConstLogin.KEY_PASSWORD, pwd);
-		params.addBodyParameter(ConstLogin.KEY_IDENTIFY, verifyCode);
+		RequestParams params = new RequestParams(ConstServer.URL_LOGIN);
+		params.addParameter(ConstServer.KEY_TYPE, ConstServer.TYPE_REGISTER);
+		params.addParameter(ConstServer.KEY_USER_NAME, phoneNum);
+		params.addParameter(ConstServer.KEY_PASSWORD, pwd);
+		params.addParameter(ConstServer.KEY_IDENTIFY, verifyCode);
 		
 		x.http().get(params, new Callback.CommonCallback<String>() {
 
@@ -316,25 +316,25 @@ public class AccountMgr {
 		JSONObject object;
 		try {
 			object = new JSONObject(result);
-			int ret = object.optInt(ConstLogin.RET);
+			int ret = object.optInt(ConstServer.RET);
 			switch (ret) {
-			case ConstLogin.RET_OK:
+			case ConstServer.RET_OK:
 				notifyRegisterSuc();
 				break;
-			case ConstLogin.RET_THIS_PHONE_HAD_BINDED:
+			case ConstServer.RET_THIS_PHONE_HAD_BINDED:
 				notifyRegisterFail(mResources.getString(R.string.this_phone_had_bonded));
 				break;
 				
-			case ConstLogin.RET_USER_NAME_EXIST:
+			case ConstServer.RET_USER_NAME_EXIST:
 				notifyRegisterFail(mResources.getString(R.string.this_account_had_exist));
 				break;
-			case ConstLogin.RET_REGISTE_FAIL:
+			case ConstServer.RET_REGISTE_FAIL:
 				notifyRegisterFail(mResources.getString(R.string.register_fail));
 				break;
-			case ConstLogin.RET_IDENTIFY_TIMEOUT:
+			case ConstServer.RET_IDENTIFY_TIMEOUT:
 				notifyRegisterFail(mResources.getString(R.string.get_verify_code_fail));
 				break;
-			case ConstLogin.RET_IDENTIFY_CODE_ERR:
+			case ConstServer.RET_IDENTIFY_CODE_ERR:
 				notifyRegisterFail(mResources.getString(R.string.verify_code_err));
 				break;
 			}
@@ -357,10 +357,10 @@ public class AccountMgr {
 	}
 	
 	public void login(String userName, String pwd){
-		RequestParams params = new RequestParams(ConstLogin.URL_LOGIN);
-		params.addBodyParameter(ConstLogin.KEY_TYPE, ConstLogin.TYPE_LOGIN);
-		params.addBodyParameter(ConstLogin.KEY_USER_NAME, userName);
-		params.addBodyParameter(ConstLogin.KEY_PASSWORD, pwd);
+		RequestParams params = new RequestParams(ConstServer.URL_LOGIN);
+		params.addParameter(ConstServer.KEY_TYPE, ConstServer.TYPE_LOGIN);
+		params.addParameter(ConstServer.KEY_USER_NAME, userName);
+		params.addParameter(ConstServer.KEY_PASSWORD, pwd);
 		
 		x.http().get(params, new Callback.CommonCallback<String>() {
 
@@ -385,20 +385,20 @@ public class AccountMgr {
 		JSONObject object;
 		try {
 			object = new JSONObject(result);
-			int ret = object.optInt(ConstLogin.RET);
+			int ret = object.optInt(ConstServer.RET);
 			switch (ret) {
-			case ConstLogin.RET_OK:
+			case ConstServer.RET_OK:
 				notifyLoginSuc();
 				break;
-			case ConstLogin.RET_PWD_EMPTY:
+			case ConstServer.RET_PWD_EMPTY:
 				notifyLoginFail(mResources.getString(R.string.username_or_pwd_cant_empty));
 				break;
 				
-			case ConstLogin.RET_LOGIN_FAIL:
+			case ConstServer.RET_LOGIN_FAIL:
 				notifyLoginFail(mResources.getString(R.string.username_not_identified));
 				break;
 				
-			case ConstLogin.RET_USER_NAME_EMPTY:
+			case ConstServer.RET_USER_NAME_EMPTY:
 				notifyLoginFail(mResources.getString(R.string.this_account_not_exist));
 				break;
 			default:
@@ -424,11 +424,11 @@ public class AccountMgr {
 	}
 
 	public void resetPwd(String userName, String verifyCode, String pwd){
-		RequestParams params = new RequestParams(ConstLogin.URL_LOGIN);
-		params.addBodyParameter(ConstLogin.KEY_TYPE, ConstLogin.TYPE_RESET);
-		params.addBodyParameter(ConstLogin.KEY_USER_NAME, userName);
-		params.addBodyParameter(ConstLogin.KEY_PASSWORD, pwd);
-		params.addBodyParameter(ConstLogin.KEY_IDENTIFY, verifyCode);
+		RequestParams params = new RequestParams(ConstServer.URL_LOGIN);
+		params.addParameter(ConstServer.KEY_TYPE, ConstServer.TYPE_RESET);
+		params.addParameter(ConstServer.KEY_USER_NAME, userName);
+		params.addParameter(ConstServer.KEY_PASSWORD, pwd);
+		params.addParameter(ConstServer.KEY_IDENTIFY, verifyCode);
 		
 		x.http().get(params, new Callback.CommonCallback<String>() {
 
@@ -451,20 +451,20 @@ public class AccountMgr {
 		JSONObject object;
 		try {
 			object = new JSONObject(result);
-			int ret = object.optInt(ConstLogin.RET);
+			int ret = object.optInt(ConstServer.RET);
 			switch (ret) {
-			case ConstLogin.RET_OK:
+			case ConstServer.RET_OK:
 				notifyResetSuc();
 				break;
-			case ConstLogin.RET_RESET_PWD_FAIL:
+			case ConstServer.RET_RESET_PWD_FAIL:
 				notifyRegisterFail(mResources.getString(R.string.username_or_pwd_cant_empty));
 				break;
 				
-			case ConstLogin.RET_IDENTIFY_TIMEOUT:
+			case ConstServer.RET_IDENTIFY_TIMEOUT:
 				notifyRegisterFail(mResources.getString(R.string.verify_code_timeout));
 				break;
 				
-			case ConstLogin.RET_IDENTIFY_CODE_ERR:
+			case ConstServer.RET_IDENTIFY_CODE_ERR:
 				notifyRegisterFail(mResources.getString(R.string.verify_code_err));
 				break;
 			}
@@ -513,7 +513,7 @@ public class AccountMgr {
 	
 	public void sendLoginSucBroadcast(Context context){
 		Intent intent = new Intent();
-		intent.setAction(ConstLogin.ACTION_LOGIN_SUC);
+		intent.setAction(ConstServer.ACTION_LOGIN_SUC);
 		context.sendBroadcast(intent);
 	}
 	

@@ -175,7 +175,7 @@ public class MyTrainRecordDao {
 					if(cSum.moveToNext()){
 						StatisticalData statisticalData = new StatisticalData();
 						statisticalData.strDate = strDate;
-						statisticalData.totalKcal = cSum.getInt(0);
+						statisticalData.totalKcal = cSum.getFloat(0);
 						statisticalDataList.add(statisticalData);
 					}
 				}
@@ -215,7 +215,7 @@ public class MyTrainRecordDao {
 					if(cSum.moveToNext()){
 						StatisticalData statisticalData = new StatisticalData();
 						statisticalData.strDate = strYearMonth;
-						statisticalData.totalKcal = cSum.getInt(0);
+						statisticalData.totalKcal = cSum.getFloat(0);
 						statisticalDataList.add(statisticalData);
 					}
 				}
@@ -329,7 +329,6 @@ public class MyTrainRecordDao {
 				Type typeActionDetail = new TypeToken<Collection<ActionDetail>>(){}.getType();
 				while (c.moveToNext() ) {
 					TrainRecord record = new TrainRecord();
-					record.uid = c.getString(c.getColumnIndex(Const.DB_KEY_UID));
 					record.course_id = c.getString(c.getColumnIndex(Const.DB_KEY_COURSE_ID));
 					record.course_name = c.getString(c.getColumnIndex(Const.DB_KEY_COURSE_NAME));
 					record.finish_count = c.getInt(c.getColumnIndex(Const.DB_KEY_FINISH_COUNT));
@@ -372,7 +371,6 @@ public class MyTrainRecordDao {
 				Type typeActionDetail = new TypeToken<Collection<ActionDetail>>(){}.getType();
 				while (c.moveToNext() ) {
 					TrainRecord record = new TrainRecord();
-					record.uid = c.getString(c.getColumnIndex(Const.DB_KEY_UID));
 					record.course_id = c.getString(c.getColumnIndex(Const.DB_KEY_COURSE_ID));
 					record.course_name = c.getString(c.getColumnIndex(Const.DB_KEY_COURSE_NAME));
 					record.finish_count = c.getInt(c.getColumnIndex(Const.DB_KEY_FINISH_COUNT));

@@ -64,15 +64,15 @@ public class RecordUtil {
 		
 		recordDataAction.actionId = action.action_id;
 		recordDataAction.actionName = action.action_name;
-		recordDataAction.iGroupCount = actionDetail.group_detail.size();
+		recordDataAction.groupCount = actionDetail.group_detail.size();
 		
-		int actionKcal = 0;
-		for(int i=0; i<recordDataAction.iGroupCount; i++){
+		float actionKcal = 0;
+		for(int i=0; i<recordDataAction.groupCount; i++){
 			GroupDetail groupDetail = actionDetail.group_detail.get(i);
 			actionKcal = actionKcal + groupDetail.kcal;
 		}
 		
-		recordDataAction.iTotalKcal = actionKcal;
+		recordDataAction.totalKcal = actionKcal;
 		recordDataAction.groupDetailList = actionDetail.group_detail;
 		
 		return recordDataAction;

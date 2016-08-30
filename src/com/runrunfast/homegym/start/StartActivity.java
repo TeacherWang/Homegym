@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.account.AccountMgr;
 import com.runrunfast.homegym.home.HomeActivity;
+import com.runrunfast.homegym.utils.ConstServer;
 
 public class StartActivity extends Activity{
 	private final String TAG = "StartActivity";
@@ -72,7 +73,7 @@ public class StartActivity extends Activity{
 	
 	private void registerLoginSucReceiver(){
 		IntentFilter filter = new IntentFilter();
-		filter.addAction(ConstLogin.ACTION_LOGIN_SUC);
+		filter.addAction(ConstServer.ACTION_LOGIN_SUC);
 		registerReceiver(mLoginSucReceiver, filter);
 		
 		isReceverRegisted = true;
@@ -82,7 +83,7 @@ public class StartActivity extends Activity{
 		
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			if(intent.getAction().equals(ConstLogin.ACTION_LOGIN_SUC)){
+			if(intent.getAction().equals(ConstServer.ACTION_LOGIN_SUC)){
 				finish();
 			}
 		}

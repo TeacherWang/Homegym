@@ -21,7 +21,7 @@ public class MyCourse extends Course {
 	public List<DayProgress> day_progress = new ArrayList<DayProgress>();
 	
 	public static class DayProgress implements Serializable{
-		public String plan_date;
+		public int day_num;
 		public int progress;
 	}
 	

@@ -8,6 +8,36 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     
+    <RelativeLayout
+        android:id="@+id/have_rest_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+        <TextView 
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="休息一下！"
+            android:background="@color/white"/>
+    </RelativeLayout>
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+        <ImageView
+            android:id="@+id/video_exit_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:background="@drawable/video_exit" />
+        <ImageView
+            android:id="@+id/video_bluetooth_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/video_bluetooth_red" />
+    </RelativeLayout>
+    
 	<RelativeLayout
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent" >
@@ -76,64 +106,16 @@
 	</RelativeLayout>    
     
     <RelativeLayout
-        android:layout_below="@id/surface_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true" >
         
-        <Button android:id="@+id/btn_finished"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_alignParentRight="true"
-	        android:text="结束"/>
-	    
 	    <Button android:id="@+id/btn_finish_once"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:text="动作完成一次"/>
 	    
-	    <LinearLayout
-	        android:layout_below="@id/btn_finished"
-	        android:layout_marginTop="20dp"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:orientation="horizontal" >
-	        <TextView
-	            android:id="@+id/current_count_text"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:text="0" />
-	        <TextView
-	            android:id="@+id/current_count_slash_text"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:text="/" />
-	        <TextView
-	            android:id="@+id/current_total_count_text"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:text="12"  />
-	        
-	        <TextView
-	            android:id="@+id/current_gropu_count_text"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:layout_marginLeft="20dp"
-	            android:text="第一组"  />
-	        
-	        <TextView
-	            android:id="@+id/current_action_count_text"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:layout_marginLeft="20dp"
-	            android:text="动作一"  />
-	        
-	        <TextView
-	            android:id="@+id/current_action_total_group_text"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:layout_marginLeft="20dp"
-	            android:text="共几组"  />
-	    </LinearLayout>
     </RelativeLayout>
     
 </RelativeLayout>

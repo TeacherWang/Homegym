@@ -21,6 +21,8 @@ import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.account.AccountMgr;
 import com.runrunfast.homegym.account.DataTransferUtil;
 import com.runrunfast.homegym.account.UserInfo;
+import com.runrunfast.homegym.course.CourseServerMgr;
+import com.runrunfast.homegym.course.CourseServerMgr.IRequestDetailDataListener;
 import com.runrunfast.homegym.dao.MyTrainRecordDao;
 import com.runrunfast.homegym.record.BaseRecordData;
 import com.runrunfast.homegym.record.RecordAdapter;
@@ -57,6 +59,8 @@ public class RecordYearFragment extends Fragment implements OnClickListener{
 	
 	private int mThisYear; // 今年
 	
+	private String mSelectYearMonth;
+	
 	// 柱状图
 	private HistogramView mHistogramView;
 	private OnClickCountListener mOnClickCountListener;
@@ -64,6 +68,8 @@ public class RecordYearFragment extends Fragment implements OnClickListener{
 	private ArrayList<StatisticalData> mStatisticalDataList;
 	
 	private int screenWidth;
+	
+	private IRequestDetailDataListener mIRequestDetailDataListener;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater,
@@ -76,7 +82,37 @@ public class RecordYearFragment extends Fragment implements OnClickListener{
 		
 		initData();
 		
+		initCourseServerListener();
+		
 		return rootView;
+	}
+	
+	private void initCourseServerListener() {
+		mIRequestDetailDataListener = new IRequestDetailDataListener() {
+			
+			@Override
+			public void onRequestDetailDataSuc(String strStartDate) {
+				handleServerData(strStartDate);
+			}
+			
+			@Override
+			public void onRequestDetailDataFail() {
+				
+			}
+		};
+		CourseServerMgr.getInstance().addRequestDetailDataObserver(mIRequestDetailDataListener);
+	}
+	
+	private void handleServerData(String strStartDate) {
+		int serverYear = DateUtil.getYearOfDate(strStartDate);
+		
+		if(serverYear == mThisYear){
+			mSelectYearMonth = DateUtil.getDateStrOfYearMonth(DateUtil.getCurrentDate());
+		}else{
+			mSelectYearMonth = DateUtil.getStrDateFirstDayDependsYear(mSelectYear);
+		}
+		
+		updateDataDependOnYearMonth(mSelectYearMonth);
 	}
 	
 	private void initData() {
@@ -93,15 +129,17 @@ public class RecordYearFragment extends Fragment implements OnClickListener{
 		
 		mBaseRecordDataList = new ArrayList<BaseRecordData>();
 		
-		String currentYearMonth = DateUtil.getDateStrOfYearMonth(DateUtil.getCurrentDate());
+		mSelectYearMonth = DateUtil.getDateStrOfYearMonth(DateUtil.getCurrentDate());
 		
-		mBaseRecordDataList = RecordUtil.getBaseRecordDataList(currentYearMonth, mUserInfo.strAccountId);
+		mBaseRecordDataList = RecordUtil.getBaseRecordDataList(mSelectYearMonth, mUserInfo.strAccountId);
 		
 		mRecordAdapter = new RecordAdapter(getActivity(), mBaseRecordDataList);
 		pullToRefreshListView.setAdapter(mRecordAdapter);
 		pullToRefreshListView.setMode(Mode.PULL_FROM_END);
 		
 		initChart(mSelectYear);
+		
+		CourseServerMgr.getInstance().requestDetailData(mUserInfo.strAccountId, mSelectYearMonth + "-01", mSelectYearMonth + "-31");
 	}
 
 	private void initChart(int selectYear) {
@@ -111,7 +149,7 @@ public class RecordYearFragment extends Fragment implements OnClickListener{
 	
 	private void generateHistogramBar(ArrayList<StatisticalData> statisticalDataList) {
 		ArrayList<Bar> barList = new ArrayList<HistogramView.Bar>();
-		int maxValue = 0;
+		float maxValue = 0;
 		int dataSize = statisticalDataList.size();
 		for(int i=0; i<dataSize; i++){
 			StatisticalData statisticalData = statisticalDataList.get(i);
@@ -135,7 +173,7 @@ public class RecordYearFragment extends Fragment implements OnClickListener{
 				mHistogramView.setSelectPosition(i);
 			}
 			
-			Bar bar = mHistogramView.new Bar(i+1, ratio, color, bootomText, String.valueOf(statisticalData.totalKcal));
+			Bar bar = mHistogramView.new Bar(i+1, ratio, color, bootomText, DataTransferUtil.getInstance().getTwoDecimalData(statisticalData.totalKcal));
 			barList.add(bar);
 		}
 		
@@ -244,19 +282,15 @@ public class RecordYearFragment extends Fragment implements OnClickListener{
 		int dayNum = MyTrainRecordDao.getInstance().getTrainDayNumDependYear(Globle.gApplicationContext, mUserInfo.strAccountId, mSelectYear);
 		tvTotalDays.setText(String.valueOf(dayNum) + "天");
 		
-		String currentYearMonth;
-		
 		if(mSelectYear == mThisYear){
-			currentYearMonth = DateUtil.getDateStrOfYearMonth(DateUtil.getCurrentDate());
+			mSelectYearMonth = DateUtil.getDateStrOfYearMonth(DateUtil.getCurrentDate());
 		}else{
-			currentYearMonth = DateUtil.getStrDateFirstDayDependsYear(mSelectYear);
+			mSelectYearMonth = DateUtil.getStrDateFirstDayDependsYear(mSelectYear);
 		}
 		
-		mBaseRecordDataList.clear();
-		mBaseRecordDataList = RecordUtil.getBaseRecordDataList(currentYearMonth, mUserInfo.strAccountId);
-		mRecordAdapter.updateData(mBaseRecordDataList);
+		CourseServerMgr.getInstance().requestDetailData(mUserInfo.strAccountId, mSelectYearMonth + "-01", mSelectYearMonth + "-31");
 		
-		initChart(mSelectYear);
+		updateDataDependOnYearMonth(mSelectYearMonth);
 	}
 
 	private void nextYearData() {
@@ -272,14 +306,18 @@ public class RecordYearFragment extends Fragment implements OnClickListener{
 		int dayNum = MyTrainRecordDao.getInstance().getTrainDayNumDependYear(Globle.gApplicationContext, mUserInfo.strAccountId, mSelectYear);
 		tvTotalDays.setText(String.valueOf(dayNum) + "天");
 		
-		String currentYearMonth;
-		
 		if(mSelectYear == mThisYear){
-			currentYearMonth = DateUtil.getDateStrOfYearMonth(DateUtil.getCurrentDate());
+			mSelectYearMonth = DateUtil.getDateStrOfYearMonth(DateUtil.getCurrentDate());
 		}else{
-			currentYearMonth = DateUtil.getStrDateFirstDayDependsYear(mSelectYear);
+			mSelectYearMonth = DateUtil.getStrDateFirstDayDependsYear(mSelectYear);
 		}
 		
+		CourseServerMgr.getInstance().requestDetailData(mUserInfo.strAccountId, mSelectYearMonth + "-01", mSelectYearMonth + "-31");
+		
+		updateDataDependOnYearMonth(mSelectYearMonth);
+	}
+
+	private void updateDataDependOnYearMonth(String currentYearMonth) {
 		mBaseRecordDataList.clear();
 		mBaseRecordDataList = RecordUtil.getBaseRecordDataList(currentYearMonth, mUserInfo.strAccountId);
 		mRecordAdapter.updateData(mBaseRecordDataList);

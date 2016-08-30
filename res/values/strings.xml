@@ -87,6 +87,9 @@
     <string name="current_day_train_content">当天训练内容</string>
     <string name="exit_train_or_not">是否确认要退出本课程</string>
     
+    <string name="unfinish_train">您未完成本次训练，坚持才是胜利！</string>
+    <string name="finish_train">恭喜您，完成训练！</string>
+    
     <string name="this_mycourse_is_expired">该计划已过期</string>
     
     <string name="group_num_is_bigger_than_9">不能超过9组</string>
@@ -113,6 +116,8 @@
 	<string name="yes">是</string>
 	<string name="no">否</string>
 	<string name="ask_unbind">是否解绑本设备</string>
+	
+	<string name="continue_train">继续训练</string>
 	
 	<string name="cancel">取消</string>
 	<string name="confirm">确认</string>
@@ -160,6 +165,9 @@
 	<string name="feedback_hint">请在此填写您遇到的问题和现象，或者您希望有什么新功能可以添加，我们会尽快给您反馈</string>
 	<string name="feedback_contact_hint">手机号/QQ号/邮箱</string>
 	
+	<string name="ask_save">确认保存？</string>
+	<string name="exit">退出</string>
+	
 	<string name="this_train">本次训练</string>
 	<string name="finish_time">时长</string>
 	<string name="burning">燃脂</string>
@@ -171,6 +179,9 @@
 	<string name="had_finished_train">已完成训练</string>
 	
 	<string name="rest_day">今天休息！</string>
+	
+	<string name="demo_end">教学结束</string>
+	<string name="replay">重播</string>
 	
 	<string-array name="sex">
 	    <item >男</item>

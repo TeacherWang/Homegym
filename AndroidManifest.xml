@@ -83,7 +83,13 @@
             android:theme="@style/MyDialogStyle"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:screenOrientation="portrait" >
-            
+        </activity>
+
+        <activity
+            android:name=".widget.HorizonDialogActivity"
+            android:theme="@style/MyDialogStyle"
+            android:configChanges="keyboard|keyboardHidden|orientation"
+            android:screenOrientation="landscape" >
         </activity>
         
         <activity

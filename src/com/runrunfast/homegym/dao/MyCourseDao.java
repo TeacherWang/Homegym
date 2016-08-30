@@ -46,6 +46,8 @@ public class MyCourseDao {
 				+ Const.DB_KEY_COURSE_QUALITY + " INTEGER,"
 				+ Const.DB_KEY_COURSE_NEW + " INTEGER,"
 				+ Const.DB_KEY_COURSE_DETAIL + " TEXT,"
+				+ Const.DB_KEY_COURSE_IMG_URL + " TEXT,"
+				+ Const.DB_KEY_COURSE_IMG_LOCAL + " TEXT,"
 				+ Const.DB_KEY_START_DATE + " TEXT,"
 				+ Const.DB_KEY_PROGRESS + " INTEGER,"
 				+ Const.DB_KEY_DAY_PROGRESS + " TEXT"
@@ -53,6 +55,14 @@ public class MyCourseDao {
 		return sql;
 	}
 	
+	/**
+	  * @Method: saveMyCourseToDb
+	  * @Description: 保存我的课程，除了图片本地路径course_img_local
+	  * @param context
+	  * @param uid
+	  * @param myCourse	
+	  * 返回类型：void 
+	  */
 	public synchronized void saveMyCourseToDb(Context context, String uid, MyCourse myCourse){
 		Cursor c = null;
 		SQLiteDatabase db = null;
@@ -70,11 +80,9 @@ public class MyCourseDao {
 			values.put(Const.DB_KEY_COURSE_RECOMMEND, myCourse.course_recommend);
 			values.put(Const.DB_KEY_COURSE_QUALITY, myCourse.course_quality);
 			values.put(Const.DB_KEY_COURSE_NEW, myCourse.course_new);
+			values.put(Const.DB_KEY_COURSE_IMG_URL, myCourse.course_img_url);
 			
 			Gson gson = new Gson();
-			
-//			String actionIdsJson = gson.toJson(myCourse.action_ids);
-//			values.put(Const.DB_KEY_ACTION_IDS, actionIdsJson);
 			
 			String jsonCourseDetail = gson.toJson(myCourse.course_detail);
 			values.put(Const.DB_KEY_COURSE_DETAIL, jsonCourseDetail);
@@ -82,11 +90,11 @@ public class MyCourseDao {
 			String dayProgressJson = gson.toJson(myCourse.day_progress);
 			values.put(Const.DB_KEY_DAY_PROGRESS, dayProgressJson);
 			
-			c = db.query(Const.TABLE_MY_COURSE, null, Const.DB_KEY_UID + " = ? and " + Const.DB_KEY_COURSE_ID + " =?",
-					new String[] { uid, myCourse.course_id }, null, null, null);
+			c = db.query(Const.TABLE_MY_COURSE, null, Const.DB_KEY_UID + " = ? and " + Const.DB_KEY_COURSE_ID + " =? and " + Const.DB_KEY_START_DATE + " =?" ,
+					new String[] { uid, myCourse.course_id, myCourse.start_date }, null, null, null);
 			if (c.getCount() > 0) {// 查询到数据库有该数据，就更新该行数据
-				db.update(Const.TABLE_MY_COURSE, values, Const.DB_KEY_UID + " = ? and " + Const.DB_KEY_COURSE_ID + " =?",
-						new String[] { uid, myCourse.course_id });
+				db.update(Const.TABLE_MY_COURSE, values, Const.DB_KEY_UID + " = ? and " + Const.DB_KEY_COURSE_ID + " =? and " + Const.DB_KEY_START_DATE + " =?",
+						new String[] { uid, myCourse.course_id, myCourse.start_date });
 			}else{
 				db.insert(Const.TABLE_MY_COURSE, null, values);
 			}
@@ -198,6 +206,8 @@ public class MyCourseDao {
 					myCourse.course_new = c.getInt(c.getColumnIndex(Const.DB_KEY_COURSE_NEW));
 					myCourse.start_date = c.getString(c.getColumnIndex(Const.DB_KEY_START_DATE));
 					myCourse.progress = c.getInt(c.getColumnIndex(Const.DB_KEY_PROGRESS));
+					myCourse.course_img_url = c.getString(c.getColumnIndex(Const.DB_KEY_COURSE_IMG_URL));
+					myCourse.course_img_local = c.getString(c.getColumnIndex(Const.DB_KEY_COURSE_IMG_LOCAL));
 					
 //					String jsonActionIds = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_IDS));
 //					myCourse.action_ids = gson.fromJson(jsonActionIds, typeActionIds);
@@ -250,6 +260,8 @@ public class MyCourseDao {
 				myCourse.course_new = c.getInt(c.getColumnIndex(Const.DB_KEY_COURSE_NEW));
 				myCourse.start_date = c.getString(c.getColumnIndex(Const.DB_KEY_START_DATE));
 				myCourse.progress = c.getInt(c.getColumnIndex(Const.DB_KEY_PROGRESS));
+				myCourse.course_img_url = c.getString(c.getColumnIndex(Const.DB_KEY_COURSE_IMG_URL));
+				myCourse.course_img_local = c.getString(c.getColumnIndex(Const.DB_KEY_COURSE_IMG_LOCAL));
 				
 				String jsonCourseDetail = c.getString(c.getColumnIndex(Const.DB_KEY_COURSE_DETAIL));
 				myCourse.course_detail = gson.fromJson(jsonCourseDetail, typeCourseDetail);
@@ -272,16 +284,16 @@ public class MyCourseDao {
 		return myCourse;
 	}
 	
-	public synchronized void deleteMyCourseFromDb(Context context, String uid, String courseId ){
+	public synchronized void deleteMyCourseFromDb(Context context, String uid, String courseId, String startDate ){
 		SQLiteDatabase db = null;
 		Cursor c = null;
 		try {
 			DBOpenHelper dbHelper = new DBOpenHelper(context);
 			db = dbHelper.getWritableDatabase();
 			
-			c = db.query(Const.TABLE_MY_COURSE, null, Const.DB_KEY_UID + "=? and " + Const.DB_KEY_COURSE_ID + "=?", new String[]{ uid, courseId }, null, null, null);
+			c = db.query(Const.TABLE_MY_COURSE, null, Const.DB_KEY_UID + "=? and " + Const.DB_KEY_COURSE_ID + "=? and " + Const.DB_KEY_START_DATE + "=?", new String[]{ uid, courseId, startDate }, null, null, null);
 			if(null != c && c.getCount() > 0){
-				db.delete(Const.TABLE_MY_COURSE, Const.DB_KEY_UID + "=? and " + Const.DB_KEY_COURSE_ID + "=?", new String[]{ uid, courseId });
+				db.delete(Const.TABLE_MY_COURSE, Const.DB_KEY_UID + "=? and " + Const.DB_KEY_COURSE_ID + "=? and " + Const.DB_KEY_START_DATE + "=?", new String[]{ uid, courseId, startDate });
 			}
 			
 		} catch (Exception e) {

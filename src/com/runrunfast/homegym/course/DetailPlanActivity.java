@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.account.AccountMgr;
@@ -24,6 +25,8 @@ import com.runrunfast.homegym.bean.Course.ActionDetail;
 import com.runrunfast.homegym.bean.Course.CourseDetail;
 import com.runrunfast.homegym.bean.MyCourse;
 import com.runrunfast.homegym.bean.MyCourse.DayProgress;
+import com.runrunfast.homegym.course.CourseServerMgr.IDeleteCourseToServerListener;
+import com.runrunfast.homegym.course.CourseServerMgr.IJoinCourseToServerListener;
 import com.runrunfast.homegym.dao.ActionDao;
 import com.runrunfast.homegym.dao.MyCourseDao;
 import com.runrunfast.homegym.utils.Const;
@@ -70,6 +73,9 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 	
 	private int mSelectDayPosition; // 该天在日期分布的位置
 	
+	private IJoinCourseToServerListener mIJoinCourseToServerListener;
+	private IDeleteCourseToServerListener mIDeleteCourseToServerListener;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -83,6 +89,10 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 		initData();
 		
 		initCalendarListener();
+		
+		initJoinCourseListener();
+		
+		initDeleteCourseListener();
 	}
 
 	private void initCalendarListener() {
@@ -99,7 +109,7 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 			@Override
 			public void onCalendarClick(int row, int col, String dateFormat) {
 				// dateFormat = 2016-07-27
-				Log.i(TAG, "onCalendarClick, row = " + row + ", col = " + col + ", dateFormat = " + dateFormat);
+//				Log.i(TAG, "onCalendarClick, row = " + row + ", col = " + col + ", dateFormat = " + dateFormat);
 				
 				handleCalendarClick(dateFormat);
 			}
@@ -124,6 +134,7 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 		}
 	}
 
+	@SuppressLint("ResourceAsColor")
 	private void initData() {
 		mUserInfo = AccountMgr.getInstance().mUserInfo;
 		
@@ -137,10 +148,12 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 		String currentDateStr = DateUtil.getCurrentDate();
 		
 		isCourseExist = isCourseExist();
-		MyCourse myCourse = MyCourseDao.getInstance().getMyCourseFromDb(Globle.gApplicationContext, mCourseId);
-		if(myCourse != null){
+		if(mCourse instanceof MyCourse){
+			mMyCourse = (MyCourse) mCourse;
 			isMyCourse = true;
-			mMyCourse = myCourse;
+			if(mMyCourse.progress == MyCourse.COURSE_PROGRESS_EXPIRED){
+				btnJoin.setVisibility(View.GONE);
+			}
 		}else{
 			isMyCourse = false;
 		}
@@ -156,6 +169,8 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 			
 			handleCourseActionDaysDistribution(0, currentDateStr);
 		}
+		
+		kCalendar.setCalendarDayBgColor(currentDateStr, R.color.calendar_day_select);
 		
 		tvCalendarDate.setText(kCalendar.getCalendarYear() + mResources.getString(R.string.year)
 				+ kCalendar.getCalendarMonth() + mResources.getString(R.string.month));
@@ -189,11 +204,11 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 		restDayLayout.setVisibility(View.VISIBLE);
 	}
 
-	@SuppressLint("ResourceAsColor")
-	private void setCalendar() {
-		kCalendar.setCalendarDaysTextColor(mCourseDateList, mResources.getColor(R.color.calendar_have_course));
-		kCalendar.setCalendarDayBgColor(DateUtil.getCurrentDate(), R.color.calendar_day_select);
-	}
+//	@SuppressLint("ResourceAsColor")
+//	private void setCalendar() {
+//		kCalendar.setCalendarDaysTextColor(mCourseDateList, mResources.getColor(R.color.calendar_have_course));
+//		kCalendar.setCalendarDayBgColor(DateUtil.getCurrentDate(), R.color.calendar_day_select);
+//	}
 
 	/**
 	  * @Method: handleCourseActionDaysDistribution
@@ -244,6 +259,7 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 	  * @param currentDateStr	当天日期
 	  * 返回类型：void 
 	  */
+	@SuppressLint("ResourceAsColor")
 	private void handleMyCourseActionDaysDistribution(String currentDateStr) {
 		// 参加的课程的日期分布
 		int currentDayPosition = -1;
@@ -251,7 +267,7 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 		int dayNum = dayProgressList.size();
 		for(int i=0; i<dayNum; i++){
 			DayProgress dayProgress = dayProgressList.get(i);
-			String dateStr = dayProgress.plan_date;
+			String dateStr = DateUtil.getDateStrOfDayNumFromStartDate(dayProgress.day_num, mMyCourse.start_date);
 			int progress = dayProgress.progress;
 			mCourseDateList.add(dateStr);
 			
@@ -275,9 +291,6 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 			// 当天的动作集合
 			updateActionsDependDayPosition(currentDayPosition, mCourse);
 		}
-		
-//		// 测试，默认第一天完成
-//		kCalendar.addMark(myCourseStartDateStr, 0);
 	}
 
 //	private boolean isMyCourse() {
@@ -361,20 +374,53 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		Log.i(TAG, "resultCode = " + resultCode);
 		if(requestCode == Const.DIALOG_REQ_CODE_EXIT_COURSE && resultCode == DialogActivity.RSP_CONFIRM){
-			// 删除本地数据
-			MyCourseDao.getInstance().deleteMyCourseFromDb(Globle.gApplicationContext, mUserInfo.strAccountId, mCourseId);
-			// 退出界面
-			exitTrain();
+			// 删除服务器数据
+			CourseServerMgr.getInstance().deleteCourseToServer(mUserInfo.strAccountId, mCourseId, mMyCourse.start_date);
 		}
 	}
 
+	private void initJoinCourseListener() {
+		mIJoinCourseToServerListener = new IJoinCourseToServerListener() {
+			
+			@Override
+			public void onJoinCourseToServerSuc() {
+				prepareToSaveMyCourse();
+				btnRight.setVisibility(View.VISIBLE);
+				btnJoin.setText(R.string.start_train);
+				isMyCourse = true;
+			}
+			
+			@Override
+			public void onJoinCourseToServerFail() {
+				Toast.makeText(DetailPlanActivity.this, "参加失败", Toast.LENGTH_SHORT).show();
+			}
+		};
+		CourseServerMgr.getInstance().addJoinCourseToServerObserver(mIJoinCourseToServerListener);
+	}
+	
+	private void initDeleteCourseListener(){
+		mIDeleteCourseToServerListener = new IDeleteCourseToServerListener() {
+			
+			@Override
+			public void onDeleteCourseToServerSuc() {
+				// 删除本地数据
+				MyCourseDao.getInstance().deleteMyCourseFromDb(Globle.gApplicationContext, mUserInfo.strAccountId, mCourseId, mMyCourse.start_date);
+				// 退出界面
+				exitTrain();
+			}
+			
+			@Override
+			public void onDeleteCourseToServerFail() {
+				Toast.makeText(DetailPlanActivity.this, "退出失败", Toast.LENGTH_SHORT).show();
+			}
+		};
+		CourseServerMgr.getInstance().addDeleteCourseToServerObserver(mIDeleteCourseToServerListener);
+	}
+	
 	private void prepareJoinCourse() {
 		// 不是我的课程，点击添加到我的课程
 		if( !isMyCourse ){
-			prepareToSaveMyCourse();
-			btnRight.setVisibility(View.VISIBLE);
-			btnJoin.setText(R.string.start_train);
-			isMyCourse = true;
+			CourseServerMgr.getInstance().joinCourseToServer(mUserInfo.strAccountId, mCourseId, DateUtil.getCurrentDate());
 		}
 		// 本地不存在此课程视频等信息
 		else{
@@ -406,8 +452,9 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 		int dateNum = mCourseDateList.size();
 		String strStartDate = mCourseDateList.get(0);
 		for(int i=0; i<dateNum; i++){
+			CourseDetail courseDetail = mCourse.course_detail.get(i);
 			DayProgress dayProgress = new DayProgress();
-			dayProgress.plan_date = mCourseDateList.get(i);
+			dayProgress.day_num = courseDetail.day_num;
 			dayProgress.progress = MyCourse.DAY_PROGRESS_UNFINISH;
 			dayProgresseList.add(dayProgress);
 		}
@@ -422,6 +469,8 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 		myCourse.course_detail = mCourse.course_detail;
 		myCourse.course_quality = mCourse.course_quality;
 		myCourse.course_recommend = mCourse.course_recommend;
+		myCourse.course_img_url = mCourse.course_img_url;
+		myCourse.course_img_local = mCourse.course_img_local;
 		
 		return myCourse;
 	}
@@ -447,5 +496,19 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 
 	private void exitTrain() {
 		finish();
+	}
+	
+	@Override
+	protected void onDestroy() {
+		
+		if(mIJoinCourseToServerListener != null){
+			CourseServerMgr.getInstance().removeJoinCourseToServerObserver(mIJoinCourseToServerListener);
+		}
+		
+		if(mIDeleteCourseToServerListener != null){
+			CourseServerMgr.getInstance().removeDeleteCourseToServerObserver(mIDeleteCourseToServerListener);
+		}
+		
+		super.onDestroy();
 	}
 }

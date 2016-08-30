@@ -36,6 +36,7 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 	private Button btnLeft, btnRight;
 	private Button btnStartTrain;
 	private RelativeLayout mActionLayout, mRestDayLayout;
+	private TextView tvRestDay;
 	
 	private CourseTrainAdapter mCourseTrainAdapter;
 	private ListView mCourseTrainListView;
@@ -113,6 +114,11 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 		if(mMyCourse.progress == MyCourse.COURSE_PROGRESS_REST){
 			mActionLayout.setVisibility(View.GONE);
 			mRestDayLayout.setVisibility(View.VISIBLE);
+			tvRestDay.setText("今天是休息日！");
+		}else if(mMyCourse.progress == MyCourse.COURSE_PROGRESS_EXPIRED){
+			mActionLayout.setVisibility(View.GONE);
+			mRestDayLayout.setVisibility(View.VISIBLE);
+			tvRestDay.setText("课程已过期！");
 		}else{
 			mActionLayout.setVisibility(View.VISIBLE);
 			mRestDayLayout.setVisibility(View.GONE);
@@ -127,7 +133,7 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 		int dayNum = dayProgressList.size();
 		for(int i=0; i<dayNum; i++){
 			DayProgress dayProgress = dayProgressList.get(i);
-			String dateStr = dayProgress.plan_date;
+			String dateStr = DateUtil.getDateStrOfDayNumFromStartDate(dayProgress.day_num, mMyCourse.start_date);
 			
 			if(dateStr.equals(currentDateStr)){
 				mCurrentDayPosition = i; // 当天在课程日期分布中的位置
@@ -147,7 +153,7 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 			Action action = ActionDao.getInstance().getActionFromDb(Globle.gApplicationContext, actionId);
 			mActionList.add(action);
 			
-			ActionTotalData actionTotalData = getTotalTimeOfActionInMyCourse(actionDetail);
+			ActionTotalData actionTotalData = getTotalKcalOfActionInMyCourse(actionDetail);
 			mActionTotalDataList.add(actionTotalData);
 		}
 		
@@ -156,26 +162,24 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 	}
 	
 	/**
-	  * @Method: getTotalTimeOfActionInMyCourse
+	  * @Method: getTotalKcalOfActionInMyCourse
 	  * @Description: 获取该天该动作的总时间和总卡路里
 	  * @param actionDetail
 	  * @return	
 	  * 返回类型：ActionTotalData 
 	  */
-	private ActionTotalData getTotalTimeOfActionInMyCourse(ActionDetail actionDetail){
+	private ActionTotalData getTotalKcalOfActionInMyCourse(ActionDetail actionDetail){
 		ActionTotalData actionTotalData = new ActionTotalData();
 		int groupNum = actionDetail.group_num;
 		for(int i=0; i<groupNum; i++){
 			GroupDetail groupDetail = actionDetail.group_detail.get(i);
-			actionTotalData.totalTime = actionTotalData.totalTime + groupDetail.time;
 			actionTotalData.totalKcal = actionTotalData.totalKcal + groupDetail.kcal;
 		}
 		return actionTotalData;
 	}
 
 	public static class ActionTotalData implements Serializable{
-		int totalTime;
-		int totalKcal;
+		float totalKcal;
 	}
 
 	private void initView() {
@@ -196,6 +200,7 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 		
 		mActionLayout = (RelativeLayout)findViewById(R.id.course_train_action_layout);
 		mRestDayLayout = (RelativeLayout)findViewById(R.id.course_train_rest_day_layout);
+		tvRestDay = (TextView)findViewById(R.id.rest_day_text);
 	}
 
 

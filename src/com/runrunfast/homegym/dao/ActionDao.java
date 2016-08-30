@@ -5,10 +5,15 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.runrunfast.homegym.bean.Action;
+import com.runrunfast.homegym.bean.Action.AudioLocation;
 import com.runrunfast.homegym.utils.Const;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collection;
 
 public class ActionDao {
 	private volatile static ActionDao instance;
@@ -34,8 +39,15 @@ public class ActionDao {
 				+ Const.DB_KEY_ACTION_POSITION + " TEXT,"
 				+ Const.DB_KEY_ACTION_DESCRIPT + " TEXT,"
 				+ Const.DB_KEY_ACTION_DIFFICULT + " INTEGER,"
-				+ Const.DB_KEY_ACTION_URL + " TEXT,"
-				+ Const.DB_KEY_ACTION_LOCAL_FILE + " TEXT"
+				+ Const.DB_KEY_ACTION_H + " FLOAT,"
+				+ Const.DB_KEY_ACTION_B + " FLOAT,"
+				+ Const.DB_KEY_ACTION_IMG_URL + " TEXT,"
+				+ Const.DB_KEY_ACTION_IMG_LOCAL + " TEXT,"
+				+ Const.DB_KEY_ACTION_LEFT_RIGHT + " TEXT,"
+				+ Const.DB_KEY_ACTION_VIDEO_URL + " TEXT,"
+				+ Const.DB_KEY_ACTION_VIDEO_LOCAL + " TEXT,"
+				+ Const.DB_KEY_ACTION_AUDIO_URL + " TEXT,"
+				+ Const.DB_KEY_ACTION_AUDIO_LOCAL + " TEXT"
 				+ ");";
 		return sql;
 	}
@@ -47,14 +59,31 @@ public class ActionDao {
 			DBOpenHelper dbHelper = new DBOpenHelper(context);
 			db = dbHelper.getWritableDatabase();
 			ContentValues values = new ContentValues();
+			Gson gson = new Gson();
 			
 			values.put(Const.DB_KEY_ACTION_ID, action.action_id);
 			values.put(Const.DB_KEY_ACTION_NAME, action.action_name);
 			values.put(Const.DB_KEY_ACTION_POSITION, action.action_position);
 			values.put(Const.DB_KEY_ACTION_DESCRIPT, action.action_descript);
 			values.put(Const.DB_KEY_ACTION_DIFFICULT, action.action_difficult);
-			values.put(Const.DB_KEY_ACTION_URL, action.action_url);
-			values.put(Const.DB_KEY_ACTION_LOCAL_FILE, action.action_local_file);
+			values.put(Const.DB_KEY_ACTION_H, action.action_h);
+			values.put(Const.DB_KEY_ACTION_B, action.action_b);
+			values.put(Const.DB_KEY_ACTION_IMG_URL, action.action_img_url);
+			values.put(Const.DB_KEY_ACTION_IMG_LOCAL, action.action_img_local);
+			values.put(Const.DB_KEY_ACTION_LEFT_RIGHT, action.action_left_right);
+			
+			String jsonVideoUrl = gson.toJson(action.action_video_url);
+			values.put(Const.DB_KEY_ACTION_VIDEO_URL, jsonVideoUrl);
+			
+			String jsonVideoLocal = gson.toJson(action.action_video_local);
+			values.put(Const.DB_KEY_ACTION_VIDEO_LOCAL, jsonVideoLocal);
+			
+			String jsonAudioUrl = gson.toJson(action.action_audio_url);
+			values.put(Const.DB_KEY_ACTION_AUDIO_URL, jsonAudioUrl);
+			
+			String jsonAudioLocal = gson.toJson(action.action_audio_local);
+			values.put(Const.DB_KEY_ACTION_AUDIO_LOCAL, jsonAudioLocal);
+			
 			
 			c = db.query(Const.TABLE_ACTION, null, Const.DB_KEY_ACTION_ID + " = ?",
 					new String[] { action.action_id }, null, null, null);
@@ -88,7 +117,11 @@ public class ActionDao {
 			c = db.query(Const.TABLE_ACTION, null, Const.DB_KEY_ACTION_ID + "=?", new String[]{ actionId }, null, null, null);
 			if(null != c && c.getCount() > 0){
 				c.moveToNext();
-				
+				Gson gson = new Gson();
+				Type typeVideoUrl = new TypeToken<Collection<String>>(){}.getType();
+				Type typeVideoLocal = new TypeToken<Collection<String>>(){}.getType();
+				Type typeAudioUrl = new TypeToken<AudioLocation>(){}.getType();
+				Type typeAudioLocal = new TypeToken<AudioLocation>(){}.getType();
 				action = new Action();
 				
 				action.action_id = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_ID));
@@ -96,8 +129,23 @@ public class ActionDao {
 				action.action_position = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_POSITION));
 				action.action_descript = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_DESCRIPT));
 				action.action_difficult = c.getInt(c.getColumnIndex(Const.DB_KEY_ACTION_DIFFICULT));
-				action.action_url = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_URL));
-				action.action_local_file = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_LOCAL_FILE));
+				action.action_h = c.getFloat(c.getColumnIndex(Const.DB_KEY_ACTION_H));
+				action.action_b = c.getFloat(c.getColumnIndex(Const.DB_KEY_ACTION_B));
+				action.action_img_url = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_IMG_URL));
+				action.action_img_local = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_IMG_LOCAL));
+				action.action_left_right = c.getInt(c.getColumnIndex(Const.DB_KEY_ACTION_LEFT_RIGHT));
+				
+				String jsonVideoUrl = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_VIDEO_URL));
+				action.action_video_url = gson.fromJson(jsonVideoUrl, typeVideoUrl);
+				
+				String jsonVideoLocal = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_VIDEO_LOCAL));
+				action.action_video_local = gson.fromJson(jsonVideoLocal, typeVideoLocal);
+				
+				String jsonAudioUrl = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_AUDIO_URL));
+				action.action_audio_url = gson.fromJson(jsonAudioUrl, typeAudioUrl);
+				
+				String jsonAudioLocal = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_AUDIO_LOCAL));
+				action.action_audio_local = gson.fromJson(jsonAudioLocal, typeAudioLocal);
 			}
 			
 		} catch (Exception e) {
@@ -124,6 +172,11 @@ public class ActionDao {
 			
 			c = db.query(Const.TABLE_ACTION, null, null, null, null, null, null);
 			if(null != c && c.getCount() > 0){
+				Gson gson = new Gson();
+				Type typeVideoUrl = new TypeToken<Collection<String>>(){}.getType();
+				Type typeVideoLocal = new TypeToken<Collection<String>>(){}.getType();
+				Type typeAudioUrl = new TypeToken<AudioLocation>(){}.getType();
+				Type typeAudioLocal = new TypeToken<AudioLocation>(){}.getType();
 				while (c.moveToNext()) {
 					Action action = new Action();
 					
@@ -132,8 +185,23 @@ public class ActionDao {
 					action.action_position = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_POSITION));
 					action.action_descript = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_DESCRIPT));
 					action.action_difficult = c.getInt(c.getColumnIndex(Const.DB_KEY_ACTION_DIFFICULT));
-					action.action_url = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_URL));
-					action.action_local_file = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_LOCAL_FILE));
+					action.action_h = c.getFloat(c.getColumnIndex(Const.DB_KEY_ACTION_H));
+					action.action_b = c.getFloat(c.getColumnIndex(Const.DB_KEY_ACTION_B));
+					action.action_img_url = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_IMG_URL));
+					action.action_img_local = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_IMG_LOCAL));
+					action.action_left_right = c.getInt(c.getColumnIndex(Const.DB_KEY_ACTION_LEFT_RIGHT));
+					
+					String jsonVideoUrl = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_VIDEO_URL));
+					action.action_video_url = gson.fromJson(jsonVideoUrl, typeVideoUrl);
+					
+					String jsonVideoLocal = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_VIDEO_LOCAL));
+					action.action_video_local = gson.fromJson(jsonVideoLocal, typeVideoLocal);
+					
+					String jsonAudioUrl = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_AUDIO_URL));
+					action.action_audio_url = gson.fromJson(jsonAudioUrl, typeAudioUrl);
+					
+					String jsonAudioLocal = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_AUDIO_LOCAL));
+					action.action_audio_local = gson.fromJson(jsonAudioLocal, typeAudioLocal);
 					
 					actionList.add(action);
 				}

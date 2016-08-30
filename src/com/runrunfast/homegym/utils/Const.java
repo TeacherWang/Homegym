@@ -5,7 +5,10 @@ public class Const {
 	public static final int DIALOG_REQ_CODE_OPEN_BT = 1;
 	public static final int DIALOG_REQ_CODE_UNBIND_BT = 2;
 	public static final int DIALOG_REQ_CODE_EXIT_ACCOUNT = 3;
-	public static final int DIALOG_REQ_CODE_EXIT_COURSE = 4;
+	public static final int DIALOG_REQ_CODE_EXIT_COURSE = 4; // 退出课程
+	public static final int DIALOG_REQ_CODE_EXIT_TRAIN = 5; // 中途退出训练
+	public static final int DIALOG_REQ_CODE_FINISH_TRAIN = 6; // 完成训练
+	public static final int DIALOG_REQ_CODE_SAVE =7; // 确定保存？
 	
 	// 启动CourseTrainActivity所传参数
 	public static final String KEY_COURSE = "key_course";
@@ -48,6 +51,8 @@ public class Const {
 	public static final String DB_KEY_COURSE_QUALITY = "course_quality";
 	public static final String DB_KEY_COURSE_NEW = "course_new";
 	public static final String DB_KEY_COURSE_DETAIL = "course_detail";
+	public static final String DB_KEY_COURSE_IMG_URL = "course_img_url";
+	public static final String DB_KEY_COURSE_IMG_LOCAL = "course_img_local";
 	
 	public static final String DB_KEY_ACTION_DETAIL = "action_detail";
 	public static final String DB_KEY_ACTION_ID = "action_id";
@@ -55,8 +60,15 @@ public class Const {
 	public static final String DB_KEY_ACTION_POSITION = "action_position"; // 动作锻炼的部位
 	public static final String DB_KEY_ACTION_DESCRIPT = "action_descript"; // 动作的描述
 	public static final String DB_KEY_ACTION_DIFFICULT = "action_difficult"; // 动作的难度
-	public static final String DB_KEY_ACTION_URL = "action_url"; // 动作的下载地址
-	public static final String DB_KEY_ACTION_LOCAL_FILE = "action_local_file"; // 动作的本地地址
+	public static final String DB_KEY_ACTION_H = "action_h"; // 动作的铁块上升高度
+	public static final String DB_KEY_ACTION_B = "action_b"; // 动作的初始阻力
+	public static final String DB_KEY_ACTION_LEFT_RIGHT = "action_left_right"; // 动作是否区分左右
+	public static final String DB_KEY_ACTION_IMG_URL = "action_img_url"; // 动作的图片下载地址
+	public static final String DB_KEY_ACTION_IMG_LOCAL = "action_img_local"; // 动作的图片本地地址
+	public static final String DB_KEY_ACTION_VIDEO_URL = "action_video_url"; // 动作的视频下载地址
+	public static final String DB_KEY_ACTION_VIDEO_LOCAL = "action_video_local"; // 动作的视频本地地址
+	public static final String DB_KEY_ACTION_AUDIO_URL = "action_audio_url"; // 动作的音频下载地址
+	public static final String DB_KEY_ACTION_AUDIO_LOCAL = "action_audio_local"; // 动作的音频本地地址
 	public static final String DB_KEY_DEFAULT_TIME = "default_time";
 	public static final String DB_KEY_DEFAULT_GROUP_NUM = "default_group_num";
 	public static final String DB_KEY_DEFAULT_COUNT = "default_count";
@@ -94,5 +106,10 @@ public class Const {
 	
 	
 	public static final String DB_KEY_DISTINCT = "DISTINCT ";
+	
+	
+	
+	public static final String DB_KEY_TRAIN_DATA = "traindata";
+	public static final String DB_KEY_END_DATE = "end_data";
 	
 }

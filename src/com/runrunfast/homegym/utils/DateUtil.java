@@ -247,6 +247,18 @@ public class DateUtil {
 		return -1;
 	}
 	
+	public static int getYearOfDate(String strDate){
+		Calendar calendar = Calendar.getInstance();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			calendar.setTime(sdf.parse(strDate));
+			return calendar.get(Calendar.YEAR);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return -1;
+	}
+	
 	/**
 	  * @Method: getDateStrOfYearMonth
 	  * @Description: 获取年月，比如2016-08-03，获取为2016-08

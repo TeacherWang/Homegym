@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.runrunfast.homegym.R;
+import com.runrunfast.homegym.account.DataTransferUtil;
 import com.runrunfast.homegym.bean.Course.GroupDetail;
 
 public class ActionSetAdapter extends BaseAdapter {
@@ -95,7 +96,7 @@ public class ActionSetAdapter extends BaseAdapter {
 		holder.tvGroupNum.setText("第" + (position + 1) + "组");
 		holder.tvCount.setText(String.valueOf(groupDetail.count));
 		holder.tvWeight.setText(String.valueOf(groupDetail.weight));
-		holder.tvKcal.setText(String.valueOf(groupDetail.kcal));
+		holder.tvKcal.setText(DataTransferUtil.getInstance().getTwoDecimalData(groupDetail.kcal));
 		
 		holder.tvCount.setOnClickListener(new OnClickListener() {
 			

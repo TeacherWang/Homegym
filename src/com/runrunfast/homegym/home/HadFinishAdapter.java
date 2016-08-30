@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.account.DataTransferUtil;
 import com.runrunfast.homegym.bean.Action;
-import com.runrunfast.homegym.course.ActionInfo;
 
 import java.util.ArrayList;
 

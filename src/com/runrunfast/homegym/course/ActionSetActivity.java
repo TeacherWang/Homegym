@@ -2,6 +2,7 @@ package com.runrunfast.homegym.course;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -9,11 +10,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.account.AccountMgr;
 import com.runrunfast.homegym.account.DataTransferUtil;
@@ -24,13 +28,16 @@ import com.runrunfast.homegym.bean.Course.CourseDetail;
 import com.runrunfast.homegym.bean.Course.GroupDetail;
 import com.runrunfast.homegym.bean.MyCourse;
 import com.runrunfast.homegym.course.ActionSetAdapter.ITrainActionItemListener;
+import com.runrunfast.homegym.course.CourseServerMgr.IUpdateTrainPlanListener;
 import com.runrunfast.homegym.course.CourseTrainActivity.ActionTotalData;
 import com.runrunfast.homegym.dao.MyCourseDao;
+import com.runrunfast.homegym.utils.AnimateFirstDisplayListener;
+import com.runrunfast.homegym.utils.BitmapUtils;
 import com.runrunfast.homegym.utils.CalculateUtil;
 import com.runrunfast.homegym.utils.ClickUtil;
 import com.runrunfast.homegym.utils.Const;
-import com.runrunfast.homegym.utils.DateUtil;
 import com.runrunfast.homegym.utils.Globle;
+import com.runrunfast.homegym.widget.DialogActivity;
 import com.runrunfast.homegym.widget.PopupWindows;
 import com.runrunfast.homegym.widget.WheelView;
 import com.runrunfast.homegym.widget.WheelView.OnWheelViewListener;
@@ -44,11 +51,16 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 	private static final int INPUT_TYPE_COUNT = 1;
 	private static final int INPUT_TYPE_TOOL_WEIGHT = 2;
 	
+	public static final int REQ_CODE_CONFIRM = 3;
+	
 	private int inputType;
 	
+	private Resources mResources;
+	private ImageView ivHeadBg;
 	private View backView;
 	private TextView tvSave;
-	private TextView tvActionNum, tvTrainName, tvTrainDescript, tvJoinInTeach, tvGroupNum, tvTimeConsume, tvBurning;
+	private TextView tvActionNum, tvTrainName, tvTrainDescript, tvJoinInTeach, tvGroupNum, tvBurning;
+//	private TextView tvTimeConsume;
 	private Button btnAdd, btnMinus;
 	
 	private ListView mListView;
@@ -80,19 +92,25 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 	private int mCurrentDayPosition;
 	private ActionTotalData mActionTotalData;
 	
+	private IUpdateTrainPlanListener mIUpdateTrainPlanListener;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_train_action_set);
 		
+		mResources = getResources();
+		
 		initView();
 		
 		initData();
 		
-		initListener();
+		initItemListener();
+		
+		initServerListener();
 	}
 
-	private void initListener() {
+	private void initItemListener() {
 		mITrainActionItemListener = new ITrainActionItemListener() {
 			
 			@Override
@@ -195,20 +213,28 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 		tvTrainName.setText(mAction.action_name);
 		tvTrainDescript.setText(mAction.action_descript);
 		
+//		tvTrainDescript.setText("坚持训练坚持训练坚持训练坚持训练坚持训练坚持训练坚持训练坚持训练坚持训练坚持训练坚持训练坚持训练坚持训练坚持训练坚持训练");
+		
 		mGroupDetailList = (ArrayList<GroupDetail>) mActionDetail.group_detail;
 		
 		mTrainActionSetAdapter = new ActionSetAdapter(this, mGroupDetailList);
 		mListView.setAdapter(mTrainActionSetAdapter);
 		
 		tvGroupNum.setText(String.valueOf(mGroupDetailList.size()));
-		tvTimeConsume.setText(DateUtil.secToTime(mActionTotalData.totalTime));
+//		tvTimeConsume.setText(DateUtil.secToTime(mActionTotalData.totalTime));
 //		mTotalBurning = mActionTotalData.totalKcal;
-		tvBurning.setText( String.valueOf(mActionTotalData.totalKcal) );
+		tvBurning.setText( DataTransferUtil.getInstance().getTwoDecimalData(mActionTotalData.totalKcal) );
+		
+//		ImageLoader.getInstance().displayImage(mAction.action_img_url,
+//				ivHeadBg, BitmapUtils.initActionImageLoader(),
+//				new AnimateFirstDisplayListener());
 	}
 
 	private void initView() {
 		backView = (View)findViewById(R.id.train_action_back_layout);
 		backView.setOnClickListener(this);
+		
+		ivHeadBg = (ImageView)findViewById(R.id.train_action_set_bg_img);
 		
 		tvSave = (TextView)findViewById(R.id.train_action_set_save_text);
 		tvSave.setOnClickListener(this);
@@ -224,7 +250,7 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 		tvTrainDescript = (TextView)findViewById(R.id.train_action_descript_text);
 		tvJoinInTeach = (TextView)findViewById(R.id.train_action_join_in_text);
 		tvJoinInTeach.setOnClickListener(this);
-		tvTimeConsume = (TextView)findViewById(R.id.train_action_time_num_text);
+//		tvTimeConsume = (TextView)findViewById(R.id.train_action_time_num_text);
 		tvBurning = (TextView)findViewById(R.id.train_action_burning_num_text);
 		
 		mListView = (ListView)findViewById(R.id.train_action_list);
@@ -242,7 +268,6 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.train_action_back_layout:
-			Intent intent = new Intent();
 			setResult(Activity.RESULT_CANCELED);
 			finish();
 			break;
@@ -284,14 +309,13 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 		switch (inputType) {
 		case INPUT_TYPE_COUNT:
 			mGroupDetail.count = mCount;
-			// 要计算次数跟重量对应的燃脂，公式？还有时间
-			mGroupDetail.kcal = CalculateUtil.calculateTotakKcal(mGroupDetail.count, mGroupDetail.weight);
-			mGroupDetail.time = CalculateUtil.calculateTotalTime(mGroupDetail.count);
+			// 要计算次数跟重量对应的燃脂，公式？
+			mGroupDetail.kcal = CalculateUtil.calculateTotakKcal(mGroupDetail.count, mGroupDetail.weight, mAction.action_h, mAction.action_b);
 			
 			actionTotalData = getTotalTimeOfActionInMyCourse(mActionDetail);
 			
-			tvTimeConsume.setText(DateUtil.secToTime(actionTotalData.totalTime));
-			tvBurning.setText( String.valueOf(actionTotalData.totalKcal) );
+//			tvTimeConsume.setText(DateUtil.secToTime(actionTotalData.totalTime));
+			tvBurning.setText( DataTransferUtil.getInstance().getTwoDecimalData(actionTotalData.totalKcal) );
 //			mTrainActionInfo.iBurning = 公式？
 //			mTotalBurning = mTotalBurning + trainActionInfo.iBurning;
 //			tvTimeConsume.setText(DateUtil.secToTime(mConsumeSecond));
@@ -303,13 +327,11 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 		case INPUT_TYPE_TOOL_WEIGHT:
 			mGroupDetail.weight = mToolWeight;
 			// 要计算次数跟重量对应的燃脂，公式？还有时间
-			mGroupDetail.kcal = CalculateUtil.calculateTotakKcal(mGroupDetail.count, mGroupDetail.weight);
-			mGroupDetail.time = CalculateUtil.calculateTotalTime(mGroupDetail.count);
+			mGroupDetail.kcal = CalculateUtil.calculateTotakKcal(mGroupDetail.count, mGroupDetail.weight, mAction.action_h, mAction.action_b);
 			
 			actionTotalData = getTotalTimeOfActionInMyCourse(mActionDetail);
 			
-			tvTimeConsume.setText(DateUtil.secToTime(actionTotalData.totalTime));
-			tvBurning.setText( String.valueOf(actionTotalData.totalKcal) );
+			tvBurning.setText( DataTransferUtil.getInstance().getTwoDecimalData(actionTotalData.totalKcal) );
 //			mTrainActionInfo.iBurning = 公式？
 //			mTotalBurning = mTotalBurning + trainActionInfo.iBurning;
 //			tvTimeConsume.setText(DateUtil.secToTime(mConsumeSecond));
@@ -328,7 +350,6 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 		int groupNum = actionDetail.group_num;
 		for(int i=0; i<groupNum; i++){
 			GroupDetail groupDetail = actionDetail.group_detail.get(i);
-			actionTotalData.totalTime = actionTotalData.totalTime + groupDetail.time;
 			actionTotalData.totalKcal = actionTotalData.totalKcal + groupDetail.kcal;
 		}
 		return actionTotalData;
@@ -346,12 +367,51 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 		mMyCourse.course_detail.get(mCurrentDayPosition).action_detail.add(mActionPosition, mActionDetail);
 		Log.i(TAG, "modify group_num = " + mMyCourse.course_detail.get(mCurrentDayPosition).action_detail.get(mActionPosition).group_num);
 		
-		MyCourseDao.getInstance().saveMyCourseToDb(Globle.gApplicationContext, mUserInfo.strAccountId, mMyCourse);
-		
-		Intent intent = new Intent();
-		intent.putExtra(Const.KEY_COURSE, mMyCourse);
-		setResult(Activity.RESULT_OK, intent);
-		finish();
+		showSaveDialog();
+	}
+	
+	private void showSaveDialog() {
+		Intent intent = new Intent(this, DialogActivity.class);
+		intent.putExtra(DialogActivity.KEY_CONTENT, mResources.getString(R.string.ask_save));
+		intent.putExtra(DialogActivity.KEY_CANCEL, mResources.getString(R.string.no));
+		intent.putExtra(DialogActivity.KEY_CONFIRM, mResources.getString(R.string.yes));
+		startActivityForResult(intent, Const.DIALOG_REQ_CODE_SAVE);
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if(requestCode != Const.DIALOG_REQ_CODE_SAVE){
+			return;
+		}
+		if(resultCode == DialogActivity.RSP_CONFIRM){
+			Gson gson = new Gson();
+			
+			String courseDetailStr = gson.toJson(mMyCourse.course_detail);
+			String dayProgress = gson.toJson(mMyCourse.day_progress);
+			
+			CourseServerMgr.getInstance().uploadTrainPlan(mUserInfo.strAccountId, mMyCourse.course_id, courseDetailStr, mMyCourse.progress, dayProgress);
+		}
+	}
+	
+	private void initServerListener() {
+		mIUpdateTrainPlanListener = new IUpdateTrainPlanListener() {
+			
+			@Override
+			public void onUpdateTrainPlanSuc() {
+				MyCourseDao.getInstance().saveMyCourseToDb(Globle.gApplicationContext, mUserInfo.strAccountId, mMyCourse);
+				
+				Intent intent = new Intent();
+				intent.putExtra(Const.KEY_COURSE, mMyCourse);
+				setResult(Activity.RESULT_OK, intent);
+				finish();
+			}
+			
+			@Override
+			public void onUpdateTrainPlanFail() {
+				Toast.makeText(ActionSetActivity.this, "保存失败", Toast.LENGTH_SHORT).show();
+			}
+		};
+		CourseServerMgr.getInstance().addUpdateTrainPlanObserver(mIUpdateTrainPlanListener);
 	}
 	
 	private void jumpToVideoDemo() {
@@ -379,8 +439,7 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 		
 		ActionTotalData actionTotalData = getTotalTimeOfActionInMyCourse(mActionDetail);
 		
-		tvTimeConsume.setText(DateUtil.secToTime(actionTotalData.totalTime));
-		tvBurning.setText(String.valueOf(actionTotalData.totalKcal));
+		tvBurning.setText(DataTransferUtil.getInstance().getTwoDecimalData(actionTotalData.totalKcal));
 	}
 
 	private void addGroupNum() {
@@ -389,7 +448,7 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 			Toast.makeText(this, R.string.group_num_is_bigger_than_9, Toast.LENGTH_SHORT).show();
 			return;
 		}
-		GroupDetail groupDetail = new GroupDetail(8, 10, CalculateUtil.calculateTotakKcal(8, 10), CalculateUtil.calculateTotalTime(8));
+		GroupDetail groupDetail = new GroupDetail(8, 10, CalculateUtil.calculateTotakKcal(8, 10, mAction.action_h, mAction.action_b));
 		mGroupDetailList.add(groupDetail);
 		mActionDetail.group_num = mGroupDetailList.size();
 		mActionDetail.group_detail = mGroupDetailList;
@@ -400,8 +459,7 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 		
 		ActionTotalData actionTotalData = getTotalTimeOfActionInMyCourse(mActionDetail);
 		
-		tvTimeConsume.setText(DateUtil.secToTime(actionTotalData.totalTime));
-		tvBurning.setText(String.valueOf(actionTotalData.totalKcal));
+		tvBurning.setText(DataTransferUtil.getInstance().getTwoDecimalData(actionTotalData.totalKcal));
 	}
 	
 	@Override
@@ -413,5 +471,11 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 			return true;
 		}
 		return super.onKeyDown(keyCode, event);
+	}
+	
+	@Override
+	protected void onDestroy() {
+		CourseServerMgr.getInstance().removeUpdateTrainPlanObserver(mIUpdateTrainPlanListener);
+		super.onDestroy();
 	}
 }

@@ -6,20 +6,11 @@
 	    android:layout_width="match_parent"
 	    android:layout_height="@dimen/record_detail_train_height"
 	    android:layout_marginLeft="@dimen/record_detail_train_margin_left" >
-	    <ImageView 
-	        android:id="@+id/record_detail_train_img"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_centerVertical="true"
-	        android:layout_marginLeft="@dimen/record_detail_train_img_margin_left"
-	        android:background="@drawable/record_action1"/>
 		
 	    <TextView 
 	        android:id="@+id/record_detail_train_name"
-	        android:layout_toRightOf="@id/record_detail_train_img"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:layout_marginLeft="@dimen/record_detail_train_img_margin_right"
 	        android:layout_centerVertical="true"
 	        android:text="平板卧推举"
 	        android:textSize="@dimen/record_detail_train_name_size"
