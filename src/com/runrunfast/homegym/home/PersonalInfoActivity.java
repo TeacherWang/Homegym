@@ -125,14 +125,28 @@ public class PersonalInfoActivity extends Activity implements OnClickListener{
 		tvHeight.setText(mUserInfo.strHeight);
 		tvWeight.setText(mUserInfo.strWeight);
 		
-		int weight = Integer.parseInt(strWeight);
-		int height = Integer.parseInt(strHeight);
-		
-		tvBmiNum.setText( DataTransferUtil.BigDecimals(weight / (height * height), 1, 4) + "");
+		setBmi();
 		
 		Bitmap bitmap = BitmapFactory.decodeFile(UserInfo.IMAGE_FILE_LOCATION);
 		if(bitmap != null){
 			headimgView.setImageBitmap(bitmap);
+		}
+	}
+
+	private void setBmi() {
+		int weight = Integer.parseInt(strWeight);
+		int height = Integer.parseInt(strHeight);
+		
+		float bmi = Float.valueOf(DataTransferUtil.getOneDecimalData((weight / (height * 0.01f * height * 0.01f))));
+		tvBmiNum.setText( String.valueOf(bmi) );
+		if(bmi < 18.5){
+			tvBmiDescip.setText("轻体重");
+		}else if(bmi >= 18.5 && bmi < 24){
+			tvBmiDescip.setText("健康体重");
+		}else if(bmi >= 24 && bmi < 28){
+			tvBmiDescip.setText("超重");
+		}else{
+			tvBmiDescip.setText("肥胖");
 		}
 	}
 	
@@ -343,10 +357,12 @@ public class PersonalInfoActivity extends Activity implements OnClickListener{
 		switch (inputType) {
 		case INPUT_TYPE_HEIGHT:
 			tvHeight.setText(strHeight);
+			setBmi();
 			break;
 			
 		case INPUT_TYPE_WEIGHT:
 			tvWeight.setText(strWeight);
+			setBmi();
 			break;
 			
 		case INPUT_TYPE_SEX:

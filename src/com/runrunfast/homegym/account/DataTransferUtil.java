@@ -193,20 +193,6 @@ public class DataTransferUtil {
 		return (toolWeight / 5 - 1);
 	}
 	
-	public static final float BigDecimals(float f, int scale, int roune) {
-		try {
-			if (f != 0) {
-				BigDecimal bd = new BigDecimal((double) f);
-				bd = bd.setScale(scale, roune);
-				return bd.floatValue();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return 0;
-
-	}
-	
 	public static int getAgeByBirtyday(String birthday){
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = null;
@@ -273,6 +259,19 @@ public class DataTransferUtil {
 	  */
 	public String getTwoDecimalData(float data){
 		DecimalFormat decimalFormat=new DecimalFormat("0.00");//构造方法的字符格式这里如果小数不足2位,会以0补足.
+		String value = decimalFormat.format(data);//format 返回的是字符串
+		return value;
+	}
+	
+	/**
+	  * @Method: getTwoDecimalData
+	  * @Description: 保留一位小数
+	  * @param data
+	  * @return	
+	  * 返回类型：String 
+	  */
+	public static String getOneDecimalData(float data){
+		DecimalFormat decimalFormat=new DecimalFormat("0.0");//构造方法的字符格式这里如果小数不足2位,会以0补足.
 		String value = decimalFormat.format(data);//format 返回的是字符串
 		return value;
 	}

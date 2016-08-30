@@ -19,12 +19,16 @@ import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.account.AccountMgr;
 import com.runrunfast.homegym.account.DataTransferUtil;
 import com.runrunfast.homegym.account.UserInfo;
+import com.runrunfast.homegym.dao.MyTotalRecordDao;
 import com.runrunfast.homegym.home.AboutActivity;
 import com.runrunfast.homegym.home.FeedbackActivity;
 import com.runrunfast.homegym.home.PersonalInfoActivity;
+import com.runrunfast.homegym.record.TotalRecord;
 import com.runrunfast.homegym.start.StartActivity;
 import com.runrunfast.homegym.utils.Const;
+import com.runrunfast.homegym.utils.DateUtil;
 import com.runrunfast.homegym.utils.FileUtils;
+import com.runrunfast.homegym.utils.Globle;
 import com.runrunfast.homegym.widget.CircleMaskImageView;
 import com.runrunfast.homegym.widget.DialogActivity;
 
@@ -43,6 +47,8 @@ public class MeFragment extends Fragment implements OnClickListener{
 	private TextView tvNickname;
 	private ImageView ivSex;
 	private TextView tvAge;
+	
+	private TextView tvTime, tvDays;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater,
@@ -84,6 +90,9 @@ public class MeFragment extends Fragment implements OnClickListener{
 			ivSex.setBackgroundResource(R.drawable.sex_women);
 		}
 		
+		TotalRecord totalRecord = MyTotalRecordDao.getInstance().getMyTotalRecordFromDb(Globle.gApplicationContext, mUserInfo.strAccountId);
+		tvTime.setText(DateUtil.secToHour(totalRecord.total_time));
+		tvDays.setText(String.valueOf(totalRecord.total_days));
 	}
 
 	private void initView() {
@@ -104,6 +113,9 @@ public class MeFragment extends Fragment implements OnClickListener{
 		
 		ivSex = (ImageView)rootView.findViewById(R.id.account_sex_img);
 		tvAge = (TextView)rootView.findViewById(R.id.account_old_text);
+		
+		tvTime = (TextView)rootView.findViewById(R.id.account_finish_time_text);
+		tvDays = (TextView)rootView.findViewById(R.id.account_finish_days_text);
 	}
 
 	@Override

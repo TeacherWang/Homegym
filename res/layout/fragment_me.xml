@@ -109,36 +109,36 @@
 			    android:layout_height="@dimen/account_finish_divider_height"
 			    android:layout_gravity="center_vertical"
 			    android:background="@color/white" />
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1" >
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/record_total_finish_days"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/account_finish_descrip_margin_top"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/account_finish_descrip_text_size" />
-                <TextView 
-                    android:id="@+id/account_finish_count_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-					android:layout_centerInParent="true"
-                    android:text="336"
-                    android:textSize="@dimen/account_finish_num_size"
-                    android:textColor="@color/record_total_consume_number_color"/>
-                <TextView
-                    android:layout_below="@id/account_finish_count_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/count"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/account_finish_descrip_unit_margin_top"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/account_finish_descrip_unit_size" />
-            </RelativeLayout>
+<!--             <RelativeLayout -->
+<!--                 android:layout_width="0dp" -->
+<!--                 android:layout_height="match_parent" -->
+<!--                 android:layout_weight="1" > -->
+<!--                 <TextView -->
+<!--                     android:layout_width="wrap_content" -->
+<!--                     android:layout_height="wrap_content" -->
+<!--                     android:text="@string/record_total_finish_days" -->
+<!--                     android:layout_centerHorizontal="true" -->
+<!--                     android:layout_marginTop="@dimen/account_finish_descrip_margin_top" -->
+<!--                     android:textColor="@color/white" -->
+<!--                     android:textSize="@dimen/account_finish_descrip_text_size" /> -->
+<!--                 <TextView  -->
+<!--                     android:id="@+id/account_finish_count_text" -->
+<!--                     android:layout_width="wrap_content" -->
+<!--                     android:layout_height="wrap_content" -->
+<!-- 					android:layout_centerInParent="true" -->
+<!--                     android:text="336" -->
+<!--                     android:textSize="@dimen/account_finish_num_size" -->
+<!--                     android:textColor="@color/record_total_consume_number_color"/> -->
+<!--                 <TextView -->
+<!--                     android:layout_below="@id/account_finish_count_text" -->
+<!--                     android:layout_width="wrap_content" -->
+<!--                     android:layout_height="wrap_content" -->
+<!--                     android:text="@string/count" -->
+<!--                     android:layout_centerHorizontal="true" -->
+<!--                     android:layout_marginTop="@dimen/account_finish_descrip_unit_margin_top" -->
+<!--                     android:textColor="@color/white" -->
+<!--                     android:textSize="@dimen/account_finish_descrip_unit_size" /> -->
+<!--             </RelativeLayout> -->
             
             <View
 			    android:layout_width="1dip"
