@@ -20,7 +20,6 @@ public class BitmapUtils {
 	
 	public static final DisplayImageOptions initCourseImageLoader() {
 		DisplayImageOptions options = new DisplayImageOptions.Builder()
-				.showStubImage(R.drawable.home_add)
 				.showImageForEmptyUri(R.drawable.home_add)
 				.showImageOnFail(R.drawable.home_add)
 				.cacheInMemory(true)
@@ -32,7 +31,6 @@ public class BitmapUtils {
 	
 	public static final DisplayImageOptions initActionImageLoader() {
 		DisplayImageOptions options = new DisplayImageOptions.Builder()
-				.showStubImage(R.drawable.course_action_pic_1)
 				.showImageForEmptyUri(R.drawable.course_action_pic_1)
 				.showImageOnFail(R.drawable.course_action_pic_1)
 				.cacheInMemory(true).cacheOnDisc(true)
