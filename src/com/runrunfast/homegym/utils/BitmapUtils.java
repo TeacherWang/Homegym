@@ -8,7 +8,9 @@ import android.os.Environment;
 import android.os.Handler;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
+import com.nostra13.universalimageloader.core.display.SimpleBitmapDisplayer;
 import com.runrunfast.homegym.R;
 
 import java.io.ByteArrayOutputStream;
@@ -24,8 +26,9 @@ public class BitmapUtils {
 				.showImageOnFail(R.drawable.home_add)
 				.cacheInMemory(true)
 				.cacheOnDisc(true)
+				.bitmapConfig(Bitmap.Config.RGB_565)
 				.resetViewBeforeLoading(true).handler(new Handler())
-				.displayer(new RoundedBitmapDisplayer(0)).build();
+				.displayer(new SimpleBitmapDisplayer()).build();
 		return options;
 	}
 	
@@ -33,9 +36,24 @@ public class BitmapUtils {
 		DisplayImageOptions options = new DisplayImageOptions.Builder()
 				.showImageForEmptyUri(R.drawable.course_action_pic_1)
 				.showImageOnFail(R.drawable.course_action_pic_1)
-				.cacheInMemory(true).cacheOnDisc(true)
+				.cacheInMemory(true)
+				.cacheOnDisc(true)
+				.bitmapConfig(Bitmap.Config.RGB_565)
 				.resetViewBeforeLoading(true).handler(new Handler())
-				.displayer(new RoundedBitmapDisplayer(0)).build();
+				.displayer(new SimpleBitmapDisplayer()).build();
+		return options;
+	}
+	
+	public static final DisplayImageOptions initActionDescriptImageLoader() {
+		DisplayImageOptions options = new DisplayImageOptions.Builder()
+				.showImageForEmptyUri(R.drawable.course_action_pic_1)
+				.showImageOnFail(R.drawable.course_action_pic_1)
+				.cacheInMemory(true)
+				.cacheOnDisc(true)
+				.imageScaleType(ImageScaleType.IN_SAMPLE_INT)
+				.bitmapConfig(Bitmap.Config.RGB_565)
+				.resetViewBeforeLoading(true).handler(new Handler())
+				.displayer(new SimpleBitmapDisplayer()).build();
 		return options;
 	}
 	
@@ -51,6 +69,33 @@ public class BitmapUtils {
 				}
 				//是否有headImg文件
 				File file = new File(strFileDir + strFileName);
+				if(file.exists()){
+					file.delete();
+				}
+				
+				fileOutputStream = new FileOutputStream(file);
+				bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream);// 把数据写入文件
+			}
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public static void saveBitmapToSDcard(Bitmap bitmap, String strFilePath) {
+		try {
+			FileOutputStream fileOutputStream = null;
+			String sdcardState = Environment.getExternalStorageState();
+			if(Environment.MEDIA_MOUNTED.equals(sdcardState)){
+				String folderName = FileUtils.getFolderName(strFilePath);
+				
+				File fileDir = new File(folderName);
+				if(!fileDir.exists()){
+					fileDir.mkdirs();
+				}
+				
+				File file = new File(strFilePath);
 				if(file.exists()){
 					file.delete();
 				}

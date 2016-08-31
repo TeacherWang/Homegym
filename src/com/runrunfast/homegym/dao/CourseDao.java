@@ -86,6 +86,35 @@ public class CourseDao {
 			}
 		}
 	}
+	
+	public synchronized void saveCourseImgLocalToDb(Context context, String courseId, String imgLocal) {
+		Cursor c = null;
+		SQLiteDatabase db = null;
+		try {
+			DBOpenHelper dbHelper = new DBOpenHelper(context);
+			db = dbHelper.getWritableDatabase();
+			ContentValues values = new ContentValues();
+			
+			values.put(Const.DB_KEY_COURSE_ID, courseId);
+			values.put(Const.DB_KEY_COURSE_IMG_LOCAL, imgLocal);
+			
+			c = db.query(Const.TABLE_COURSE, null, Const.DB_KEY_COURSE_ID + " = ?",
+					new String[] { courseId }, null, null, null);
+			if (c.getCount() > 0) {// 查询到数据库有该数据，就更新该行数据
+				db.update(Const.TABLE_COURSE, values, Const.DB_KEY_COURSE_ID + " = ?",
+						new String[] { courseId });
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally{
+			if(c != null){
+				c.close();
+			}
+			if(db != null){
+				db.close();
+			}
+		}
+	}
 
 	public synchronized ArrayList<Course> getCourseListFromDb(Context context) {
 		ArrayList<Course> coursetList = new ArrayList<Course>();

@@ -10,9 +10,9 @@
         android:layout_height="225dp" >
         <ImageView 
             android:id="@+id/train_action_set_bg_img"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="225dp"
-            android:background="@drawable/action1_bg"/>
+            android:scaleType="centerCrop" />
         <RelativeLayout
             android:id="@+id/train_action_back_layout"
             android:layout_width="wrap_content"

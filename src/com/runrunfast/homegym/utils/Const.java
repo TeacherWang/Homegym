@@ -110,6 +110,7 @@ public class Const {
 	
 	
 	public static final String DB_KEY_TRAIN_DATA = "traindata";
-	public static final String DB_KEY_END_DATE = "end_data";
+	public static final String DB_KEY_END_DATE = "end_date";
+	public static final String DB_KEY_UNIQUE_FLAG = "unique_flag";
 	
 }

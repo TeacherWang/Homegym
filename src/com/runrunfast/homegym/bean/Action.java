@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Action implements Serializable{
+	public static final int ACTION_ONE_SIDE = 0; // 动作不分左右
+	public static final int ACTION_TWO_SIDE = 1; // 动作分左右
+	
 	public String action_id; // 训练动作id
 	public String action_name;
 	public String action_position; // 锻炼的部位

@@ -486,6 +486,7 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 		
 		mCurrentRecord.finish_time = mTimeSecond;
 		mCurrentRecord.actual_date = DateUtil.getCurrentDate();
+		mCurrentRecord.unique_flag = System.currentTimeMillis();
 		MyTrainRecordDao.getInstance().saveRecordToDb(Globle.gApplicationContext, mUserInfo.strAccountId, mCurrentRecord);
 		
 		uploadRecord();
@@ -541,6 +542,7 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 		
 		mCurrentRecord.finish_time = mTimeSecond;
 		mCurrentRecord.actual_date = DateUtil.getCurrentDate();
+		mCurrentRecord.unique_flag = System.currentTimeMillis();
 		MyTrainRecordDao.getInstance().saveRecordToDb(Globle.gApplicationContext, mUserInfo.strAccountId, mCurrentRecord);
 		
 		mDayProgress.progress = MyCourse.DAY_PROGRESS_FINISH;

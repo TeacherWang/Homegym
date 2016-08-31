@@ -69,7 +69,7 @@ public class ActionDao {
 			values.put(Const.DB_KEY_ACTION_H, action.action_h);
 			values.put(Const.DB_KEY_ACTION_B, action.action_b);
 			values.put(Const.DB_KEY_ACTION_IMG_URL, action.action_img_url);
-			values.put(Const.DB_KEY_ACTION_IMG_LOCAL, action.action_img_local);
+//			values.put(Const.DB_KEY_ACTION_IMG_LOCAL, action.action_img_local);
 			values.put(Const.DB_KEY_ACTION_LEFT_RIGHT, action.action_left_right);
 			
 			String jsonVideoUrl = gson.toJson(action.action_video_url);
@@ -92,6 +92,35 @@ public class ActionDao {
 						new String[] { action.action_id });
 			}else{
 				db.insert(Const.TABLE_ACTION, null, values);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally{
+			if(c != null){
+				c.close();
+			}
+			if(db != null){
+				db.close();
+			}
+		}
+	}
+	
+	public synchronized void saveActionImgLocalToDb(Context context, String actionId, String imgLocal){
+		Cursor c = null;
+		SQLiteDatabase db = null;
+		try {
+			DBOpenHelper dbHelper = new DBOpenHelper(context);
+			db = dbHelper.getWritableDatabase();
+			ContentValues values = new ContentValues();
+			
+			values.put(Const.DB_KEY_ACTION_ID, actionId);
+			values.put(Const.DB_KEY_ACTION_IMG_LOCAL, imgLocal);
+			
+			c = db.query(Const.TABLE_ACTION, null, Const.DB_KEY_ACTION_ID + " = ?",
+					new String[] { actionId }, null, null, null);
+			if (c.getCount() > 0) {// 查询到数据库有该数据，就更新该行数据
+				db.update(Const.TABLE_ACTION, values, Const.DB_KEY_ACTION_ID + " = ?",
+						new String[] { actionId });
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -160,6 +189,35 @@ public class ActionDao {
 		}
 		
 		return action;
+	}
+	
+	public synchronized String getActionImgLocalFromDb(Context context, String actionId){
+		SQLiteDatabase db = null;
+		Cursor c = null;
+		String strImgLocal = "";
+		try {
+			DBOpenHelper dbHelper = new DBOpenHelper(context);
+			db = dbHelper.getWritableDatabase();
+			
+			c = db.query(Const.TABLE_ACTION, null, Const.DB_KEY_ACTION_ID + "=?", new String[]{ actionId }, null, null, null);
+			if(null != c && c.getCount() > 0){
+				c.moveToNext();
+				
+				strImgLocal = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_IMG_LOCAL));
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally{
+			if(c != null){
+				c.close();
+			}
+			if(db != null){
+				db.close();
+			}
+		}
+		
+		return strImgLocal;
 	}
 	
 	public synchronized ArrayList<Action> getActionListFromDb(Context context) {

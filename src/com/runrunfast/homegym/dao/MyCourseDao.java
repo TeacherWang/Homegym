@@ -110,6 +110,36 @@ public class MyCourseDao {
 		}
 	}
 	
+	public synchronized void saveMyCourseImgLocalToDb(Context context, String uid, String courseId, String imgLocal){
+		Cursor c = null;
+		SQLiteDatabase db = null;
+		try {
+			DBOpenHelper dbHelper = new DBOpenHelper(context);
+			db = dbHelper.getWritableDatabase();
+			ContentValues values = new ContentValues();
+			
+			values.put(Const.DB_KEY_UID, uid);
+			values.put(Const.DB_KEY_COURSE_ID, courseId);
+			values.put(Const.DB_KEY_COURSE_IMG_LOCAL, imgLocal);
+			
+			c = db.query(Const.TABLE_MY_COURSE, null, Const.DB_KEY_UID + " = ? and " + Const.DB_KEY_COURSE_ID + " =?",
+					new String[] { uid, courseId }, null, null, null);
+			if (c.getCount() > 0) {// 查询到数据库有该数据，就更新该行数据
+				db.update(Const.TABLE_MY_COURSE, values, Const.DB_KEY_UID + " = ? and " + Const.DB_KEY_COURSE_ID + " =?",
+						new String[] { uid, courseId });
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally{
+			if(c != null){
+				c.close();
+			}
+			if(db != null){
+				db.close();
+			}
+		}
+	}
+	
 	/**
 	  * @Method: saveMyCourseDayProgress
 	  * @Description: 保存每天的进度

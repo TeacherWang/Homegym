@@ -2,6 +2,7 @@ package com.runrunfast.homegym.course;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -12,14 +13,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.bean.Course;
 import com.runrunfast.homegym.bean.MyCourse;
 import com.runrunfast.homegym.home.fragments.InvalidCourse;
-import com.runrunfast.homegym.utils.AnimateFirstDisplayListener;
 import com.runrunfast.homegym.utils.BitmapUtils;
+import com.runrunfast.homegym.utils.ConstServer;
+import com.runrunfast.homegym.utils.FileUtils;
+import com.runrunfast.homegym.utils.ImageLoadingCourseListener;
+import com.runrunfast.homegym.utils.ImageWorker;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class CourseAdapter extends BaseAdapter {
@@ -33,6 +37,7 @@ public class CourseAdapter extends BaseAdapter {
 	private LayoutInflater mInflater;
 	private ArrayList<Course> mCourseList;
 	private ICourseAdapterListener mICourseAdapterListener;
+	private ImageWorker mImageWorker;
 	
 	public interface ICourseAdapterListener{
 		void onAddCourseClicked();
@@ -46,6 +51,10 @@ public class CourseAdapter extends BaseAdapter {
 		mResources = context.getResources();
 		setData(courseList);
 		this.mInflater = LayoutInflater.from(context);
+		
+		mImageWorker = new ImageWorker(context);
+		mImageWorker.enableImageCache();
+        mImageWorker.setImageFadeIn(false);
 	}
 	
 	private void setData(ArrayList<Course> courseList){
@@ -175,9 +184,16 @@ public class CourseAdapter extends BaseAdapter {
 			viewHolder.tvCourseQuality.setVisibility(View.INVISIBLE);
 		}
 		
+		if( !TextUtils.isEmpty(course.course_img_local) && FileUtils.isFileExist(course.course_img_local) ){
+			mImageWorker.loadImage(course.course_img_local, viewHolder.courseImg);
+			return;
+		}
+		
+		String filePath = ConstServer.SDCARD_HOMEGYM_ROOT + course.course_id + File.separator + FileUtils.getFileName(course.course_img_url);
+		
 		ImageLoader.getInstance().displayImage(course.course_img_url,
 				viewHolder.courseImg, BitmapUtils.initCourseImageLoader(),
-				new AnimateFirstDisplayListener());
+				new ImageLoadingCourseListener(filePath, course.course_id));
 	}
 	
 	/**
@@ -223,10 +239,17 @@ public class CourseAdapter extends BaseAdapter {
 		}else{
 			viewHolder.tvCourseQuality.setVisibility(View.INVISIBLE);
 		}
-		ImageLoader.getInstance().getDiscCache();
+		
+		if( !TextUtils.isEmpty(myCourse.course_img_local) && FileUtils.isFileExist(myCourse.course_img_local) ){
+			mImageWorker.loadImage(myCourse.course_img_local, viewHolder.courseImg);
+			return;
+		}
+		
+		String filePath = ConstServer.SDCARD_HOMEGYM_ROOT + myCourse.course_id + File.separator + FileUtils.getFileName(myCourse.course_img_url);
+		
 		ImageLoader.getInstance().displayImage(myCourse.course_img_url,
 				viewHolder.courseImg, BitmapUtils.initCourseImageLoader(),
-				new AnimateFirstDisplayListener());
+				new ImageLoadingCourseListener(filePath, myCourse.course_id));
 	}
 
 	private void setCourseProgress(ViewHolder viewHolder, int progerssType) {

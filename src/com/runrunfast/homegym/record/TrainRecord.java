@@ -14,5 +14,5 @@ public class TrainRecord {
 	public int finish_time; // 本次训练的时间
 	public List<ActionDetail> action_detail = new ArrayList<ActionDetail>();
 	public String actual_date; // 实际完成的日期
-	
+	public long unique_flag; // 本次训练的唯一标识
 }

@@ -1,6 +1,7 @@
 package com.runrunfast.homegym.course;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +14,13 @@ import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.account.DataTransferUtil;
 import com.runrunfast.homegym.bean.Action;
 import com.runrunfast.homegym.course.CourseTrainActivity.ActionTotalData;
-import com.runrunfast.homegym.utils.AnimateFirstDisplayListener;
 import com.runrunfast.homegym.utils.BitmapUtils;
+import com.runrunfast.homegym.utils.ConstServer;
+import com.runrunfast.homegym.utils.FileUtils;
+import com.runrunfast.homegym.utils.ImageLoadingActionListener;
+import com.runrunfast.homegym.utils.ImageWorker;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class CourseTrainAdapter extends BaseAdapter {
@@ -24,12 +29,17 @@ public class CourseTrainAdapter extends BaseAdapter {
 	private ArrayList<ActionTotalData> mActionTotalDataList;
 	private LayoutInflater mInflater;
 	private Context mContext;
+	private ImageWorker mImageWorker;
 	
 	public CourseTrainAdapter(Context context, ArrayList<Action> actionList, ArrayList<ActionTotalData> actionTotalDataList){
 		this.mContext = context;
 		this.mActionList = actionList;
 		this.mActionTotalDataList = actionTotalDataList;
 		this.mInflater = LayoutInflater.from(context);
+		
+		mImageWorker = new ImageWorker(context);
+		mImageWorker.enableImageCache();
+        mImageWorker.setImageFadeIn(false);
 	}
 	
 	@Override
@@ -77,10 +87,6 @@ public class CourseTrainAdapter extends BaseAdapter {
 		holder.tvKcal.setText( DataTransferUtil.getInstance().getTwoDecimalData(actionTotalData.totalKcal) + mContext.getResources().getString(R.string.kcal_cn) );
 		holder.tvDiffcult.setText(R.string.difficult);
 		
-		ImageLoader.getInstance().displayImage(action.action_img_url,
-				holder.ivBg, BitmapUtils.initActionImageLoader(),
-				new AnimateFirstDisplayListener());
-		
 		if(action.action_difficult == 1){
 			holder.ivDiffcultLevel1.setVisibility(View.VISIBLE);
 			holder.ivDiffcultLevel2.setVisibility(View.INVISIBLE);
@@ -94,6 +100,17 @@ public class CourseTrainAdapter extends BaseAdapter {
 			holder.ivDiffcultLevel2.setVisibility(View.VISIBLE);
 			holder.ivDiffcultLevel3.setVisibility(View.VISIBLE);
 		}
+		
+		if( !TextUtils.isEmpty(action.action_img_local) && FileUtils.isFileExist(action.action_img_local) ){
+			mImageWorker.loadImage(action.action_img_local, holder.ivBg);
+			return convertView;
+		}
+		
+		String filePath = ConstServer.SDCARD_HOMEGYM_ROOT + action.action_id + File.separator + FileUtils.getFileName(action.action_img_url);
+		
+		ImageLoader.getInstance().displayImage(action.action_img_url,
+				holder.ivBg, BitmapUtils.initActionImageLoader(),
+				new ImageLoadingActionListener(filePath, action.action_id));
 		
 		return convertView;
 	}

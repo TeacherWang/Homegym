@@ -42,7 +42,8 @@ public class MyTrainRecordDao {
 				+ Const.DB_KEY_FINISH_KCAL + " INTEGER,"
 				+ Const.DB_KEY_FINISH_TIME + " INTEGER,"
 				+ Const.DB_KEY_ACTION_DETAIL + " TEXT,"
-				+ Const.DB_KEY_ACTUAL_DATE + " TEXT"
+				+ Const.DB_KEY_ACTUAL_DATE + " TEXT,"
+				+ Const.DB_KEY_UNIQUE_FLAG + " TEXT"
 				+ ");";
 		return sql;
 	}
@@ -299,9 +300,17 @@ public class MyTrainRecordDao {
 			values.put(Const.DB_KEY_ACTION_DETAIL, jsonActionDetail);
 			
 			values.put(Const.DB_KEY_ACTUAL_DATE, record.actual_date);
+			values.put(Const.DB_KEY_UNIQUE_FLAG, record.unique_flag);
 			
-			// 不用更新，直接插入保存
-			db.insert(Const.TABLE_MY_TRAIN_RECORD, null, values);
+			
+			c = db.query(Const.TABLE_MY_TRAIN_RECORD, null, Const.DB_KEY_UID + " = ? and " + Const.DB_KEY_UNIQUE_FLAG + " =?" ,
+					new String[] { uid, String.valueOf(record.unique_flag) }, null, null, null);
+			if (c.getCount() > 0) {// 查询到数据库有该数据，就更新该行数据
+				db.update(Const.TABLE_MY_COURSE, values, Const.DB_KEY_UID + " = ? and " + Const.DB_KEY_UNIQUE_FLAG + " =?",
+						new String[] { uid, String.valueOf(record.unique_flag) });
+			}else{
+				db.insert(Const.TABLE_MY_TRAIN_RECORD, null, values);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally{
@@ -338,6 +347,8 @@ public class MyTrainRecordDao {
 					
 					String jsonActionDetail = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_DETAIL));
 					record.action_detail = gson.fromJson(jsonActionDetail, typeActionDetail);
+					
+					record.unique_flag = c.getLong(c.getColumnIndex(Const.DB_KEY_UNIQUE_FLAG));
 					
 					recordList.add(record);
 				}
@@ -380,6 +391,8 @@ public class MyTrainRecordDao {
 					
 					String jsonActionDetail = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_DETAIL));
 					record.action_detail = gson.fromJson(jsonActionDetail, typeActionDetail);
+					
+					record.unique_flag = c.getLong(c.getColumnIndex(Const.DB_KEY_UNIQUE_FLAG));
 					
 					recordList.add(record);
 				}

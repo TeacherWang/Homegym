@@ -3,7 +3,10 @@ package com.runrunfast.homegym.course;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -30,8 +33,10 @@ import com.runrunfast.homegym.bean.MyCourse;
 import com.runrunfast.homegym.course.ActionSetAdapter.ITrainActionItemListener;
 import com.runrunfast.homegym.course.CourseServerMgr.IUpdateTrainPlanListener;
 import com.runrunfast.homegym.course.CourseTrainActivity.ActionTotalData;
+import com.runrunfast.homegym.dao.ActionDao;
 import com.runrunfast.homegym.dao.MyCourseDao;
-import com.runrunfast.homegym.utils.AnimateFirstDisplayListener;
+import com.runrunfast.homegym.utils.FileUtils;
+import com.runrunfast.homegym.utils.ImageLoadingCourseListener;
 import com.runrunfast.homegym.utils.BitmapUtils;
 import com.runrunfast.homegym.utils.CalculateUtil;
 import com.runrunfast.homegym.utils.ClickUtil;
@@ -225,9 +230,14 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 //		mTotalBurning = mActionTotalData.totalKcal;
 		tvBurning.setText( DataTransferUtil.getInstance().getTwoDecimalData(mActionTotalData.totalKcal) );
 		
-//		ImageLoader.getInstance().displayImage(mAction.action_img_url,
-//				ivHeadBg, BitmapUtils.initActionImageLoader(),
-//				new AnimateFirstDisplayListener());
+		String strImgLocal = ActionDao.getInstance().getActionImgLocalFromDb(Globle.gApplicationContext, mAction.action_id);
+		
+		if( !TextUtils.isEmpty(strImgLocal) && FileUtils.isFileExist(strImgLocal) ){
+			Bitmap actionBitmap = BitmapFactory.decodeFile(strImgLocal);
+			ivHeadBg.setImageBitmap(actionBitmap);
+		}else{
+			ivHeadBg.setBackgroundResource(R.drawable.action1_bg);
+		}
 	}
 
 	private void initView() {

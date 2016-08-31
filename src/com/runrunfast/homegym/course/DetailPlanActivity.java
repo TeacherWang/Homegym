@@ -417,7 +417,21 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 		CourseServerMgr.getInstance().addDeleteCourseToServerObserver(mIDeleteCourseToServerListener);
 	}
 	
+	/**
+	  * @Method: prepareJoinCourse
+	  * @Description: 参加课程：
+	  * A.1、如果视频和音频不全，先下载
+	  *   2、下载完后，提示用户参加
+	  * B.如果视频和音频都有，直接显示参加
+	  * 返回类型：void 
+	  */
 	private void prepareJoinCourse() {
+		// 先下载
+		if( needDownload() ){
+			// 显示进度条
+			
+		}
+		
 		// 不是我的课程，点击添加到我的课程
 		if( !isMyCourse ){
 			CourseServerMgr.getInstance().joinCourseToServer(mUserInfo.strAccountId, mCourseId, DateUtil.getCurrentDate());
@@ -427,6 +441,16 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 			startTrain();
 		}
 		
+	}
+	
+	private boolean needDownload(){
+		int actionSize = mActionsOfThatDay.size();
+		for(int i=0; i<actionSize; i++){
+			Action action = mActionsOfThatDay.get(i);
+			
+		}
+		
+		return true;
 	}
 	
 	private void startTrain() {
