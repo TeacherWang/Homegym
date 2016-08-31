@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
@@ -20,6 +21,7 @@ import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.account.AccountMgr;
 import com.runrunfast.homegym.account.UserInfo;
 import com.runrunfast.homegym.bean.Action;
+import com.runrunfast.homegym.bean.Action.AudioLocation;
 import com.runrunfast.homegym.bean.Course;
 import com.runrunfast.homegym.bean.Course.ActionDetail;
 import com.runrunfast.homegym.bean.Course.CourseDetail;
@@ -29,8 +31,11 @@ import com.runrunfast.homegym.course.CourseServerMgr.IDeleteCourseToServerListen
 import com.runrunfast.homegym.course.CourseServerMgr.IJoinCourseToServerListener;
 import com.runrunfast.homegym.dao.ActionDao;
 import com.runrunfast.homegym.dao.MyCourseDao;
+import com.runrunfast.homegym.download.DownloadConst;
+import com.runrunfast.homegym.download.MyDownloadMgr;
 import com.runrunfast.homegym.utils.Const;
 import com.runrunfast.homegym.utils.DateUtil;
+import com.runrunfast.homegym.utils.FileUtils;
 import com.runrunfast.homegym.utils.Globle;
 import com.runrunfast.homegym.widget.DialogActivity;
 import com.runrunfast.homegym.widget.KCalendar;
@@ -429,7 +434,7 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 		// 先下载
 		if( needDownload() ){
 			// 显示进度条
-			
+			return;
 		}
 		
 		// 不是我的课程，点击添加到我的课程
@@ -444,13 +449,52 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 	}
 	
 	private boolean needDownload(){
+		boolean needDownload = false;
+		ArrayList<String> taskList = null;
+		
 		int actionSize = mActionsOfThatDay.size();
 		for(int i=0; i<actionSize; i++){
-			Action action = mActionsOfThatDay.get(i);
+			taskList = new ArrayList<String>();
 			
+			Action action = mActionsOfThatDay.get(i);
+			// 处理视频video
+			if(action.action_video_local.isEmpty()){
+				needDownload = true;
+				int videoSize = action.action_video_url.size();
+				for(int k=0; k<videoSize; k++){
+					taskList.add(action.action_video_url.get(k));
+				}
+			}else{
+				int videoSize = action.action_video_local.size();
+				for(int k=0; k<videoSize; k++){
+					if( !FileUtils.isFileExist(action.action_video_local.get(k)) ){
+						needDownload = true;
+						taskList.add(action.action_video_url.get(k));
+					}
+				}
+			}
+			// 处理音频audio
+			AudioLocation audioLocalLocation = action.action_audio_local;
+			AudioLocation audioUrlLocation = action.action_audio_url;
+			if( !FileUtils.isFileExist(DownloadConst.AUDIO_REST_LOCATION) ){
+				needDownload = true;
+				taskList.add(audioUrlLocation.rest);
+			}
+			if( !FileUtils.isFileExist(DownloadConst.AUDIO_CHANGE_SIDE_LOCATION) ){
+				needDownload = true;
+				taskList.add(audioUrlLocation.change_side);
+			}
+			if( TextUtils.isEmpty(audioLocalLocation.action_explain) || !FileUtils.isFileExist(audioLocalLocation.action_explain) ){
+				needDownload = true;
+				taskList.add(audioUrlLocation.action_explain);
+			}
+			
+			if(taskList.size() > 0){
+				MyDownloadMgr.getInstance().addDownloadUrlList(action.action_id, taskList);
+			}
 		}
 		
-		return true;
+		return needDownload;
 	}
 	
 	private void startTrain() {
