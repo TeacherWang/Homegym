@@ -5,7 +5,6 @@ import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -58,9 +57,15 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 	private Resources mResources;
 	
 	private static final int MSG_ONE_SECOND = 1;
+	private static final int MSG_REST_FINISH = 2; // 休息结束
 	
 	private static final int DELAY_SECOND = 1000;
-	private static final int REST_TIME = 5; // 休息时间 秒
+	private static final int REST_TIME = 10 * 1000; // 休息时间 秒
+	
+	private static final int ACTION_SIDE_LEFT = 0;
+	private static final int ACTION_SIDE_RIGHT = 1;
+	
+	private int mActionSide = ACTION_SIDE_LEFT;
 	
 	private Timer mTimer;
 	private VideoTimerTask mVideoTimerTask;
@@ -183,15 +188,10 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 		}
 		
 		if(isRest){
+			mHandler.removeMessages(MSG_REST_FINISH);
 			isRest = false;
 			rlHaveRest.setVisibility(View.GONE);
-			if(isPrepareNextAction){
-				isPrepareNextAction = false;
-				mVideoPath = Environment.getExternalStorageDirectory()+"/video3.mp4";
-				startVideo(mVideoPath);
-			}else{
-				startVideo(mVideoPath);
-			}
+			startVideo(mVideoPath);
 		}
 		
 		// 当前次数小于该组总次数
@@ -222,6 +222,7 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 			mActionCurrentGroupTotalCount = mTargetGroupDetail.count;
 			mActionCurrentGroupCount = 0;
 			// 做完一组休息一下
+			handleNextGroup();
 			handleRest();
 		}else{ // 当前为最后一组的最后一次
 			Toast.makeText(CourseVideoActivity.this, "该动作结束", Toast.LENGTH_SHORT).show();
@@ -231,12 +232,13 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 			// 还有下个动作？
 			mCurrentActionPosition++;
 			if( mCurrentActionPosition < mTotalActionNum ){
-				// 做下个动作之前休息一下
 				isPrepareNextAction = true;
+				mAction = ActionDao.getInstance().getActionFromDb(Globle.gApplicationContext, mTargetActionDetail.action_id);
+				handleNextAction();
+				// 做下个动作之前休息一下
 				handleRest();
 				
 				mTargetActionDetail = mActionDetailList.get(mCurrentActionPosition);
-				mAction = ActionDao.getInstance().getActionFromDb(Globle.gApplicationContext, mTargetActionDetail.action_id);
 				tvActionName.setText( (mCurrentActionPosition + 1) + "." + mAction.action_name);
 				
 				mFinishedGroupDetail = new GroupDetail();
@@ -258,12 +260,32 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 		}
 	}
 
+	/**
+	  * @Method: handleNextGroup
+	  * @Description: 做下一组动作。可能会换边
+	  * 返回类型：void 
+	  */
+	private void handleNextGroup() {
+		if(mAction.action_left_right == Action.ACTION_TWO_SIDE){
+			if(mActionSide == ACTION_SIDE_LEFT){
+				mActionSide = ACTION_SIDE_RIGHT;
+				mVideoPath = mAction.action_video_local.get(1);
+			}else{
+				mActionSide = ACTION_SIDE_LEFT;
+				mVideoPath = mAction.action_video_local.get(0);
+			}
+		}
+	}
+
 	private void handleNextAction() {
-		
+		mActionSide = ACTION_SIDE_LEFT;
+		mVideoPath = mAction.action_video_local.get(0);
 	}
 
 	private void handleRest() {
 		Toast.makeText(CourseVideoActivity.this, "休息一下", Toast.LENGTH_SHORT).show();
+		
+		mHandler.sendEmptyMessageDelayed(MSG_REST_FINISH, REST_TIME);
 		
 		isRest = true;
 		rlHaveRest.setVisibility(View.VISIBLE);
@@ -271,8 +293,6 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 	}
 
 	private void initData() {
-		mVideoPath = Environment.getExternalStorageDirectory()+"/video.mp4";
-		
 		mUserInfo = AccountMgr.getInstance().mUserInfo;
 		
 		mFinishedActionGroupDetailList = new ArrayList<GroupDetail>();
@@ -320,6 +340,9 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 		
 		updateUi();
 		
+//		mVideoPath = Environment.getExternalStorageDirectory()+"/video.mp4";
+		mVideoPath = mAction.action_video_local.get(0);
+		
 		initVideo();
 		
 		startVideo(mVideoPath);
@@ -362,6 +385,32 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 				mTimeSecond++;
 				tvTime.setText(DateUtil.secToMinuteSecond(mTimeSecond));
 				break;
+				
+			case MSG_REST_FINISH:
+				// 休息结束
+				if(isRest){
+					mHandler.removeMessages(MSG_REST_FINISH);
+					isRest = false;
+					rlHaveRest.setVisibility(View.GONE);
+					startVideo(mVideoPath);
+					// 该动作还有下一组
+					if((mActionGroupIndex + 1) < mTargetActionDetail.group_num){
+						GroupDetail groupDetail = mTargetActionGroupDetailList.get(mActionGroupIndex + 1);
+						int actionCurrentGroupTotalCount = groupDetail.count;
+						// 更新ui
+						tvGroupCount.setText( 0 + "/" + String.valueOf(actionCurrentGroupTotalCount) );
+						tvGroupNum.setText("第" + DataTransferUtil.numMap.get(mActionGroupIndex + 1) + "组");
+					}else{
+						ActionDetail targetActionDetail = mActionDetailList.get(mCurrentActionPosition + 1);
+						List<GroupDetail> targetActionGroupDetailList = targetActionDetail.group_detail;
+						GroupDetail targetGroupDetail = targetActionGroupDetailList.get(0);
+						int actionCurrentGroupTotalCount = targetGroupDetail.count;
+						// 更新ui
+						tvGroupCount.setText( 0 + "/" + String.valueOf(actionCurrentGroupTotalCount) );
+						tvGroupNum.setText("第一组");
+					}
+				}
+				break;
 
 			default:
 				break;
@@ -377,11 +426,18 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 		mVideoView.setVideoPath(videoPath);
 		mVideoView.start();
 	}
+	
+	private void setVideoPath(String videoPath) {
+		mVideoView.setVideoPath(videoPath);
+	}
+	
+	private void startVideo(){
+		mVideoView.start();
+	}
 
 	private void updateUi() {
 		tvGroupCount.setText( String.valueOf(mActionCurrentGroupCount) + "/" + String.valueOf(mActionCurrentGroupTotalCount) );
 		tvGroupNum.setText("第" + DataTransferUtil.numMap.get(mActionGroupIndex + 1) + "组");
-		
 	}
 
 	private void initView() {
@@ -487,9 +543,11 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 		mCurrentRecord.finish_time = mTimeSecond;
 		mCurrentRecord.actual_date = DateUtil.getCurrentDate();
 		mCurrentRecord.unique_flag = System.currentTimeMillis();
-		MyTrainRecordDao.getInstance().saveRecordToDb(Globle.gApplicationContext, mUserInfo.strAccountId, mCurrentRecord);
 		
-		uploadRecord();
+		if(mCurrentRecord.finish_count > 0){
+			MyTrainRecordDao.getInstance().saveRecordToDb(Globle.gApplicationContext, mUserInfo.strAccountId, mCurrentRecord);
+			uploadRecord();
+		}
 		
 		Intent intent = new Intent(this, FinishActivity.class);
 		intent.putExtra(FinishActivity.KEY_FINISH_OR_UNFINISH, FinishActivity.TYPE_UNFINISH);
@@ -557,8 +615,9 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 				break;
 			}
 		}
-		
-		uploadRecord();
+		if(mCurrentRecord.finish_count > 0){
+			uploadRecord();
+		}
 		
 		if(courseProgress == MyCourse.COURSE_PROGRESS_FINISH){
 			mMyCourse.progress = courseProgress;
@@ -568,6 +627,10 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 			MyCourseDao.getInstance().saveMyCourseProgress(Globle.gApplicationContext, mUserInfo.strAccountId, mMyCourse.course_id, courseProgress);
 		}
 		
+		showFinishActivity();
+	}
+
+	private void showFinishActivity() {
 		Intent intent = new Intent(this, FinishActivity.class);
 		intent.putExtra(FinishActivity.KEY_FINISH_OR_UNFINISH, FinishActivity.TYPE_FINISH);
 		intent.putExtra(Const.KEY_ACTION_IDS, mFinishedActionIds);

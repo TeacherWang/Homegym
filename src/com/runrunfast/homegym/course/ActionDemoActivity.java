@@ -2,6 +2,7 @@ package com.runrunfast.homegym.course;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
@@ -9,10 +10,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.bean.Action;
 import com.runrunfast.homegym.utils.Const;
+import com.runrunfast.homegym.utils.FileUtils;
+import com.runrunfast.homegym.utils.Globle;
 
 import io.vov.vitamio.MediaPlayer;
 import io.vov.vitamio.MediaPlayer.OnCompletionListener;
@@ -82,6 +86,10 @@ public class ActionDemoActivity extends Activity implements OnClickListener{
 		 * Alternatively,for streaming media you can use
 		 * mVideoView.setVideoURI(Uri.parse(URLstring));
 		 */
+		if(TextUtils.isEmpty(path) || !FileUtils.isFileExist(path)){
+			Toast.makeText(this, "请到详细计划界面下载课程", Toast.LENGTH_LONG).show();
+			return;
+		}
 		mVideoView.setVideoPath(path);
 		mVideoView.start();
 	}

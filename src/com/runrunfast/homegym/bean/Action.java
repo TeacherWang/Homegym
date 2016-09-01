@@ -19,13 +19,13 @@ public class Action implements Serializable{
 	public int action_left_right; // 动作是否分左右：0是不区分；1是区分
 	public ArrayList<String> action_video_url = new ArrayList<String>(); // jsonArray格式，视频下载地址，最后一个“/”后面是视频文件的名称
 	public ArrayList<String> action_video_local = new ArrayList<String>(); // jsonArray格式，视频本地地址，最后一个“/”后面是视频文件的名称
-	public AudioLocation action_audio_url = new Action.AudioLocation(); // jsonArray格式，音频下载地址
-	public AudioLocation action_audio_local = new Action.AudioLocation();
+	public String action_audio_url; // String，音频下载地址
+	public String action_audio_local; // String，音频本地路径
 	
-	public static class AudioLocation implements Serializable{
-		public String rest; // 休息
-		public String change_side; // 换边
-		public String action_explain; // 动作讲解
-	}
+//	public static class AudioLocation implements Serializable{
+//		public String rest; // 休息
+//		public String change_side; // 换边
+//		public String action_explain; // 动作讲解
+//	}
 	
 }

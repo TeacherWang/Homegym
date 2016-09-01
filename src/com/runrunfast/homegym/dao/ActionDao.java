@@ -8,7 +8,6 @@ import android.database.sqlite.SQLiteDatabase;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.runrunfast.homegym.bean.Action;
-import com.runrunfast.homegym.bean.Action.AudioLocation;
 import com.runrunfast.homegym.utils.Const;
 
 import java.lang.reflect.Type;
@@ -75,15 +74,7 @@ public class ActionDao {
 			String jsonVideoUrl = gson.toJson(action.action_video_url);
 			values.put(Const.DB_KEY_ACTION_VIDEO_URL, jsonVideoUrl);
 			
-			String jsonVideoLocal = gson.toJson(action.action_video_local);
-			values.put(Const.DB_KEY_ACTION_VIDEO_LOCAL, jsonVideoLocal);
-			
-			String jsonAudioUrl = gson.toJson(action.action_audio_url);
-			values.put(Const.DB_KEY_ACTION_AUDIO_URL, jsonAudioUrl);
-			
-			String jsonAudioLocal = gson.toJson(action.action_audio_local);
-			values.put(Const.DB_KEY_ACTION_AUDIO_LOCAL, jsonAudioLocal);
-			
+			values.put(Const.DB_KEY_ACTION_AUDIO_URL, action.action_audio_url);
 			
 			c = db.query(Const.TABLE_ACTION, null, Const.DB_KEY_ACTION_ID + " = ?",
 					new String[] { action.action_id }, null, null, null);
@@ -134,6 +125,67 @@ public class ActionDao {
 		}
 	}
 	
+	public synchronized void saveActionAudioLocalToDb(Context context, String actionId, String audioLocal){
+		Cursor c = null;
+		SQLiteDatabase db = null;
+		try {
+			DBOpenHelper dbHelper = new DBOpenHelper(context);
+			db = dbHelper.getWritableDatabase();
+			ContentValues values = new ContentValues();
+			
+			values.put(Const.DB_KEY_ACTION_ID, actionId);
+			values.put(Const.DB_KEY_ACTION_AUDIO_LOCAL, audioLocal);
+			
+			c = db.query(Const.TABLE_ACTION, null, Const.DB_KEY_ACTION_ID + " = ?",
+					new String[] { actionId }, null, null, null);
+			if (c.getCount() > 0) {// 查询到数据库有该数据，就更新该行数据
+				db.update(Const.TABLE_ACTION, values, Const.DB_KEY_ACTION_ID + " = ?",
+						new String[] { actionId });
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally{
+			if(c != null){
+				c.close();
+			}
+			if(db != null){
+				db.close();
+			}
+		}
+	}
+	
+	public synchronized void saveActionVideoLocalToDb(Context context, String actionId, ArrayList<String> videoLocalList){
+		Cursor c = null;
+		SQLiteDatabase db = null;
+		Gson gson = new Gson();
+		try {
+			DBOpenHelper dbHelper = new DBOpenHelper(context);
+			db = dbHelper.getWritableDatabase();
+			ContentValues values = new ContentValues();
+			
+			values.put(Const.DB_KEY_ACTION_ID, actionId);
+			
+			String jsonVideoLocal = gson.toJson(videoLocalList);
+			values.put(Const.DB_KEY_ACTION_VIDEO_LOCAL, jsonVideoLocal);
+			
+			c = db.query(Const.TABLE_ACTION, null, Const.DB_KEY_ACTION_ID + " = ?",
+					new String[] { actionId }, null, null, null);
+			if (c.getCount() > 0) {// 查询到数据库有该数据，就更新该行数据
+				db.update(Const.TABLE_ACTION, values, Const.DB_KEY_ACTION_ID + " = ?",
+						new String[] { actionId });
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally{
+			if(c != null){
+				c.close();
+			}
+			if(db != null){
+				db.close();
+			}
+		}
+	}
+	
 	public synchronized Action getActionFromDb(Context context, String actionId){
 		Action action = null;
 		SQLiteDatabase db = null;
@@ -149,8 +201,6 @@ public class ActionDao {
 				Gson gson = new Gson();
 				Type typeVideoUrl = new TypeToken<Collection<String>>(){}.getType();
 				Type typeVideoLocal = new TypeToken<Collection<String>>(){}.getType();
-				Type typeAudioUrl = new TypeToken<AudioLocation>(){}.getType();
-				Type typeAudioLocal = new TypeToken<AudioLocation>(){}.getType();
 				action = new Action();
 				
 				action.action_id = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_ID));
@@ -170,11 +220,8 @@ public class ActionDao {
 				String jsonVideoLocal = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_VIDEO_LOCAL));
 				action.action_video_local = gson.fromJson(jsonVideoLocal, typeVideoLocal);
 				
-				String jsonAudioUrl = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_AUDIO_URL));
-				action.action_audio_url = gson.fromJson(jsonAudioUrl, typeAudioUrl);
-				
-				String jsonAudioLocal = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_AUDIO_LOCAL));
-				action.action_audio_local = gson.fromJson(jsonAudioLocal, typeAudioLocal);
+				action.action_audio_url = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_AUDIO_URL));
+				action.action_audio_local = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_AUDIO_LOCAL));
 			}
 			
 		} catch (Exception e) {
@@ -233,8 +280,6 @@ public class ActionDao {
 				Gson gson = new Gson();
 				Type typeVideoUrl = new TypeToken<Collection<String>>(){}.getType();
 				Type typeVideoLocal = new TypeToken<Collection<String>>(){}.getType();
-				Type typeAudioUrl = new TypeToken<AudioLocation>(){}.getType();
-				Type typeAudioLocal = new TypeToken<AudioLocation>(){}.getType();
 				while (c.moveToNext()) {
 					Action action = new Action();
 					
@@ -255,11 +300,8 @@ public class ActionDao {
 					String jsonVideoLocal = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_VIDEO_LOCAL));
 					action.action_video_local = gson.fromJson(jsonVideoLocal, typeVideoLocal);
 					
-					String jsonAudioUrl = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_AUDIO_URL));
-					action.action_audio_url = gson.fromJson(jsonAudioUrl, typeAudioUrl);
-					
-					String jsonAudioLocal = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_AUDIO_LOCAL));
-					action.action_audio_local = gson.fromJson(jsonAudioLocal, typeAudioLocal);
+					action.action_audio_url = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_AUDIO_URL));
+					action.action_audio_local = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_AUDIO_LOCAL));
 					
 					actionList.add(action);
 				}
