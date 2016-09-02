@@ -12,12 +12,12 @@
         android:id="@+id/have_rest_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
-        <TextView 
+        <ImageView 
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="休息一下！"
-            android:background="@color/white"/>
+            android:scaleType="centerCrop"
+            android:src="@drawable/rest"/>
     </RelativeLayout>
     
     <RelativeLayout

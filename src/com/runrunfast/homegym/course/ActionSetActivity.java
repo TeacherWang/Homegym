@@ -20,7 +20,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.nostra13.universalimageloader.core.ImageLoader;
 import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.account.AccountMgr;
 import com.runrunfast.homegym.account.DataTransferUtil;
@@ -35,12 +34,10 @@ import com.runrunfast.homegym.course.CourseServerMgr.IUpdateTrainPlanListener;
 import com.runrunfast.homegym.course.CourseTrainActivity.ActionTotalData;
 import com.runrunfast.homegym.dao.ActionDao;
 import com.runrunfast.homegym.dao.MyCourseDao;
-import com.runrunfast.homegym.utils.FileUtils;
-import com.runrunfast.homegym.utils.ImageLoadingCourseListener;
-import com.runrunfast.homegym.utils.BitmapUtils;
 import com.runrunfast.homegym.utils.CalculateUtil;
 import com.runrunfast.homegym.utils.ClickUtil;
 import com.runrunfast.homegym.utils.Const;
+import com.runrunfast.homegym.utils.FileUtils;
 import com.runrunfast.homegym.utils.Globle;
 import com.runrunfast.homegym.widget.DialogActivity;
 import com.runrunfast.homegym.widget.PopupWindows;
@@ -83,6 +80,10 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 	private View wheelOneLayout;
 	private WheelView wheelOneWheelView;
 	private PopupWindows popWindows;
+	
+	private View mActionDescriptLayout;
+	private PopupWindows mActionDesciptsPopupWindows;
+	private TextView tvActionDescript;
 	
 	private GroupDetail mGroupDetail;
 	private int mCount;
@@ -216,7 +217,7 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 		
 		tvActionNum.setText("动作" + DataTransferUtil.numMap.get(actionPosition + 1));
 		tvTrainName.setText(mAction.action_name);
-		tvTrainDescript.setText(mAction.action_descript);
+		tvTrainDescript.setText(R.string.action_descript);
 		
 //		tvTrainDescript.setText("坚持训练坚持训练坚持训练坚持训练坚持训练坚持训练坚持训练坚持训练坚持训练坚持训练坚持训练坚持训练坚持训练坚持训练坚持训练");
 		
@@ -258,6 +259,7 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 		tvActionNum = (TextView)findViewById(R.id.train_action_num_text);
 		tvTrainName = (TextView)findViewById(R.id.train_action_name_text);
 		tvTrainDescript = (TextView)findViewById(R.id.train_action_descript_text);
+		tvTrainDescript.setOnClickListener(this);
 		tvJoinInTeach = (TextView)findViewById(R.id.train_action_join_in_text);
 		tvJoinInTeach.setOnClickListener(this);
 //		tvTimeConsume = (TextView)findViewById(R.id.train_action_time_num_text);
@@ -272,6 +274,9 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 		tvPopConfirm = (TextView)popView.findViewById(R.id.popupwindow_menu_confirm_text);
 		tvPopConfirm.setOnClickListener(this);
 		selectContainer = (RelativeLayout)popView.findViewById(R.id.popupwindow_content);
+		
+		mActionDescriptLayout = LayoutInflater.from(this).inflate(R.layout.popupwindow_action_descript_layout, null);
+		tvActionDescript = (TextView)mActionDescriptLayout.findViewById(R.id.action_descript_text);
 	}
 
 	@Override
@@ -302,9 +307,23 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 			saveNewData();
 			break;
 			
+		case R.id.train_action_descript_text:
+			showActionDescript();
+			break;
+			
 		default:
 			break;
 		}
+	}
+
+	private void showActionDescript() {
+		tvActionDescript.setText(mAction.action_descript);
+		if(mActionDesciptsPopupWindows == null){
+			mActionDesciptsPopupWindows = new PopupWindows(this, mActionDescriptLayout);
+			mActionDesciptsPopupWindows.setLayout(mActionDescriptLayout);
+		}
+		
+		mActionDesciptsPopupWindows.show();
 	}
 
 	private void clickPopConfirm() {

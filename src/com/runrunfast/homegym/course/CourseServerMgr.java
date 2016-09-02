@@ -210,7 +210,7 @@ public class CourseServerMgr {
 
 			@Override
 			public void onSuccess(String result) {
-				handleGetCourseInfoSuc(result);
+				handleGetCourseInfoResult(result);
 			}
 			@Override
 			public void onError(Throwable throwable, boolean arg1) {
@@ -225,13 +225,13 @@ public class CourseServerMgr {
 		});
 	}
 
-	private void handleGetCourseInfoSuc(String result) {
+	private void handleGetCourseInfoResult(String result) {
 		Gson gson = new Gson();
 		Type typeServerCourseData = new TypeToken<ServerCourseData>(){}.getType();
 		ServerCourseData serverCourseData = gson.fromJson(result, typeServerCourseData);
 		
 		if(serverCourseData == null){
-			Log.e(TAG, "handleGetCourseInfoSuc, serverCourseData is null");
+			Log.e(TAG, "handleGetCourseInfoResult, serverCourseData is null");
 			return;
 		}
 		
@@ -278,7 +278,7 @@ public class CourseServerMgr {
 
 			@Override
 			public void onSuccess(String result) {
-				handleGetActionInfoSuc(result);
+				handleGetActionInfoResult(result);
 			}
 			@Override
 			public void onError(Throwable throwable, boolean arg1) {
@@ -293,13 +293,13 @@ public class CourseServerMgr {
 		});
 	}
 
-	private void handleGetActionInfoSuc(String result) {
+	private void handleGetActionInfoResult(String result) {
 		Gson gson = new Gson();
 		Type typeServerActionData = new TypeToken<ServerActionData>(){}.getType();
 		ServerActionData serverActionData = gson.fromJson(result, typeServerActionData);
 		
 		if(serverActionData == null){
-			Log.e(TAG, "handleGetActionInfoSuc, serverActionData is null");
+			Log.e(TAG, "handleGetActionInfoResult, serverActionData is null");
 			return;
 		}
 		
@@ -354,7 +354,7 @@ public class CourseServerMgr {
 
 			@Override
 			public void onSuccess(String result) {
-				handleJoinCourseSuccess(result);
+				handleJoinCourseResult(result);
 			}
 			@Override
 			public void onError(Throwable throwable, boolean arg1) {
@@ -369,7 +369,7 @@ public class CourseServerMgr {
 		});
 	}
 
-	private void handleJoinCourseSuccess(String result) {
+	private void handleJoinCourseResult(String result) {
 		JSONObject resultJsonObject = null;
 		try {
 			resultJsonObject = new JSONObject(result);
@@ -378,13 +378,13 @@ public class CourseServerMgr {
 		}
 		
 		if(resultJsonObject == null){
-			Log.e(TAG, "handleJoinCourseSuccess, resultJsonObject is null");
+			Log.e(TAG, "handleJoinCourseResult, resultJsonObject is null");
 			
 			notifyJoinCourseFail();
 			return;
 		}
 		int resultCode = resultJsonObject.optInt("result_code");
-		Log.i(TAG, "handleJoinCourseSuccess, resultCode = " + resultCode);
+		Log.i(TAG, "handleJoinCourseResult, resultCode = " + resultCode);
 		if(resultCode == 0){
 			notifyJoinCourseSuc();
 		}else{
@@ -423,7 +423,7 @@ public class CourseServerMgr {
 
 			@Override
 			public void onSuccess(String result) {
-				handleDeleteCourseSuccess(result);
+				handleDeleteCourseResult(result);
 			}
 			@Override
 			public void onError(Throwable throwable, boolean arg1) {
@@ -438,7 +438,7 @@ public class CourseServerMgr {
 		});
 	}
 
-	protected void handleDeleteCourseSuccess(String result) {
+	protected void handleDeleteCourseResult(String result) {
 		JSONObject resultJsonObject = null;
 		try {
 			resultJsonObject = new JSONObject(result);
@@ -447,14 +447,14 @@ public class CourseServerMgr {
 		}
 		
 		if(resultJsonObject == null){
-			Log.e(TAG, "handleDeleteCourseSuccess, resultJsonObject is null");
+			Log.e(TAG, "handleDeleteCourseResult, resultJsonObject is null");
 			
 			notifyDeleteCourseFail();
 			return;
 		}
 		
 		int resultCode = resultJsonObject.optInt("result_code");
-		Log.i(TAG, "handleDeleteCourseSuccess, resultCode = " + resultCode);
+		Log.i(TAG, "handleDeleteCourseResult, resultCode = " + resultCode);
 		if(resultCode == 0){
 			notifyDeleteCourseSuc();
 		}else{
@@ -499,7 +499,7 @@ public class CourseServerMgr {
 
 			@Override
 			public void onSuccess(String result) {
-				handleUploadTrainPlanSuccess(result);
+				handleUploadTrainPlanResult(result);
 			}
 			@Override
 			public void onError(Throwable throwable, boolean arg1) {
@@ -514,7 +514,7 @@ public class CourseServerMgr {
 		});
 	}
 
-	protected void handleUploadTrainPlanSuccess(String result) {
+	protected void handleUploadTrainPlanResult(String result) {
 		JSONObject resultJsonObject = null;
 		try {
 			resultJsonObject = new JSONObject(result);
@@ -523,14 +523,14 @@ public class CourseServerMgr {
 		}
 		
 		if(resultJsonObject == null){
-			Log.e(TAG, "handleuploadTrainPlanSuccess, resultJsonObject is null");
+			Log.e(TAG, "handleUploadTrainPlanResult, resultJsonObject is null");
 			
 			notifyUploadTrainPlanFail();
 			return;
 		}
 		
 		int resultCode = resultJsonObject.optInt("result_code");
-		Log.i(TAG, "handleuploadTrainPlanSuccess, resultCode = " + resultCode);
+		Log.i(TAG, "handleUploadTrainPlanResult, resultCode = " + resultCode);
 		if(resultCode == 0){
 			notifyUploadTrainPlanSuc();
 		}else{
@@ -562,7 +562,7 @@ public class CourseServerMgr {
 	  * @Method: downloadTrainPlan
 	  * @Description: 同步训练计划
 	  * @param uid
-	  * 返回类型：void 
+	  * 返回类型：void
 	  */
 	public void downloadTrainPlan(final String uid){
 		RequestParams params = new RequestParams(ConstServer.URL_DOWNLOAD_TRAIN_PLAN);
@@ -572,11 +572,11 @@ public class CourseServerMgr {
 
 			@Override
 			public void onSuccess(String result) {
-				handleDownloadTrainPlanSuccess(result, uid);
+				handleDownloadTrainPlanResult(result, uid);
 			}
 			@Override
 			public void onError(Throwable throwable, boolean arg1) {
-				Log.e(TAG, "uploadTrainPlan, onError, throwable is : " + throwable);
+				Log.e(TAG, "downloadTrainPlan, onError, throwable is : " + throwable);
 				
 				notifyDownloadTrainPlanFail();
 			}
@@ -587,7 +587,7 @@ public class CourseServerMgr {
 		});
 	}
 
-	private void handleDownloadTrainPlanSuccess(String result, String uid) {
+	private void handleDownloadTrainPlanResult(String result, String uid) {
 		JSONObject resultJsonObject = null;
 		try {
 			resultJsonObject = new JSONObject(result);
@@ -596,14 +596,14 @@ public class CourseServerMgr {
 		}
 		
 		if(resultJsonObject == null){
-			Log.e(TAG, "handleuploadTrainPlanSuccess, resultJsonObject is null");
+			Log.e(TAG, "handleDownloadTrainPlanResult, resultJsonObject is null");
 			
 			notifyDownloadTrainPlanFail();
 			return;
 		}
 		
 		int resultCode = resultJsonObject.optInt("result_code");
-		Log.i(TAG, "handleuploadTrainPlanSuccess, resultCode = " + resultCode);
+		Log.i(TAG, "handleDownloadTrainPlanResult, resultCode = " + resultCode);
 		if(resultCode == 0){
 			JSONArray courseJsonArray;
 			try {
@@ -674,7 +674,7 @@ public class CourseServerMgr {
 
 			@Override
 			public void onSuccess(String result) {
-				handleUpdateRecordSuccess(result);
+				handleUpdateRecordResult(result);
 			}
 			@Override
 			public void onError(Throwable throwable, boolean arg1) {
@@ -689,7 +689,7 @@ public class CourseServerMgr {
 		});
 	}
 
-	protected void handleUpdateRecordSuccess(String result) {
+	protected void handleUpdateRecordResult(String result) {
 		JSONObject resultJsonObject = null;
 		try {
 			resultJsonObject = new JSONObject(result);
@@ -698,14 +698,14 @@ public class CourseServerMgr {
 		}
 		
 		if(resultJsonObject == null){
-			Log.e(TAG, "handleUpdateRecordSuccess, resultJsonObject is null");
+			Log.e(TAG, "handleUpdateRecordResult, resultJsonObject is null");
 			
 			notifyUpdateRecordFail();
 			return;
 		}
 		
 		int resultCode = resultJsonObject.optInt("result_code");
-		Log.i(TAG, "handleUpdateRecordSuccess, resultCode = " + resultCode);
+		Log.i(TAG, "handleUpdateRecordResult, resultCode = " + resultCode);
 		if(resultCode == 0){
 			notifyUpdateRecordSuc();
 		}else{
@@ -747,7 +747,7 @@ public class CourseServerMgr {
 
 			@Override
 			public void onSuccess(String result) {
-				handleRequestTotalDataSuccess(result, uid);
+				handleRequestTotalDataResult(result, uid);
 			}
 			@Override
 			public void onError(Throwable throwable, boolean arg1) {
@@ -762,7 +762,7 @@ public class CourseServerMgr {
 		});
 	}
 
-	private void handleRequestTotalDataSuccess(String result, String uid) {
+	private void handleRequestTotalDataResult(String result, String uid) {
 		JSONObject resultJsonObject = null;
 		try {
 			resultJsonObject = new JSONObject(result);
@@ -771,14 +771,14 @@ public class CourseServerMgr {
 		}
 		
 		if(resultJsonObject == null){
-			Log.e(TAG, "handleRequestTotalDataSuccess, resultJsonObject is null");
+			Log.e(TAG, "handleRequestTotalDataResult, resultJsonObject is null");
 			
 			notifyRequestTotalDataFail();
 			return;
 		}
 		
 		int resultCode = resultJsonObject.optInt("result_code");
-		Log.i(TAG, "handleRequestTotalDataSuccess, resultCode = " + resultCode);
+		Log.i(TAG, "handleRequestTotalDataResult, resultCode = " + resultCode);
 		if(resultCode == 0){
 			JSONObject totalDataObject;
 			try {
@@ -842,7 +842,7 @@ public class CourseServerMgr {
 
 			@Override
 			public void onSuccess(String result) {
-				handleRequestDetailDataSuccess(result, uid, strStartDate);
+				handleRequestDetailDataResult(result, uid, strStartDate);
 			}
 			@Override
 			public void onError(Throwable throwable, boolean arg1) {
@@ -857,7 +857,7 @@ public class CourseServerMgr {
 		});
 	}
 
-	private void handleRequestDetailDataSuccess(String result, String uid, String strStartDate) {
+	private void handleRequestDetailDataResult(String result, String uid, String strStartDate) {
 		JSONObject resultJsonObject = null;
 		try {
 			resultJsonObject = new JSONObject(result);
@@ -866,14 +866,14 @@ public class CourseServerMgr {
 		}
 		
 		if(resultJsonObject == null){
-			Log.e(TAG, "handleRequestDetailDataSuccess, resultJsonObject is null");
+			Log.e(TAG, "handleRequestDetailDataResult, resultJsonObject is null");
 			
 			notifyRequestTotalDataFail();
 			return;
 		}
 		
 		int resultCode = resultJsonObject.optInt("result_code");
-		Log.i(TAG, "handleRequestDetailDataSuccess, resultCode = " + resultCode);
+		Log.i(TAG, "handleRequestDetailDataResult, resultCode = " + resultCode);
 		if(resultCode == 0){
 			JSONArray detailDataArray;
 			try {

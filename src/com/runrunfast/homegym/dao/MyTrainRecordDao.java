@@ -39,7 +39,7 @@ public class MyTrainRecordDao {
 				+ Const.DB_KEY_COURSE_ID + " TEXT,"
 				+ Const.DB_KEY_COURSE_NAME + " TEXT,"
 				+ Const.DB_KEY_FINISH_COUNT + " INTEGER,"
-				+ Const.DB_KEY_FINISH_KCAL + " INTEGER,"
+				+ Const.DB_KEY_FINISH_KCAL + " FLOAT,"
 				+ Const.DB_KEY_FINISH_TIME + " INTEGER,"
 				+ Const.DB_KEY_ACTION_DETAIL + " TEXT,"
 				+ Const.DB_KEY_ACTUAL_DATE + " TEXT,"
@@ -306,7 +306,7 @@ public class MyTrainRecordDao {
 			c = db.query(Const.TABLE_MY_TRAIN_RECORD, null, Const.DB_KEY_UID + " = ? and " + Const.DB_KEY_UNIQUE_FLAG + " =?" ,
 					new String[] { uid, String.valueOf(record.unique_flag) }, null, null, null);
 			if (c.getCount() > 0) {// 查询到数据库有该数据，就更新该行数据
-				db.update(Const.TABLE_MY_COURSE, values, Const.DB_KEY_UID + " = ? and " + Const.DB_KEY_UNIQUE_FLAG + " =?",
+				db.update(Const.TABLE_MY_TRAIN_RECORD, values, Const.DB_KEY_UID + " = ? and " + Const.DB_KEY_UNIQUE_FLAG + " =?",
 						new String[] { uid, String.valueOf(record.unique_flag) });
 			}else{
 				db.insert(Const.TABLE_MY_TRAIN_RECORD, null, values);

@@ -619,7 +619,7 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 			Action action = mAllActionList.get(i);
 			ArrayList<String> videoLocalList = new ArrayList<String>();
 			// 处理视频video
-			if(action.action_video_local.isEmpty()){
+			if( action.action_video_local == null || action.action_video_local.isEmpty()){
 				needDownload = true;
 				int videoSize = action.action_video_url.size();
 				for(int k=0; k<videoSize; k++){

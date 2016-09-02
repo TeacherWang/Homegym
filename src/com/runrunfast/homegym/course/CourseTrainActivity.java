@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.runrunfast.homegym.R;
+import com.runrunfast.homegym.audio.MediaPlayerMgr;
 import com.runrunfast.homegym.bean.Action;
 import com.runrunfast.homegym.bean.Course.ActionDetail;
 import com.runrunfast.homegym.bean.Course.CourseDetail;
@@ -61,7 +62,6 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 		
 		initListener();
 	}
-
 
 	private void initListener() {
 		mCourseTrainListView.setOnItemClickListener(new OnItemClickListener() {

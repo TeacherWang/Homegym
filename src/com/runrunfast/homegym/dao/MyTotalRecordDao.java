@@ -28,10 +28,10 @@ public class MyTotalRecordDao {
 		String sql = "create table if not exists " + Const.TABLE_MY_TOTAL_RECORD
 				+ " (" + Const.DB_KEY_ID + " INTEGER PRIMARY KEY,"
 				+ Const.DB_KEY_UID + " TEXT,"
-				+ Const.DB_KEY_TOTAL_KCAL + " INTEGER,"
+				+ Const.DB_KEY_TOTAL_KCAL + " FLOAT,"
 				+ Const.DB_KEY_TOTAL_TIME + " INTEGER,"
 				+ Const.DB_KEY_TOTAL_DAYS + " INTEGER,"
-				+ Const.DB_KEY_TOTAL_FOOD + " INTEGER"
+				+ Const.DB_KEY_TOTAL_FOOD + " FLOAT"
 				+ ");";
 		return sql;
 	}

@@ -24,6 +24,7 @@ import com.runrunfast.homegym.BtDevice.BtDeviceMgr.BLEServiceListener;
 import com.runrunfast.homegym.account.AccountMgr;
 import com.runrunfast.homegym.account.DataTransferUtil;
 import com.runrunfast.homegym.account.UserInfo;
+import com.runrunfast.homegym.audio.MediaPlayerMgr;
 import com.runrunfast.homegym.bean.Action;
 import com.runrunfast.homegym.bean.Course.ActionDetail;
 import com.runrunfast.homegym.bean.Course.CourseDetail;
@@ -112,7 +113,6 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 	private ArrayList<String> mFinishedActionIds;
 	
 	private boolean isRest = false;
-	private boolean isPrepareNextAction = false; // 该动作完成，正在准备下一个动作
 	
 	private IUpdateRecordListener mIUpdateRecordListener;
 	
@@ -189,6 +189,9 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 		
 		if(isRest){
 			mHandler.removeMessages(MSG_REST_FINISH);
+			if(mAction.action_left_right == Action.ACTION_TWO_SIDE){
+				MediaPlayerMgr.getInstance().startPlaying(Globle.gApplicationContext, R.raw.otherside);
+			}
 			isRest = false;
 			rlHaveRest.setVisibility(View.GONE);
 			startVideo(mVideoPath);
@@ -222,7 +225,7 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 			mActionCurrentGroupTotalCount = mTargetGroupDetail.count;
 			mActionCurrentGroupCount = 0;
 			// 做完一组休息一下
-			handleNextGroup();
+			prepareNextGroup();
 			handleRest();
 		}else{ // 当前为最后一组的最后一次
 			Toast.makeText(CourseVideoActivity.this, "该动作结束", Toast.LENGTH_SHORT).show();
@@ -232,7 +235,6 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 			// 还有下个动作？
 			mCurrentActionPosition++;
 			if( mCurrentActionPosition < mTotalActionNum ){
-				isPrepareNextAction = true;
 				mAction = ActionDao.getInstance().getActionFromDb(Globle.gApplicationContext, mTargetActionDetail.action_id);
 				handleNextAction();
 				// 做下个动作之前休息一下
@@ -261,19 +263,23 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 	}
 
 	/**
-	  * @Method: handleNextGroup
+	  * @Method: prepareNextGroup
 	  * @Description: 做下一组动作。可能会换边
 	  * 返回类型：void 
 	  */
-	private void handleNextGroup() {
-		if(mAction.action_left_right == Action.ACTION_TWO_SIDE){
-			if(mActionSide == ACTION_SIDE_LEFT){
-				mActionSide = ACTION_SIDE_RIGHT;
-				mVideoPath = mAction.action_video_local.get(1);
-			}else{
-				mActionSide = ACTION_SIDE_LEFT;
-				mVideoPath = mAction.action_video_local.get(0);
-			}
+	private void prepareNextGroup() {
+		if(mAction.action_left_right == Action.ACTION_ONE_SIDE){
+			return;
+		}
+		
+		Log.i(TAG, "handleNextGroup, this is two side!");
+		
+		if(mActionSide == ACTION_SIDE_LEFT){
+			mActionSide = ACTION_SIDE_RIGHT;
+			mVideoPath = mAction.action_video_local.get(1);
+		}else{
+			mActionSide = ACTION_SIDE_LEFT;
+			mVideoPath = mAction.action_video_local.get(0);
 		}
 	}
 
@@ -283,7 +289,9 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 	}
 
 	private void handleRest() {
-		Toast.makeText(CourseVideoActivity.this, "休息一下", Toast.LENGTH_SHORT).show();
+		Log.i(TAG, "handleRest, play rest audio");
+		
+		MediaPlayerMgr.getInstance().startPlaying(Globle.gApplicationContext, R.raw.rest);
 		
 		mHandler.sendEmptyMessageDelayed(MSG_REST_FINISH, REST_TIME);
 		
@@ -395,6 +403,10 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 					startVideo(mVideoPath);
 					// 该动作还有下一组
 					if((mActionGroupIndex + 1) < mTargetActionDetail.group_num){
+						if(mAction.action_left_right == Action.ACTION_TWO_SIDE){
+							MediaPlayerMgr.getInstance().startPlaying(Globle.gApplicationContext, R.raw.otherside);
+						}
+						
 						GroupDetail groupDetail = mTargetActionGroupDetailList.get(mActionGroupIndex + 1);
 						int actionCurrentGroupTotalCount = groupDetail.count;
 						// 更新ui

@@ -13,10 +13,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.runrunfast.homegym.R;
+import com.runrunfast.homegym.audio.MediaPlayerMgr;
 import com.runrunfast.homegym.bean.Action;
 import com.runrunfast.homegym.utils.Const;
 import com.runrunfast.homegym.utils.FileUtils;
-import com.runrunfast.homegym.utils.Globle;
 
 import io.vov.vitamio.MediaPlayer;
 import io.vov.vitamio.MediaPlayer.OnCompletionListener;
@@ -81,17 +81,22 @@ public class ActionDemoActivity extends Activity implements OnClickListener{
 
 	private void startVideo() {
 		String path = mAction.action_video_local.get(0);
+		String actionAudioPath = mAction.action_audio_local;
 		
 		/*
 		 * Alternatively,for streaming media you can use
 		 * mVideoView.setVideoURI(Uri.parse(URLstring));
 		 */
-		if(TextUtils.isEmpty(path) || !FileUtils.isFileExist(path)){
+		if(TextUtils.isEmpty(path) || !FileUtils.isFileExist(path)
+				|| TextUtils.isEmpty(actionAudioPath) || !FileUtils.isFileExist(actionAudioPath)){
 			Toast.makeText(this, "请到详细计划界面下载课程", Toast.LENGTH_LONG).show();
 			return;
 		}
+		
 		mVideoView.setVideoPath(path);
 		mVideoView.start();
+		
+		MediaPlayerMgr.getInstance().startPlaying(actionAudioPath);
 	}
 
 	private void initView() {
@@ -130,5 +135,12 @@ public class ActionDemoActivity extends Activity implements OnClickListener{
 		default:
 			break;
 		}
+	}
+	
+	@Override
+	protected void onDestroy() {
+		mVideoView.stopPlayback();
+		MediaPlayerMgr.getInstance().stopPlaying();
+		super.onDestroy();
 	}
 }

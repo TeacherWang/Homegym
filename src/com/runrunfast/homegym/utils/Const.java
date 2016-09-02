@@ -107,10 +107,11 @@ public class Const {
 	
 	public static final String DB_KEY_DISTINCT = "DISTINCT ";
 	
-	
-	
 	public static final String DB_KEY_TRAIN_DATA = "traindata";
 	public static final String DB_KEY_END_DATE = "end_date";
 	public static final String DB_KEY_UNIQUE_FLAG = "unique_flag";
+	
+	public static final String ASSETS_AUDIO_REST_NAME = "rest.m4a";
+	public static final String ASSETS_AUDIO_OTHERSIDE_NAME = "otherside.m4a";
 	
 }

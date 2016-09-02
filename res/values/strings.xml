@@ -183,6 +183,8 @@
 	<string name="demo_end">教学结束</string>
 	<string name="replay">重播</string>
 	
+	<string name="action_descript">动作说明</string>
+	
 	<string-array name="sex">
 	    <item >男</item>
      	<item >女</item>

@@ -326,11 +326,11 @@
 	<dimen name="train_action_set_bg_height">225dp</dimen>
 	<dimen name="train_action_set_num_size">12dp</dimen>
 	<dimen name="train_action_set_num_margin_left">12dp</dimen>
-	<dimen name="train_action_set_num_margin_top">101dp</dimen>
+	<dimen name="train_action_set_num_margin_top">120dp</dimen>
 	<dimen name="train_action_set_name_size">18sp</dimen>
 	<dimen name="train_action_set_name_margin_left">36dp</dimen>
-	<dimen name="train_action_set_name_margin_top">127dp</dimen>
-	<dimen name="train_action_set_descript_margin_top">158dp</dimen>
+	<dimen name="train_action_set_name_margin_top">10dp</dimen>
+	<dimen name="train_action_set_descript_margin_top">10dp</dimen>
 	<dimen name="train_action_set_join_in_teach_size">15sp</dimen>
 	<dimen name="train_action_set_join_in_teach_margin_top">186dp</dimen>
 	<dimen name="train_action_set_join_in_margin_right">20dp</dimen>
