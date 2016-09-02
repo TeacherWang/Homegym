@@ -241,6 +241,8 @@ public class CourseServerMgr {
 			Course course = createCourseFromBase(baseCourseData);
 			CourseDao.getInstance().saveCourseToDb(Globle.gApplicationContext, course);
 		}
+		
+		notifyGetCourseInfoSuc();
 	}
 	
 	private Course createCourseFromBase(BaseCourseData baseCourseData) {
@@ -261,9 +263,25 @@ public class CourseServerMgr {
 		
 		return course;
 	}
+	
+	private void notifyGetCourseInfoSuc(){
+		synchronized (mSetOfGetCourseFromServerObserver) {
+			Iterator<IGetCourseFromServerListener> it = mSetOfGetCourseFromServerObserver.iterator();
+			while( it.hasNext() ){
+				IGetCourseFromServerListener observer = it.next();
+				observer.onGetCourseSucFromServer();
+			}
+		}
+	}
 
 	private void notifyGetCourseInfoFail() {
-		
+		synchronized (mSetOfGetCourseFromServerObserver) {
+			Iterator<IGetCourseFromServerListener> it = mSetOfGetCourseFromServerObserver.iterator();
+			while( it.hasNext() ){
+				IGetCourseFromServerListener observer = it.next();
+				observer.onGetCoruseFailFromServer();
+			}
+		}
 	}
 	
 	/**
@@ -284,7 +302,7 @@ public class CourseServerMgr {
 			public void onError(Throwable throwable, boolean arg1) {
 				Log.e(TAG, "getActionInfoFromServer, onError, throwable is : " + throwable);
 				
-				notifyGetCourseInfoFail();
+				notifyGetActionInfoFail();
 			}
 			@Override
 			public void onCancelled(CancelledException arg0) {}
@@ -309,6 +327,14 @@ public class CourseServerMgr {
 			Action action = createActionFromBase(baseCourseData);
 			ActionDao.getInstance().saveActionToDb(Globle.gApplicationContext, action);
 		}
+	}
+	
+	private void notifyGetActionInfoSuc() {
+		
+	}
+	
+	private void notifyGetActionInfoFail() {
+		
 	}
 	
 	private Action createActionFromBase(BaseActionData baseCourseData) {

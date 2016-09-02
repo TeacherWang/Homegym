@@ -73,7 +73,7 @@ public class MyCourseFragment extends Fragment{
 			
 			@Override
 			public void onGetCourseSucFromServer() {
-				Log.i(TAG, "onGetCourseSucFromServer");
+				Log.i(TAG, "MyCourseFragment, onGetCourseSucFromServer");
 				
 				getData();
 			}

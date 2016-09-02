@@ -57,7 +57,7 @@ public class AllCoursesFragment extends Fragment {
 			
 			@Override
 			public void onGetCourseSucFromServer() {
-				Log.i(TAG, "onGetCourseSucFromServer");
+				Log.i(TAG, "AllCoursesFragment, onGetCourseSucFromServer");
 				
 				getData();
 			}

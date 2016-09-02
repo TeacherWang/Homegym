@@ -147,11 +147,14 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 						// 不是我的课程，自动添加到我的课程
 						if( !isMyCourse ){
 							CourseServerMgr.getInstance().joinCourseToServer(mUserInfo.strAccountId, mCourseId, DateUtil.getCurrentDate());
+							rlProgress.setVisibility(View.INVISIBLE);
+							btnJoin.setText("请求中...");
+							btnJoin.setVisibility(View.VISIBLE);
+						}else{
+							rlProgress.setVisibility(View.INVISIBLE);
+							btnJoin.setText(R.string.start_train);
+							btnJoin.setVisibility(View.VISIBLE);
 						}
-						
-						rlProgress.setVisibility(View.INVISIBLE);
-						btnJoin.setText("请求中...");
-						btnJoin.setVisibility(View.VISIBLE);
 					}
 				});
 				
@@ -539,6 +542,7 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 			@Override
 			public void onJoinCourseToServerSuc() {
 				prepareToSaveMyCourse();
+				getAllActions();
 				btnRight.setVisibility(View.VISIBLE);
 				btnJoin.setText(R.string.start_train);
 				isMyCourse = true;

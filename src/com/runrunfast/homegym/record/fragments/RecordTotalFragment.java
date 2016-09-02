@@ -46,6 +46,7 @@ public class RecordTotalFragment extends Fragment {
 			
 			@Override
 			public void onRequestTotalDataSuc(TotalRecord totalRecord) {
+				MyTotalRecordDao.getInstance().saveMyTotalRecordToDb(Globle.gApplicationContext, totalRecord, mUserInfo.strAccountId);
 				setUiData(totalRecord);
 			}
 			
@@ -68,7 +69,7 @@ public class RecordTotalFragment extends Fragment {
 	}
 
 	private void setUiData(TotalRecord totalRecord) {
-		tvTotalKcal.setText(String.valueOf(totalRecord.total_kcal));
+		tvTotalKcal.setText(DataTransferUtil.getOneDecimalData((totalRecord.total_kcal)));
 		tvTotalDays.setText(String.valueOf(totalRecord.total_days));
 		tvTotalTimeHour.setText(DateUtil.secToHour(totalRecord.total_time));
 		tvFood.setText(DataTransferUtil.getOneDecimalData(totalRecord.total_food) + "个汉堡包");
