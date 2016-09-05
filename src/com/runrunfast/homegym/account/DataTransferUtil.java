@@ -246,7 +246,7 @@ public class DataTransferUtil {
 		return age;
 	}
 	
-	public String getBigNum(int num){
+	public static String getBigNum(int num){
 		return (String) numMap.get(num);
 	}
 	

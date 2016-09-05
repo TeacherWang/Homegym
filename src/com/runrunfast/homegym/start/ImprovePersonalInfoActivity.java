@@ -477,11 +477,7 @@ public class ImprovePersonalInfoActivity extends Activity implements OnClickList
 			return;
 		}
 		
-		PrefUtils.setNickname(this, nickName);
-		PrefUtils.setSex(this, strSex);
-		PrefUtils.setBirthday(this, strBirthday);
-		PrefUtils.setWeight(this, strWeight);
-		PrefUtils.setHeight(this, strHeight);
+		AccountMgr.getInstance().saveAccountInfo(nickName, strSex, strBirthday, strWeight, strHeight, "");
 		
 		AccountMgr.getInstance().loadUserInfo();
 		

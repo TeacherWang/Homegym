@@ -16,7 +16,9 @@
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 	<uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    
+	<uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+	
     <application
         android:name=".TheApplication"
         android:allowBackup="true"
@@ -110,7 +112,7 @@
         <activity
             android:name=".home.FeedbackActivity"
             android:theme="@android:style/Theme.NoTitleBar"
-            android:configChanges="keyboard|keyboardHidden|orientation"
+            android:configChanges="orientation"
             android:screenOrientation="portrait" >
         </activity>
         

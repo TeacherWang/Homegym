@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="@dimen/course_img_width"
-    android:layout_height="@dimen/course_img_height"
-    android:layout_gravity="center_horizontal" >
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
     <ImageView 
         android:id="@+id/course_img"
-        android:layout_width="352dp"
-        android:layout_height="142dp"/>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true" />
     <!-- 蒙版 -->
-    <TextView
-        android:layout_width="352dp"
-        android:layout_height="142dp"
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:background="@color/course_img_mask">
-    </TextView>
+    </ImageView>
     
     <Button
         android:id="@+id/btn_add"
@@ -73,5 +74,4 @@
 	    android:textSize="@dimen/course_excellent_text_size"
 	    android:gravity="center"
 	    android:background="@drawable/home_state_high_quality"/>
-	
 </RelativeLayout>

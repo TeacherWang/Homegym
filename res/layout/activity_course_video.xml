@@ -6,37 +6,8 @@
     <io.vov.vitamio.widget.VideoView
         android:id="@+id/surface_view"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    
-    <RelativeLayout
-        android:id="@+id/have_rest_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-        <ImageView 
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:scaleType="centerCrop"
-            android:src="@drawable/rest"/>
-    </RelativeLayout>
-    
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-        <ImageView
-            android:id="@+id/video_exit_img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:background="@drawable/video_exit" />
-        <ImageView
-            android:id="@+id/video_bluetooth_img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:background="@drawable/video_bluetooth_red" />
-    </RelativeLayout>
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" />
     
 	<RelativeLayout
 	    android:layout_width="match_parent"
@@ -105,6 +76,51 @@
 	    
 	</RelativeLayout>    
     
+	<RelativeLayout
+        android:id="@+id/have_rest_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+        <ImageView 
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:scaleType="centerCrop"
+            android:src="@drawable/rest"/>
+        
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/video_rest"
+            android:layout_centerInParent="true" >
+            <TextView 
+                android:id="@+id/rest_time_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="50"
+                android:textSize="40sp"
+                android:textColor="@color/white"/>
+        </RelativeLayout>
+    </RelativeLayout>
+    
+	<RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+        <ImageView
+            android:id="@+id/video_exit_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:background="@drawable/video_exit" />
+        <ImageView
+            android:id="@+id/video_bluetooth_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/video_bluetooth_red" />
+    </RelativeLayout>
+	
     <RelativeLayout
         android:layout_alignParentRight="true"
         android:layout_width="wrap_content"

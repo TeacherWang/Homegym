@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.audio.MediaPlayerMgr;
+import com.runrunfast.homegym.audio.MediaPlayerMgr.IMediaListener;
 import com.runrunfast.homegym.bean.Action;
 import com.runrunfast.homegym.utils.Const;
 import com.runrunfast.homegym.utils.FileUtils;
@@ -31,6 +32,8 @@ public class ActionDemoActivity extends Activity implements OnClickListener{
 	private Button btnEnd;
 	private MediaController mMediaController;
 	private Action mAction;
+	
+	private IMediaListener mIMediaListener;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +54,17 @@ public class ActionDemoActivity extends Activity implements OnClickListener{
 		
 		initVideo();
 		startVideo();
+		
+		mIMediaListener = new IMediaListener() {
+			
+			@Override
+			public void onCompletion() {
+				if( !mVideoView.isPlaying() ){
+					showEndLayout();
+				}
+			}
+		};
+		MediaPlayerMgr.getInstance().addMediaPlayerObserver(mIMediaListener);
 	}
 
 	private void initVideo() {
@@ -62,7 +76,7 @@ public class ActionDemoActivity extends Activity implements OnClickListener{
 			
 			@Override
 			public void onCompletion(MediaPlayer mp) {
-				handleVideoEnd();
+				showEndLayout();
 			}
 		});
 		
@@ -75,7 +89,13 @@ public class ActionDemoActivity extends Activity implements OnClickListener{
 		});
 	}
 
-	private void handleVideoEnd() {
+	private void showEndLayout() {
+		if(MediaPlayerMgr.getInstance().isPlaying()){
+			return;
+		}
+		if(mVideoView.isPlaying()){
+			return;
+		}
 		rlEndLayout.setVisibility(View.VISIBLE);
 	}
 

@@ -114,4 +114,7 @@ public class Const {
 	public static final String ASSETS_AUDIO_REST_NAME = "rest.m4a";
 	public static final String ASSETS_AUDIO_OTHERSIDE_NAME = "otherside.m4a";
 	
+	
+	public static final String ACTION_VOLUME_CHANGED = "android.media.VOLUME_CHANGED_ACTION";
+	
 }

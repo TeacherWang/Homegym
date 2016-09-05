@@ -2,11 +2,14 @@ package com.runrunfast.homegym.course;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothDevice;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -17,6 +20,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.baidu.tts.auth.AuthInfo;
+import com.baidu.tts.client.SpeechError;
+import com.baidu.tts.client.SpeechSynthesizer;
+import com.baidu.tts.client.SpeechSynthesizerListener;
+import com.baidu.tts.client.TtsMode;
 import com.google.gson.Gson;
 import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.BtDevice.BtDeviceMgr;
@@ -39,7 +47,9 @@ import com.runrunfast.homegym.home.FinishActivity;
 import com.runrunfast.homegym.record.TrainRecord;
 import com.runrunfast.homegym.utils.CalculateUtil;
 import com.runrunfast.homegym.utils.Const;
+import com.runrunfast.homegym.utils.ConstServer;
 import com.runrunfast.homegym.utils.DateUtil;
+import com.runrunfast.homegym.utils.FileUtils;
 import com.runrunfast.homegym.utils.Globle;
 import com.runrunfast.homegym.widget.DialogActivity;
 import com.runrunfast.homegym.widget.HorizonDialogActivity;
@@ -48,6 +58,11 @@ import io.vov.vitamio.MediaPlayer;
 import io.vov.vitamio.widget.MediaController;
 import io.vov.vitamio.widget.VideoView;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -59,21 +74,24 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 	
 	private static final int MSG_ONE_SECOND = 1;
 	private static final int MSG_REST_FINISH = 2; // 休息结束
+	private static final int MSG_PLAY_REST = 3; // 最后一个动作做完后，等次数报完后，延迟播报“休息一下”
 	
 	private static final int DELAY_SECOND = 1000;
-	private static final int REST_TIME = 10 * 1000; // 休息时间 秒
+	private static final int REST_TIME = 50 * 1000; // 休息时间 秒
+	private static final int REST_TIME_SHOW_INIT = 50; // 显示休息时间
 	
 	private static final int ACTION_SIDE_LEFT = 0;
 	private static final int ACTION_SIDE_RIGHT = 1;
 	
 	private int mActionSide = ACTION_SIDE_LEFT;
 	
+	private int mRestTime = REST_TIME_SHOW_INIT;
 	private Timer mTimer;
 	private VideoTimerTask mVideoTimerTask;
 	private int mTimeSecond = 0;
 	
 	private Button btnFinishOnce;
-	private TextView tvCourseName, tvActionName, tvGroupCount, tvGroupNum, tvTime;
+	private TextView tvCourseName, tvActionName, tvGroupCount, tvGroupNum, tvTime, tvRestTime;
 	private RelativeLayout rlHaveRest;
 	
 	private VideoView mVideoView;
@@ -113,10 +131,23 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 	private ArrayList<String> mFinishedActionIds;
 	
 	private boolean isRest = false;
+	private boolean needExplainAction = true;
 	
 	private IUpdateRecordListener mIUpdateRecordListener;
 	
 	private boolean isPause = false;
+	
+	// 语音合成
+	private SpeechSynthesizer mSpeechSynthesizer; 
+	private String mSampleDirPath;
+	private static final String SAMPLE_DIR_NAME = "baiduTTS";
+    private static final String SPEECH_FEMALE_MODEL_NAME = "bd_etts_speech_female.dat";
+    private static final String SPEECH_MALE_MODEL_NAME = "bd_etts_speech_male.dat";
+    private static final String TEXT_MODEL_NAME = "bd_etts_text.dat";
+    private static final String LICENSE_FILE_NAME = "temp_license";
+    private static final String ENGLISH_SPEECH_FEMALE_MODEL_NAME = "bd_etts_speech_female_en.dat";
+    private static final String ENGLISH_SPEECH_MALE_MODEL_NAME = "bd_etts_speech_male_en.dat";
+    private static final String ENGLISH_TEXT_MODEL_NAME = "bd_etts_text_en.dat";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -128,6 +159,8 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 		setContentView(R.layout.activity_course_video);
 		
 		initView();
+		
+		initTTS();
 		
 		initData();
 		
@@ -188,18 +221,15 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 		}
 		
 		if(isRest){
-			mHandler.removeMessages(MSG_REST_FINISH);
-			if(mAction.action_left_right == Action.ACTION_TWO_SIDE){
-				MediaPlayerMgr.getInstance().startPlaying(Globle.gApplicationContext, R.raw.otherside);
-			}
-			isRest = false;
-			rlHaveRest.setVisibility(View.GONE);
-			startVideo(mVideoPath);
+			handleRestFinish();
+			return;
 		}
 		
 		// 当前次数小于该组总次数
 		if( mActionCurrentGroupCount < mActionCurrentGroupTotalCount ){
 			mActionCurrentGroupCount++; // 当前组的次数
+			
+			speekFinishOnce(mActionCurrentGroupCount);
 			
 			mFinishedGroupDetail.kcal = CalculateUtil.calculateTotakKcal(mActionCurrentGroupCount, mTargetGroupDetail.weight, mAction.action_h, mAction.action_b); // 该动作消耗的kcal
 			mFinishedGroupDetail.count = mFinishedGroupDetail.count + 1;
@@ -207,7 +237,7 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 			
 			mCurrentRecord.finish_count = mCurrentRecord.finish_count + 1; // 该次训练的总次数
 			
-			updateUi();
+			updateUi(mActionCurrentGroupCount, mActionCurrentGroupTotalCount, mActionGroupIndex);
 		}
 		// 次数+1后，该组还未结束
 		if(mActionCurrentGroupCount < mActionCurrentGroupTotalCount){
@@ -226,7 +256,8 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 			mActionCurrentGroupCount = 0;
 			// 做完一组休息一下
 			prepareNextGroup();
-			handleRest();
+			showRest();
+			mHandler.sendEmptyMessageDelayed(MSG_PLAY_REST, DELAY_SECOND);
 		}else{ // 当前为最后一组的最后一次
 			Toast.makeText(CourseVideoActivity.this, "该动作结束", Toast.LENGTH_SHORT).show();
 			// 保存到列表
@@ -236,9 +267,10 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 			mCurrentActionPosition++;
 			if( mCurrentActionPosition < mTotalActionNum ){
 				mAction = ActionDao.getInstance().getActionFromDb(Globle.gApplicationContext, mTargetActionDetail.action_id);
-				handleNextAction();
+				prepareNextAction();
 				// 做下个动作之前休息一下
-				handleRest();
+				showRest();
+				mHandler.sendEmptyMessageDelayed(MSG_PLAY_REST, DELAY_SECOND);
 				
 				mTargetActionDetail = mActionDetailList.get(mCurrentActionPosition);
 				tvActionName.setText( (mCurrentActionPosition + 1) + "." + mAction.action_name);
@@ -261,6 +293,38 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 			}
 		}
 	}
+	
+	private void handleRestFinish() {
+		mHandler.removeMessages(MSG_REST_FINISH);
+		isRest = false;
+		rlHaveRest.setVisibility(View.GONE);
+		mMediaController.show(0);
+		startVideo(mVideoPath);
+		mRestTime = REST_TIME_SHOW_INIT;
+		// 该动作还有下一组
+		if((mActionGroupIndex + 1) < mTargetActionDetail.group_num){
+			if(mAction.action_left_right == Action.ACTION_TWO_SIDE){
+				speekTurnRound(mAction.action_name, mTargetGroupDetail.count, mTargetGroupDetail.weight);
+			}else{
+				speekNextGroup(mAction.action_name, mTargetGroupDetail.count, mTargetGroupDetail.weight);
+			}
+			
+			GroupDetail groupDetail = mTargetActionGroupDetailList.get(mActionGroupIndex + 1);
+			int actionCurrentGroupTotalCount = groupDetail.count;
+			// 更新ui
+			updateUi(0, actionCurrentGroupTotalCount, mActionGroupIndex);
+		}else{
+			// 下一个动作
+			speekFirstGroup(mAction.action_name, mTargetGroupDetail.count, mTargetGroupDetail.weight);
+			
+			ActionDetail targetActionDetail = mActionDetailList.get(mCurrentActionPosition + 1);
+			List<GroupDetail> targetActionGroupDetailList = targetActionDetail.group_detail;
+			GroupDetail targetGroupDetail = targetActionGroupDetailList.get(0);
+			int actionCurrentGroupTotalCount = targetGroupDetail.count;
+			// 更新ui
+			updateUi(0, actionCurrentGroupTotalCount, 0);
+		}
+	};
 
 	/**
 	  * @Method: prepareNextGroup
@@ -283,23 +347,27 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 		}
 	}
 
-	private void handleNextAction() {
+	private void prepareNextAction() {
 		mActionSide = ACTION_SIDE_LEFT;
 		mVideoPath = mAction.action_video_local.get(0);
 	}
 
-	private void handleRest() {
-		Log.i(TAG, "handleRest, play rest audio");
+	private void handleRestAudio() {
+		Log.i(TAG, "handleRestAudio, play rest audio");
 		
 		MediaPlayerMgr.getInstance().startPlaying(Globle.gApplicationContext, R.raw.rest);
 		
+	}
+	
+	private void showRest(){
 		mHandler.sendEmptyMessageDelayed(MSG_REST_FINISH, REST_TIME);
 		
 		isRest = true;
+		mMediaController.hide();
 		rlHaveRest.setVisibility(View.VISIBLE);
 		mVideoView.stopPlayback();
 	}
-
+	
 	private void initData() {
 		mUserInfo = AccountMgr.getInstance().mUserInfo;
 		
@@ -346,19 +414,44 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 		mCurrentRecord.plan_date = mStrPlanDate;
 		mFinishedActionDetailList = mCurrentRecord.action_detail;
 		
-		updateUi();
+		updateUi(mActionCurrentGroupCount, mActionCurrentGroupTotalCount, mActionGroupIndex);
 		
-//		mVideoPath = Environment.getExternalStorageDirectory()+"/video.mp4";
 		mVideoPath = mAction.action_video_local.get(0);
 		
 		initVideo();
 		
 		startVideo(mVideoPath);
 		
+		speekFirstGroup(mAction.action_name, mTargetGroupDetail.count, mTargetGroupDetail.weight);
+		
 		mTimer = new Timer();
 		mVideoTimerTask = new VideoTimerTask();
 		mTimer.scheduleAtFixedRate(mVideoTimerTask, DELAY_SECOND, DELAY_SECOND);
 		tvTime.setText(DateUtil.secToMinuteSecond(mTimeSecond));
+	}
+	
+	private void speekFinishOnce(int count){
+		Log.i(TAG, "speekFinishOnce, count = " + count);
+		MediaPlayerMgr.getInstance().stopPlaying();
+		
+		mSpeechSynthesizer.stop();
+		
+		mSpeechSynthesizer.speak(count + "次");
+	}
+	
+	private void speekFirstGroup(String actionName, int count, int weight){
+		Log.i(TAG, "speekFirstGroup");
+		mSpeechSynthesizer.speak("第一组动作：" + actionName + count + "次，" + weight + "公斤");
+	}
+	
+	private void speekNextGroup(String actionName, int count, int weight){
+		Log.i(TAG, "speekNextGroup");
+		mSpeechSynthesizer.speak("下一组动作：" + actionName + count + "次，" + weight + "公斤");
+	}
+	
+	private void speekTurnRound(String actionName, int count, int weight){
+		Log.i(TAG, "speekTurnRound");
+		mSpeechSynthesizer.speak("换另一边，继续：" + actionName + count + "次，" + weight + "公斤");
 	}
 
 	private void initVideo() {
@@ -392,42 +485,27 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 			case MSG_ONE_SECOND:
 				mTimeSecond++;
 				tvTime.setText(DateUtil.secToMinuteSecond(mTimeSecond));
+				if(isRest && mRestTime > 0){
+					mRestTime--;
+					tvRestTime.setText(String.valueOf(mRestTime));
+				}
+				break;
+				
+			case MSG_PLAY_REST:
+				handleRestAudio();
 				break;
 				
 			case MSG_REST_FINISH:
 				// 休息结束
 				if(isRest){
-					mHandler.removeMessages(MSG_REST_FINISH);
-					isRest = false;
-					rlHaveRest.setVisibility(View.GONE);
-					startVideo(mVideoPath);
-					// 该动作还有下一组
-					if((mActionGroupIndex + 1) < mTargetActionDetail.group_num){
-						if(mAction.action_left_right == Action.ACTION_TWO_SIDE){
-							MediaPlayerMgr.getInstance().startPlaying(Globle.gApplicationContext, R.raw.otherside);
-						}
-						
-						GroupDetail groupDetail = mTargetActionGroupDetailList.get(mActionGroupIndex + 1);
-						int actionCurrentGroupTotalCount = groupDetail.count;
-						// 更新ui
-						tvGroupCount.setText( 0 + "/" + String.valueOf(actionCurrentGroupTotalCount) );
-						tvGroupNum.setText("第" + DataTransferUtil.numMap.get(mActionGroupIndex + 1) + "组");
-					}else{
-						ActionDetail targetActionDetail = mActionDetailList.get(mCurrentActionPosition + 1);
-						List<GroupDetail> targetActionGroupDetailList = targetActionDetail.group_detail;
-						GroupDetail targetGroupDetail = targetActionGroupDetailList.get(0);
-						int actionCurrentGroupTotalCount = targetGroupDetail.count;
-						// 更新ui
-						tvGroupCount.setText( 0 + "/" + String.valueOf(actionCurrentGroupTotalCount) );
-						tvGroupNum.setText("第一组");
-					}
+					handleRestFinish();
 				}
 				break;
 
 			default:
 				break;
 			}
-		};
+		}
 	};
 	
 	private void startVideo(String videoPath) {
@@ -447,9 +525,17 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 		mVideoView.start();
 	}
 
-	private void updateUi() {
-		tvGroupCount.setText( String.valueOf(mActionCurrentGroupCount) + "/" + String.valueOf(mActionCurrentGroupTotalCount) );
-		tvGroupNum.setText("第" + DataTransferUtil.numMap.get(mActionGroupIndex + 1) + "组");
+	/**
+	  * @Method: updateUi
+	  * @Description: 更新UI
+	  * @param currentGroupCount 当前组的个数
+	  * @param actinoCurrentGroupTotalCount 当前组的总个数
+	  * @param actionGroupIndex	当前组的标识
+	  * 返回类型：void 
+	  */
+	private void updateUi(int currentGroupCount, int actinoCurrentGroupTotalCount, int actionGroupIndex) {
+		tvGroupCount.setText( String.valueOf(currentGroupCount) + "/" + String.valueOf(actinoCurrentGroupTotalCount) );
+		tvGroupNum.setText("第" + DataTransferUtil.getBigNum(actionGroupIndex + 1) + "组");
 	}
 
 	private void initView() {
@@ -471,6 +557,8 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 		ivExit.setOnClickListener(this);
 		ivBluetooth = (ImageView)findViewById(R.id.video_bluetooth_img);
 		ivBluetooth.setOnClickListener(this);
+		
+		tvRestTime = (TextView)findViewById(R.id.rest_time_text);
 	}
 
 	@Override
@@ -678,6 +766,167 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 		}
 	}
 	
+	private void initTTS() {
+		initialEnv();
+		
+		mSpeechSynthesizer = SpeechSynthesizer.getInstance();
+		mSpeechSynthesizer.setContext(this);
+		// 文本模型文件路径 (离线引擎使用)
+		mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_TTS_TEXT_MODEL_FILE, mSampleDirPath + "/" + TEXT_MODEL_NAME);
+		// 声学模型文件路径 (离线引擎使用)
+        this.mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_TTS_SPEECH_MODEL_FILE, mSampleDirPath + "/" + SPEECH_FEMALE_MODEL_NAME);
+        // 请替换为语音开发者平台上注册应用得到的App ID (离线授权)
+        this.mSpeechSynthesizer.setAppId("8592514");
+        // 请替换为语音开发者平台注册应用得到的apikey和secretkey (在线授权)
+        this.mSpeechSynthesizer.setApiKey("G68yo3o3su3yct1DK874NDWl", "5b783c5dc9db7327a52d52f84a224e4e");
+        // 授权检测接口(只是通过AuthInfo进行检验授权是否成功。)
+        // AuthInfo接口用于测试开发者是否成功申请了在线或者离线授权，如果测试授权成功了，可以删除AuthInfo部分的代码（该接口首次验证时比较耗时），不会影响正常使用（合成使用时SDK内部会自动验证授权）
+        AuthInfo authInfo = this.mSpeechSynthesizer.auth(TtsMode.MIX);
+
+        if (authInfo.isSuccess()) {
+            Log.i(TAG, "initTTS, auth success");
+        } else {
+            String errorMsg = authInfo.getTtsError().getDetailMessage();
+            Log.i(TAG, "initTTS, auth failed errorMsg = " + errorMsg);
+        }
+        
+		mSpeechSynthesizer.setSpeechSynthesizerListener(new SpeechSynthesizerListener() {
+			
+			@Override
+			public void onSynthesizeStart(String arg0) {
+//				Log.i(TAG, "onSynthesizeStart, arg0 = " + arg0);
+			}
+			
+			@Override
+			public void onSynthesizeFinish(String arg0) {
+//				Log.i(TAG, "onSynthesizeFinish, arg0 = " + arg0);
+			}
+			
+			@Override
+			public void onSynthesizeDataArrived(String arg0, byte[] arg1, int arg2) {
+//				Log.i(TAG, "onSynthesizeDataArrived, arg0 = " + arg0);
+			}
+			
+			@Override
+			public void onSpeechStart(String arg0) {
+//				Log.i(TAG, "onSpeechStart, arg0 = " + arg0);
+			}
+			
+			@Override
+			public void onSpeechProgressChanged(String arg0, int arg1) {
+//				Log.i(TAG, "onSpeechProgressChanged, arg0 = " + arg0 + ", arg1 = " + arg1);
+			}
+			
+			@Override
+			public void onSpeechFinish(String arg0) {
+				Log.i(TAG, "onSpeechFinish, arg0 = " + arg0);
+				if( !needExplainAction ){
+					return;
+				}
+				
+				needExplainAction = false;
+				
+				String audioPath = mAction.action_audio_local;
+				if( TextUtils.isEmpty(audioPath) || !FileUtils.isFileExist(audioPath) ){
+					Log.e(TAG, "audioPath = " + audioPath + ", or file not exist");
+					return;
+				}
+				MediaPlayerMgr.getInstance().startPlaying(audioPath);
+			}
+			
+			@Override
+			public void onError(String arg0, SpeechError arg1) {
+//				Log.i(TAG, "onError, arg0 = " + arg0 + ", SpeechError arg1 = " + arg1);
+			}
+		});
+		
+		// 初始化tts
+        mSpeechSynthesizer.initTts(TtsMode.MIX);
+	}
+	
+	private void initialEnv() {
+        if (TextUtils.isEmpty(mSampleDirPath)) {
+            mSampleDirPath = ConstServer.SDCARD_HOMEGYM_ROOT + "/" + SAMPLE_DIR_NAME + "/";
+        }
+        FileUtils.makeDirs(mSampleDirPath);
+        if( !FileUtils.isFileExist(mSampleDirPath + "/" + SPEECH_FEMALE_MODEL_NAME) ){
+        	copyFromAssetsToSdcard(false, SPEECH_FEMALE_MODEL_NAME, mSampleDirPath + "/" + SPEECH_FEMALE_MODEL_NAME);
+        }
+        
+        if( !FileUtils.isFileExist(mSampleDirPath + "/" + SPEECH_MALE_MODEL_NAME) ){
+        	copyFromAssetsToSdcard(false, SPEECH_MALE_MODEL_NAME, mSampleDirPath + "/" + SPEECH_MALE_MODEL_NAME);
+        }
+        
+        if( !FileUtils.isFileExist(mSampleDirPath + "/" + TEXT_MODEL_NAME) ){
+        	copyFromAssetsToSdcard(false, TEXT_MODEL_NAME, mSampleDirPath + "/" + TEXT_MODEL_NAME);
+        }
+        
+        if( !FileUtils.isFileExist(mSampleDirPath + "/" + ENGLISH_SPEECH_FEMALE_MODEL_NAME) ){
+        	copyFromAssetsToSdcard(false, "english/" + ENGLISH_SPEECH_FEMALE_MODEL_NAME, mSampleDirPath + "/" + ENGLISH_SPEECH_FEMALE_MODEL_NAME);
+        }
+        
+        if( !FileUtils.isFileExist(mSampleDirPath + "/" + ENGLISH_SPEECH_MALE_MODEL_NAME) ){
+        	copyFromAssetsToSdcard(false, "english/" + ENGLISH_SPEECH_MALE_MODEL_NAME, mSampleDirPath + "/" + ENGLISH_SPEECH_MALE_MODEL_NAME);
+        }
+        
+        if( !FileUtils.isFileExist(mSampleDirPath + "/" + ENGLISH_TEXT_MODEL_NAME) ){
+        	copyFromAssetsToSdcard(false, "english/" + ENGLISH_TEXT_MODEL_NAME, mSampleDirPath + "/" + ENGLISH_TEXT_MODEL_NAME);
+        }
+    }
+	
+	/**
+     * 将sample工程需要的资源文件拷贝到SD卡中使用（授权文件为临时授权文件，请注册正式授权）
+     * 
+     * @param isCover 是否覆盖已存在的目标文件
+     * @param source
+     * @param dest
+     */
+    private void copyFromAssetsToSdcard(boolean isCover, String source, String dest) {
+        File file = new File(dest);
+        if (isCover || (!isCover && !file.exists())) {
+            InputStream is = null;
+            FileOutputStream fos = null;
+            try {
+                is = getResources().getAssets().open(source);
+                String path = dest;
+                fos = new FileOutputStream(path);
+                byte[] buffer = new byte[1024];
+                int size = 0;
+                while ((size = is.read(buffer, 0, 1024)) >= 0) {
+                    fos.write(buffer, 0, size);
+                }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (fos != null) {
+                    try {
+                        fos.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                try {
+                    if (is != null) {
+                        is.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+	
+    private BroadcastReceiver mVolumChangedReceiver = new BroadcastReceiver() {
+		
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if(intent.getAction().equalsIgnoreCase(Const.ACTION_VOLUME_CHANGED)){
+			}
+		}
+	};
+    
 	@Override
 	public void onBackPressed() {
 		handleInterupt();
@@ -686,6 +935,13 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 	@Override
 	protected void onDestroy() {
 		CourseServerMgr.getInstance().removeUpdateRecordObserver(mIUpdateRecordListener);
+		
+		if(mSpeechSynthesizer != null){
+			mSpeechSynthesizer.release();
+		}
+		
+		MediaPlayerMgr.getInstance().stopPlaying();
+		
 		super.onDestroy();
 	}
 	

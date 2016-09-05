@@ -82,6 +82,7 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 	private PopupWindows popWindows;
 	
 	private View mActionDescriptLayout;
+	private View mActionDescriptLayoutId;
 	private PopupWindows mActionDesciptsPopupWindows;
 	private TextView tvActionDescript;
 	
@@ -276,6 +277,9 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 		selectContainer = (RelativeLayout)popView.findViewById(R.id.popupwindow_content);
 		
 		mActionDescriptLayout = LayoutInflater.from(this).inflate(R.layout.popupwindow_action_descript_layout, null);
+		mActionDescriptLayoutId = mActionDescriptLayout.findViewById(R.id.action_descript_layout);
+		mActionDescriptLayoutId.setOnClickListener(this);
+		
 		tvActionDescript = (TextView)mActionDescriptLayout.findViewById(R.id.action_descript_text);
 	}
 
@@ -311,6 +315,13 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 			showActionDescript();
 			break;
 			
+		case R.id.action_descript_layout:
+			if(mActionDesciptsPopupWindows != null){
+				mActionDesciptsPopupWindows.dismiss();
+				mActionDesciptsPopupWindows = null;
+			}
+			break;
+			
 		default:
 			break;
 		}
@@ -343,12 +354,7 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 			
 			actionTotalData = getTotalTimeOfActionInMyCourse(mActionDetail);
 			
-//			tvTimeConsume.setText(DateUtil.secToTime(actionTotalData.totalTime));
 			tvBurning.setText( DataTransferUtil.getInstance().getTwoDecimalData(actionTotalData.totalKcal) );
-//			mTrainActionInfo.iBurning = 公式？
-//			mTotalBurning = mTotalBurning + trainActionInfo.iBurning;
-//			tvTimeConsume.setText(DateUtil.secToTime(mConsumeSecond));
-//			tvBurning.setText(String.valueOf(mTotalBurning));
 			
 			mTrainActionSetAdapter.updateData(mGroupDetailList);
 			break;

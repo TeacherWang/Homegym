@@ -6,6 +6,9 @@ import android.media.MediaPlayer.OnCompletionListener;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.util.Log;
 
+import java.util.HashSet;
+import java.util.Iterator;
+
 public class MediaPlayerMgr {
 	private final String TAG = "MediaPlayerMgr";
 	
@@ -13,6 +16,12 @@ public class MediaPlayerMgr {
 	private static Object lockObject = new Object();
 	
 	private MediaPlayer mPlayer = null;
+	
+	private HashSet<IMediaListener> mSetOfMediaObserver;
+	
+	public interface IMediaListener{
+		void onCompletion();
+	}
 	
 	public static MediaPlayerMgr getInstance(){
 		if(instance == null){
@@ -23,6 +32,24 @@ public class MediaPlayerMgr {
 			}
 		}
 		return instance;
+	}
+	
+	private MediaPlayerMgr(){
+		mSetOfMediaObserver = new HashSet<MediaPlayerMgr.IMediaListener>();
+	}
+	
+	public void addMediaPlayerObserver(IMediaListener iMediaListener){
+		synchronized (mSetOfMediaObserver) {
+			if( !mSetOfMediaObserver.contains(iMediaListener) ){
+				mSetOfMediaObserver.add(iMediaListener);
+			}
+		}
+	}
+	
+	public void removeMediaPlayerObserver(IMediaListener iMediaListener){
+		synchronized (mSetOfMediaObserver) {
+			mSetOfMediaObserver.remove(iMediaListener);
+		}
 	}
 	
     /**
@@ -57,12 +84,22 @@ public class MediaPlayerMgr {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
                 	Log.i(TAG, "onCompletion!");
+                	
+                	notifyMediaPlayCompletion();
+                	
                     stopPlaying();
                 }
             });
         } catch (Exception e) {
             Log.e(TAG, "mPalyer.prepare() failed");
         }
+    }
+    
+    public boolean isPlaying(){
+    	if(mPlayer != null && mPlayer.isPlaying()){
+    		return true;
+    	}
+    	return false;
     }
     
     /**
@@ -95,6 +132,9 @@ public class MediaPlayerMgr {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
                 	Log.i(TAG, "onCompletion!");
+                	
+                	notifyMediaPlayCompletion();
+                	
                     stopPlaying();
                 }
             });
@@ -128,4 +168,15 @@ public class MediaPlayerMgr {
         }
         mPlayer = null;
     }
+    
+    private void notifyMediaPlayCompletion(){
+    	synchronized (mSetOfMediaObserver) {
+    		Iterator<IMediaListener> it = mSetOfMediaObserver.iterator();
+			while( it.hasNext() ){
+				IMediaListener observer = it.next();
+				observer.onCompletion();
+			}
+		}
+    }
+    
 }

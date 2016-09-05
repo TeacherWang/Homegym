@@ -508,7 +508,12 @@ public class AccountMgr {
 	}
 	
 	public void saveAccountInfo(String nickname, String sex, String birthday, String weight, String height, String city){
-		
+		PrefUtils.setNickname(Globle.gApplicationContext, nickname);
+		PrefUtils.setSex(Globle.gApplicationContext, sex);
+		PrefUtils.setBirthday(Globle.gApplicationContext, birthday);
+		PrefUtils.setWeight(Globle.gApplicationContext, weight);
+		PrefUtils.setHeight(Globle.gApplicationContext, height);
+		PrefUtils.setCity(Globle.gApplicationContext, city);
 	}
 	
 	public void sendLoginSucBroadcast(Context context){
@@ -518,6 +523,7 @@ public class AccountMgr {
 	}
 	
 	public void logout(Context context){
+		clearAccount(context);
 		setLoginSuc(context, false);
 	}
 	
