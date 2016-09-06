@@ -4,6 +4,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -275,5 +276,12 @@ public class DataTransferUtil {
 		String value = decimalFormat.format(data);//format 返回的是字符串
 		return value;
 	}
+	
+	public static float getFloatTwoDecimalData(float value){
+		BigDecimal bg = new BigDecimal(value).setScale(2, RoundingMode.UP);
+		
+		return bg.floatValue();
+	}
+	
 	
 }

@@ -86,20 +86,35 @@
             android:gravity="center"
             android:scaleType="centerCrop"
             android:src="@drawable/rest"/>
-        
         <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/video_rest"
-            android:layout_centerInParent="true" >
-            <TextView 
-                android:id="@+id/rest_time_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="50"
-                android:textSize="40sp"
-                android:textColor="@color/white"/>
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+	        <TextView 
+	            android:id="@+id/rest_text"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_alignParentBottom="true"
+	            android:layout_marginBottom="80dp"
+	            android:layout_centerHorizontal="true"
+	            android:text="休息是为了更好的锻炼，坚持才有胜利！"
+	            android:textColor="@color/white"
+	            android:textSize="20sp"/>
+	        
+	        <RelativeLayout
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_centerHorizontal="true"
+	            android:layout_marginTop="90dp"
+	            android:background="@drawable/video_rest" >
+	            <TextView 
+	                android:id="@+id/rest_time_text"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_centerInParent="true"
+	                android:text="50"
+	                android:textSize="40sp"
+	                android:textColor="@color/white"/>
+	        </RelativeLayout>
         </RelativeLayout>
     </RelativeLayout>
     

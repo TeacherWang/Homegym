@@ -704,7 +704,7 @@ public class CourseServerMgr {
 			}
 			@Override
 			public void onError(Throwable throwable, boolean arg1) {
-				Log.e(TAG, "uploadTrainPlan, onError, throwable is : " + throwable);
+				Log.e(TAG, "updateRecord, onError, throwable is : " + throwable);
 				
 				notifyUpdateRecordFail();
 			}
@@ -754,7 +754,7 @@ public class CourseServerMgr {
 			Iterator<IUpdateRecordListener> it = mSetOfUpdateRecordServer.iterator();
 			while( it.hasNext() ){
 				IUpdateRecordListener observer = it.next();
-				observer.onUpdateRecordSuc();
+				observer.onUpdateRecordFail();
 			}
 		}
 	}

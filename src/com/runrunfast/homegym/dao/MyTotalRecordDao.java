@@ -81,10 +81,10 @@ public class MyTotalRecordDao {
 			if(null != c && c.getCount() > 0){
 				c.moveToNext();
 				
-				totalRecord.total_kcal = c.getInt(c.getColumnIndex(Const.DB_KEY_TOTAL_KCAL));
+				totalRecord.total_kcal = c.getFloat(c.getColumnIndex(Const.DB_KEY_TOTAL_KCAL));
 				totalRecord.total_time = c.getInt(c.getColumnIndex(Const.DB_KEY_TOTAL_TIME));
 				totalRecord.total_days = c.getInt(c.getColumnIndex(Const.DB_KEY_TOTAL_DAYS));
-				totalRecord.total_food = c.getInt(c.getColumnIndex(Const.DB_KEY_TOTAL_FOOD));
+				totalRecord.total_food = c.getFloat(c.getColumnIndex(Const.DB_KEY_TOTAL_FOOD));
 			}
 			
 		} catch (Exception e) {

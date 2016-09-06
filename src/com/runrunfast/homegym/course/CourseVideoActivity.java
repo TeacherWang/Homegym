@@ -302,7 +302,7 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 		startVideo(mVideoPath);
 		mRestTime = REST_TIME_SHOW_INIT;
 		// 该动作还有下一组
-		if((mActionGroupIndex + 1) < mTargetActionDetail.group_num){
+		if(mActionGroupIndex < mTargetActionDetail.group_num){
 			if(mAction.action_left_right == Action.ACTION_TWO_SIDE){
 				speekTurnRound(mAction.action_name, mTargetGroupDetail.count, mTargetGroupDetail.weight);
 			}else{
@@ -642,7 +642,7 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 		
 		mCurrentRecord.finish_time = mTimeSecond;
 		mCurrentRecord.actual_date = DateUtil.getCurrentDate();
-		mCurrentRecord.unique_fag = System.currentTimeMillis();
+		mCurrentRecord.unique_flag = System.currentTimeMillis();
 		
 		if(mCurrentRecord.finish_count > 0){
 			MyTrainRecordDao.getInstance().saveRecordToDb(Globle.gApplicationContext, mUserInfo.strAccountId, mCurrentRecord);
@@ -700,7 +700,7 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 		
 		mCurrentRecord.finish_time = mTimeSecond;
 		mCurrentRecord.actual_date = DateUtil.getCurrentDate();
-		mCurrentRecord.unique_fag = System.currentTimeMillis();
+		mCurrentRecord.unique_flag = System.currentTimeMillis();
 		
 		mDayProgress.progress = MyCourse.DAY_PROGRESS_FINISH;
 		MyCourseDao.getInstance().saveMyCourseDayProgress(Globle.gApplicationContext, mUserInfo.strAccountId, mMyCourse);
@@ -781,14 +781,14 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
         this.mSpeechSynthesizer.setApiKey("G68yo3o3su3yct1DK874NDWl", "5b783c5dc9db7327a52d52f84a224e4e");
         // 授权检测接口(只是通过AuthInfo进行检验授权是否成功。)
         // AuthInfo接口用于测试开发者是否成功申请了在线或者离线授权，如果测试授权成功了，可以删除AuthInfo部分的代码（该接口首次验证时比较耗时），不会影响正常使用（合成使用时SDK内部会自动验证授权）
-        AuthInfo authInfo = this.mSpeechSynthesizer.auth(TtsMode.MIX);
+//        AuthInfo authInfo = this.mSpeechSynthesizer.auth(TtsMode.MIX);
 
-        if (authInfo.isSuccess()) {
-            Log.i(TAG, "initTTS, auth success");
-        } else {
-            String errorMsg = authInfo.getTtsError().getDetailMessage();
-            Log.i(TAG, "initTTS, auth failed errorMsg = " + errorMsg);
-        }
+//        if (authInfo.isSuccess()) {
+//            Log.i(TAG, "initTTS, auth success");
+//        } else {
+//            String errorMsg = authInfo.getTtsError().getDetailMessage();
+//            Log.i(TAG, "initTTS, auth failed errorMsg = " + errorMsg);
+//        }
         
 		mSpeechSynthesizer.setSpeechSynthesizerListener(new SpeechSynthesizerListener() {
 			
@@ -819,7 +819,7 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 			
 			@Override
 			public void onSpeechFinish(String arg0) {
-				Log.i(TAG, "onSpeechFinish, arg0 = " + arg0);
+				Log.i(TAG, "onSpeechFinish, arg0 = " + arg0 + ", needExplainAction = " + needExplainAction);
 				if( !needExplainAction ){
 					return;
 				}
