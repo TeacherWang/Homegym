@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.runrunfast.homegym.R;
@@ -57,7 +58,7 @@ public class AllCoursesFragment extends Fragment {
 			
 			@Override
 			public void onGetCourseSucFromServer() {
-				Log.i(TAG, "onGetCourseSucFromServer");
+				Log.i(TAG, "AllCoursesFragment, onGetCourseSucFromServer");
 				
 				getData();
 			}
@@ -94,9 +95,29 @@ public class AllCoursesFragment extends Fragment {
 		mAllCoursesList = CourseDao.getInstance().getCourseListFromDb(Globle.gApplicationContext);
 		
 		mAllCoursesAdapter = new CourseAdapter(getActivity(), mAllCoursesList);
+		setListViewHeightBasedOnChildren(mAllCoursesListView);
 		mAllCoursesListView.setAdapter(mAllCoursesAdapter);
 	}
 
+	public static void setListViewHeightBasedOnChildren(ListView listView) {
+	    ListAdapter listAdapter = listView.getAdapter();
+	    if (listAdapter == null) {
+	     return;
+	    }
+	    int totalHeight = 0;
+	    for (int i = 0; i < listAdapter.getCount(); i++) {
+	     View listItem = listAdapter.getView(i, null, listView);
+	     listItem.measure(0, 0);
+	     totalHeight += listItem.getMeasuredHeight();
+	    }
+	   
+	    ViewGroup.LayoutParams params = listView.getLayoutParams();
+	    
+	    params.height = totalHeight
+	      + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+	    listView.setLayoutParams(params);
+	 }
+	
 	private void initView() {
 		mAllCoursesListView = (ListView)rootView.findViewById(R.id.all_courses_listview);
 	}

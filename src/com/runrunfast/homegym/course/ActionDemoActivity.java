@@ -2,6 +2,7 @@ package com.runrunfast.homegym.course;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
@@ -9,10 +10,14 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.runrunfast.homegym.R;
+import com.runrunfast.homegym.audio.MediaPlayerMgr;
+import com.runrunfast.homegym.audio.MediaPlayerMgr.IMediaListener;
 import com.runrunfast.homegym.bean.Action;
 import com.runrunfast.homegym.utils.Const;
+import com.runrunfast.homegym.utils.FileUtils;
 
 import io.vov.vitamio.MediaPlayer;
 import io.vov.vitamio.MediaPlayer.OnCompletionListener;
@@ -27,6 +32,8 @@ public class ActionDemoActivity extends Activity implements OnClickListener{
 	private Button btnEnd;
 	private MediaController mMediaController;
 	private Action mAction;
+	
+	private IMediaListener mIMediaListener;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +54,17 @@ public class ActionDemoActivity extends Activity implements OnClickListener{
 		
 		initVideo();
 		startVideo();
+		
+		mIMediaListener = new IMediaListener() {
+			
+			@Override
+			public void onCompletion() {
+				if( !mVideoView.isPlaying() ){
+					showEndLayout();
+				}
+			}
+		};
+		MediaPlayerMgr.getInstance().addMediaPlayerObserver(mIMediaListener);
 	}
 
 	private void initVideo() {
@@ -58,7 +76,7 @@ public class ActionDemoActivity extends Activity implements OnClickListener{
 			
 			@Override
 			public void onCompletion(MediaPlayer mp) {
-				handleVideoEnd();
+				showEndLayout();
 			}
 		});
 		
@@ -71,19 +89,34 @@ public class ActionDemoActivity extends Activity implements OnClickListener{
 		});
 	}
 
-	private void handleVideoEnd() {
+	private void showEndLayout() {
+		if(MediaPlayerMgr.getInstance().isPlaying()){
+			return;
+		}
+		if(mVideoView.isPlaying()){
+			return;
+		}
 		rlEndLayout.setVisibility(View.VISIBLE);
 	}
 
 	private void startVideo() {
 		String path = mAction.action_video_local.get(0);
+		String actionAudioPath = mAction.action_audio_local;
 		
 		/*
 		 * Alternatively,for streaming media you can use
 		 * mVideoView.setVideoURI(Uri.parse(URLstring));
 		 */
+		if(TextUtils.isEmpty(path) || !FileUtils.isFileExist(path)
+				|| TextUtils.isEmpty(actionAudioPath) || !FileUtils.isFileExist(actionAudioPath)){
+			Toast.makeText(this, "请到详细计划界面下载课程", Toast.LENGTH_LONG).show();
+			return;
+		}
+		
 		mVideoView.setVideoPath(path);
 		mVideoView.start();
+		
+		MediaPlayerMgr.getInstance().startPlaying(actionAudioPath);
 	}
 
 	private void initView() {
@@ -122,5 +155,12 @@ public class ActionDemoActivity extends Activity implements OnClickListener{
 		default:
 			break;
 		}
+	}
+	
+	@Override
+	protected void onDestroy() {
+		mVideoView.stopPlayback();
+		MediaPlayerMgr.getInstance().stopPlaying();
+		super.onDestroy();
 	}
 }

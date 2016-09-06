@@ -36,6 +36,7 @@
 	            android:layout_marginTop="@dimen/course_train_list_margin_top"
 	            android:layout_marginLeft="@dimen/course_train_list_margin_left_right"
 	            android:layout_marginRight="@dimen/course_train_list_margin_left_right"
+	            android:listSelector="@android:color/transparent"
 	            android:divider="@null"
 	            android:dividerHeight="@dimen/course_train_list_devider" >
 	            

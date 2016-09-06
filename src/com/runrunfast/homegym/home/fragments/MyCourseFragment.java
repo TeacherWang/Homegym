@@ -73,7 +73,7 @@ public class MyCourseFragment extends Fragment{
 			
 			@Override
 			public void onGetCourseSucFromServer() {
-				Log.i(TAG, "onGetCourseSucFromServer");
+				Log.i(TAG, "MyCourseFragment, onGetCourseSucFromServer");
 				
 				getData();
 			}
@@ -214,9 +214,11 @@ public class MyCourseFragment extends Fragment{
 		if(mMyCourseList.size() == 0){
 			mMyCourseList.add(new InvalidCourse(InvalidCourse.COURSE_TYPE_EMPTY));
 			mMyCourseAdapter = new CourseAdapter(getActivity(), mMyCourseList);
+			AllCoursesFragment.setListViewHeightBasedOnChildren(mMyCourseListView);
 			mMyCourseListView.setAdapter(mMyCourseAdapter);
 		}else{
 			mMyCourseAdapter = new CourseAdapter(getActivity(), mMyCourseList);
+			AllCoursesFragment.setListViewHeightBasedOnChildren(mMyCourseListView);
 			mMyCourseListView.setAdapter(mMyCourseAdapter);
 		}
 		

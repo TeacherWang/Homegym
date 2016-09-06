@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.account.AccountMgr;
+import com.runrunfast.homegym.account.DataTransferUtil;
 import com.runrunfast.homegym.account.UserInfo;
 import com.runrunfast.homegym.course.CourseServerMgr;
 import com.runrunfast.homegym.course.CourseServerMgr.IRequestTotalDataListener;
@@ -45,6 +46,7 @@ public class RecordTotalFragment extends Fragment {
 			
 			@Override
 			public void onRequestTotalDataSuc(TotalRecord totalRecord) {
+				MyTotalRecordDao.getInstance().saveMyTotalRecordToDb(Globle.gApplicationContext, totalRecord, mUserInfo.strAccountId);
 				setUiData(totalRecord);
 			}
 			
@@ -67,10 +69,10 @@ public class RecordTotalFragment extends Fragment {
 	}
 
 	private void setUiData(TotalRecord totalRecord) {
-		tvTotalKcal.setText(String.valueOf(totalRecord.total_kcal));
+		tvTotalKcal.setText(String.valueOf(DataTransferUtil.getFloatTwoDecimalData((totalRecord.total_kcal))));
 		tvTotalDays.setText(String.valueOf(totalRecord.total_days));
 		tvTotalTimeHour.setText(DateUtil.secToHour(totalRecord.total_time));
-		tvFood.setText(totalRecord.total_food + "个汉堡包");
+		tvFood.setText(DataTransferUtil.getFloatTwoDecimalData(totalRecord.total_food) + "个汉堡包");
 	}
 
 	private void initView() {

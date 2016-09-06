@@ -174,7 +174,7 @@ public class KCalendar extends ViewFlipper implements
 				RelativeLayout col = new RelativeLayout(getContext());
 				col.setLayoutParams(new LinearLayout.LayoutParams(0,
 						LayoutParams.MATCH_PARENT, 1));
-				col.setBackgroundResource(R.drawable.calendar_day_bg); // 让设计师换一下.9图片
+				col.setBackgroundResource(R.drawable.calendar_day_bg_rect); // 让设计师换一下.9图片
 				row.addView(col);
 				// 给每一个日子加上监听
 				col.setOnClickListener(new OnClickListener() {

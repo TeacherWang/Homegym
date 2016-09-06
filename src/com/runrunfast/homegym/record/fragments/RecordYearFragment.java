@@ -135,7 +135,7 @@ public class RecordYearFragment extends Fragment implements OnClickListener{
 		
 		mRecordAdapter = new RecordAdapter(getActivity(), mBaseRecordDataList);
 		pullToRefreshListView.setAdapter(mRecordAdapter);
-		pullToRefreshListView.setMode(Mode.PULL_FROM_END);
+		pullToRefreshListView.setMode(Mode.DISABLED);
 		
 		initChart(mSelectYear);
 		

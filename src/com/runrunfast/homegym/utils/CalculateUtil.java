@@ -1,5 +1,8 @@
 package com.runrunfast.homegym.utils;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 
 public class CalculateUtil {
 	/**
@@ -12,15 +15,8 @@ public class CalculateUtil {
 	  */
 	public static float calculateTotakKcal(int count, int weight, float actionH, float actionB){
 		float kcal = count * ((weight - 5) + actionB) * actionH / 133.89f;
-		return kcal;
+		BigDecimal bg = new BigDecimal(kcal).setScale(2, RoundingMode.UP);
+		
+		return bg.floatValue();
 	}
-	
-	public static int calculateSingleKcal(int weight){
-		return weight * 10;
-	}
-	
-	public static int calculateSingleTime(){
-		return 5;
-	}
-	
 }

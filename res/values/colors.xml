@@ -6,6 +6,7 @@
     <color name="black">#000000</color>
     <color name="black_30_transparent">#4d000000</color>
     <color name="black_50_transparent">#80000000</color>
+    <color name="black_90_transparent">#e6000000</color>
     
     <!-- 启动界面 -->
     <color name="start_register_bg">#e6ffffff</color>
@@ -94,7 +95,7 @@
     <color name="train_action_set_item_deep_color">#eaeaea</color>
     
     <color name="calendar_have_course">#d94d01</color>
-    <color name="calendar_day_select">#e3e3e3</color>
+    <color name="calendar_day_select">#8bd614</color>
     
     <color name="chart_color_normal">#32c574</color>
     <color name="chart_color_select">#118202</color>

@@ -15,8 +15,10 @@
         android:background="@color/my_course_bg" >
         <ListView
 	        android:id="@+id/my_course_listview"
-	        android:layout_width="match_parent"
+	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
+	        android:layout_centerHorizontal="true"
+	        android:listSelector="@android:color/transparent"
 	        android:divider="@color/my_course_bg"
         	android:dividerHeight="@dimen/course_listview_divider_height" >
     	</ListView>

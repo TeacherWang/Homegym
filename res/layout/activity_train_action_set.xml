@@ -57,6 +57,7 @@
         
         <TextView
             android:id="@+id/train_action_name_text"
+            android:layout_below="@id/train_action_num_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/train_action_set_name_margin_left"
@@ -67,16 +68,16 @@
         
         <TextView
             android:id="@+id/train_action_descript_text"
-            android:layout_toLeftOf="@+id/train_action_join_in_text"
+            android:layout_below="@id/train_action_name_text"
             android:layout_alignParentLeft="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
             android:layout_marginLeft="@dimen/train_action_set_name_margin_left"
             android:layout_marginTop="@dimen/train_action_set_descript_margin_top"
-            android:text="坚持锻炼balalalaala"
+            android:text="描述"
             android:textSize="@dimen/course_train_action_num_size"
-            android:textColor="@color/white" />
+            android:textColor="@color/feedback_send_text_color" />
         
 		<TextView
             android:id="@+id/train_action_join_in_text"

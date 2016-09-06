@@ -81,6 +81,36 @@
 	        android:textColor="@color/white"
 	        android:textSize="@dimen/join_in_text_size"
 	        android:background="@drawable/bt_start_train_corner_rect" />
+        
+        <RelativeLayout
+            android:id="@+id/progress_layout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/detail_plan_join_btn_height"
+            android:layout_alignParentBottom="true"
+            android:background="#009944" >
+            <ProgressBar 
+	            android:id="@+id/progress_bar"
+	            android:layout_centerInParent="true"
+	            android:layout_width="match_parent"
+	            android:layout_height="4dp"
+	            android:layout_marginLeft="4dp"
+	            android:layout_marginRight="4dp"
+	            android:background="@color/transparent"
+	            android:max="100"
+	            android:progress="0"
+	            style="@android:style/Widget.ProgressBar.Horizontal" />
+            <TextView 
+                android:id="@+id/progress_num_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="4dp"
+                android:layout_marginBottom="2dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+        </RelativeLayout>
+        
         <ListView
             android:id="@+id/course_train_list"
             android:layout_above="@id/btn_join_in_train"
