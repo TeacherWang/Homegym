@@ -131,7 +131,7 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 	private ArrayList<String> mFinishedActionIds;
 	
 	private boolean isRest = false;
-	private boolean needExplainAction = true;
+//	private boolean needExplainAction = true;
 	
 	private IUpdateRecordListener mIUpdateRecordListener;
 	
@@ -309,21 +309,22 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 				speekNextGroup(mAction.action_name, mTargetGroupDetail.count, mTargetGroupDetail.weight);
 			}
 			
-			GroupDetail groupDetail = mTargetActionGroupDetailList.get(mActionGroupIndex + 1);
+			GroupDetail groupDetail = mTargetActionGroupDetailList.get(mActionGroupIndex);
 			int actionCurrentGroupTotalCount = groupDetail.count;
 			// 更新ui
 			updateUi(0, actionCurrentGroupTotalCount, mActionGroupIndex);
-		}else{
-			// 下一个动作
-			speekFirstGroup(mAction.action_name, mTargetGroupDetail.count, mTargetGroupDetail.weight);
-			
-			ActionDetail targetActionDetail = mActionDetailList.get(mCurrentActionPosition + 1);
-			List<GroupDetail> targetActionGroupDetailList = targetActionDetail.group_detail;
-			GroupDetail targetGroupDetail = targetActionGroupDetailList.get(0);
-			int actionCurrentGroupTotalCount = targetGroupDetail.count;
-			// 更新ui
-			updateUi(0, actionCurrentGroupTotalCount, 0);
 		}
+//		else{
+//			// 下一个动作
+//			speekFirstGroup(mAction.action_name, mTargetGroupDetail.count, mTargetGroupDetail.weight);
+//			
+//			ActionDetail targetActionDetail = mActionDetailList.get(mCurrentActionPosition);
+//			List<GroupDetail> targetActionGroupDetailList = targetActionDetail.group_detail;
+//			GroupDetail targetGroupDetail = targetActionGroupDetailList.get(0);
+//			int actionCurrentGroupTotalCount = targetGroupDetail.count;
+//			// 更新ui
+//			updateUi(0, actionCurrentGroupTotalCount, 0);
+//		}
 	};
 
 	/**
@@ -348,6 +349,9 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 	}
 
 	private void prepareNextAction() {
+		Log.i(TAG, "prepareNextAction");
+		
+//		needExplainAction = true;
 		mActionSide = ACTION_SIDE_LEFT;
 		mVideoPath = mAction.action_video_local.get(0);
 	}
@@ -819,14 +823,13 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 			
 			@Override
 			public void onSpeechFinish(String arg0) {
-				Log.i(TAG, "onSpeechFinish, arg0 = " + arg0 + ", needExplainAction = " + needExplainAction);
-				if( !needExplainAction ){
+				Log.i(TAG, "onSpeechFinish, arg0 = " + arg0 + ", mActionCurrentGroupCount = " + mActionCurrentGroupCount + ", mActionGroupIndex = " + mActionGroupIndex);
+				if( mActionCurrentGroupCount !=0 || mActionGroupIndex !=0 ){
 					return;
 				}
 				
-				needExplainAction = false;
-				
 				String audioPath = mAction.action_audio_local;
+				Log.i(TAG, "onSpeechFinish, audioPath = " + audioPath);
 				if( TextUtils.isEmpty(audioPath) || !FileUtils.isFileExist(audioPath) ){
 					Log.e(TAG, "audioPath = " + audioPath + ", or file not exist");
 					return;

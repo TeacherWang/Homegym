@@ -70,14 +70,15 @@ public class MediaPlayerMgr {
         try {
             mPlayer.setDataSource(fileName);
             mPlayer.prepare();
-            mPlayer.setOnPreparedListener(new OnPreparedListener() {
-				
-				@Override
-				public void onPrepared(MediaPlayer mp) {
-					Log.i(TAG, "start play audio!");
-					mPlayer.start();
-				}
-			});
+            mPlayer.start();
+//            mPlayer.setOnPreparedListener(new OnPreparedListener() {
+//				
+//				@Override
+//				public void onPrepared(MediaPlayer mp) {
+//					Log.i(TAG, "start play audio!");
+//					mPlayer.start();
+//				}
+//			});
             
             mPlayer.setOnCompletionListener(new OnCompletionListener() {
                 
