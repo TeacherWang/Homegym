@@ -67,8 +67,15 @@ public class MeFragment extends Fragment implements OnClickListener{
 	@Override
 	public void onResume() {
 		super.onResume();
+		mUserInfo = AccountMgr.getInstance().mUserInfo;
 		
 		tvAge.setText(String.valueOf(DataTransferUtil.getAgeByBirtyday(mUserInfo.strBirthday)) + mResources.getString(R.string.age));
+		
+		if(mUserInfo.strSex.equals(UserInfo.SEX_SERVER_MALE)){
+			ivSex.setBackgroundResource(R.drawable.sex_men);
+		}else{
+			ivSex.setBackgroundResource(R.drawable.sex_women);
+		}
 	}
 	
 	private void initData() {
@@ -84,7 +91,7 @@ public class MeFragment extends Fragment implements OnClickListener{
 		}
 		
 		tvNickname.setText(mUserInfo.strNickName);
-		if(mUserInfo.strSex.equals(UserInfo.SEX_MAN)){
+		if(mUserInfo.strSex.equals(UserInfo.SEX_SERVER_MALE)){
 			ivSex.setBackgroundResource(R.drawable.sex_men);
 		}else{
 			ivSex.setBackgroundResource(R.drawable.sex_women);

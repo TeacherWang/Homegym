@@ -14,7 +14,7 @@
         android:layout_marginTop="@dimen/about_logo_margin_top"
         android:layout_marginBottom="@dimen/about_logo_margin_bottom"
         android:layout_gravity="center_horizontal"
-        android:background="@drawable/about_logo" />
+        android:background="@drawable/app" />
     
     <TextView 
         android:id="@+id/about_version_text"

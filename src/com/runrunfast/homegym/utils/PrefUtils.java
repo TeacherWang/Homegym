@@ -56,6 +56,8 @@ public class PrefUtils {
 	private static final String KEY_WEIGHT		= "key_weight";
 	private static final String KEY_HEIGHT		= "key_height";
 	private static final String KEY_CITY		= "key_city";
+	
+	private static final String KEY_PWD	= "key_pwd";
 	// 保存注册成功的账号
 	public static void setAccount(Context context, String userName){
 		SharedPreferences preferences = context.getSharedPreferences(SP_ACCOUNT, Context.MODE_PRIVATE);
@@ -67,6 +69,18 @@ public class PrefUtils {
 	public static String getAccount(Context context){
 		SharedPreferences preferences = context.getSharedPreferences(SP_ACCOUNT, Context.MODE_PRIVATE);
 		return preferences.getString(KEY_USER_NAME, "");
+	}
+	
+	public static void setPwd(Context context, String pwd){
+		SharedPreferences preferences = context.getSharedPreferences(SP_ACCOUNT, Context.MODE_PRIVATE);
+		Editor editor = preferences.edit();
+		editor.putString(KEY_PWD, pwd);
+		editor.commit();
+	}
+	
+	public static String getPwd(Context context){
+		SharedPreferences preferences = context.getSharedPreferences(SP_ACCOUNT, Context.MODE_PRIVATE);
+		return preferences.getString(KEY_PWD, "");
 	}
 	
 	public static void clearAccount(Context context){
@@ -160,4 +174,20 @@ public class PrefUtils {
 		return preferences.getString(KEY_CITY, "");
 	}
 	
+	
+	
+	private static final String SP_COOKIE 		= "sp_cookie";
+	private static final String KEY_COOKIE	= "key_cookie";
+	
+	public static void setCookie(Context context, String cookie){
+		SharedPreferences preferences = context.getSharedPreferences(SP_COOKIE, Context.MODE_PRIVATE);
+		Editor editor = preferences.edit();
+		editor.putString(KEY_COOKIE, cookie);
+		editor.commit();
+	}
+	
+	public static String getCookie(Context context){
+		SharedPreferences preferences = context.getSharedPreferences(SP_COOKIE, Context.MODE_PRIVATE);
+		return preferences.getString(KEY_COOKIE, "");
+	}
 }

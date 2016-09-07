@@ -46,19 +46,19 @@
             android:orientation="horizontal"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/account_address_margin_top" >
-            <TextView 
-                android:id="@+id/account_address_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="深圳"
-                android:textSize="@dimen/account_address_size"
-                android:textColor="@color/white"/>
-            <View
-			    android:layout_width="1dip"
-			    android:layout_height="match_parent"
-			    android:layout_marginLeft="@dimen/account_address_divider_line_margin"
-			    android:layout_marginRight="@dimen/account_address_divider_line_margin"
-			    android:background="@color/white" />
+<!--             <TextView  -->
+<!--                 android:id="@+id/account_address_text" -->
+<!--                 android:layout_width="wrap_content" -->
+<!--                 android:layout_height="wrap_content" -->
+<!--                 android:text="深圳" -->
+<!--                 android:textSize="@dimen/account_address_size" -->
+<!--                 android:textColor="@color/white"/> -->
+<!--             <View -->
+<!-- 			    android:layout_width="1dip" -->
+<!-- 			    android:layout_height="match_parent" -->
+<!-- 			    android:layout_marginLeft="@dimen/account_address_divider_line_margin" -->
+<!-- 			    android:layout_marginRight="@dimen/account_address_divider_line_margin" -->
+<!-- 			    android:background="@color/white" /> -->
             <TextView 
                 android:id="@+id/account_old_text"
                 android:layout_width="wrap_content"

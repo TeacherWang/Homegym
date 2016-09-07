@@ -20,6 +20,7 @@ import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.account.AccountMgr;
 import com.runrunfast.homegym.account.AccountMgr.IIdentifyCodeListener;
 import com.runrunfast.homegym.account.AccountMgr.IRegisterListener;
+import com.runrunfast.homegym.utils.PrefUtils;
 
 public class RegisterActivity extends Activity implements OnClickListener, TextWatcher{
 	
@@ -42,6 +43,7 @@ public class RegisterActivity extends Activity implements OnClickListener, TextW
 	private int time = COUNTDOWN_LENGTH;
 	
 	private String mUsername;
+	private String mPwd;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -123,6 +125,7 @@ public class RegisterActivity extends Activity implements OnClickListener, TextW
 	
 	private void handleRegisterSuc() {
 		AccountMgr.getInstance().saveLoginAccount(this, mUsername);
+		PrefUtils.setPwd(this, mPwd);
 		AccountMgr.getInstance().setLoginSuc(this, true);
 		dismissDialog();
 		jumpToImprovePersonalInfoActivity();
@@ -201,13 +204,13 @@ public class RegisterActivity extends Activity implements OnClickListener, TextW
 	private void handleClickRegisterFinish() {
 		mUsername = etNum.getText().toString();
 		String strVerifyCode = etVerifyCode.getText().toString();
-		String strPwd = etPwd.getText().toString();
-		if(checkEmpty(mUsername, strVerifyCode, strPwd)){
+		mPwd = etPwd.getText().toString();
+		if(checkEmpty(mUsername, strVerifyCode, mPwd)){
 			Toast.makeText(this, R.string.input_have_empty, Toast.LENGTH_SHORT).show();
 			return;
 		}
 		
-		AccountMgr.getInstance().register(mUsername, strVerifyCode, strPwd);
+		AccountMgr.getInstance().register(mUsername, strVerifyCode, mPwd);
 		
 		showDialog();
 	}

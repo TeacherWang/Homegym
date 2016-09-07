@@ -21,6 +21,7 @@ import com.runrunfast.homegym.account.AccountMgr;
 import com.runrunfast.homegym.account.AccountMgr.ILoginListener;
 import com.runrunfast.homegym.dao.CourseDao;
 import com.runrunfast.homegym.home.HomeActivity;
+import com.runrunfast.homegym.utils.PrefUtils;
 
 public class LoginActivity extends Activity implements OnClickListener, TextWatcher{
 	private final String TAG = "LoginActivity";
@@ -40,6 +41,7 @@ public class LoginActivity extends Activity implements OnClickListener, TextWatc
 	private ILoginListener iLoginListener;
 	
 	private String mUsername;
+	private String mPwd;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +74,7 @@ public class LoginActivity extends Activity implements OnClickListener, TextWatc
 
 	private void handleLoginSuc() {
 		AccountMgr.getInstance().saveLoginAccount(this, mUsername);
+		PrefUtils.setPwd(this, mPwd);
 		AccountMgr.getInstance().setLoginSuc(this, true);
 		dismissDialog();
 		jumpToHomeActivity();
@@ -155,13 +158,13 @@ public class LoginActivity extends Activity implements OnClickListener, TextWatc
 		// TODO 测试
 		
 		mUsername = etPhoneNume.getText().toString();
-		String pwd = etPwd.getText().toString();
-		if(TextUtils.isEmpty(mUsername) || TextUtils.isEmpty(pwd)){
+		mPwd = etPwd.getText().toString();
+		if(TextUtils.isEmpty(mUsername) || TextUtils.isEmpty(mPwd)){
 			Toast.makeText(this, R.string.input_have_empty, Toast.LENGTH_SHORT).show();
 			return;
 		}
 		
-		AccountMgr.getInstance().login(mUsername, pwd);
+		AccountMgr.getInstance().login(mUsername, mPwd);
 		
 		showDialog();
 	}

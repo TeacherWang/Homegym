@@ -22,11 +22,16 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.account.AccountMgr;
+import com.runrunfast.homegym.account.AccountMgr.IGetPersonalInfoListener;
+import com.runrunfast.homegym.account.AccountMgr.IPersonalInfoListener;
+import com.runrunfast.homegym.account.AccountMgr.IUpdateHeadimgListener;
 import com.runrunfast.homegym.account.DataTransferUtil;
 import com.runrunfast.homegym.account.UserInfo;
+import com.runrunfast.homegym.start.ImprovePersonalInfoActivity;
 import com.runrunfast.homegym.utils.BitmapUtils;
 import com.runrunfast.homegym.utils.FileUtils;
 import com.runrunfast.homegym.utils.PrefUtils;
@@ -90,6 +95,10 @@ public class PersonalInfoActivity extends Activity implements OnClickListener{
 	
 	private Bitmap bmFromCamera;
 	
+	private IGetPersonalInfoListener mIGetPersonalInfoListener;
+	private IPersonalInfoListener mIPersionalInfoListener;
+	private IUpdateHeadimgListener mIUpdateHeadimgListener;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -100,6 +109,71 @@ public class PersonalInfoActivity extends Activity implements OnClickListener{
 		initView();
 		
 		initData();
+		
+		initHandler();
+		
+		initListener();
+		
+		AccountMgr.getInstance().getPersonalInfo(mUserInfo.strAccountId);
+	}
+
+	private void initHandler() {
+		handleThread = new HandlerThread(TAG);
+		handleThread.start();
+		mWorkHandler = new Handler(handleThread.getLooper());
+	}
+
+	private void initListener() {
+		// 获取信息接口
+		mIGetPersonalInfoListener = new IGetPersonalInfoListener() {
+			
+			@Override
+			public void onSuccess() {
+				Log.i(TAG, "IGetPersonalInfoListener, onSuccess");
+				initData();
+			}
+			
+			@Override
+			public void onFail() {
+				Log.i(TAG, "IGetPersonalInfoListener, onFail");
+			}
+		};
+		AccountMgr.getInstance().setOnGetPersonalInfoListener(mIGetPersonalInfoListener);
+		
+		// 上传信息接口
+		mIPersionalInfoListener = new IPersonalInfoListener() {
+			
+			@Override
+			public void onSuccess() {
+				Toast.makeText(PersonalInfoActivity.this, "上传成功", Toast.LENGTH_SHORT).show();
+				
+				AccountMgr.getInstance().saveAccountInfo(strNickname, strSex, strBirthday, strWeight, strHeight, "");
+				AccountMgr.getInstance().loadUserInfo();
+				FileUtils.deleteFile(UserInfo.IMAGE_FILE_LOCATION_TEMP);
+				finish();
+			}
+			
+			@Override
+			public void onFail() {
+				Toast.makeText(PersonalInfoActivity.this, "上传失败", Toast.LENGTH_SHORT).show();
+			}
+		};
+		AccountMgr.getInstance().setOnPersonalInfoListener(mIPersionalInfoListener);
+		
+		// 上传头像接口
+		mIUpdateHeadimgListener = new IUpdateHeadimgListener() {
+			
+			@Override
+			public void onSuccess() {
+				AccountMgr.getInstance().updatePersonalInfo(mUserInfo);
+			}
+			
+			@Override
+			public void onFail() {
+				Toast.makeText(PersonalInfoActivity.this, "上传头像失败", Toast.LENGTH_SHORT).show();
+			}
+		};
+		AccountMgr.getInstance().setOnUpdateHeadimgListener(mIUpdateHeadimgListener);
 	}
 
 	private void initData() {
@@ -111,16 +185,17 @@ public class PersonalInfoActivity extends Activity implements OnClickListener{
 		strHeight = mUserInfo.strHeight;
 		strWeight = mUserInfo.strWeight;
 		
-		handleThread = new HandlerThread(TAG);
-		handleThread.start();
-		mWorkHandler = new Handler(handleThread.getLooper());
-		
 		strBirthday = mUserInfo.strBirthday;
 		
 		getBirthdayMonthAndDay();
 		
 		tvNick.setText(mUserInfo.strNickName);
-		tvSex.setText(mUserInfo.strSex);
+		if(mUserInfo.strSex.equals(UserInfo.SEX_SERVER_MALE)){
+			tvSex.setText(UserInfo.SEX_MAN);
+		}else{
+			tvSex.setText(UserInfo.SEX_WOMAN);
+		}
+		
 		tvBirth.setText(mUserInfo.strBirthday);
 		tvHeight.setText(mUserInfo.strHeight);
 		tvWeight.setText(mUserInfo.strWeight);
@@ -248,17 +323,24 @@ public class PersonalInfoActivity extends Activity implements OnClickListener{
 	
 	private void savePersonalInfo() {
 		// 这里应该先上传，成功后再执行下面操作
-		BitmapUtils.saveBitmapToSDcard(bmFromCamera, UserInfo.IMAGE_FILE_DIR, UserInfo.IMG_FILE_NAME);
+		if(bmFromCamera != null){
+			BitmapUtils.saveBitmapToSDcard(bmFromCamera, UserInfo.IMAGE_FILE_DIR, UserInfo.IMG_FILE_NAME);
+		}
 		
-		PrefUtils.setNickname(this, strNickname);
-		PrefUtils.setSex(this, strSex);
-		PrefUtils.setBirthday(this, strBirthday);
-		PrefUtils.setWeight(this, strWeight);
-		PrefUtils.setHeight(this, strHeight);
+//		if(FileUtils.isFileExist(UserInfo.IMAGE_FILE_LOCATION)){
+//		AccountMgr.getInstance().updateHeadImg(new File(UserInfo.IMAGE_FILE_LOCATION));
+//		return;
+//	}
 		
-		AccountMgr.getInstance().loadUserInfo();
-		FileUtils.deleteFile(UserInfo.IMAGE_FILE_LOCATION_TEMP);
-		finish();
+		UserInfo userInfo = new UserInfo();
+		userInfo.strAccountId = mUserInfo.strAccountId;
+		userInfo.strNickName = strNickname;
+		userInfo.strSex = strSex;
+		userInfo.strBirthday = strBirthday;
+		userInfo.strWeight = strWeight;
+		userInfo.strHeight = strHeight;
+		
+		AccountMgr.getInstance().updatePersonalInfo(userInfo);
 	}
 
 	private void changeHeadimg() {
@@ -366,7 +448,11 @@ public class PersonalInfoActivity extends Activity implements OnClickListener{
 			break;
 			
 		case INPUT_TYPE_SEX:
-			tvSex.setText(strSex);
+			if(strSex.equals(UserInfo.SEX_SERVER_MALE)){
+				tvSex.setText(UserInfo.SEX_MAN);
+			}else{
+				tvSex.setText(UserInfo.SEX_WOMAN);
+			}
 			break;
 			
 		case INPUT_TYPE_BIRTH:
@@ -533,17 +619,35 @@ public class PersonalInfoActivity extends Activity implements OnClickListener{
 			@Override
 			public void onSelected(int selectedIndex, String item) {
 				Log.d(TAG, "onSelected, item = " + item);
-				strHeight = item;
+				if(selectedIndex == 1){
+					strSex = UserInfo.SEX_SERVER_MALE;
+				}else{
+					strSex = UserInfo.SEX_SERVER_FEMALE;
+				}
 			}
 		});
 		wheelOneWheelView.setTextSize(24);
 		wheelOneWheelView.setOffset(1);
-		wheelOneWheelView.setSeletion(DataTransferUtil.getInstance().getSexPosition(strSex));
+		int sexPosition = 0;
+		if(strSex.equals(UserInfo.SEX_SERVER_MALE)){
+			sexPosition = 0;
+		}else{
+			sexPosition = 1;
+		}
+		wheelOneWheelView.setSeletion(sexPosition);
 		wheelOneWheelView.setItems(AccountMgr.getInstance().getSexList());
 		
 		popWindows = new PopupWindows(this, selectContainer);
 		popWindows.setLayout(popView);
 		popWindows.show();
+	}
+	
+	@Override
+	protected void onDestroy() {
+		AccountMgr.getInstance().setOnGetPersonalInfoListener(null);
+		AccountMgr.getInstance().setOnUpdateHeadimgListener(null);
+		AccountMgr.getInstance().setOnPersonalInfoListener(null);
+		super.onDestroy();
 	}
 	
 }

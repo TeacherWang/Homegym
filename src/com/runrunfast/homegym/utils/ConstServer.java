@@ -8,8 +8,31 @@ public class ConstServer {
 	public static final String LOGIN_SERVER = "http://bikeme.duapp.com/";
 	public static final String LOGIN_SERVER_TEST = "http://bikemetest.duapp.com/";
 	
-	public static final String URL_LOGIN = LOGIN_SERVER_TEST + "Login";
-	public static final String URL_IDENTIFY = LOGIN_SERVER_TEST + "servlet/PhoneRegisterServlet";
+	public static final String URL_LOGIN = LOGIN_SERVER + "Login";
+	public static final String URL_IDENTIFY = LOGIN_SERVER + "servlet/PhoneRegisterServlet";
+	
+	public static final String URL_UPDATE_PERSONAL_INFO = LOGIN_SERVER + "PersonalInfo";
+	public static final String URL_GET_PERSONAL_INFO = LOGIN_SERVER + "PersonalInfoCheckOut";
+	public static final String URL_UPDATE_HEADIMG = LOGIN_SERVER + "servlet/HeadPictureServlet";
+	
+	// 用户信息
+	public static final String PERSONAL_USER_NAME = "username";
+	public static final String PERSONAL_NICK_NAME = "nick_name";
+	public static final String PERSONAL_SEX = "sex";
+	public static final String PERSONAL_HEIGHT = "height";
+	public static final String PERSONAL_WEIGHT = "weight";
+	public static final String PERSONAL_BIRTHDAY = "birthday";
+	public static final String PERSONAL_LEVEL = "level";
+	public static final String PERSONAL_MINUTES = "minutes";
+	public static final String PERSONAL_HRMAX = "hrmax";
+	public static final String PERSONAL_HEADID = "headId";
+	public static final String PERSONAL_IS_WECHAT = "isWeChat";
+	public static final String PERSONAL_WECHAT_HEAD_URL = "weChatHeadUrl";
+	public static final String PERSONAL_USER_CITY = "user_city";
+	public static final String PERSONAL_PLAN = "plan";
+	public static final String PERSONAL_USER_DECLARATION = "user_declaration";
+	
+	public static final String PERSONAL_TYPE = "type";
 	
 	// 登录类型
 	public static final String KEY_TYPE = "type";

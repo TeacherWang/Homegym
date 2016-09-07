@@ -26,6 +26,9 @@ public class UserInfo {
 	public static final String SEX_MAN = "男";
 	public static final String SEX_WOMAN = "女";
 	
+	public static final String SEX_SERVER_MALE = "male";
+	public static final String SEX_SERVER_FEMALE = "female";
+	
 	public String strAccountId;
 	public String strNickName;
 	public String strSex;
@@ -33,4 +36,6 @@ public class UserInfo {
 	public String strWeight;
 	public String strHeight;
 	public String strCity;
+	
+	public String strPwd;
 }

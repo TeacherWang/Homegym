@@ -20,7 +20,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.baidu.tts.auth.AuthInfo;
 import com.baidu.tts.client.SpeechError;
 import com.baidu.tts.client.SpeechSynthesizer;
 import com.baidu.tts.client.SpeechSynthesizerListener;
@@ -266,13 +265,13 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 			// 还有下个动作？
 			mCurrentActionPosition++;
 			if( mCurrentActionPosition < mTotalActionNum ){
+				mTargetActionDetail = mActionDetailList.get(mCurrentActionPosition);
 				mAction = ActionDao.getInstance().getActionFromDb(Globle.gApplicationContext, mTargetActionDetail.action_id);
 				prepareNextAction();
 				// 做下个动作之前休息一下
 				showRest();
 				mHandler.sendEmptyMessageDelayed(MSG_PLAY_REST, DELAY_SECOND);
 				
-				mTargetActionDetail = mActionDetailList.get(mCurrentActionPosition);
 				tvActionName.setText( (mCurrentActionPosition + 1) + "." + mAction.action_name);
 				
 				mFinishedGroupDetail = new GroupDetail();
@@ -627,9 +626,21 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 	}
 
 	private void handleCourseUnfinish() {
-		if(mFinishedGroupDetail.count > 0){
+		if(mCurrentRecord.finish_count <= 0){
+			showUnfinishActivity();
+			return;
+		}
+		
+		if(mActionCurrentGroupCount == 0){
+			mFinishedActionDetail.group_num = mActionGroupIndex;
+		}else{
 			mFinishedActionDetail.group_num = mActionGroupIndex + 1;
+		}
+		
+		if(mFinishedGroupDetail.count != 0){
 			mFinishedActionGroupDetailList.add(mFinishedGroupDetail);
+		}
+		if(mFinishedActionDetail.group_num != 0){
 			mFinishedActionDetailList.add(mFinishedActionDetail);
 		}
 		
@@ -653,6 +664,10 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 			uploadRecord();
 		}
 		
+		showUnfinishActivity();
+	}
+
+	private void showUnfinishActivity() {
 		Intent intent = new Intent(this, FinishActivity.class);
 		intent.putExtra(FinishActivity.KEY_FINISH_OR_UNFINISH, FinishActivity.TYPE_UNFINISH);
 		intent.putStringArrayListExtra(Const.KEY_ACTION_IDS, mFinishedActionIds);
@@ -823,8 +838,11 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 			
 			@Override
 			public void onSpeechFinish(String arg0) {
-				Log.i(TAG, "onSpeechFinish, arg0 = " + arg0 + ", mActionCurrentGroupCount = " + mActionCurrentGroupCount + ", mActionGroupIndex = " + mActionGroupIndex);
-				if( mActionCurrentGroupCount !=0 || mActionGroupIndex !=0 ){
+				Log.i(TAG, "onSpeechFinish, arg0 = " + arg0
+						+ ", mActionCurrentGroupCount = " + mActionCurrentGroupCount
+						+ ", mActionGroupIndex = " + mActionGroupIndex
+						+ ", isRest = " + isRest);
+				if( mActionCurrentGroupCount !=0 || mActionGroupIndex !=0 || isRest){
 					return;
 				}
 				
