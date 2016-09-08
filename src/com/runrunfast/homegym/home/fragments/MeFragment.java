@@ -1,5 +1,6 @@
 package com.runrunfast.homegym.home.fragments;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -160,6 +161,9 @@ public class MeFragment extends Fragment implements OnClickListener{
 	
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		
+		int iRequestCode = requestCode & 0xffff;
+		
 		if(requestCode != Const.DIALOG_REQ_CODE_EXIT_ACCOUNT){
 			Log.e(TAG, "onActivityResult, requestCode = " + requestCode);
 			return;

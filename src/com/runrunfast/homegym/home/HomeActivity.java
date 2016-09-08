@@ -104,18 +104,20 @@ public class HomeActivity extends FragmentActivity{
 		startActivityForResult(intent, Const.DIALOG_REQ_CODE_OPEN_BT);
 	}
 	
-//	@Override
-//	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//		Log.i(TAG, "resultCode = " + resultCode);
-//		if(requestCode == Const.DIALOG_REQ_CODE_OPEN_BT){
-//			handleOpenBtDialogResult(resultCode);
-//		}
-//		
-//		Fragment fragment = mFragmentPagerAdapter.getItem(1);
-//		if(fragment != null){
-//			fragment.onActivityResult(requestCode, resultCode, data);
-//		}
-//	}
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		Log.i(TAG, "requestCode = " + requestCode + ", resultCode = " + resultCode);
+		
+		if(requestCode == Const.DIALOG_REQ_CODE_OPEN_BT){
+			handleOpenBtDialogResult(resultCode);
+			return;
+		}
+		
+		Fragment fragment = mFragmentPagerAdapter.getItem(2);
+		if(fragment != null){
+			fragment.onActivityResult(requestCode, resultCode, data);
+		}
+	}
 	
 	private void handleOpenBtDialogResult(int resultCode) {
 		if(resultCode == DialogActivity.RSP_CONFIRM){
