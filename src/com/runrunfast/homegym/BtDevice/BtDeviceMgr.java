@@ -25,6 +25,7 @@ public class BtDeviceMgr {
 	
 	private static Object lockObject = new Object();
 	private volatile static BtDeviceMgr instance;
+	private boolean isConnected = false;
 	
 	private ArrayList<BLEServiceListener> mBleServiceObserver;
 	
@@ -64,8 +65,10 @@ public class BtDeviceMgr {
 			if(intent.getAction().equals(BluetoothAdapter.ACTION_STATE_CHANGED)){
 				handleBtState(intent);
 			}else if(intent.getAction().equals(BLESingleton.mBLEService.ACTION_STATE_CONNECTED)){
+				isConnected = true;
 				notifyDeviceConnected();
 			}else if(intent.getAction().equals(BLESingleton.mBLEService.ACTION_STATE_DISCONNECTED)){
+				isConnected = false;
 				notifyDeviceDisconnected();
 			}
 		}
@@ -76,6 +79,8 @@ public class BtDeviceMgr {
 		Log.i(TAG, "handleBtState, state = " + state);
 		if(state == BluetoothAdapter.STATE_ON){
 			startScan();
+		}else{
+			isConnected = false;
 		}
 	}
 	
@@ -145,6 +150,10 @@ public class BtDeviceMgr {
 		PrefUtils.removeLastConnectedBt(context);
 	}
 	
+	public boolean isConnected(){
+		return isConnected;
+	}
+	
 	public void connectBLE(BluetoothDevice bluetoothDevice){
 		BLESingleton.mBLEService.setMdevice(bluetoothDevice);
 		BLESingleton.mBLEService.setConnectting(true);
@@ -210,6 +219,18 @@ public class BtDeviceMgr {
 		
 		@Override
 		public void GetDevice(BluetoothDevice btDevice) {
+			BtInfo lastConnecteDevice = BtDeviceMgr.getInstance().getLastBtInfo(Globle.gApplicationContext);
+			if(lastConnecteDevice != null){
+				String lastDeviceAddress = lastConnecteDevice.btAddress;
+				
+				Log.d(TAG, "GetDevice, lastConnecteDevice != null, address = " + lastDeviceAddress + ", scan device address = " + btDevice.getAddress());
+				
+				if(lastDeviceAddress.equalsIgnoreCase(btDevice.getAddress())){
+					BtDeviceMgr.getInstance().connectBLE(btDevice);
+					return;
+				}
+			}
+			
 			synchronized (mBleServiceObserver) {
 				if(mBleServiceObserver != null){
 					for(BLEServiceListener bleServiceListener : mBleServiceObserver){

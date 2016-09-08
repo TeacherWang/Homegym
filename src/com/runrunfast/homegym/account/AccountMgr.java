@@ -611,9 +611,11 @@ public class AccountMgr {
 		if(cookie != null){
 			params.addHeader("Cookie", "JSESSIONID=" + cookie);
 		}
-		params.addBodyParameter(UserInfo.IMAGE_FILE_LOCATION.replace("/", ""), headImgFile);
+		params.setMultipart(true);
+		params.addBodyParameter("type", "insertheadpicture");
+		params.addBodyParameter(UserInfo.IMAGE_FILE_LOCATION_TEMP.replace("/", ""), headImgFile);
 		
-		x.http().get(params, new Callback.CommonCallback<String>() {
+		x.http().post(params, new Callback.CommonCallback<String>() {
 
 			@Override
 			public void onSuccess(String result) {
@@ -645,6 +647,7 @@ public class AccountMgr {
 				notifyUpdateHeadImgFail();
 			}
 		} catch (JSONException e) {
+			notifyUpdateHeadImgFail();
 			e.printStackTrace();
 		}
 	}

@@ -132,6 +132,11 @@ public class ImprovePersonalInfoActivity extends Activity implements OnClickList
 			
 			@Override
 			public void onSuccess() {
+				// 这里应该先上传，成功后再执行下面操作
+				if(bmFromCamera != null){
+					BitmapUtils.saveBitmapToSDcard(bmFromCamera, UserInfo.IMAGE_FILE_DIR, UserInfo.IMG_FILE_NAME);
+				}
+				
 				AccountMgr.getInstance().updatePersonalInfo(mUserInfo);
 			}
 			
@@ -544,8 +549,8 @@ public class ImprovePersonalInfoActivity extends Activity implements OnClickList
 		mUserInfo.strWeight = strWeight;
 		mUserInfo.strHeight = strHeight;
 		
-//		if(FileUtils.isFileExist(UserInfo.IMAGE_FILE_LOCATION)){
-//			AccountMgr.getInstance().updateHeadImg(new File(UserInfo.IMAGE_FILE_LOCATION));
+//		if(FileUtils.isFileExist(UserInfo.IMAGE_FILE_LOCATION_TEMP)){
+//			AccountMgr.getInstance().updateHeadImg(new File(UserInfo.IMAGE_FILE_LOCATION_TEMP));
 //			return;
 //		}
 		

@@ -294,15 +294,15 @@ public class RecordMonthFragment extends Fragment implements OnClickListener{
 		
 		mStrSelectYearMonth = DateUtil.getDateStrOfYearMonth(strCurrentDay);
 		
-		int dayNum = MyTrainRecordDao.getInstance().getTrainDayNumDependMonth(Globle.gApplicationContext, mUserInfo.strAccountId, mStrSelectYearMonth);
-		tvTotalDays.setText(String.valueOf(dayNum) + "天");
-		
 		CourseServerMgr.getInstance().requestDetailData(mUserInfo.strAccountId, mStrSelectYearMonth + "-01", mStrSelectYearMonth + "-31");
 		
 		updateData();
 	}
 
 	private void updateData() {
+		int dayNum = MyTrainRecordDao.getInstance().getTrainDayNumDependMonth(Globle.gApplicationContext, mUserInfo.strAccountId, mStrSelectYearMonth);
+		tvTotalDays.setText(String.valueOf(dayNum) + "天");
+		
 		updateDataDependOnDay(mStrSelectYearMonth);
 		
 		initChart(mStrSelectYearMonth);
@@ -327,9 +327,6 @@ public class RecordMonthFragment extends Fragment implements OnClickListener{
 		}
 		
 		mStrSelectYearMonth = DateUtil.getDateStrOfYearMonth(strSelectDay);
-		
-		int dayNum = MyTrainRecordDao.getInstance().getTrainDayNumDependMonth(Globle.gApplicationContext, mUserInfo.strAccountId, mStrSelectYearMonth);
-		tvTotalDays.setText(String.valueOf(dayNum) + "天");
 		
 		CourseServerMgr.getInstance().requestDetailData(mUserInfo.strAccountId, mStrSelectYearMonth + "-01", mStrSelectYearMonth + "-31");
 		

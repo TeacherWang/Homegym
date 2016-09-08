@@ -200,10 +200,14 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 			public void onGetDevice(BluetoothDevice btDevice) {}
 			
 			@Override
-			public void onDeviceDisconnected() {}
+			public void onDeviceDisconnected() {
+				ivBluetooth.setBackgroundResource(R.drawable.video_bluetooth_red);
+			}
 			
 			@Override
-			public void onDeviceConnected() {}
+			public void onDeviceConnected() {
+				ivBluetooth.setBackgroundResource(R.drawable.video_bluetooth_white);
+			}
 			
 			@Override
 			public void onBLEInit() {}
@@ -431,6 +435,12 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 		mVideoTimerTask = new VideoTimerTask();
 		mTimer.scheduleAtFixedRate(mVideoTimerTask, DELAY_SECOND, DELAY_SECOND);
 		tvTime.setText(DateUtil.secToMinuteSecond(mTimeSecond));
+		
+		if(BtDeviceMgr.getInstance().isConnected()){
+			ivBluetooth.setBackgroundResource(R.drawable.video_bluetooth_white);
+		}else{
+			ivBluetooth.setBackgroundResource(R.drawable.video_bluetooth_red);
+		}
 	}
 	
 	private void speekFinishOnce(int count){
@@ -956,6 +966,8 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 	@Override
 	protected void onDestroy() {
 		CourseServerMgr.getInstance().removeUpdateRecordObserver(mIUpdateRecordListener);
+		
+		BtDeviceMgr.getInstance().removeBLEServiceObserver(mBleServiceListener);
 		
 		if(mSpeechSynthesizer != null){
 			mSpeechSynthesizer.release();

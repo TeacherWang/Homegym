@@ -79,6 +79,10 @@ public class LoginActivity extends Activity implements OnClickListener, TextWatc
 		dismissDialog();
 		jumpToHomeActivity();
 		AccountMgr.getInstance().sendLoginSucBroadcast(this);
+		
+		// 登陆成功后，再获取一下用户信息
+		AccountMgr.getInstance().getPersonalInfo(mUsername);
+		
 		finish();
 	}
 	

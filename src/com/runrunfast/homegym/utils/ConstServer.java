@@ -8,12 +8,12 @@ public class ConstServer {
 	public static final String LOGIN_SERVER = "http://bikeme.duapp.com/";
 	public static final String LOGIN_SERVER_TEST = "http://bikemetest.duapp.com/";
 	
-	public static final String URL_LOGIN = LOGIN_SERVER + "Login";
-	public static final String URL_IDENTIFY = LOGIN_SERVER + "servlet/PhoneRegisterServlet";
+	public static final String URL_LOGIN = LOGIN_SERVER_TEST + "Login";
+	public static final String URL_IDENTIFY = LOGIN_SERVER_TEST + "servlet/PhoneRegisterServlet";
 	
-	public static final String URL_UPDATE_PERSONAL_INFO = LOGIN_SERVER + "PersonalInfo";
-	public static final String URL_GET_PERSONAL_INFO = LOGIN_SERVER + "PersonalInfoCheckOut";
-	public static final String URL_UPDATE_HEADIMG = LOGIN_SERVER + "servlet/HeadPictureServlet";
+	public static final String URL_UPDATE_PERSONAL_INFO = LOGIN_SERVER_TEST + "PersonalInfo";
+	public static final String URL_GET_PERSONAL_INFO = LOGIN_SERVER_TEST + "PersonalInfoCheckOut";
+	public static final String URL_UPDATE_HEADIMG = LOGIN_SERVER_TEST + "servlet/HeadPictureServlet";
 	
 	// 用户信息
 	public static final String PERSONAL_USER_NAME = "username";

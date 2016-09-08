@@ -18,8 +18,8 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.Button;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,15 +31,14 @@ import com.runrunfast.homegym.account.AccountMgr.IPersonalInfoListener;
 import com.runrunfast.homegym.account.AccountMgr.IUpdateHeadimgListener;
 import com.runrunfast.homegym.account.DataTransferUtil;
 import com.runrunfast.homegym.account.UserInfo;
-import com.runrunfast.homegym.start.ImprovePersonalInfoActivity;
 import com.runrunfast.homegym.utils.BitmapUtils;
 import com.runrunfast.homegym.utils.FileUtils;
-import com.runrunfast.homegym.utils.PrefUtils;
 import com.runrunfast.homegym.widget.CircleMaskImageView;
 import com.runrunfast.homegym.widget.PopupWindows;
 import com.runrunfast.homegym.widget.WheelView;
 import com.runrunfast.homegym.widget.WheelView.OnWheelViewListener;
 
+import java.io.File;
 import java.util.List;
 
 public class PersonalInfoActivity extends Activity implements OnClickListener{
@@ -146,8 +145,13 @@ public class PersonalInfoActivity extends Activity implements OnClickListener{
 			@Override
 			public void onSuccess() {
 				Toast.makeText(PersonalInfoActivity.this, "上传成功", Toast.LENGTH_SHORT).show();
+				String sex = tvSex.getText().toString();
+				String nickName = tvNick.getText().toString();
+				String birthday = tvBirth.getText().toString();
+				String weight = tvWeight.getText().toString();
+				String height = tvHeight.getText().toString();
 				
-				AccountMgr.getInstance().saveAccountInfo(strNickname, strSex, strBirthday, strWeight, strHeight, "");
+				AccountMgr.getInstance().saveAccountInfo(nickName, sex, birthday, weight, height, "");
 				AccountMgr.getInstance().loadUserInfo();
 				FileUtils.deleteFile(UserInfo.IMAGE_FILE_LOCATION_TEMP);
 				finish();
@@ -165,7 +169,26 @@ public class PersonalInfoActivity extends Activity implements OnClickListener{
 			
 			@Override
 			public void onSuccess() {
-				AccountMgr.getInstance().updatePersonalInfo(mUserInfo);
+				// 这里应该先上传，成功后再执行下面操作
+				if(bmFromCamera != null){
+					BitmapUtils.saveBitmapToSDcard(bmFromCamera, UserInfo.IMAGE_FILE_DIR, UserInfo.IMG_FILE_NAME);
+				}
+				
+				String sex = tvSex.getText().toString();
+				String nickName = tvNick.getText().toString();
+				String birthday = tvBirth.getText().toString();
+				String weight = tvWeight.getText().toString();
+				String height = tvHeight.getText().toString();
+				
+				UserInfo userInfo = new UserInfo();
+				userInfo.strAccountId = mUserInfo.strAccountId;
+				userInfo.strNickName = nickName;
+				userInfo.strSex = sex;
+				userInfo.strBirthday = birthday;
+				userInfo.strWeight = weight;
+				userInfo.strHeight = height;
+				
+				AccountMgr.getInstance().updatePersonalInfo(userInfo);
 			}
 			
 			@Override
@@ -322,25 +345,31 @@ public class PersonalInfoActivity extends Activity implements OnClickListener{
 	}
 	
 	private void savePersonalInfo() {
-		// 这里应该先上传，成功后再执行下面操作
-		if(bmFromCamera != null){
-			BitmapUtils.saveBitmapToSDcard(bmFromCamera, UserInfo.IMAGE_FILE_DIR, UserInfo.IMG_FILE_NAME);
-		}
+//		// 这里应该先上传，成功后再执行下面操作
+//		if(bmFromCamera != null){
+//			BitmapUtils.saveBitmapToSDcard(bmFromCamera, UserInfo.IMAGE_FILE_DIR, UserInfo.IMG_FILE_NAME);
+//		}
 		
-//		if(FileUtils.isFileExist(UserInfo.IMAGE_FILE_LOCATION)){
-//		AccountMgr.getInstance().updateHeadImg(new File(UserInfo.IMAGE_FILE_LOCATION));
-//		return;
-//	}
+//		if(FileUtils.isFileExist(UserInfo.IMAGE_FILE_LOCATION_TEMP)){
+//			AccountMgr.getInstance().updateHeadImg(new File(UserInfo.IMAGE_FILE_LOCATION_TEMP));
+//			return;
+//		}
+		
+		String sex = tvSex.getText().toString();
+		String nickName = tvNick.getText().toString();
+		String birthday = tvBirth.getText().toString();
+		String weight = tvWeight.getText().toString();
+		String height = tvHeight.getText().toString();
 		
 		UserInfo userInfo = new UserInfo();
 		userInfo.strAccountId = mUserInfo.strAccountId;
-		userInfo.strNickName = strNickname;
-		userInfo.strSex = strSex;
-		userInfo.strBirthday = strBirthday;
-		userInfo.strWeight = strWeight;
-		userInfo.strHeight = strHeight;
+		userInfo.strNickName = nickName;
+		userInfo.strSex = sex;
+		userInfo.strBirthday = birthday;
+		userInfo.strWeight = weight;
+		userInfo.strHeight = height;
 		
-		AccountMgr.getInstance().updatePersonalInfo(userInfo);
+		AccountMgr.getInstance().updatePersonalInfo(mUserInfo);
 	}
 
 	private void changeHeadimg() {

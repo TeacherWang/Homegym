@@ -154,6 +154,7 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 							rlProgress.setVisibility(View.INVISIBLE);
 							btnJoin.setText(R.string.start_train);
 							btnJoin.setVisibility(View.VISIBLE);
+							getAllActions();
 						}
 					}
 				});

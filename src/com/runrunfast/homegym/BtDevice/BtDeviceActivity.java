@@ -77,7 +77,7 @@ public class BtDeviceActivity extends Activity{
 			
 			@Override
 			public void onBLEInit() {
-				checkBtOpen();
+//				checkBtOpen();
 			}
 
 			@Override
@@ -179,7 +179,7 @@ public class BtDeviceActivity extends Activity{
 		mBtDeviceAdapter = new BtDeviceAdapter(this, mBtInfoList);
 		mDeviceListView.setAdapter(mBtDeviceAdapter);
 		
-		BtDeviceMgr.getInstance().bindBLEService();
+		checkBtOpen();
 	}
 
 	private void initView() {
@@ -243,7 +243,7 @@ public class BtDeviceActivity extends Activity{
 	}
 
 	private void unbindDevice() {
-//		BtDeviceMgr.getInstance().disconnect();
+		BtDeviceMgr.getInstance().disconnect();
 		BtDeviceMgr.getInstance().removeLastBtInfo(this);
 		mLastBtInfo = null;
 		checkBtOpen();
@@ -264,7 +264,5 @@ public class BtDeviceActivity extends Activity{
 		Log.i(TAG, "onDestroy");
 		
 		BtDeviceMgr.getInstance().removeBLEServiceObserver(mBLEServiceListener);
-		
-		BtDeviceMgr.getInstance().unBindBLEService();
 	}
 }

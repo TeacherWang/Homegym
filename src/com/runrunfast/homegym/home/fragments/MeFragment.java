@@ -76,10 +76,6 @@ public class MeFragment extends Fragment implements OnClickListener{
 		}else{
 			ivSex.setBackgroundResource(R.drawable.sex_women);
 		}
-	}
-	
-	private void initData() {
-		mUserInfo = AccountMgr.getInstance().mUserInfo;
 		
 		Bitmap bitmap = null;
 		if(FileUtils.isFileExist(UserInfo.IMAGE_FILE_LOCATION)){
@@ -89,6 +85,10 @@ public class MeFragment extends Fragment implements OnClickListener{
 		if(bitmap != null){
 			headimgView.setImageBitmap(bitmap);
 		}
+	}
+	
+	private void initData() {
+		mUserInfo = AccountMgr.getInstance().mUserInfo;
 		
 		tvNickname.setText(mUserInfo.strNickName);
 		if(mUserInfo.strSex.equals(UserInfo.SEX_SERVER_MALE)){

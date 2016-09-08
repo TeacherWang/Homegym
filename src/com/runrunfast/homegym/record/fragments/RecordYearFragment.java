@@ -279,9 +279,6 @@ public class RecordYearFragment extends Fragment implements OnClickListener{
 		tvSelectYear.setText(String.valueOf(mSelectYear));
 		tvYear.setText(mSelectYear + "年");
 		
-		int dayNum = MyTrainRecordDao.getInstance().getTrainDayNumDependYear(Globle.gApplicationContext, mUserInfo.strAccountId, mSelectYear);
-		tvTotalDays.setText(String.valueOf(dayNum) + "天");
-		
 		if(mSelectYear == mThisYear){
 			mSelectYearMonth = DateUtil.getDateStrOfYearMonth(DateUtil.getCurrentDate());
 		}else{
@@ -303,9 +300,6 @@ public class RecordYearFragment extends Fragment implements OnClickListener{
 		tvSelectYear.setText(String.valueOf(mSelectYear));
 		tvYear.setText(mSelectYear + "年");
 		
-		int dayNum = MyTrainRecordDao.getInstance().getTrainDayNumDependYear(Globle.gApplicationContext, mUserInfo.strAccountId, mSelectYear);
-		tvTotalDays.setText(String.valueOf(dayNum) + "天");
-		
 		if(mSelectYear == mThisYear){
 			mSelectYearMonth = DateUtil.getDateStrOfYearMonth(DateUtil.getCurrentDate());
 		}else{
@@ -318,6 +312,9 @@ public class RecordYearFragment extends Fragment implements OnClickListener{
 	}
 
 	private void updateDataDependOnYearMonth(String currentYearMonth) {
+		int dayNum = MyTrainRecordDao.getInstance().getTrainDayNumDependYear(Globle.gApplicationContext, mUserInfo.strAccountId, mSelectYear);
+		tvTotalDays.setText(String.valueOf(dayNum) + "天");
+		
 		mBaseRecordDataList.clear();
 		mBaseRecordDataList = RecordUtil.getBaseRecordDataList(currentYearMonth, mUserInfo.strAccountId);
 		mRecordAdapter.updateData(mBaseRecordDataList);

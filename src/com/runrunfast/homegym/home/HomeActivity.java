@@ -1,5 +1,6 @@
 package com.runrunfast.homegym.home;
 
+import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -15,18 +16,17 @@ import android.widget.TextView;
 
 import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.BtDevice.BtDeviceActivity;
+import com.runrunfast.homegym.BtDevice.BtDeviceMgr;
+import com.runrunfast.homegym.BtDevice.BtDeviceMgr.BLEServiceListener;
 import com.runrunfast.homegym.account.AccountMgr;
 import com.runrunfast.homegym.account.UserInfo;
-import com.runrunfast.homegym.bean.Course;
 import com.runrunfast.homegym.course.CourseServerMgr;
-import com.runrunfast.homegym.dao.CourseDao;
 import com.runrunfast.homegym.home.fragments.AllCoursesFragment;
 import com.runrunfast.homegym.home.fragments.MeFragment;
 import com.runrunfast.homegym.home.fragments.MyCourseFragment;
 import com.runrunfast.homegym.record.RecordActivity;
-import com.runrunfast.homegym.utils.Globle;
-
-import java.util.ArrayList;
+import com.runrunfast.homegym.utils.Const;
+import com.runrunfast.homegym.widget.DialogActivity;
 
 public class HomeActivity extends FragmentActivity{
 	private final String TAG = "HomeActivity";
@@ -47,6 +47,8 @@ public class HomeActivity extends FragmentActivity{
 	private TextView tvTaining, tvMe;
 	private FrameLayout mFrameLayout;
 	
+	private BLEServiceListener mBLEServiceListener;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -56,7 +58,69 @@ public class HomeActivity extends FragmentActivity{
 		
 		initData();
 		
+		initListener();
+		
+		BtDeviceMgr.getInstance().bindBLEService();
+		
 		switchFragment(FRAGMENT_MY_TRAINING);
+	}
+	
+	private void initListener() {
+		mBLEServiceListener = new BLEServiceListener() {
+			
+			@Override
+			public void onReedSwitch() {}
+			
+			@Override
+			public void onGetDevice(BluetoothDevice btDevice) {}
+			
+			@Override
+			public void onDeviceDisconnected() {}
+			
+			@Override
+			public void onDeviceConnected() {}
+			
+			@Override
+			public void onBLEInit() {
+				checkBtOpen();
+			}
+		};
+		
+//		BtDeviceMgr.getInstance().addBLEServiceObserver(mBLEServiceListener);
+	}
+	
+	private void checkBtOpen() {
+		boolean isOpen = BtDeviceMgr.getInstance().checkBTOpen();
+		if(!isOpen){
+			showOpenBtDialog();
+		}
+	}
+	
+	private void showOpenBtDialog() {
+		Intent intent = new Intent(this, DialogActivity.class);
+		intent.putExtra(DialogActivity.KEY_CONTENT, mResources.getString(R.string.ask_open_bt));
+		intent.putExtra(DialogActivity.KEY_CANCEL, mResources.getString(R.string.no));
+		intent.putExtra(DialogActivity.KEY_CONFIRM, mResources.getString(R.string.yes));
+		startActivityForResult(intent, Const.DIALOG_REQ_CODE_OPEN_BT);
+	}
+	
+//	@Override
+//	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//		Log.i(TAG, "resultCode = " + resultCode);
+//		if(requestCode == Const.DIALOG_REQ_CODE_OPEN_BT){
+//			handleOpenBtDialogResult(resultCode);
+//		}
+//		
+//		Fragment fragment = mFragmentPagerAdapter.getItem(1);
+//		if(fragment != null){
+//			fragment.onActivityResult(requestCode, resultCode, data);
+//		}
+//	}
+	
+	private void handleOpenBtDialogResult(int resultCode) {
+		if(resultCode == DialogActivity.RSP_CONFIRM){
+			BtDeviceMgr.getInstance().openBT();
+		}
 	}
 	
 	private void initData() {
@@ -64,7 +128,7 @@ public class HomeActivity extends FragmentActivity{
 		
 		CourseServerMgr.getInstance().getActionInfoFromServer();
 		
-		ArrayList<Course> courseList = CourseDao.getInstance().getCourseListFromDb(Globle.gApplicationContext);
+//		ArrayList<Course> courseList = CourseDao.getInstance().getCourseListFromDb(Globle.gApplicationContext);
 //		if(courseList == null || courseList.size() <=0 ){
 			CourseServerMgr.getInstance().getCourseInfoFromServer();
 //		}
@@ -206,6 +270,16 @@ public class HomeActivity extends FragmentActivity{
 		startActivity(intent);
 	}
 	
+	@Override
+	protected void onDestroy() {
+		BtDeviceMgr.getInstance().unBindBLEService();
+		if(mBLEServiceListener != null){
+			BtDeviceMgr.getInstance().removeBLEServiceObserver(mBLEServiceListener);
+		}
+		
+		super.onDestroy();
+	}
+	
 	FragmentPagerAdapter mFragmentPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
 
 		@Override
@@ -230,5 +304,4 @@ public class HomeActivity extends FragmentActivity{
 			return PAGE_COUNT;
 		}
 	};
-	
 }
