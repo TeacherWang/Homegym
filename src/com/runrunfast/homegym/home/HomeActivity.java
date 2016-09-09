@@ -86,7 +86,7 @@ public class HomeActivity extends FragmentActivity{
 			}
 		};
 		
-//		BtDeviceMgr.getInstance().addBLEServiceObserver(mBLEServiceListener);
+		BtDeviceMgr.getInstance().addBLEServiceObserver(mBLEServiceListener);
 	}
 	
 	private void checkBtOpen() {
@@ -106,16 +106,12 @@ public class HomeActivity extends FragmentActivity{
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		
 		Log.i(TAG, "requestCode = " + requestCode + ", resultCode = " + resultCode);
 		
 		if(requestCode == Const.DIALOG_REQ_CODE_OPEN_BT){
 			handleOpenBtDialogResult(resultCode);
-			return;
-		}
-		
-		Fragment fragment = mFragmentPagerAdapter.getItem(2);
-		if(fragment != null){
-			fragment.onActivityResult(requestCode, resultCode, data);
 		}
 	}
 	

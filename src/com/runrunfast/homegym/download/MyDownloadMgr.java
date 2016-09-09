@@ -49,6 +49,7 @@ public class MyDownloadMgr {
 		void onDownloadFinished(String courseId, int finishNum, int totalNum);
 		void onDownloadComplete(String courseId);
 		void onDownloadErr(String courseId);
+		void onConnectionLost();
 	}
 	
 	public void addOnIDownloadObserver(IDownloadListener iDownloadListener){
@@ -122,6 +123,8 @@ public class MyDownloadMgr {
 				synchronized (lockObject) {
 					state = DOWNLOAD_STATE_INIT;
 				}
+				
+				notifyConnectionLost();
 			}
 			
 			@Override
@@ -238,6 +241,16 @@ public class MyDownloadMgr {
 		}
 	}
 	
+	private void notifyConnectionLost() {
+		synchronized (mSetOfIDownloadObserver) {
+			Iterator<IDownloadListener> it = mSetOfIDownloadObserver.iterator();
+			while( it.hasNext() ){
+				IDownloadListener observer = it.next();
+				observer.onConnectionLost();
+			}	
+		}
+	}
+	
 	public void addDownloadUrlList(ArrayList<HashMap<String, ArrayList<String>>> actionUrlHashMapList, ArrayList<String> urlList){
 		mActionUrlHashMapList = actionUrlHashMapList;
 		
@@ -275,7 +288,7 @@ public class MyDownloadMgr {
 			String saveName = FileUtils.getFileName(strUrl);
 			String saveNameWithoutExtension = FileUtils.getFileNameWithoutExtension(strUrl);
 			String localAddress = ConstServer.SDCARD_HOMEGYM_ROOT + saveName;
-			ActionDao.getInstance().saveActionAudioLocalToDb(Globle.gApplicationContext, mCurrentActionId, localAddress);
+//			ActionDao.getInstance().saveActionAudioLocalToDb(Globle.gApplicationContext, mCurrentActionId, localAddress);
 			
 			mCurrentTaskId = mDownloadManagerPro.addTask(saveNameWithoutExtension, strUrl, true, true);
 			mDownloadManagerPro.startDownload(mCurrentTaskId);
@@ -311,7 +324,7 @@ public class MyDownloadMgr {
 			String saveName = FileUtils.getFileName(strUrl);
 			String saveNameWithoutExtension = FileUtils.getFileNameWithoutExtension(strUrl);
 			String localAddress = ConstServer.SDCARD_HOMEGYM_ROOT + saveName;
-			ActionDao.getInstance().saveActionAudioLocalToDb(Globle.gApplicationContext, mCurrentActionId, localAddress);
+//			ActionDao.getInstance().saveActionAudioLocalToDb(Globle.gApplicationContext, mCurrentActionId, localAddress);
 			
 			mCurrentTaskId = mDownloadManagerPro.addTask(saveNameWithoutExtension, strUrl, true, true);
 			mDownloadManagerPro.startDownload(mCurrentTaskId);

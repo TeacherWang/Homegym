@@ -59,9 +59,10 @@ public class ActionDemoActivity extends Activity implements OnClickListener{
 			
 			@Override
 			public void onCompletion() {
-				if( !mVideoView.isPlaying() ){
-					showEndLayout();
+				if(mVideoView.isPlaying()){
+					return;
 				}
+				showEndLayout();
 			}
 		};
 		MediaPlayerMgr.getInstance().addMediaPlayerObserver(mIMediaListener);
@@ -76,6 +77,12 @@ public class ActionDemoActivity extends Activity implements OnClickListener{
 			
 			@Override
 			public void onCompletion(MediaPlayer mp) {
+				if(MediaPlayerMgr.getInstance().isPlaying()){
+					String path = mAction.action_video_local.get(0);
+					mVideoView.setVideoPath(path);
+					mVideoView.start();
+					return;
+				}
 				showEndLayout();
 			}
 		});
@@ -90,12 +97,6 @@ public class ActionDemoActivity extends Activity implements OnClickListener{
 	}
 
 	private void showEndLayout() {
-		if(MediaPlayerMgr.getInstance().isPlaying()){
-			return;
-		}
-		if(mVideoView.isPlaying()){
-			return;
-		}
 		rlEndLayout.setVisibility(View.VISIBLE);
 	}
 

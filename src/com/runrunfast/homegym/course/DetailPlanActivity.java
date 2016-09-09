@@ -208,6 +208,13 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 					}
 				});
 			}
+
+			@Override
+			public void onConnectionLost() {
+				Toast.makeText(DetailPlanActivity.this, "网络错误！", Toast.LENGTH_SHORT).show();
+				rlProgress.setVisibility(View.INVISIBLE);
+				btnJoin.setVisibility(View.VISIBLE);
+			}
 		};
 		MyDownloadMgr.getInstance().addOnIDownloadObserver(mIDownloadListener);
 	}
@@ -658,6 +665,10 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 				if( !TextUtils.isEmpty(audioUrlLocation) ){
 					needDownload = true;
 					taskList.add(audioUrlLocation);
+					
+					String saveName = FileUtils.getFileName(audioUrlLocation);
+					String localAddress = ConstServer.SDCARD_HOMEGYM_ROOT + saveName;
+					ActionDao.getInstance().saveActionAudioLocalToDb(Globle.gApplicationContext, action.action_id, localAddress);
 				}
 			}
 			
