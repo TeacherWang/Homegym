@@ -259,8 +259,8 @@ public class MyDownloadMgr {
 	}
 	
 	public void clearUrlList(){
-		mActionUrlHashMapList.clear();
-		mCurrentActionUrlList.clear();
+		mActionUrlHashMapList = new ArrayList<HashMap<String,ArrayList<String>>>();
+		mCurrentActionUrlList = new ArrayList<String>();
 		mTotalTaskSize = 0;
 		mRemainTaskSize = 0;
 		mFinishedTaskNum = 0;
@@ -270,6 +270,11 @@ public class MyDownloadMgr {
 	public void startDownload(String courseId){
 		if(mRemainTaskSize <= 0){
 			Log.e(TAG, "startDownload, mTaskSize <= 0");
+			return;
+		}
+		
+		if(mActionUrlHashMapList.size() <= 0){
+			Log.e(TAG, "startDownload, mActionUrlHashMapList size <= 0");
 			return;
 		}
 		

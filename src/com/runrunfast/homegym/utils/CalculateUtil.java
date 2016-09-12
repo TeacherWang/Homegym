@@ -5,6 +5,7 @@ import java.math.RoundingMode;
 
 
 public class CalculateUtil {
+	public static final int DEFAULT_WEIGHT_VALUE_IF_ZERO = 5; // 服务器返回重量为0时，为不可编辑重量，默认5
 	/**
 	  * @Method: calculateKcal
 	  * @Description: 根据数量和重量计算kcal。公式a((m+b)*h)/133.89，m为(用户选择的重量-5)；a为count；h为铁块高度；b为初始阻力

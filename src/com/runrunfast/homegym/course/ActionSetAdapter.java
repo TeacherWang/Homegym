@@ -95,7 +95,11 @@ public class ActionSetAdapter extends BaseAdapter {
 		}
 		holder.tvGroupNum.setText("第" + (position + 1) + "组");
 		holder.tvCount.setText(String.valueOf(groupDetail.count));
-		holder.tvWeight.setText(String.valueOf(groupDetail.weight));
+		if(groupDetail.weight == 0){
+			holder.tvWeight.setText("--");
+		}else{
+			holder.tvWeight.setText(String.valueOf(groupDetail.weight));
+		}
 		holder.tvKcal.setText(DataTransferUtil.getInstance().getTwoDecimalData(groupDetail.kcal));
 		
 		holder.tvCount.setOnClickListener(new OnClickListener() {

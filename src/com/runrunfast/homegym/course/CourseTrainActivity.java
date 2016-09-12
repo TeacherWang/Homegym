@@ -3,7 +3,6 @@ package com.runrunfast.homegym.course;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -16,7 +15,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.runrunfast.homegym.R;
-import com.runrunfast.homegym.audio.MediaPlayerMgr;
 import com.runrunfast.homegym.bean.Action;
 import com.runrunfast.homegym.bean.Course.ActionDetail;
 import com.runrunfast.homegym.bean.Course.CourseDetail;
@@ -26,7 +24,6 @@ import com.runrunfast.homegym.bean.MyCourse.DayProgress;
 import com.runrunfast.homegym.dao.ActionDao;
 import com.runrunfast.homegym.utils.Const;
 import com.runrunfast.homegym.utils.DateUtil;
-import com.runrunfast.homegym.utils.FileUtils;
 import com.runrunfast.homegym.utils.Globle;
 
 import java.io.Serializable;
@@ -228,12 +225,12 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 	}
 
 	private void startTrain() {
-		CourseDetail courseDetail = mMyCourse.course_detail.get(0);
-		ArrayList<ActionDetail> actionDetailList = (ArrayList<ActionDetail>) courseDetail.action_detail;
-		ActionDetail actionDetail = actionDetailList.get(0);
-		Action action = ActionDao.getInstance().getActionFromDb(Globle.gApplicationContext, actionDetail.action_id);
-		String action_video_path = action.action_audio_local;
-		if(TextUtils.isEmpty(action_video_path) || !FileUtils.isFileExist(action_video_path)){
+//		CourseDetail courseDetail = mMyCourse.course_detail.get(0);
+//		ArrayList<ActionDetail> actionDetailList = (ArrayList<ActionDetail>) courseDetail.action_detail;
+//		ActionDetail actionDetail = actionDetailList.get(0);
+//		Action action = ActionDao.getInstance().getActionFromDb(Globle.gApplicationContext, actionDetail.action_id);
+//		String action_video_path = action.action_audio_local;
+		if( CourseUtil.needDownload(mMyCourse) ){
 			Toast.makeText(this, "请到详细计划界面下载课程", Toast.LENGTH_LONG).show();
 			return;
 		}

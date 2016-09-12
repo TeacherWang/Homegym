@@ -1,42 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/start_bg" >
-    <LinearLayout
-        android:id="@+id/start_indicator_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/start_bg_indicator_margin_bottom" >
-        <ImageView 
-            android:id="@+id/start_indicator1"
-            android:layout_width="@dimen/start_bg_indicator_size"
-            android:layout_height="@dimen/start_bg_indicator_size"
-            android:background="@drawable/start_round_select_bg"/>
-        <ImageView 
-            android:id="@+id/start_indicator2"
-            android:layout_width="@dimen/start_bg_indicator_size"
-            android:layout_height="@dimen/start_bg_indicator_size"
-            android:layout_marginLeft="@dimen/start_indicator_img_divider"
-            android:background="@drawable/start_round_select_bg"/>
-        <ImageView 
-            android:id="@+id/start_indicator3"
-            android:layout_width="@dimen/start_bg_indicator_size"
-            android:layout_height="@dimen/start_bg_indicator_size"
-            android:layout_marginLeft="@dimen/start_indicator_img_divider"
-            android:background="@drawable/start_round_select_bg"/>
-    </LinearLayout>
+    android:layout_height="match_parent" >
+    
+    <ImageView 
+        android:id="@+id/start_bg_img"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop" />
     
     <TextView 
         android:id="@+id/start_text2"
-        android:layout_above="@id/start_indicator_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/start_bg_text2_margin_bottom"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="130dp"
         android:text="3234"
         android:textSize="@dimen/start_bg_text2_size"
         android:textColor="@color/white"/>

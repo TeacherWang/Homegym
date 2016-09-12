@@ -14,25 +14,31 @@
             android:layout_height="225dp"
             android:scaleType="centerCrop" />
         <RelativeLayout
-            android:id="@+id/train_action_back_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
-            <ImageView 
-	            android:id="@+id/train_action_set_back_img"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:layout_centerVertical="true"
-	            android:layout_marginTop="@dimen/train_action_set_back_margint_top"
-	            android:layout_marginLeft="@dimen/train_action_set_back_margint_left"
-	            android:background="@drawable/nav_back_white"/>
-	        <TextView
-	            android:layout_toRightOf="@id/train_action_set_back_img"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:layout_centerVertical="true"
-	            android:text="@string/back"
-	            android:textSize="@dimen/back_text_size"
-	            android:textColor="@color/white"/>
+            <RelativeLayout
+                android:id="@+id/train_action_back_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true" >
+                <ImageView 
+		            android:id="@+id/train_action_set_back_img"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_centerVertical="true"
+		            android:layout_marginTop="@dimen/train_action_set_back_margint_top"
+		            android:layout_marginLeft="@dimen/train_action_set_back_margint_left"
+		            android:background="@drawable/nav_back_white"/>
+		        <TextView
+		            android:layout_toRightOf="@id/train_action_set_back_img"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_centerVertical="true"
+		            android:text="@string/back"
+		            android:textSize="@dimen/back_text_size"
+		            android:textColor="@color/white"/>
+            </RelativeLayout>
+            
 	        <TextView 
 	            android:id="@+id/train_action_set_save_text"
 	            android:layout_width="wrap_content"

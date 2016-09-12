@@ -8,7 +8,6 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -146,7 +145,7 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 		inputType = INPUT_TYPE_COUNT;
 		
 		mGroupDetail = mGroupDetailList.get(position);
-		int defaultCount = mGroupDetail.count;
+		mCount = mGroupDetail.count;
 		
 		selectContainer.removeAllViews();
 //		setSelectContainerWidth();
@@ -164,7 +163,7 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 		});
 		wheelOneWheelView.setTextSize(24);
 		wheelOneWheelView.setOffset(1);
-		wheelOneWheelView.setSeletion(DataTransferUtil.getInstance().getCountPostion(defaultCount));
+		wheelOneWheelView.setSeletion(DataTransferUtil.getInstance().getCountPostion(mCount));
 		wheelOneWheelView.setItems(AccountMgr.getInstance().getCountList());
 		
 		popWindows = new PopupWindows(this, selectContainer);
@@ -176,7 +175,11 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 		inputType = INPUT_TYPE_TOOL_WEIGHT;
 		
 		mGroupDetail = mGroupDetailList.get(position);
-		int defaultToolWeight = mGroupDetail.weight;
+		mToolWeight = mGroupDetail.weight;
+		
+		if(mToolWeight == 0){
+			return;
+		}
 		
 		selectContainer.removeAllViews();
 //		setSelectContainerWidth();
@@ -194,7 +197,7 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 		});
 		wheelOneWheelView.setTextSize(24);
 		wheelOneWheelView.setOffset(1);
-		wheelOneWheelView.setSeletion(DataTransferUtil.getInstance().getToolWeightPostion(defaultToolWeight));
+		wheelOneWheelView.setSeletion(DataTransferUtil.getInstance().getToolWeightPostion(mToolWeight));
 		wheelOneWheelView.setItems(AccountMgr.getInstance().getToolWeightList());
 		
 		popWindows = new PopupWindows(this, selectContainer);
@@ -240,6 +243,7 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 		}else{
 			ivHeadBg.setBackgroundResource(R.drawable.action1_bg);
 		}
+		
 	}
 
 	private void initView() {
@@ -350,7 +354,11 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 		case INPUT_TYPE_COUNT:
 			mGroupDetail.count = mCount;
 			// 要计算次数跟重量对应的燃脂，公式？
-			mGroupDetail.kcal = CalculateUtil.calculateTotakKcal(mGroupDetail.count, mGroupDetail.weight, mAction.action_h, mAction.action_b);
+			if(mGroupDetail.weight == 0){
+				mGroupDetail.kcal = CalculateUtil.calculateTotakKcal(mGroupDetail.count, CalculateUtil.DEFAULT_WEIGHT_VALUE_IF_ZERO, mAction.action_h, mAction.action_b);
+			}else{
+				mGroupDetail.kcal = CalculateUtil.calculateTotakKcal(mGroupDetail.count, mGroupDetail.weight, mAction.action_h, mAction.action_b);
+			}
 			
 			actionTotalData = getTotalTimeOfActionInMyCourse(mActionDetail);
 			
@@ -362,7 +370,11 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 		case INPUT_TYPE_TOOL_WEIGHT:
 			mGroupDetail.weight = mToolWeight;
 			// 要计算次数跟重量对应的燃脂，公式？还有时间
-			mGroupDetail.kcal = CalculateUtil.calculateTotakKcal(mGroupDetail.count, mGroupDetail.weight, mAction.action_h, mAction.action_b);
+			if(mGroupDetail.weight == 0){
+				mGroupDetail.kcal = CalculateUtil.calculateTotakKcal(mGroupDetail.count, CalculateUtil.DEFAULT_WEIGHT_VALUE_IF_ZERO, mAction.action_h, mAction.action_b);
+			}else{
+				mGroupDetail.kcal = CalculateUtil.calculateTotakKcal(mGroupDetail.count, mGroupDetail.weight, mAction.action_h, mAction.action_b);
+			}
 			
 			actionTotalData = getTotalTimeOfActionInMyCourse(mActionDetail);
 			
@@ -435,6 +447,8 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 			public void onUpdateTrainPlanSuc() {
 				MyCourseDao.getInstance().saveMyCourseToDb(Globle.gApplicationContext, mUserInfo.strAccountId, mMyCourse);
 				
+				Toast.makeText(ActionSetActivity.this, "保存成功", Toast.LENGTH_SHORT).show();
+				
 				Intent intent = new Intent();
 				intent.putExtra(Const.KEY_COURSE, mMyCourse);
 				setResult(Activity.RESULT_OK, intent);
@@ -483,8 +497,18 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 			Toast.makeText(this, R.string.group_num_is_bigger_than_9, Toast.LENGTH_SHORT).show();
 			return;
 		}
-		GroupDetail groupDetail = new GroupDetail(8, 10, CalculateUtil.calculateTotakKcal(8, 10, mAction.action_h, mAction.action_b));
-		mGroupDetailList.add(groupDetail);
+		// 修改动作重量为0时的特殊处理
+		if(mGroupDetail.weight == 0){
+			GroupDetail groupDetail = new GroupDetail(8, 10, CalculateUtil.calculateTotakKcal(8, CalculateUtil.DEFAULT_WEIGHT_VALUE_IF_ZERO, mAction.action_h, mAction.action_b));
+			mGroupDetailList.add(groupDetail);
+		}else{
+			GroupDetail groupDetail = new GroupDetail(8, 10, CalculateUtil.calculateTotakKcal(8, 10, mAction.action_h, mAction.action_b));
+			mGroupDetailList.add(groupDetail);
+		}
+		
+//		GroupDetail groupDetail = new GroupDetail(8, 10, CalculateUtil.calculateTotakKcal(8, 10, mAction.action_h, mAction.action_b));
+//		mGroupDetailList.add(groupDetail);
+		
 		mActionDetail.group_num = mGroupDetailList.size();
 		mActionDetail.group_detail = mGroupDetailList;
 		
@@ -498,14 +522,12 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 	}
 	
 	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if(keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0){
-			Intent intent = new Intent();
-			setResult(Activity.RESULT_CANCELED, intent);
-			finish();
-			return true;
-		}
-		return super.onKeyDown(keyCode, event);
+	public void onBackPressed() {
+		Log.i(TAG, "onBackPressed");
+		
+		Intent intent = new Intent();
+		setResult(Activity.RESULT_CANCELED, intent);
+		finish();
 	}
 	
 	@Override

@@ -34,8 +34,9 @@ public class StartActivity extends Activity{
 	
 	private ViewPager vpGuide;
 	
-	private RelativeLayout mStartBgRelativeLayout1, mStartBgRelativeLayout2, mStartBgRelativeLayout3, mStartBgLayout1, mStartBgLayout2, mStartBgLayout3;
-	private ImageView ivPoint11, ivPoint12, ivPoint13, ivPoint21, ivPoint22, ivPoint23, ivPoint31, ivPoint32, ivPoint33;
+	private RelativeLayout mStartBgRelativeLayout1, mStartBgRelativeLayout2, mStartBgRelativeLayout3;
+	private ImageView ivStartBg1, ivStartBg2, ivStartBg3;
+	private ImageView ivPoint11, ivPoint12, ivPoint13;
 	private TextView tv11, tv12, tv21, tv22, tv31, tv32;
 	
 	private boolean isReceverRegisted = false;
@@ -109,21 +110,13 @@ public class StartActivity extends Activity{
 		mStartBgRelativeLayout2 = (RelativeLayout)LayoutInflater.from(this).inflate(R.layout.start_bg, null);
 		mStartBgRelativeLayout3 = (RelativeLayout)LayoutInflater.from(this).inflate(R.layout.start_bg, null);
 		
-		mStartBgLayout1 = (RelativeLayout)mStartBgRelativeLayout1.findViewById(R.id.start_bg);
-		mStartBgLayout2 = (RelativeLayout)mStartBgRelativeLayout2.findViewById(R.id.start_bg);
-		mStartBgLayout3 = (RelativeLayout)mStartBgRelativeLayout3.findViewById(R.id.start_bg);
+		ivStartBg1 = (ImageView)mStartBgRelativeLayout1.findViewById(R.id.start_bg_img);
+		ivStartBg2 = (ImageView)mStartBgRelativeLayout2.findViewById(R.id.start_bg_img);
+		ivStartBg3 = (ImageView)mStartBgRelativeLayout3.findViewById(R.id.start_bg_img);
 		
-		ivPoint11 = (ImageView)mStartBgRelativeLayout1.findViewById(R.id.start_indicator1);
-		ivPoint12 = (ImageView)mStartBgRelativeLayout1.findViewById(R.id.start_indicator2);
-		ivPoint13 = (ImageView)mStartBgRelativeLayout1.findViewById(R.id.start_indicator3);
-		
-		ivPoint21 = (ImageView)mStartBgRelativeLayout2.findViewById(R.id.start_indicator1);
-		ivPoint22 = (ImageView)mStartBgRelativeLayout2.findViewById(R.id.start_indicator2);
-		ivPoint23 = (ImageView)mStartBgRelativeLayout2.findViewById(R.id.start_indicator3);
-		
-		ivPoint31 = (ImageView)mStartBgRelativeLayout3.findViewById(R.id.start_indicator1);
-		ivPoint32 = (ImageView)mStartBgRelativeLayout3.findViewById(R.id.start_indicator2);
-		ivPoint33 = (ImageView)mStartBgRelativeLayout3.findViewById(R.id.start_indicator3);
+		ivPoint11 = (ImageView)findViewById(R.id.start_indicator1);
+		ivPoint12 = (ImageView)findViewById(R.id.start_indicator2);
+		ivPoint13 = (ImageView)findViewById(R.id.start_indicator3);
 		
 		tv11 = (TextView)mStartBgRelativeLayout1.findViewById(R.id.start_text1);
 		tv12 = (TextView)mStartBgRelativeLayout1.findViewById(R.id.start_text2);
@@ -189,7 +182,7 @@ public class StartActivity extends Activity{
 		// 某个页面被选中
 		@Override
 		public void onPageSelected(int position) {
-//			setIndicator(position);
+			setIndicator(position);
 		}
 
 		// 滑动状态发生变化
@@ -199,24 +192,24 @@ public class StartActivity extends Activity{
 	
 	public void setIndicator(int position) {
 		if(position == 0){
-			mStartBgLayout1.setBackgroundResource(R.drawable.defoult_bg1);
+			ivStartBg1.setImageResource(R.drawable.defoult_bg1);
 			ivPoint11.setBackgroundResource(R.drawable.start_round_select_bg);
 			ivPoint12.setBackgroundResource(R.drawable.start_round_normal_bg);
 			ivPoint13.setBackgroundResource(R.drawable.start_round_normal_bg);
 			tv11.setText(R.string.start_text1_first);
 			tv12.setText(R.string.start_text1_second);
 		}else if(position == 1){
-			mStartBgLayout2.setBackgroundResource(R.drawable.defoult_bg2);
-			ivPoint21.setBackgroundResource(R.drawable.start_round_normal_bg);
-			ivPoint22.setBackgroundResource(R.drawable.start_round_select_bg);
-			ivPoint23.setBackgroundResource(R.drawable.start_round_normal_bg);
+			ivStartBg2.setImageResource(R.drawable.defoult_bg2);
+			ivPoint11.setBackgroundResource(R.drawable.start_round_normal_bg);
+			ivPoint12.setBackgroundResource(R.drawable.start_round_select_bg);
+			ivPoint13.setBackgroundResource(R.drawable.start_round_normal_bg);
 			tv21.setText(R.string.start_text2_first);
 			tv22.setText(R.string.start_text2_second);
 		}else if(position == 2){
-			mStartBgLayout3.setBackgroundResource(R.drawable.defoult_bg3);
-			ivPoint31.setBackgroundResource(R.drawable.start_round_normal_bg);
-			ivPoint32.setBackgroundResource(R.drawable.start_round_normal_bg);
-			ivPoint33.setBackgroundResource(R.drawable.start_round_select_bg);
+			ivStartBg3.setImageResource(R.drawable.defoult_bg3);
+			ivPoint11.setBackgroundResource(R.drawable.start_round_normal_bg);
+			ivPoint12.setBackgroundResource(R.drawable.start_round_normal_bg);
+			ivPoint13.setBackgroundResource(R.drawable.start_round_select_bg);
 			tv31.setText(R.string.start_text3_first);
 			tv32.setText(R.string.start_text3_second);
 		}

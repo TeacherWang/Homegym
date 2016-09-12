@@ -154,7 +154,7 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 							rlProgress.setVisibility(View.INVISIBLE);
 							btnJoin.setText(R.string.start_train);
 							btnJoin.setVisibility(View.VISIBLE);
-							getAllActions();
+							reGetAllActions();
 						}
 					}
 				});
@@ -211,9 +211,15 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 
 			@Override
 			public void onConnectionLost() {
-				Toast.makeText(DetailPlanActivity.this, "网络错误！", Toast.LENGTH_SHORT).show();
-				rlProgress.setVisibility(View.INVISIBLE);
-				btnJoin.setVisibility(View.VISIBLE);
+				runOnUiThread(new Runnable() {
+					
+					@Override
+					public void run() {
+						Toast.makeText(DetailPlanActivity.this, "网络错误！", Toast.LENGTH_SHORT).show();
+						rlProgress.setVisibility(View.INVISIBLE);
+						btnJoin.setVisibility(View.VISIBLE);
+					}
+				});
 			}
 		};
 		MyDownloadMgr.getInstance().addOnIDownloadObserver(mIDownloadListener);
@@ -334,6 +340,15 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 					mAllActionList.add(action);
 				}
 			}
+		}
+	}
+	
+	private void reGetAllActions(){
+		int actionSize = mAllActionIdList.size();
+		mAllActionList.clear();
+		for(int i=0; i<actionSize; i++){
+			Action action = ActionDao.getInstance().getActionFromDb(Globle.gApplicationContext, mAllActionIdList.get(i));
+			mAllActionList.add(action);
 		}
 	}
 
@@ -550,7 +565,7 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 			@Override
 			public void onJoinCourseToServerSuc() {
 				prepareToSaveMyCourse();
-				getAllActions();
+				reGetAllActions();
 				btnRight.setVisibility(View.VISIBLE);
 				btnJoin.setText(R.string.start_train);
 				isMyCourse = true;
@@ -599,6 +614,7 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 				Toast.makeText(this, "正在下载其他课程，请稍后", Toast.LENGTH_SHORT).show();
 				return;
 			}
+			MyDownloadMgr.getInstance().clearUrlList();
 			MyDownloadMgr.getInstance().addDownloadUrlList(mActionUrlHashMapList, mUrlStrTotalList);
 			MyDownloadMgr.getInstance().startDownload(mCourseId);
 			// 显示进度条
@@ -679,7 +695,6 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 				mUrlStrTotalList.addAll(taskList);
 			}
 		}
-		
 		return needDownload;
 	}
 	

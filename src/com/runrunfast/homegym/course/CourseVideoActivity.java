@@ -75,7 +75,7 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 	private static final int MSG_REST_FINISH = 2; // 休息结束
 	private static final int MSG_PLAY_REST = 3; // 最后一个动作做完后，等次数报完后，延迟播报“休息一下”
 	
-	private static final int DELAY_SECOND = 1000;
+	private static final int DELAY_SECOND = 0;
 	private static final int REST_TIME = 50 * 1000; // 休息时间 秒
 	private static final int REST_TIME_SHOW_INIT = 50; // 显示休息时间
 	
@@ -304,8 +304,12 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 		mMediaController.show(0);
 		startVideo(mVideoPath);
 		mRestTime = REST_TIME_SHOW_INIT;
-		// 该动作还有下一组
-		if(mActionGroupIndex < mTargetActionDetail.group_num){
+		// 下一个动作
+		if(mActionGroupIndex == 0 && mActionCurrentGroupCount == 0){
+			speekFirstGroup(mAction.action_name, mTargetGroupDetail.count, mTargetGroupDetail.weight);
+			
+			updateUi(0, mTargetGroupDetail.count, mActionGroupIndex);
+		}else if(mActionGroupIndex < mTargetActionDetail.group_num){ // 该动作还有下一组
 			if(mAction.action_left_right == Action.ACTION_TWO_SIDE){
 				speekTurnRound(mAction.action_name, mTargetGroupDetail.count, mTargetGroupDetail.weight);
 			}else{
