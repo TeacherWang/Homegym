@@ -1,6 +1,7 @@
 package com.runrunfast.homegym.BtDevice;
 
 import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -14,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.runrunfast.ble.BLESingleton;
 import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.BtDevice.BtDeviceMgr.BLEServiceListener;
 import com.runrunfast.homegym.utils.Const;
@@ -25,12 +27,13 @@ public class BtDeviceActivity extends Activity{
 	private final String TAG = "BtDeviceActivity";
 	
 	private TextView tvTitle, tvPairedDevice;
+	private TextView tvConnected;
 	private Button btnBack, btnUnbind;
 	private ListView mDeviceListView;
 	private LinearLayout llBtAllDevicesLayout;
 	
 	private BtDeviceAdapter mBtDeviceAdapter;
-	private ArrayList<BtInfo> mBtInfoList;
+	private ArrayList<BluetoothDevice> mBtDeviceList;
 	
 	private Resources mResources;
 	
@@ -82,25 +85,63 @@ public class BtDeviceActivity extends Activity{
 
 			@Override
 			public void onDeviceConnected() {
+				runOnUiThread(new Runnable() {
+					
+					@Override
+					public void run() {
+						setConnected();
+					}
+				});
 				
 			}
 
 			@Override
 			public void onDeviceDisconnected() {
-				
+				runOnUiThread(new Runnable() {
+					
+					@Override
+					public void run() {
+						setConnected();
+					}
+				});
+			}
+
+			@Override
+			public void onBTOpen(boolean isOpened) {
+				runOnUiThread(new Runnable() {
+					
+					@Override
+					public void run() {
+						setConnected();
+					}
+				});
 			}
 		};
 		BtDeviceMgr.getInstance().addBLEServiceObserver(mBLEServiceListener);
 	}
 	
 	private void selectDevice(int position) {
-		BtInfo btInfo = mBtInfoList.get(position);
-		BtDeviceMgr.getInstance().setLastBtInfo(this, btInfo.btName, btInfo.btAddress);
+		BluetoothDevice btDevice = mBtDeviceList.get(position);
+		
+		String btName = btDevice.getName();
+		String btAddress = btDevice.getAddress();
+		
+		BtDeviceMgr.getInstance().setLastBtInfo(this, btName, btAddress);
+		
+		BtInfo btInfo = new BtInfo();
+		btInfo.btName = btName;
+		btInfo.btAddress = btAddress;
+		
 		mLastBtInfo = btInfo;
 		
 		llBtAllDevicesLayout.setVisibility(View.INVISIBLE);
 		btnUnbind.setVisibility(View.VISIBLE);
 		tvPairedDevice.setText(btInfo.btName);
+		tvConnected.setVisibility(View.VISIBLE);
+		
+		BtDeviceMgr.getInstance().connectBLE(btDevice);
+		
+		setConnected();
 	}
 
 	private void handleGetBTDevices(BluetoothDevice btDevice) {
@@ -108,12 +149,6 @@ public class BtDeviceActivity extends Activity{
 			Log.d(TAG, "handleGetBTDevices, has the btDevice");
 			return;
 		}
-		
-//		if(mLastConnecteDevice != null){
-//			Log.d(TAG, "handleGetBTDevices, mLastConnecteDevice != null");
-//			BtDeviceMgr.getInstance().connectBLE(mLastConnecteDevice);
-//			return;
-//		}
 		
 		if(mLastBtInfo != null){
 			Log.d(TAG, "handleGetBTDevices, mLastBtInfo != null, do not change list");
@@ -124,18 +159,18 @@ public class BtDeviceActivity extends Activity{
 		btInfo.btAddress = btDevice.getAddress();
 		btInfo.btName = btDevice.getName();
 		
-		mBtInfoList.add(btInfo);
+		mBtDeviceList.add(btDevice);
 		mBtDeviceAdapter.notifyDataSetChanged();
 	}
 	
-	private boolean hasTheBtDevice(BluetoothDevice btDevice){
-		String deviceAddress = btDevice.getAddress();
+	private boolean hasTheBtDevice(BluetoothDevice device){
+		String deviceAddress = device.getAddress();
 		
-		int listSize = mBtInfoList.size();
+		int listSize = mBtDeviceList.size();
 		
 		for(int i=0; i<listSize; i++){
-			BtInfo btInfo = mBtInfoList.get(i);
-			if(btInfo.btAddress.equalsIgnoreCase(deviceAddress)){
+			BluetoothDevice btDevice = mBtDeviceList.get(i);
+			if(btDevice.getAddress().equalsIgnoreCase(deviceAddress)){
 //				mLastConnecteDevice = btDevice;
 				return true;
 			}
@@ -168,18 +203,28 @@ public class BtDeviceActivity extends Activity{
 			tvPairedDevice.setText(mLastBtInfo.btName);
 			llBtAllDevicesLayout.setVisibility(View.INVISIBLE);
 			btnUnbind.setVisibility(View.VISIBLE);
+			
+			setConnected();
 		}else{
 			tvPairedDevice.setText(R.string.bt_last_connected_no);
 			llBtAllDevicesLayout.setVisibility(View.VISIBLE);
 			btnUnbind.setVisibility(View.INVISIBLE);
 		}
 		
-		mBtInfoList = new ArrayList<BtInfo>();
+		mBtDeviceList = new ArrayList<BluetoothDevice>();
 		
-		mBtDeviceAdapter = new BtDeviceAdapter(this, mBtInfoList);
+		mBtDeviceAdapter = new BtDeviceAdapter(this, mBtDeviceList);
 		mDeviceListView.setAdapter(mBtDeviceAdapter);
 		
 		checkBtOpen();
+	}
+	
+	private void setConnected(){
+		if(BtDeviceMgr.getInstance().isConnected()){
+			tvConnected.setText(R.string.bt_connected);
+		}else{
+			tvConnected.setText(R.string.bt_disconnected);
+		}
 	}
 
 	private void initView() {
@@ -194,7 +239,7 @@ public class BtDeviceActivity extends Activity{
 		
 		tvPairedDevice = (TextView)findViewById(R.id.bt_paired_device);
 		
-//		tvConnected = (TextView)findViewById(R.id.bt_paired_device_connect);
+		tvConnected = (TextView)findViewById(R.id.bt_paired_device_connect);
 	}
 	
 	public void onClick(View view){
@@ -251,7 +296,7 @@ public class BtDeviceActivity extends Activity{
 		llBtAllDevicesLayout.setVisibility(View.VISIBLE);
 		tvPairedDevice.setText(R.string.bt_last_connected_no);
 		btnUnbind.setVisibility(View.INVISIBLE);
-//		tvConnected.setVisibility(View.INVISIBLE);
+		tvConnected.setVisibility(View.INVISIBLE);
 	}
 
 	private void handleClickLeft() {
@@ -263,6 +308,8 @@ public class BtDeviceActivity extends Activity{
 		super.onDestroy();
 		Log.i(TAG, "onDestroy");
 		
-		BtDeviceMgr.getInstance().removeBLEServiceObserver(mBLEServiceListener);
+		if(mBLEServiceListener != null){
+			BtDeviceMgr.getInstance().removeBLEServiceObserver(mBLEServiceListener);
+		}
 	}
 }

@@ -577,7 +577,7 @@ public class AccountMgr {
 	private void handleUpdateUserInfoSuccess(String result) {
 		try {
 			JSONObject jsonObject = new JSONObject(result);
-			int retCode = (int) jsonObject.get("ret");
+			int retCode = (Integer) jsonObject.get("ret");
 			if(retCode == 1){
 				notifyUpdateUserInfoSuc();
 			}else if(retCode == -1){
@@ -635,7 +635,7 @@ public class AccountMgr {
 	private void handleUpdateHeadImgSuccess(String result) {
 		try {
 			JSONObject jsonObject = new JSONObject(result);
-			int retCode = (int) jsonObject.get("ret");
+			int retCode = (Integer) jsonObject.get("ret");
 			if(retCode == 1){
 				notifyUpdateHeadImgSuc();
 			}else if(retCode == -1){
@@ -692,7 +692,7 @@ public class AccountMgr {
 	private void handleGetPersonalInfoSuccess(String result) {
 		try {
 			JSONObject jsonObject = new JSONObject(result);
-			int retCode = (int) jsonObject.get("ret");
+			int retCode = (Integer) jsonObject.get("ret");
 			if(retCode == 2){
 				handleGetPersonalInfoResult(jsonObject);
 			}else if(retCode == -1){

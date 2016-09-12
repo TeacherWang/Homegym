@@ -1,5 +1,8 @@
 package com.runrunfast.homegym.BtDevice;
 
+import java.util.ArrayList;
+
+import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,28 +12,26 @@ import android.widget.TextView;
 
 import com.runrunfast.homegym.R;
 
-import java.util.ArrayList;
-
 public class BtDeviceAdapter extends BaseAdapter {
 
 	private Context mContext;
 	private LayoutInflater mInflater;
-	private ArrayList<BtInfo> mBtList;
+	private ArrayList<BluetoothDevice> mBtDeviceList;
 	
-	public BtDeviceAdapter(Context context, ArrayList<BtInfo> btList) {
+	public BtDeviceAdapter(Context context, ArrayList<BluetoothDevice> btList) {
 		mContext = context;
 		mInflater = LayoutInflater.from(context);
-		this.mBtList = btList;
+		this.mBtDeviceList = btList;
 	}
 
 	@Override
 	public int getCount() {
-		return mBtList.size();
+		return mBtDeviceList.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
-		return mBtList.get(position);
+		return mBtDeviceList.get(position);
 	}
 
 	@Override
@@ -51,8 +52,8 @@ public class BtDeviceAdapter extends BaseAdapter {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
 		
-		BtInfo btInfo = mBtList.get(position);
-		viewHolder.tvBtName.setText(btInfo.btName);
+		BluetoothDevice btDevice = mBtDeviceList.get(position);
+		viewHolder.tvBtName.setText(btDevice.getName());
 		
 		return convertView;
 	}

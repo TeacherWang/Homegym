@@ -84,6 +84,11 @@ public class HomeActivity extends FragmentActivity{
 			public void onBLEInit() {
 				checkBtOpen();
 			}
+
+			@Override
+			public void onBTOpen(boolean isOpened) {
+				
+			}
 		};
 		
 		BtDeviceMgr.getInstance().addBLEServiceObserver(mBLEServiceListener);

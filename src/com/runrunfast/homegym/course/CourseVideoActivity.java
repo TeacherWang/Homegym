@@ -1,5 +1,19 @@
 package com.runrunfast.homegym.course;
 
+import io.vov.vitamio.MediaPlayer;
+import io.vov.vitamio.widget.MediaController;
+import io.vov.vitamio.widget.VideoView;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import android.app.Activity;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
@@ -13,6 +27,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -53,29 +68,15 @@ import com.runrunfast.homegym.utils.Globle;
 import com.runrunfast.homegym.widget.DialogActivity;
 import com.runrunfast.homegym.widget.HorizonDialogActivity;
 
-import io.vov.vitamio.MediaPlayer;
-import io.vov.vitamio.widget.MediaController;
-import io.vov.vitamio.widget.VideoView;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-
 public class CourseVideoActivity extends Activity implements OnClickListener{
 	private final String TAG = "CourseVideoActivity";
 	private Resources mResources;
 	
 	private static final int MSG_ONE_SECOND = 1;
 	private static final int MSG_REST_FINISH = 2; // 休息结束
-	private static final int MSG_PLAY_REST = 3; // 最后一个动作做完后，等次数报完后，延迟播报“休息一下”
+	private static final int MSG_SHOW_REST_AND_PLAY = 3; // 最后一个动作做完后，等次数报完后，显示休息并播报“休息一下”
 	
-	private static final int DELAY_SECOND = 0;
+	private static final int DELAY_SECOND = 1000;
 	private static final int REST_TIME = 50 * 1000; // 休息时间 秒
 	private static final int REST_TIME_SHOW_INIT = 50; // 显示休息时间
 	
@@ -147,6 +148,8 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
     private static final String ENGLISH_SPEECH_FEMALE_MODEL_NAME = "bd_etts_speech_female_en.dat";
     private static final String ENGLISH_SPEECH_MALE_MODEL_NAME = "bd_etts_speech_male_en.dat";
     private static final String ENGLISH_TEXT_MODEL_NAME = "bd_etts_text_en.dat";
+    
+    private View rootView;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -168,6 +171,11 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 		initCourseServerListener();
 	}
 
+	@Override
+	protected void onResume() {
+		super.onResume();
+	}
+	
 	private void initCourseServerListener() {
 		mIUpdateRecordListener = new IUpdateRecordListener() {
 			
@@ -193,7 +201,14 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 					Log.d(TAG, "onReedSwitch, isShowDialog, dont handle");
 					return;
 				}
-				handleFinishOnce();
+				
+				runOnUiThread(new Runnable() {
+					
+					@Override
+					public void run() {
+						handleFinishOnce();
+					}
+				});
 			}
 			
 			@Override
@@ -201,16 +216,41 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 			
 			@Override
 			public void onDeviceDisconnected() {
-				ivBluetooth.setBackgroundResource(R.drawable.video_bluetooth_red);
+				runOnUiThread(new Runnable() {
+					
+					@Override
+					public void run() {
+						ivBluetooth.setBackgroundResource(R.drawable.video_bluetooth_red);
+					}
+				});
 			}
 			
 			@Override
 			public void onDeviceConnected() {
-				ivBluetooth.setBackgroundResource(R.drawable.video_bluetooth_white);
+				runOnUiThread(new Runnable() {
+					
+					@Override
+					public void run() {
+						ivBluetooth.setBackgroundResource(R.drawable.video_bluetooth_white);
+					}
+				});
 			}
 			
 			@Override
 			public void onBLEInit() {}
+
+			@Override
+			public void onBTOpen(final boolean isOpened) {
+				runOnUiThread(new Runnable() {
+					
+					@Override
+					public void run() {
+						if( !isOpened ){
+							ivBluetooth.setBackgroundResource(R.drawable.video_bluetooth_red);
+						}
+					}
+				});
+			}
 		};
 		
 		BtDeviceMgr.getInstance().addBLEServiceObserver(mBleServiceListener);
@@ -259,8 +299,8 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 			mActionCurrentGroupCount = 0;
 			// 做完一组休息一下
 			prepareNextGroup();
-			showRest();
-			mHandler.sendEmptyMessageDelayed(MSG_PLAY_REST, DELAY_SECOND);
+//			showRest();
+			mHandler.sendEmptyMessageDelayed(MSG_SHOW_REST_AND_PLAY, DELAY_SECOND);
 		}else{ // 当前为最后一组的最后一次
 			Toast.makeText(CourseVideoActivity.this, "该动作结束", Toast.LENGTH_SHORT).show();
 			// 保存到列表
@@ -273,8 +313,8 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 				mAction = ActionDao.getInstance().getActionFromDb(Globle.gApplicationContext, mTargetActionDetail.action_id);
 				prepareNextAction();
 				// 做下个动作之前休息一下
-				showRest();
-				mHandler.sendEmptyMessageDelayed(MSG_PLAY_REST, DELAY_SECOND);
+//				showRest();
+				mHandler.sendEmptyMessageDelayed(MSG_SHOW_REST_AND_PLAY, DELAY_SECOND);
 				
 				tvActionName.setText( (mCurrentActionPosition + 1) + "." + mAction.action_name);
 				
@@ -508,7 +548,8 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 				}
 				break;
 				
-			case MSG_PLAY_REST:
+			case MSG_SHOW_REST_AND_PLAY:
+				showRest();
 				handleRestAudio();
 				break;
 				
@@ -969,9 +1010,13 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 	
 	@Override
 	protected void onDestroy() {
-		CourseServerMgr.getInstance().removeUpdateRecordObserver(mIUpdateRecordListener);
+		if(mIUpdateRecordListener != null){
+			CourseServerMgr.getInstance().removeUpdateRecordObserver(mIUpdateRecordListener);
+		}
 		
-		BtDeviceMgr.getInstance().removeBLEServiceObserver(mBleServiceListener);
+		if(mBleServiceListener != null){
+			BtDeviceMgr.getInstance().removeBLEServiceObserver(mBleServiceListener);
+		}
 		
 		if(mSpeechSynthesizer != null){
 			mSpeechSynthesizer.release();

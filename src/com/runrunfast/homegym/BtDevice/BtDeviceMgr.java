@@ -35,6 +35,7 @@ public class BtDeviceMgr {
 		void onGetDevice(BluetoothDevice btDevice);
 		void onDeviceConnected();
 		void onDeviceDisconnected();
+		void onBTOpen(boolean isOpened);
 	}
 	
 	public static BtDeviceMgr getInstance(){
@@ -65,9 +66,13 @@ public class BtDeviceMgr {
 			if(intent.getAction().equals(BluetoothAdapter.ACTION_STATE_CHANGED)){
 				handleBtState(intent);
 			}else if(intent.getAction().equals(BLESingleton.mBLEService.ACTION_STATE_CONNECTED)){
+				Log.i(TAG, "notifyDeviceConnected");
+				
 				isConnected = true;
 				notifyDeviceConnected();
 			}else if(intent.getAction().equals(BLESingleton.mBLEService.ACTION_STATE_DISCONNECTED)){
+				Log.i(TAG, "notifyDeviceDisconnected");
+				
 				isConnected = false;
 				notifyDeviceDisconnected();
 			}
@@ -79,8 +84,10 @@ public class BtDeviceMgr {
 		Log.i(TAG, "handleBtState, state = " + state);
 		if(state == BluetoothAdapter.STATE_ON){
 			startScan();
+			notifyBTOpen(true);
 		}else{
 			isConnected = false;
+			notifyBTOpen(false);
 		}
 	}
 	
@@ -99,10 +106,21 @@ public class BtDeviceMgr {
 		synchronized (mBleServiceObserver) {
 			if(mBleServiceObserver != null){
 				for(BLEServiceListener bleServiceListener : mBleServiceObserver){
-					bleServiceListener.onDeviceConnected();
+					bleServiceListener.onDeviceDisconnected();
 				}
 			}
 		}
+	}
+	
+	private void notifyBTOpen(boolean isOpened) {
+		synchronized (mBleServiceObserver) {
+			if(mBleServiceObserver != null){
+				for(BLEServiceListener bleServiceListener : mBleServiceObserver){
+					bleServiceListener.onBTOpen(isOpened);
+				}
+			}
+		}
+		
 	}
 	
 	private void startScan() {

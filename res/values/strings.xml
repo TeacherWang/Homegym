@@ -112,6 +112,7 @@
 	<string name="bluetooth">蓝牙</string>
 	<string name="bt_had_paired">已适配</string>
 	<string name="bt_connected">已连接</string>
+	<string name="bt_disconnected">未连接</string>
 	<string name="bt_cancel">取消绑定并连接新设备</string>
 	<string name="yes">是</string>
 	<string name="no">否</string>
