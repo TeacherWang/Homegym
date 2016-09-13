@@ -130,8 +130,8 @@
             android:background="@drawable/video_exit" />
         <ImageView
             android:id="@+id/video_bluetooth_img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:background="@drawable/video_bluetooth_red" />

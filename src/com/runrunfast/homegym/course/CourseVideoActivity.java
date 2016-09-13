@@ -236,7 +236,7 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 					
 					@Override
 					public void run() {
-						ivBluetooth.setBackgroundResource(R.drawable.video_bluetooth_white);
+						ivBluetooth.setBackgroundResource(R.drawable.video_bluetooth_blue);
 					}
 				});
 			}
@@ -486,7 +486,7 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 		tvTime.setText(DateUtil.secToMinuteSecond(mTimeSecond));
 		
 		if(BtDeviceMgr.getInstance().isConnected()){
-			ivBluetooth.setBackgroundResource(R.drawable.video_bluetooth_white);
+			ivBluetooth.setBackgroundResource(R.drawable.video_bluetooth_blue);
 		}else{
 			ivBluetooth.setBackgroundResource(R.drawable.video_bluetooth_red);
 		}

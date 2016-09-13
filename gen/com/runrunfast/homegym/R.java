@@ -734,12 +734,13 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int tab_icon_exercise_disable=0x7f020079;
         public static final int tab_icon_me=0x7f02007a;
         public static final int tab_icon_me_disabale=0x7f02007b;
-        public static final int video_bluetooth_red=0x7f02007c;
-        public static final int video_bluetooth_white=0x7f02007d;
-        public static final int video_exit=0x7f02007e;
-        public static final int video_group=0x7f02007f;
-        public static final int video_repaly=0x7f020080;
-        public static final int video_rest=0x7f020081;
+        public static final int video_bluetooth_blue=0x7f02007c;
+        public static final int video_bluetooth_red=0x7f02007d;
+        public static final int video_bluetooth_white=0x7f02007e;
+        public static final int video_exit=0x7f02007f;
+        public static final int video_group=0x7f020080;
+        public static final int video_repaly=0x7f020081;
+        public static final int video_rest=0x7f020082;
     }
     public static final class id {
         public static final int about_company_copyright_text=0x7f0a000e;
