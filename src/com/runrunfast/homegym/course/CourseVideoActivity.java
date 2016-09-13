@@ -1,19 +1,5 @@
 package com.runrunfast.homegym.course;
 
-import io.vov.vitamio.MediaPlayer;
-import io.vov.vitamio.widget.MediaController;
-import io.vov.vitamio.widget.VideoView;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import android.app.Activity;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
@@ -27,7 +13,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -67,6 +52,20 @@ import com.runrunfast.homegym.utils.FileUtils;
 import com.runrunfast.homegym.utils.Globle;
 import com.runrunfast.homegym.widget.DialogActivity;
 import com.runrunfast.homegym.widget.HorizonDialogActivity;
+
+import io.vov.vitamio.MediaPlayer;
+import io.vov.vitamio.widget.MediaController;
+import io.vov.vitamio.widget.VideoView;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class CourseVideoActivity extends Activity implements OnClickListener{
 	private final String TAG = "CourseVideoActivity";
@@ -149,8 +148,8 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
     private static final String ENGLISH_SPEECH_MALE_MODEL_NAME = "bd_etts_speech_male_en.dat";
     private static final String ENGLISH_TEXT_MODEL_NAME = "bd_etts_text_en.dat";
     
-    private View rootView;
-	
+    private int mReedSwitchCount = 0;
+    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -199,6 +198,12 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 			public void onReedSwitch() {
 				if(isPause){
 					Log.d(TAG, "onReedSwitch, isShowDialog, dont handle");
+					return;
+				}
+				
+				mReedSwitchCount++;
+				
+				if( (mReedSwitchCount % 2) != 0){
 					return;
 				}
 				

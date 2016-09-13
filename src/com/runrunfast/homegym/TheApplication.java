@@ -12,6 +12,7 @@ import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 import com.runrunfast.homegym.account.AccountMgr;
 import com.runrunfast.homegym.course.DataIniter;
 import com.runrunfast.homegym.utils.Globle;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import io.vov.vitamio.Vitamio;
 
@@ -32,6 +33,8 @@ public class TheApplication extends Application{
 	    DataIniter.getInstance().initData();
 	    
 	    initImageLoader();
+	    // 建议在测试阶段建议设置成true，发布时设置为false。
+	    CrashReport.initCrashReport(getApplicationContext(), "900051312", true); 
 	}
 
 	private void initImageLoader() {
