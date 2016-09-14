@@ -42,6 +42,7 @@ public class HomeActivity extends FragmentActivity{
 	private Resources mResources;
 	private TextView tvTitle;
 	private View selectView;
+	private Button btnActionBarLeft;
 	private Button btnSelectLeft, btnSelectRight;
 	private ImageView ivTraining, ivMe;
 	private TextView tvTaining, tvMe;
@@ -75,10 +76,26 @@ public class HomeActivity extends FragmentActivity{
 			public void onGetDevice(BluetoothDevice btDevice) {}
 			
 			@Override
-			public void onDeviceDisconnected() {}
+			public void onDeviceDisconnected() {
+				runOnUiThread(new Runnable() {
+					
+					@Override
+					public void run() {
+						btnActionBarLeft.setBackgroundResource(R.drawable.nav_bluetooth_red);
+					}
+				});
+			}
 			
 			@Override
-			public void onDeviceConnected() {}
+			public void onDeviceConnected() {
+				runOnUiThread(new Runnable() {
+					
+					@Override
+					public void run() {
+						btnActionBarLeft.setBackgroundResource(R.drawable.nav_bluetooth_blue);
+					}
+				});
+			}
 			
 			@Override
 			public void onBLEInit() {
@@ -145,7 +162,13 @@ public class HomeActivity extends FragmentActivity{
 		selectView = (View)findViewById(R.id.actionbar_select_layout);
 		selectView.setVisibility(View.VISIBLE);
 		
-		findViewById(R.id.actionbar_left_btn).setBackgroundResource(R.drawable.nav_bluetooth);
+		btnActionBarLeft = (Button)findViewById(R.id.actionbar_left_btn);
+		if(BtDeviceMgr.getInstance().isConnected()){
+			btnActionBarLeft.setBackgroundResource(R.drawable.nav_bluetooth_blue);
+		}else{
+			btnActionBarLeft.setBackgroundResource(R.drawable.nav_bluetooth_red);
+		}
+		
 		findViewById(R.id.actionbar_right_btn).setBackgroundResource(R.drawable.nav_record);
 		
 		btnSelectLeft = (Button)selectView.findViewById(R.id.actionbar_select_left_btn);

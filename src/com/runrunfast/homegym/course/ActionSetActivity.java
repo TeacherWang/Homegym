@@ -497,6 +497,8 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 			Toast.makeText(this, R.string.group_num_is_bigger_than_9, Toast.LENGTH_SHORT).show();
 			return;
 		}
+		// 随便取一组，看下器械重量是不是0
+		mGroupDetail = mGroupDetailList.get(0);
 		// 修改动作重量为0时的特殊处理
 		if(mGroupDetail.weight == 0){
 			GroupDetail groupDetail = new GroupDetail(8, 10, CalculateUtil.calculateTotakKcal(8, CalculateUtil.DEFAULT_WEIGHT_VALUE_IF_ZERO, mAction.action_h, mAction.action_b));
