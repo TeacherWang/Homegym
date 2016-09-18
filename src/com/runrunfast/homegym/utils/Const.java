@@ -50,6 +50,7 @@ public class Const {
 	public static final String DB_KEY_COURSE_RECOMMEND = "course_recommend";
 	public static final String DB_KEY_COURSE_QUALITY = "course_quality";
 	public static final String DB_KEY_COURSE_NEW = "course_new";
+	public static final String DB_KEY_COURSE_PERIOD = "course_period";
 	public static final String DB_KEY_COURSE_DETAIL = "course_detail";
 	public static final String DB_KEY_COURSE_IMG_URL = "course_img_url";
 	public static final String DB_KEY_COURSE_IMG_LOCAL = "course_img_local";

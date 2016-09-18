@@ -21,9 +21,22 @@ public class BtDeviceAdapter extends BaseAdapter {
 	public BtDeviceAdapter(Context context, ArrayList<BluetoothDevice> btList) {
 		mContext = context;
 		mInflater = LayoutInflater.from(context);
-		this.mBtDeviceList = btList;
+		setData(btList);
 	}
 
+	private void setData(ArrayList<BluetoothDevice> btList){
+		if(btList != null){
+			mBtDeviceList = btList;
+		}else{
+			mBtDeviceList = new ArrayList<BluetoothDevice>();
+		}
+	}
+	
+	public void updateData(ArrayList<BluetoothDevice> btList){
+		setData(btList);
+		notifyDataSetChanged();
+	}
+	
 	@Override
 	public int getCount() {
 		return mBtDeviceList.size();

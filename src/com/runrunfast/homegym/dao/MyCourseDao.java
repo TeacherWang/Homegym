@@ -49,6 +49,7 @@ public class MyCourseDao {
 				+ Const.DB_KEY_COURSE_IMG_URL + " TEXT,"
 				+ Const.DB_KEY_COURSE_IMG_LOCAL + " TEXT,"
 				+ Const.DB_KEY_START_DATE + " TEXT,"
+				+ Const.DB_KEY_COURSE_PERIOD + " INTEGER,"
 				+ Const.DB_KEY_PROGRESS + " INTEGER,"
 				+ Const.DB_KEY_DAY_PROGRESS + " TEXT"
 				+ ");";
@@ -81,6 +82,7 @@ public class MyCourseDao {
 			values.put(Const.DB_KEY_COURSE_QUALITY, myCourse.course_quality);
 			values.put(Const.DB_KEY_COURSE_NEW, myCourse.course_new);
 			values.put(Const.DB_KEY_COURSE_IMG_URL, myCourse.course_img_url);
+			values.put(Const.DB_KEY_COURSE_PERIOD, myCourse.course_period);
 			
 			Gson gson = new Gson();
 			
@@ -238,6 +240,7 @@ public class MyCourseDao {
 					myCourse.progress = c.getInt(c.getColumnIndex(Const.DB_KEY_PROGRESS));
 					myCourse.course_img_url = c.getString(c.getColumnIndex(Const.DB_KEY_COURSE_IMG_URL));
 					myCourse.course_img_local = c.getString(c.getColumnIndex(Const.DB_KEY_COURSE_IMG_LOCAL));
+					myCourse.course_period = c.getInt(c.getColumnIndex(Const.DB_KEY_COURSE_PERIOD));
 					
 //					String jsonActionIds = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_IDS));
 //					myCourse.action_ids = gson.fromJson(jsonActionIds, typeActionIds);
@@ -292,6 +295,7 @@ public class MyCourseDao {
 				myCourse.progress = c.getInt(c.getColumnIndex(Const.DB_KEY_PROGRESS));
 				myCourse.course_img_url = c.getString(c.getColumnIndex(Const.DB_KEY_COURSE_IMG_URL));
 				myCourse.course_img_local = c.getString(c.getColumnIndex(Const.DB_KEY_COURSE_IMG_LOCAL));
+				myCourse.course_period = c.getInt(c.getColumnIndex(Const.DB_KEY_COURSE_PERIOD));
 				
 				String jsonCourseDetail = c.getString(c.getColumnIndex(Const.DB_KEY_COURSE_DETAIL));
 				myCourse.course_detail = gson.fromJson(jsonCourseDetail, typeCourseDetail);

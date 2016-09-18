@@ -20,6 +20,7 @@ public class Course implements Serializable{
 	public int course_recommend; // 1为推荐课程,0为普通课程
 	public String course_img_url;
 	public String course_img_local;
+	public int course_period;
 	public List<CourseDetail> course_detail = new ArrayList<Course.CourseDetail>();
 	
 	public static class CourseDetail implements Serializable{

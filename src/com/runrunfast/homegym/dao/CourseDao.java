@@ -41,6 +41,7 @@ public class CourseDao {
 				+ Const.DB_KEY_COURSE_NEW + " INTEGER,"
 				+ Const.DB_KEY_COURSE_IMG_URL + " TEXT,"
 				+ Const.DB_KEY_COURSE_IMG_LOCAL+ " TEXT,"
+				+ Const.DB_KEY_COURSE_PERIOD + " INTEGER,"
 				+ Const.DB_KEY_COURSE_DETAIL + " TEXT"
 				+ ");";
 		return sql;
@@ -63,6 +64,7 @@ public class CourseDao {
 			values.put(Const.DB_KEY_COURSE_NEW, course.course_new);
 			values.put(Const.DB_KEY_COURSE_IMG_URL, course.course_img_url);
 			values.put(Const.DB_KEY_COURSE_IMG_LOCAL, course.course_img_local);
+			values.put(Const.DB_KEY_COURSE_PERIOD, course.course_period);
 			
 			String jsonCourseDetail = gson.toJson(course.course_detail);
 			values.put(Const.DB_KEY_COURSE_DETAIL, jsonCourseDetail);
@@ -138,6 +140,7 @@ public class CourseDao {
 					course.course_new = c.getInt(c.getColumnIndex(Const.DB_KEY_COURSE_NEW));
 					course.course_img_url = c.getString(c.getColumnIndex(Const.DB_KEY_COURSE_IMG_URL));
 					course.course_img_local = c.getString(c.getColumnIndex(Const.DB_KEY_COURSE_IMG_LOCAL));
+					course.course_period = c.getInt(c.getColumnIndex(Const.DB_KEY_COURSE_PERIOD));
 					
 					String jsonCourseDetail = c.getString(c.getColumnIndex(Const.DB_KEY_COURSE_DETAIL));
 					course.course_detail = gson.fromJson(jsonCourseDetail, typeCourseDetail);
@@ -181,6 +184,7 @@ public class CourseDao {
 					course.course_new = c.getInt(c.getColumnIndex(Const.DB_KEY_COURSE_NEW));
 					course.course_img_url = c.getString(c.getColumnIndex(Const.DB_KEY_COURSE_IMG_URL));
 					course.course_img_local = c.getString(c.getColumnIndex(Const.DB_KEY_COURSE_IMG_LOCAL));
+					course.course_period = c.getInt(c.getColumnIndex(Const.DB_KEY_COURSE_PERIOD));
 					
 					String jsonCourseDetail = c.getString(c.getColumnIndex(Const.DB_KEY_COURSE_DETAIL));
 					course.course_detail = gson.fromJson(jsonCourseDetail, typeCourseDetail);
@@ -226,6 +230,7 @@ public class CourseDao {
 				course.course_new = c.getInt(c.getColumnIndex(Const.DB_KEY_COURSE_NEW));
 				course.course_img_url = c.getString(c.getColumnIndex(Const.DB_KEY_COURSE_IMG_URL));
 				course.course_img_local = c.getString(c.getColumnIndex(Const.DB_KEY_COURSE_IMG_LOCAL));
+				course.course_period = c.getInt(c.getColumnIndex(Const.DB_KEY_COURSE_PERIOD));
 				
 				String jsonCourseDetail = c.getString(c.getColumnIndex(Const.DB_KEY_COURSE_DETAIL));
 				course.course_detail = gson.fromJson(jsonCourseDetail, typeCourseDetail);

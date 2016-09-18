@@ -63,6 +63,9 @@ public class BtDeviceActivity extends Activity{
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				selectDevice(position);
+				
+				mBtDeviceList.clear();
+				mBtDeviceAdapter.updateData(mBtDeviceList);
 			}
 		});
 		
@@ -146,7 +149,7 @@ public class BtDeviceActivity extends Activity{
 
 	private void handleGetBTDevices(BluetoothDevice btDevice) {
 		if(hasTheBtDevice(btDevice)){
-			Log.d(TAG, "handleGetBTDevices, has the btDevice");
+			Log.d(TAG, "handleGetBTDevices, has the btDevice, replace it");
 			return;
 		}
 		
@@ -171,7 +174,8 @@ public class BtDeviceActivity extends Activity{
 		for(int i=0; i<listSize; i++){
 			BluetoothDevice btDevice = mBtDeviceList.get(i);
 			if(btDevice.getAddress().equalsIgnoreCase(deviceAddress)){
-//				mLastConnecteDevice = btDevice;
+				mBtDeviceList.remove(i);
+				mBtDeviceList.add(i, btDevice);
 				return true;
 			}
 		}
