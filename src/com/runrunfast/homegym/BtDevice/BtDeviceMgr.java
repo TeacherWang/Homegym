@@ -240,17 +240,19 @@ public class BtDeviceMgr {
 		
 		@Override
 		public void GetDevice(BluetoothDevice btDevice) {
-			BtInfo lastConnecteDevice = BtDeviceMgr.getInstance().getLastBtInfo(Globle.gApplicationContext);
-			if(lastConnecteDevice != null){
-				String lastDeviceAddress = lastConnecteDevice.btAddress;
-				
-				Log.d(TAG, "GetDevice, lastConnecteDevice != null, address = " + lastDeviceAddress + ", scan device address = " + btDevice.getAddress());
-				
-				if(lastDeviceAddress.equalsIgnoreCase(btDevice.getAddress())){
-					BtDeviceMgr.getInstance().connectBLE(btDevice);
-					return;
-				}
-			}
+//			BtInfo lastConnecteDevice = BtDeviceMgr.getInstance().getLastBtInfo(Globle.gApplicationContext);
+//			if(lastConnecteDevice != null){
+//				String lastDeviceAddress = lastConnecteDevice.btAddress;
+//				
+//				Log.d(TAG, "GetDevice, lastConnecteDevice != null, address = " + lastDeviceAddress + ", scan device address = " + btDevice.getAddress());
+//				
+//				if(lastDeviceAddress.equalsIgnoreCase(btDevice.getAddress())){
+//					BtDeviceMgr.getInstance().connectBLE(btDevice);
+//					return;
+//				}
+//			}
+			
+			Log.d(TAG, "GetDevice, btDevice = " + btDevice.getName());
 			
 			synchronized (mBleServiceObserver) {
 				if(mBleServiceObserver != null){

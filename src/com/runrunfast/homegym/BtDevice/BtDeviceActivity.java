@@ -1,7 +1,8 @@
 package com.runrunfast.homegym.BtDevice;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
-import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -15,13 +16,10 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.runrunfast.ble.BLESingleton;
 import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.BtDevice.BtDeviceMgr.BLEServiceListener;
 import com.runrunfast.homegym.utils.Const;
 import com.runrunfast.homegym.widget.DialogActivity;
-
-import java.util.ArrayList;
 
 public class BtDeviceActivity extends Activity{
 	private final String TAG = "BtDeviceActivity";
@@ -77,8 +75,14 @@ public class BtDeviceActivity extends Activity{
 			}
 			
 			@Override
-			public void onGetDevice(BluetoothDevice btDevice) {
-				handleGetBTDevices(btDevice);
+			public void onGetDevice(final BluetoothDevice btDevice) {
+				runOnUiThread(new Runnable() {
+					
+					@Override
+					public void run() {
+						handleGetBTDevices(btDevice);
+					}
+				});
 			}
 			
 			@Override
@@ -150,20 +154,12 @@ public class BtDeviceActivity extends Activity{
 	private void handleGetBTDevices(BluetoothDevice btDevice) {
 		if(hasTheBtDevice(btDevice)){
 			Log.d(TAG, "handleGetBTDevices, has the btDevice, replace it");
-			return;
+		}else{
+			Log.d(TAG, "handleGetBTDevices, do not has the btDevice, add it");
+			mBtDeviceList.add(btDevice);
 		}
 		
-		if(mLastBtInfo != null){
-			Log.d(TAG, "handleGetBTDevices, mLastBtInfo != null, do not change list");
-			return;
-		}
-		
-		BtInfo btInfo = new BtInfo();
-		btInfo.btAddress = btDevice.getAddress();
-		btInfo.btName = btDevice.getName();
-		
-		mBtDeviceList.add(btDevice);
-		mBtDeviceAdapter.notifyDataSetChanged();
+		mBtDeviceAdapter.updateData(mBtDeviceList);
 	}
 	
 	private boolean hasTheBtDevice(BluetoothDevice device){
@@ -174,8 +170,9 @@ public class BtDeviceActivity extends Activity{
 		for(int i=0; i<listSize; i++){
 			BluetoothDevice btDevice = mBtDeviceList.get(i);
 			if(btDevice.getAddress().equalsIgnoreCase(deviceAddress)){
+				Log.i(TAG, "mBtDeviceList's " + i + " btDevice address = onGetDevice(), btDevice = " + btDevice + ", device = " + device);
 				mBtDeviceList.remove(i);
-				mBtDeviceList.add(i, btDevice);
+				mBtDeviceList.add(i, device);
 				return true;
 			}
 		}
@@ -207,12 +204,14 @@ public class BtDeviceActivity extends Activity{
 			tvPairedDevice.setText(mLastBtInfo.btName);
 			llBtAllDevicesLayout.setVisibility(View.INVISIBLE);
 			btnUnbind.setVisibility(View.VISIBLE);
+			tvConnected.setVisibility(View.VISIBLE);
 			
 			setConnected();
 		}else{
 			tvPairedDevice.setText(R.string.bt_last_connected_no);
 			llBtAllDevicesLayout.setVisibility(View.VISIBLE);
 			btnUnbind.setVisibility(View.INVISIBLE);
+			tvConnected.setVisibility(View.INVISIBLE);
 		}
 		
 		mBtDeviceList = new ArrayList<BluetoothDevice>();
