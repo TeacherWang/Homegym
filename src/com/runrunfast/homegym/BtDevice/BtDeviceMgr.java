@@ -85,7 +85,7 @@ public class BtDeviceMgr {
 		int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
 		Log.i(TAG, "handleBtState, state = " + state);
 		if(state == BluetoothAdapter.STATE_ON){
-			startScan();
+//			startScan();
 			notifyBTOpen(true);
 		}else{
 			isConnected = false;
@@ -190,8 +190,8 @@ public class BtDeviceMgr {
 			return false;
 		}
 		
-		Log.i(TAG, "checkBTOpen, bt is already open, scanBle");
-		BLESingleton.mBLEService.scanBle();
+//		Log.i(TAG, "checkBTOpen, bt is already open, scanBle");
+//		BLESingleton.mBLEService.scanBle();
 		
 		return true;
 	}
@@ -209,6 +209,7 @@ public class BtDeviceMgr {
 			LocalBinder mBinder = (LocalBinder)service;
 			BLESingleton.mBLEService = mBinder.getBLEService();
 			BLESingleton.mBLEService.SetCallback(motionCallback);
+			BLESingleton.mBLEService.scanBle();
 			if(BLESingleton.mBLEService.initBle()){
 				notifyBLEServierInit();
 			}
@@ -240,17 +241,17 @@ public class BtDeviceMgr {
 		
 		@Override
 		public void GetDevice(BluetoothDevice btDevice) {
-//			BtInfo lastConnecteDevice = BtDeviceMgr.getInstance().getLastBtInfo(Globle.gApplicationContext);
-//			if(lastConnecteDevice != null){
-//				String lastDeviceAddress = lastConnecteDevice.btAddress;
-//				
-//				Log.d(TAG, "GetDevice, lastConnecteDevice != null, address = " + lastDeviceAddress + ", scan device address = " + btDevice.getAddress());
-//				
-//				if(lastDeviceAddress.equalsIgnoreCase(btDevice.getAddress())){
-//					BtDeviceMgr.getInstance().connectBLE(btDevice);
+			BtInfo lastConnecteDevice = BtDeviceMgr.getInstance().getLastBtInfo(Globle.gApplicationContext);
+			if(lastConnecteDevice != null){
+				String lastDeviceAddress = lastConnecteDevice.btAddress;
+				
+				Log.d(TAG, "GetDevice, lastConnecteDevice != null, address = " + lastDeviceAddress + ", scan device address = " + btDevice.getAddress());
+				
+				if(lastDeviceAddress.equalsIgnoreCase(btDevice.getAddress())){
+					BtDeviceMgr.getInstance().connectBLE(btDevice);
 //					return;
-//				}
-//			}
+				}
+			}
 			
 			Log.d(TAG, "GetDevice, btDevice = " + btDevice.getName());
 			

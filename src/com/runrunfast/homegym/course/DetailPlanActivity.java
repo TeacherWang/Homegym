@@ -34,7 +34,6 @@ import com.runrunfast.homegym.dao.MyCourseDao;
 import com.runrunfast.homegym.download.MyDownloadMgr;
 import com.runrunfast.homegym.download.MyDownloadMgr.IDownloadListener;
 import com.runrunfast.homegym.utils.Const;
-import com.runrunfast.homegym.utils.ConstServer;
 import com.runrunfast.homegym.utils.DateUtil;
 import com.runrunfast.homegym.utils.FileUtils;
 import com.runrunfast.homegym.utils.Globle;
@@ -75,8 +74,8 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 //	private String mMyCourseStartDate; // 在我参加的课程中才会有，第一天的日期
 //	private ArrayList<String> mDateBeforeList; // 在我参加的课程中已经过去的日子
 	
-	private ArrayList<String> mCourseDateList; // 课程的日期集合，如2016-07-29, ....
-//	private ArrayList<String> mCourseDateFinishList; // 课程完成的日期列表
+	private ArrayList<String> mCourseHavePlanDateList; // 课程的日期集合，如2016-07-29, ....
+	private ArrayList<String> mCourseAllDateList; // 课程所有计划日期集合，包括休息日
 	
 	private ArrayList<ActionDetail> mActionDetailListOfThatDay; // 指定某天的ActionDetail集合
 	private ArrayList<Action> mActionsOfThatDay; // 指定某天的动作信息集合
@@ -249,8 +248,8 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 	
 	@SuppressLint("ResourceAsColor")
 	private void handleCalendarClick(String dateFormat) {
-		if( mCourseDateList.contains(dateFormat) ){
-			int datePosition = mCourseDateList.indexOf(dateFormat);
+		if( mCourseHavePlanDateList.contains(dateFormat) ){
+			int datePosition = mCourseHavePlanDateList.indexOf(dateFormat);
 			updateActionsDependDayPosition(datePosition, mCourse);
 			
 			showActions();
@@ -275,7 +274,8 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 		mActionDetailListOfThatDay = new ArrayList<ActionDetail>();
 		mAllActionIdList = new ArrayList<String>();
 		mAllActionList = new ArrayList<Action>();
-		mCourseDateList = new ArrayList<String>();
+		mCourseHavePlanDateList = new ArrayList<String>();
+		mCourseAllDateList = new ArrayList<String>();
 		
 		String currentDateStr = DateUtil.getCurrentDate();
 		
@@ -283,7 +283,7 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 			mMyCourse = (MyCourse) mCourse;
 			isMyCourse = true;
 			if(mMyCourse.progress == MyCourse.COURSE_PROGRESS_EXPIRED){
-				btnJoin.setVisibility(View.INVISIBLE);
+				btnJoin.setVisibility(View.GONE);
 			}
 		}else{
 			MyCourse myCourse = MyCourseDao.getInstance().getMyCourseFromDb(Globle.gApplicationContext, mCourse.course_id);
@@ -293,7 +293,7 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 				mMyCourse = myCourse;
 				isMyCourse = true;
 				if(myCourse.progress == MyCourse.COURSE_PROGRESS_EXPIRED){
-					btnJoin.setVisibility(View.INVISIBLE);
+					btnJoin.setVisibility(View.GONE);
 				}
 			}
 		}
@@ -315,7 +315,7 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 		tvCalendarDate.setText(kCalendar.getCalendarYear() + mResources.getString(R.string.year)
 				+ kCalendar.getCalendarMonth() + mResources.getString(R.string.month));
 		
-		if(mCourseDateList.contains(currentDateStr)){
+		if(mCourseHavePlanDateList.contains(currentDateStr)){
 			showActions();
 		}else{
 			showRest();
@@ -384,12 +384,20 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 	  * 返回类型：void 
 	  */
 	private void handleCourseActionDaysDistribution(int position, String currentDateStr) {
-		// 课程的日期分布
+		// 课程的计划日期背景色并设置为可点击
+		int periodNum = mCourse.course_period;
+		for(int i=0; i<periodNum; i++){
+			String dateStr = DateUtil.getDateStrOfDayNumFromStartDate(i + 1, currentDateStr);
+			mCourseAllDateList.add(dateStr);
+			kCalendar.setCalendarDayTextColor(dateStr, mResources.getColor(R.color.calendar_course_default)); // 标注计划的日期
+		}
+		kCalendar.setClickEnabledDates(mCourseAllDateList);
+		// 课程的计划中，非休息日期分布
 		int dayNum = mCourse.course_detail.size();
 		for(int i=0; i<dayNum; i++){
 			CourseDetail courseDetail = mCourse.course_detail.get(i);
 			String dateStr = DateUtil.getDateStrOfDayNumFromStartDate(courseDetail.day_num, currentDateStr);
-			mCourseDateList.add(dateStr);
+			mCourseHavePlanDateList.add(dateStr);
 			kCalendar.setCalendarDayTextColor(dateStr, mResources.getColor(R.color.calendar_have_course)); // 标注计划的日期
 		}
 		
@@ -429,6 +437,14 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 	  */
 	@SuppressLint("ResourceAsColor")
 	private void handleMyCourseActionDaysDistribution(String currentDateStr) {
+		// 课程的计划日期背景色并设置为可点击
+		int periodNum = mMyCourse.course_period;
+		for(int i=0; i<periodNum; i++){
+			String dateStr = DateUtil.getDateStrOfDayNumFromStartDate(i + 1, mMyCourse.start_date);
+			mCourseAllDateList.add(dateStr);
+			kCalendar.setCalendarDayTextColor(dateStr, mResources.getColor(R.color.calendar_course_default)); // 标注计划的日期
+		}
+		kCalendar.setClickEnabledDates(mCourseAllDateList);
 		// 参加的课程的日期分布
 		int currentDayPosition = -1;
 		ArrayList<DayProgress> dayProgressList = (ArrayList<DayProgress>) mMyCourse.day_progress;
@@ -437,7 +453,7 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 			DayProgress dayProgress = dayProgressList.get(i);
 			String dateStr = DateUtil.getDateStrOfDayNumFromStartDate(dayProgress.day_num, mMyCourse.start_date);
 			int progress = dayProgress.progress;
-			mCourseDateList.add(dateStr);
+			mCourseHavePlanDateList.add(dateStr);
 			
 			kCalendar.setCalendarDayTextColor(dateStr, mResources.getColor(R.color.calendar_have_course)); // 标注计划的日期
 			if(progress == MyCourse.DAY_PROGRESS_FINISH){
@@ -607,6 +623,7 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 	  * 返回类型：void 
 	  */
 	private void prepareJoinCourse() {
+		reGetAllActions();
 		// 先下载
 		if( needDownload() ){
 			if(MyDownloadMgr.getInstance().getState() == MyDownloadMgr.DOWNLOAD_STATE_DOWNLOADING 
@@ -645,7 +662,7 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 			taskList = new ArrayList<String>();
 			
 			Action action = mAllActionList.get(i);
-			ArrayList<String> videoLocalList = new ArrayList<String>();
+//			ArrayList<String> videoLocalList = new ArrayList<String>();
 			// 处理视频video
 			if( action.action_video_local == null || action.action_video_local.isEmpty()){
 				needDownload = true;
@@ -653,26 +670,25 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 				for(int k=0; k<videoSize; k++){
 					String strUrl = action.action_video_url.get(k);
 					
-					String saveName = FileUtils.getFileName(strUrl);
-					String localAddress = ConstServer.SDCARD_HOMEGYM_ROOT + saveName;
-					videoLocalList.add(localAddress);
+//					String saveName = FileUtils.getFileName(strUrl);
+//					String localAddress = ConstServer.SDCARD_HOMEGYM_ROOT + saveName;
+//					videoLocalList.add(localAddress);
 					taskList.add(strUrl);
 				}
-				ActionDao.getInstance().saveActionVideoLocalToDb(Globle.gApplicationContext, action.action_id, videoLocalList);
+//				ActionDao.getInstance().saveActionVideoLocalToDb(Globle.gApplicationContext, action.action_id, videoLocalList);
 			}else{
 				int videoSize = action.action_video_local.size();
 				for(int k=0; k<videoSize; k++){
 					String strUrl = action.action_video_url.get(k);
 					
-					String saveName = FileUtils.getFileName(strUrl);
-					String localAddress = ConstServer.SDCARD_HOMEGYM_ROOT + saveName;
-					videoLocalList.add(localAddress);
+//					String saveName = FileUtils.getFileName(strUrl);
+//					String localAddress = ConstServer.SDCARD_HOMEGYM_ROOT + saveName;
+//					videoLocalList.add(localAddress);
 					if( !FileUtils.isFileExist(action.action_video_local.get(k)) ){
 						needDownload = true;
-						taskList.add(action.action_video_url.get(k));
+						taskList.add(strUrl);
 					}
 				}
-				ActionDao.getInstance().saveActionVideoLocalToDb(Globle.gApplicationContext, action.action_id, videoLocalList);
 			}
 			// 处理音频audio
 			String audioLocalLocation = action.action_audio_local;
@@ -682,9 +698,9 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 					needDownload = true;
 					taskList.add(audioUrlLocation);
 					
-					String saveName = FileUtils.getFileName(audioUrlLocation);
-					String localAddress = ConstServer.SDCARD_HOMEGYM_ROOT + saveName;
-					ActionDao.getInstance().saveActionAudioLocalToDb(Globle.gApplicationContext, action.action_id, localAddress);
+//					String saveName = FileUtils.getFileName(audioUrlLocation);
+//					String localAddress = ConstServer.SDCARD_HOMEGYM_ROOT + saveName;
+//					ActionDao.getInstance().saveActionAudioLocalToDb(Globle.gApplicationContext, action.action_id, localAddress);
 				}
 			}
 			
@@ -718,8 +734,8 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 		
 		String uid = mUserInfo.strAccountId;
 		int progress = MyCourse.COURSE_PROGRESS_ING;
-		int dateNum = mCourseDateList.size();
-		String strStartDate = mCourseDateList.get(0);
+		int dateNum = mCourseHavePlanDateList.size();
+		String strStartDate = mCourseHavePlanDateList.get(0);
 		for(int i=0; i<dateNum; i++){
 			CourseDetail courseDetail = mCourse.course_detail.get(i);
 			DayProgress dayProgress = new DayProgress();
@@ -738,6 +754,7 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 		myCourse.course_detail = mCourse.course_detail;
 		myCourse.course_quality = mCourse.course_quality;
 		myCourse.course_recommend = mCourse.course_recommend;
+		myCourse.course_period = mCourse.course_period;
 		myCourse.course_img_url = mCourse.course_img_url;
 		myCourse.course_img_local = mCourse.course_img_local;
 		

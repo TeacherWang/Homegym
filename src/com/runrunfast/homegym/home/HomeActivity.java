@@ -150,10 +150,10 @@ public class HomeActivity extends FragmentActivity{
 		
 //		ArrayList<Course> courseList = CourseDao.getInstance().getCourseListFromDb(Globle.gApplicationContext);
 //		if(courseList == null || courseList.size() <=0 ){
-			CourseServerMgr.getInstance().getCourseInfoFromServer();
+//			CourseServerMgr.getInstance().getCourseInfoFromServer();
 //		}
 			
-			CourseServerMgr.getInstance().downloadTrainPlan(mUserInfo.strAccountId);
+//			CourseServerMgr.getInstance().downloadTrainPlan(mUserInfo.strAccountId);
 	}
 
 	private void initView() {

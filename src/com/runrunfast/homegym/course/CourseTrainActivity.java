@@ -1,6 +1,7 @@
 package com.runrunfast.homegym.course;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -15,13 +16,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.runrunfast.homegym.R;
+import com.runrunfast.homegym.account.AccountMgr;
+import com.runrunfast.homegym.account.UserInfo;
 import com.runrunfast.homegym.bean.Action;
 import com.runrunfast.homegym.bean.Course.ActionDetail;
 import com.runrunfast.homegym.bean.Course.CourseDetail;
 import com.runrunfast.homegym.bean.Course.GroupDetail;
 import com.runrunfast.homegym.bean.MyCourse;
 import com.runrunfast.homegym.bean.MyCourse.DayProgress;
+import com.runrunfast.homegym.course.CourseServerMgr.IJoinCourseToServerListener;
 import com.runrunfast.homegym.dao.ActionDao;
+import com.runrunfast.homegym.dao.MyCourseDao;
 import com.runrunfast.homegym.utils.Const;
 import com.runrunfast.homegym.utils.DateUtil;
 import com.runrunfast.homegym.utils.Globle;
@@ -33,9 +38,11 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 	
 	public static int REQ_CODE_ACTION_SET = 1;
 	
+	private UserInfo mUserInfo;
+	
 	private TextView tvTitle;
 	private Button btnLeft, btnRight;
-	private Button btnStartTrain;
+	private Button btnStartTrain, btnRejoinTrain;
 	private RelativeLayout mActionLayout, mRestDayLayout;
 	private TextView tvRestDay;
 	
@@ -50,6 +57,12 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 	
 	private int mCurrentDayPosition; // 该天在日期分布的位置
 	
+	private String mCurrentDate;
+	
+	private ProgressDialog dialog;
+	
+	private IJoinCourseToServerListener mIJoinCourseToServerListener;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -61,6 +74,8 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 		initData();
 		
 		initListener();
+		
+		initJoinCourseListener();
 	}
 
 	private void initListener() {
@@ -74,6 +89,51 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 		});
 	}
 	
+	private void initJoinCourseListener() {
+		mIJoinCourseToServerListener = new IJoinCourseToServerListener() {
+			
+			@Override
+			public void onJoinCourseToServerSuc() {
+				dismissDialog();
+				
+				prepareToSaveMyCourse();
+				
+				showAction();
+				
+				showStartTrain();
+			}
+			
+			@Override
+			public void onJoinCourseToServerFail() {
+				dismissDialog();
+				
+				Toast.makeText(CourseTrainActivity.this, "参加失败", Toast.LENGTH_SHORT).show();
+			}
+		};
+		CourseServerMgr.getInstance().addJoinCourseToServerObserver(mIJoinCourseToServerListener);
+	}
+	
+	private void showStartTrain() {
+		mRestDayLayout.setVisibility(View.INVISIBLE);
+		mActionLayout.setVisibility(View.VISIBLE);
+	}
+
+	private void prepareToSaveMyCourse() {
+		recreateMyCourse();
+		
+		MyCourseDao.getInstance().saveMyCourseToDb(Globle.gApplicationContext, AccountMgr.getInstance().mUserInfo.strAccountId, mMyCourse);
+	}
+
+	private void recreateMyCourse() {
+		mMyCourse.progress = MyCourse.COURSE_PROGRESS_ING;
+		mMyCourse.start_date = mCurrentDate;
+		int dayNum = mMyCourse.day_progress.size();
+		for(int i=0; i<dayNum; i++){
+			DayProgress dayProgress = mMyCourse.day_progress.get(i);
+			dayProgress.progress = MyCourse.DAY_PROGRESS_UNFINISH;
+		}
+	}
+
 	private void jumpToTrainActionSetActivity(int position) {
 		Action action = mActionList.get(position);
 		
@@ -104,6 +164,8 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 	}
 
 	private void initData() {
+		mUserInfo = AccountMgr.getInstance().mUserInfo;
+		
 		mActionList = new ArrayList<Action>();
 		mActionTotalDataList = new ArrayList<ActionTotalData>();
 		
@@ -198,6 +260,9 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 		btnStartTrain = (Button)findViewById(R.id.btn_start_train);
 		btnStartTrain.setOnClickListener(this);
 		
+		btnRejoinTrain = (Button)findViewById(R.id.btn_rejoin);
+		btnRejoinTrain.setOnClickListener(this);
+		
 		mActionLayout = (RelativeLayout)findViewById(R.id.course_train_action_layout);
 		mRestDayLayout = (RelativeLayout)findViewById(R.id.course_train_rest_day_layout);
 		tvRestDay = (TextView)findViewById(R.id.rest_day_text);
@@ -218,10 +283,21 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 		case R.id.btn_start_train:
 			startTrain();
 			break;
+			
+		case R.id.btn_rejoin:
+			rejoinTrain();
+			break;
 
 		default:
 			break;
 		}
+	}
+
+	private void rejoinTrain() {
+		mCurrentDate = DateUtil.getCurrentDate();
+		CourseServerMgr.getInstance().joinCourseToServer(mUserInfo.strAccountId, mMyCourse.course_id, mCurrentDate);
+		
+		showDialog();
 	}
 
 	private void startTrain() {
@@ -247,5 +323,26 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 		intent.putExtra(Const.KEY_COURSE, mMyCourse);
 		
 		startActivity(intent);
+	}
+	
+	private void showDialog(){
+		dialog = new ProgressDialog(this);
+		dialog.setMessage(getResources().getString(R.string.please_wait));
+		dialog.setCanceledOnTouchOutside(false);
+		dialog.show();
+	}
+	
+	private void dismissDialog(){
+		if(dialog != null && dialog.isShowing()){
+			dialog.dismiss();
+		}
+	}
+	
+	@Override
+	protected void onDestroy() {
+		
+		CourseServerMgr.getInstance().removeJoinCourseToServerObserver(mIJoinCourseToServerListener);
+		
+		super.onDestroy();
 	}
 }

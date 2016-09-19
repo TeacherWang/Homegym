@@ -22,6 +22,7 @@ import com.runrunfast.homegym.R;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -44,6 +45,7 @@ public class KCalendar extends ViewFlipper implements
 	public static final int COLOR_TX_THIS_DAY = Color.parseColor("#231815"); // 当天日历数字颜色
 	public static final int COLOR_BG_THIS_DAY = Color.parseColor("#ffffff"); // 当天日历背景颜色
 	public static final int COLOR_BG_CALENDAR = Color.parseColor("#ffffff"); // 日历背景色
+//	public static final int COLOR_TX_BG = Color.parseColor("#f7f7f7"); // 日期
 
 	private GestureDetector gd; // 手势监听器
 	private Animation push_left_in; // 动画-左进
@@ -80,6 +82,7 @@ public class KCalendar extends ViewFlipper implements
 
 	// 我加的，选中的日期
 	private String strSelectDate;
+	private ArrayList<String> mClickEnabledDateList = new ArrayList<String>();
 	
 	public KCalendar(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -201,6 +204,11 @@ public class KCalendar extends ViewFlipper implements
 						
 						// （我增加的）如果点击的是上个月的日子或者下个月的日子，要自动滚动到指定月份
 						String dateStr = getDate(row, col);
+						// 首先判断是否允许点击
+						if(mClickEnabledDateList != null && !mClickEnabledDateList.contains(dateStr)){
+							return;
+						}
+						
 						showWhichMonth(dateStr);
 						
 						if (onCalendarClickListener != null) {
@@ -667,7 +675,11 @@ public class KCalendar extends ViewFlipper implements
 		dayBgColorMap.clear();
 		setCalendarDate();
 	}
-
+	
+	public void setClickEnabledDates(ArrayList<String> clickEnabledDateList){
+		this.mClickEnabledDateList = clickEnabledDateList;
+	}
+	
 	/**
 	 * 根据行列号获得包装每一个日子的LinearLayout
 	 * 

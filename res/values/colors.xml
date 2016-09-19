@@ -94,6 +94,7 @@
     
     <color name="train_action_set_item_deep_color">#eaeaea</color>
     
+    <color name="calendar_course_default">#cdaf95</color> <!-- 计划的所有日期，有课程和休息日 -->
     <color name="calendar_have_course">#d94d01</color>
     <color name="calendar_day_select">#8bd614</color>
     
@@ -102,4 +103,6 @@
     
     <color name="course_expire_text">#c60505</color>
     
+    <color name="course_video_progress_default">#333333</color>
+    <color name="course_video_progress_finished">#01401c</color>
 </resources>

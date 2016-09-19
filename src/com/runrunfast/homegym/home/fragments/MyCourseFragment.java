@@ -137,14 +137,13 @@ public class MyCourseFragment extends Fragment{
 		for(int i=0; i<myCourseSize; i++){
 			MyCourse myCourse = (MyCourse) mMyCourseList.get(i);
 			List<DayProgress> dayProgresseList = myCourse.day_progress;
-			DayProgress lastDayProgress = dayProgresseList.get(dayProgresseList.size() - 1);
 			// 如果该课程已过期或者已完成，则忽略
 			if(myCourse.progress == MyCourse.COURSE_PROGRESS_EXPIRED
 					|| myCourse.progress == MyCourse.COURSE_PROGRESS_FINISH){
 				continue;
 			}
 			// 如果当天时间已经超过课程的最后日期，则设置为已过期
-			String planDate = DateUtil.getDateStrOfDayNumFromStartDate(lastDayProgress.day_num, myCourse.start_date);
+			String planDate = DateUtil.getDateStrOfDayNumFromStartDate(myCourse.course_period, myCourse.start_date);
 			if(DateUtil.getMillsFromStrDate(currentDay) > DateUtil.getMillsFromStrDate(planDate)){
 				myCourse.progress = MyCourse.COURSE_PROGRESS_EXPIRED;
 				MyCourseDao.getInstance().saveMyCourseProgress(Globle.gApplicationContext, mUserInfo.strAccountId, myCourse.course_id, myCourse.progress);

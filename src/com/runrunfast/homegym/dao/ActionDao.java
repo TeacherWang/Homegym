@@ -68,13 +68,16 @@ public class ActionDao {
 			values.put(Const.DB_KEY_ACTION_H, action.action_h);
 			values.put(Const.DB_KEY_ACTION_B, action.action_b);
 			values.put(Const.DB_KEY_ACTION_IMG_URL, action.action_img_url);
-//			values.put(Const.DB_KEY_ACTION_IMG_LOCAL, action.action_img_local);
 			values.put(Const.DB_KEY_ACTION_LEFT_RIGHT, action.action_left_right);
 			
 			String jsonVideoUrl = gson.toJson(action.action_video_url);
 			values.put(Const.DB_KEY_ACTION_VIDEO_URL, jsonVideoUrl);
 			
+			String jsonVideoLocal = gson.toJson(action.action_video_local);
+			values.put(Const.DB_KEY_ACTION_VIDEO_LOCAL, jsonVideoLocal);
+			
 			values.put(Const.DB_KEY_ACTION_AUDIO_URL, action.action_audio_url);
+			values.put(Const.DB_KEY_ACTION_AUDIO_LOCAL, action.action_audio_local);
 			
 			c = db.query(Const.TABLE_ACTION, null, Const.DB_KEY_ACTION_ID + " = ?",
 					new String[] { action.action_id }, null, null, null);

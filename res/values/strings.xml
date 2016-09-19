@@ -84,6 +84,7 @@
     <string name="start_train">开始训练</string>
     <string name="train_detail">详细计划</string>
     <string name="exit_train">退出训练</string>
+    <string name="rejoin_train">重新参加计划</string>
     <string name="current_day_train_content">当天训练内容</string>
     <string name="exit_train_or_not">是否确认要退出本课程</string>
     
@@ -179,7 +180,7 @@
 	<string name="count_number">次数</string>
 	<string name="had_finished_train">已完成训练</string>
 	
-	<string name="rest_day">今天休息！</string>
+	<string name="rest_day">今天休息！\n可适当增加有氧运动，如使用动感单车/跑步机30分钟</string>
 	
 	<string name="demo_end">教学结束</string>
 	<string name="replay">重播</string>

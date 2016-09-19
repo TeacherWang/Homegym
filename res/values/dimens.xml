@@ -375,5 +375,6 @@
 	<dimen name="course_video_group_index_margin_right">10dp</dimen>
 	<dimen name="course_video_group_index_margin_bottom">3dp</dimen>
 	<dimen name="course_video_time_margin_bottom">22dp</dimen>
+	<dimen name="course_video_progress_white_width">2dp</dimen>
 	
 </resources>

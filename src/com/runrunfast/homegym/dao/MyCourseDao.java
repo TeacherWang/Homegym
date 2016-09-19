@@ -9,6 +9,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.runrunfast.homegym.bean.Course;
+import com.runrunfast.homegym.bean.ServerMyCourse;
 import com.runrunfast.homegym.bean.Course.CourseDetail;
 import com.runrunfast.homegym.bean.MyCourse;
 import com.runrunfast.homegym.bean.MyCourse.DayProgress;
@@ -221,10 +222,11 @@ public class MyCourseDao {
 			DBOpenHelper dbHelper = new DBOpenHelper(context);
 			db = dbHelper.getWritableDatabase();
 			
-			c = db.query(Const.TABLE_MY_COURSE, null, null, null, null, null, null);
+			c = db.query(true, Const.TABLE_MY_COURSE, null, null, null, Const.DB_KEY_COURSE_ID, null, Const.DB_KEY_START_DATE + " DESC", null);
+			
+//			c = db.query(Const.TABLE_MY_COURSE, null, null, null, null, null, null);
 			if(null != c && c.getCount() > 0){
 				Gson gson = new Gson();
-//				Type typeActionIds = new TypeToken<Collection<ActionId>>(){}.getType();
 				Type typeCourseDetail = new TypeToken<Collection<CourseDetail>>(){}.getType();
 				Type typeDayProgress = new TypeToken<Collection<DayProgress>>(){}.getType();
 				while (c.moveToNext()) {
@@ -241,9 +243,6 @@ public class MyCourseDao {
 					myCourse.course_img_url = c.getString(c.getColumnIndex(Const.DB_KEY_COURSE_IMG_URL));
 					myCourse.course_img_local = c.getString(c.getColumnIndex(Const.DB_KEY_COURSE_IMG_LOCAL));
 					myCourse.course_period = c.getInt(c.getColumnIndex(Const.DB_KEY_COURSE_PERIOD));
-					
-//					String jsonActionIds = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_IDS));
-//					myCourse.action_ids = gson.fromJson(jsonActionIds, typeActionIds);
 					
 					String jsonCourseDetail = c.getString(c.getColumnIndex(Const.DB_KEY_COURSE_DETAIL));
 					myCourse.course_detail = gson.fromJson(jsonCourseDetail, typeCourseDetail);

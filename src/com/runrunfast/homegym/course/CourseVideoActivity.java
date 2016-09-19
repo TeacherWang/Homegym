@@ -16,6 +16,7 @@ import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,6 +49,7 @@ import com.runrunfast.homegym.utils.CalculateUtil;
 import com.runrunfast.homegym.utils.Const;
 import com.runrunfast.homegym.utils.ConstServer;
 import com.runrunfast.homegym.utils.DateUtil;
+import com.runrunfast.homegym.utils.DensityUtil;
 import com.runrunfast.homegym.utils.FileUtils;
 import com.runrunfast.homegym.utils.Globle;
 import com.runrunfast.homegym.widget.DialogActivity;
@@ -120,7 +122,7 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 	private List<GroupDetail> mTargetActionGroupDetailList; // 当前正在进行的目标动作的每组数据集合
 	private List<GroupDetail> mFinishedActionGroupDetailList; // 当前已经完成的指定动作的每组数据集合
 	private TrainRecord mCurrentRecord; // 当前的记录
-	private int mActionGroupIndex; // 该组动作已经开始的组数。比如第一个动作第一组开始，那么为0，第二组开始，那么为二
+	private int mActionGroupIndex; // 该组动作已经开始的组数。比如第一个动作第一组开始，那么为0
 	private int mActionCurrentGroupTotalCount; // 该动作在该组的总次数
 	
 	private List<ActionDetail> mFinishedActionDetailList;
@@ -149,6 +151,11 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
     private static final String ENGLISH_TEXT_MODEL_NAME = "bd_etts_text_en.dat";
     
     private int mReedSwitchCount = 0;
+    
+    private LinearLayout mProgressLinearLayout;
+    private int mTotalGroupNum;
+    private int mFinishedGroupNum;
+    private ArrayList<TextView> mProgressTVList;
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -294,6 +301,10 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 		// 次数+1后，该组结束
 		mFinishedActionDetail.group_num = mActionGroupIndex + 1;
 		mFinishedActionGroupDetailList.add(mFinishedGroupDetail);
+		// 设置进度条
+		mFinishedGroupNum++;
+		TextView progressTextView = mProgressTVList.get(mFinishedGroupNum - 1);
+		progressTextView.setBackgroundResource(R.color.course_video_progress_finished);
 		
 		// 该动作还有下一组
 		mActionGroupIndex++;
@@ -490,6 +501,48 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 		}else{
 			ivBluetooth.setBackgroundResource(R.drawable.video_bluetooth_red);
 		}
+		
+		initProgress();
+	}
+
+	private void initProgress() {
+		int screenWidth = DensityUtil.getScreenWidth(Globle.gApplicationContext);
+		
+		int actionSize = mActionDetailList.size();
+		for(int i=0; i<actionSize; i++){
+			ActionDetail actionDetail = mActionDetailList.get(i);
+			mTotalGroupNum = mTotalGroupNum + actionDetail.group_num;
+		}
+		
+		int dividerWidth = (int) mResources.getDimension(R.dimen.course_video_progress_white_width);
+		int viewWidth = (screenWidth - (mTotalGroupNum - 1) * dividerWidth) / mTotalGroupNum;
+		
+		for(int i=0; i<mTotalGroupNum; i++){
+			if(i != mTotalGroupNum - 1){
+				TextView progresstextView = new TextView(Globle.gApplicationContext);
+				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+						viewWidth, android.widget.LinearLayout.LayoutParams.MATCH_PARENT);
+				progresstextView.setLayoutParams(params);
+				progresstextView.setBackgroundResource(R.color.course_video_progress_default);
+				mProgressLinearLayout.addView(progresstextView);
+				mProgressTVList.add(progresstextView);
+				
+				TextView dividerView = new TextView(Globle.gApplicationContext);
+				LinearLayout.LayoutParams dividerParams = new LinearLayout.LayoutParams(
+						dividerWidth, android.widget.LinearLayout.LayoutParams.MATCH_PARENT);
+				dividerView.setLayoutParams(dividerParams);
+				dividerView.setBackgroundResource(R.color.transparent);
+				mProgressLinearLayout.addView(dividerView);
+			}else{
+				TextView progresstextView = new TextView(Globle.gApplicationContext);
+				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+						android.widget.LinearLayout.LayoutParams.MATCH_PARENT, android.widget.LinearLayout.LayoutParams.MATCH_PARENT);
+				progresstextView.setLayoutParams(params);
+				progresstextView.setBackgroundResource(R.color.course_video_progress_default);
+				mProgressLinearLayout.addView(progresstextView);
+				mProgressTVList.add(progresstextView);
+			}
+		}
 	}
 	
 	private void speekFinishOnce(int count){
@@ -622,6 +675,10 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 		ivBluetooth.setOnClickListener(this);
 		
 		tvRestTime = (TextView)findViewById(R.id.rest_time_text);
+		
+		mProgressLinearLayout = (LinearLayout)findViewById(R.id.video_progress_layout);
+		
+		mProgressTVList = new ArrayList<TextView>();
 	}
 
 	@Override

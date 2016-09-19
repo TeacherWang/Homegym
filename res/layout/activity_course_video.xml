@@ -75,9 +75,22 @@
 	        
 	    </RelativeLayout>
 	    
+	    <!-- 这里添加进度 -->
+	    
+	    <LinearLayout
+	        android:id="@+id/video_progress_layout"
+	        android:layout_width="match_parent"
+	        android:layout_height="4dp"
+	        android:orientation="horizontal"
+	        android:layout_alignParentBottom="true"
+	        android:background="@color/white" >
+	        
+	    </LinearLayout>
+	    
 	</RelativeLayout>    
     
 	<RelativeLayout
+	    android:visibility="gone"
         android:id="@+id/have_rest_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >

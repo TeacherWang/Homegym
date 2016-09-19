@@ -4,6 +4,8 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.runrunfast.homegym.account.AccountMgr;
+import com.runrunfast.homegym.account.UserInfo;
 import com.runrunfast.homegym.bean.Action;
 import com.runrunfast.homegym.bean.Course;
 import com.runrunfast.homegym.bean.MyCourse;
@@ -11,6 +13,7 @@ import com.runrunfast.homegym.bean.ServerActionData;
 import com.runrunfast.homegym.bean.ServerActionData.BaseActionData;
 import com.runrunfast.homegym.bean.ServerCourseData;
 import com.runrunfast.homegym.bean.ServerCourseData.BaseCourseData;
+import com.runrunfast.homegym.bean.ServerMyCourse;
 import com.runrunfast.homegym.dao.ActionDao;
 import com.runrunfast.homegym.dao.CourseDao;
 import com.runrunfast.homegym.dao.MyCourseDao;
@@ -20,6 +23,7 @@ import com.runrunfast.homegym.record.TotalRecord;
 import com.runrunfast.homegym.record.TrainRecord;
 import com.runrunfast.homegym.utils.Const;
 import com.runrunfast.homegym.utils.ConstServer;
+import com.runrunfast.homegym.utils.FileUtils;
 import com.runrunfast.homegym.utils.Globle;
 
 import org.json.JSONArray;
@@ -30,6 +34,7 @@ import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 
@@ -243,6 +248,8 @@ public class CourseServerMgr {
 		}
 		
 		notifyGetCourseInfoSuc();
+		
+		downloadTrainPlan(AccountMgr.getInstance().mUserInfo.strAccountId);
 	}
 	
 	private Course createCourseFromBase(BaseCourseData baseCourseData) {
@@ -259,6 +266,7 @@ public class CourseServerMgr {
 		course.course_new = baseCourseData.course_new;
 		course.course_img_url = baseCourseData.course_img_url;
 		course.course_img_local = "";
+		course.course_period = baseCourseData.course_period;
 		course.course_detail = baseCourseData.course_detail;
 		
 		return course;
@@ -327,6 +335,8 @@ public class CourseServerMgr {
 			Action action = createActionFromBase(baseCourseData);
 			ActionDao.getInstance().saveActionToDb(Globle.gApplicationContext, action);
 		}
+		
+		getCourseInfoFromServer();
 	}
 	
 	private void notifyGetActionInfoSuc() {
@@ -355,7 +365,22 @@ public class CourseServerMgr {
 		action.action_img_url = baseCourseData.action_img_url;
 		action.action_left_right = baseCourseData.action_left_right;
 		action.action_video_url = baseCourseData.action_video_url;
+		
+		ArrayList<String> videoLocalList = new ArrayList<String>();
+		int videoSize = baseCourseData.action_video_url.size();
+		for(int i=0; i<videoSize; i++){
+			String strUrl = action.action_video_url.get(i);
+			
+			String videoSaveName = FileUtils.getFileName(strUrl);
+			String videoLocalAddress = ConstServer.SDCARD_HOMEGYM_ROOT + videoSaveName;
+			videoLocalList.add(videoLocalAddress);
+		}
+		action.action_video_local = videoLocalList;
+		
 		action.action_audio_url = baseCourseData.action_audio_url;
+		
+		String audioSaveName = FileUtils.getFileName(baseCourseData.action_audio_url);
+		action.action_audio_local = ConstServer.SDCARD_HOMEGYM_ROOT + audioSaveName;
 		
 		action.action_img_local = "";
 		
@@ -648,12 +673,16 @@ public class CourseServerMgr {
 
 	private void handleSaveTrainPlanData(JSONArray courseJsonArray, String uid) {
 		Gson gson = new Gson();
-		Type typeMyCourse = new TypeToken<MyCourse>(){}.getType();
+		Type typeServerCourse = new TypeToken<ServerMyCourse>(){}.getType();
 		try {
 			int courseSize = courseJsonArray.length();
 			for(int i=0; i<courseSize; i++){
 				String jsonCourseMyCourse = courseJsonArray.get(i).toString();
-				MyCourse myCourse = gson.fromJson(jsonCourseMyCourse, typeMyCourse);
+				ServerMyCourse serverMyCourse = gson.fromJson(jsonCourseMyCourse, typeServerCourse);
+				
+				Course baseCourse = CourseDao.getInstance().getCourseFromDb(Globle.gApplicationContext, serverMyCourse.course_id);
+				
+				MyCourse myCourse = createMyCourseFromServerAndBase(serverMyCourse, baseCourse);
 				
 				MyCourseDao.getInstance().saveMyCourseToDb(Globle.gApplicationContext, uid, myCourse);
 			}
@@ -662,6 +691,26 @@ public class CourseServerMgr {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private MyCourse createMyCourseFromServerAndBase(ServerMyCourse serverMyCourse, Course baseCourse) {
+		MyCourse myCourse = new MyCourse();
+		
+		myCourse.course_id = baseCourse.course_id;
+		myCourse.course_name = baseCourse.course_name;
+		myCourse.course_quality = baseCourse.course_quality;
+		myCourse.course_new = baseCourse.course_new;
+		myCourse.course_recommend = baseCourse.course_recommend;
+		myCourse.course_img_url = baseCourse.course_img_url;
+		myCourse.course_img_local = baseCourse.course_img_local;
+		myCourse.course_period = baseCourse.course_period;
+		
+		myCourse.course_detail = serverMyCourse.course_detail;
+		myCourse.progress = serverMyCourse.progress;
+		myCourse.start_date = serverMyCourse.start_date;
+		myCourse.day_progress = serverMyCourse.day_progress;
+		
+		return myCourse;
 	}
 
 	private void notifyDownloadTrainPlanSuc(){
