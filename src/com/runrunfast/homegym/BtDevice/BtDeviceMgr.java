@@ -68,13 +68,13 @@ public class BtDeviceMgr {
 			}else if(intent.getAction().equals(BLESingleton.mBLEService.ACTION_STATE_CONNECTED)){
 				Log.i(TAG, "notifyDeviceConnected");
 				
+				BLESingleton.mBLEService.setConnectting(false);
 				isConnected = true;
 				notifyDeviceConnected();
 			}else if(intent.getAction().equals(BLESingleton.mBLEService.ACTION_STATE_DISCONNECTED)){
 				Log.i(TAG, "notifyDeviceDisconnected");
 				
 				BLESingleton.mBLEService.setMdevice(null);
-				
 				isConnected = false;
 				notifyDeviceDisconnected();
 			}
