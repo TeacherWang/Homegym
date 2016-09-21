@@ -345,15 +345,11 @@ public class PersonalInfoActivity extends Activity implements OnClickListener{
 	}
 	
 	private void savePersonalInfo() {
-//		// 这里应该先上传，成功后再执行下面操作
-//		if(bmFromCamera != null){
-//			BitmapUtils.saveBitmapToSDcard(bmFromCamera, UserInfo.IMAGE_FILE_DIR, UserInfo.IMG_FILE_NAME);
-//		}
-		
-//		if(FileUtils.isFileExist(UserInfo.IMAGE_FILE_LOCATION_TEMP)){
-//			AccountMgr.getInstance().updateHeadImg(new File(UserInfo.IMAGE_FILE_LOCATION_TEMP));
-//			return;
-//		}
+		// 这里应该先上传，成功后再执行下面操作
+		if(FileUtils.isFileExist(UserInfo.IMAGE_FILE_LOCATION_TEMP)){
+			AccountMgr.getInstance().updateHeadImg(new File(UserInfo.IMAGE_FILE_LOCATION_TEMP));
+			return;
+		}
 		
 		String sex = tvSex.getText().toString();
 		String nickName = tvNick.getText().toString();
@@ -369,7 +365,7 @@ public class PersonalInfoActivity extends Activity implements OnClickListener{
 		userInfo.strWeight = weight;
 		userInfo.strHeight = height;
 		
-		AccountMgr.getInstance().updatePersonalInfo(mUserInfo);
+		AccountMgr.getInstance().updatePersonalInfo(userInfo);
 	}
 
 	private void changeHeadimg() {
@@ -641,7 +637,7 @@ public class PersonalInfoActivity extends Activity implements OnClickListener{
 		setSelectContainerWidth();
 		wheelOneLayout = (View)LayoutInflater.from(this).inflate(R.layout.wheel_one, null);
 		selectContainer.addView(wheelOneLayout);
-		tvPopTitle.setText(R.string.select_weight);
+		tvPopTitle.setText(R.string.select_sex);
 		
 		wheelOneWheelView = (WheelView)wheelOneLayout.findViewById(R.id.select_wheelview);
 		wheelOneWheelView.setOnWheelViewListener(new OnWheelViewListener(){

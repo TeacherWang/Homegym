@@ -14,11 +14,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.account.AccountMgr;
 import com.runrunfast.homegym.account.DataTransferUtil;
 import com.runrunfast.homegym.account.UserInfo;
+import com.runrunfast.homegym.account.AccountMgr.IGetHeadImgObserver;
 import com.runrunfast.homegym.dao.MyTotalRecordDao;
 import com.runrunfast.homegym.home.AboutActivity;
 import com.runrunfast.homegym.home.FeedbackActivity;
@@ -49,6 +51,10 @@ public class MeFragment extends Fragment implements OnClickListener{
 	private TextView tvAge;
 	
 	private TextView tvTime, tvDays;
+	
+	private Bitmap mHeadImgBitmap;
+	
+	private IGetHeadImgObserver mIGetHeadImgObserver;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater,
@@ -61,9 +67,27 @@ public class MeFragment extends Fragment implements OnClickListener{
 		
 		initData();
 		
+		initHeadImgObserver();
+		
 		return rootView;
 	}
 	
+	private void initHeadImgObserver() {
+		mIGetHeadImgObserver = new IGetHeadImgObserver() {
+			
+			@Override
+			public void onSuccess() {
+				setHeadImg();
+			}
+			
+			@Override
+			public void onFail() {
+				Toast.makeText(getActivity(), "获取头像失败", Toast.LENGTH_SHORT).show();
+			}
+		};
+		AccountMgr.getInstance().addIGetHeadImgObserver(mIGetHeadImgObserver);
+	}
+
 	@Override
 	public void onResume() {
 		super.onResume();
@@ -77,13 +101,16 @@ public class MeFragment extends Fragment implements OnClickListener{
 			ivSex.setBackgroundResource(R.drawable.sex_women);
 		}
 		
-		Bitmap bitmap = null;
+		setHeadImg();
+	}
+
+	private void setHeadImg() {
 		if(FileUtils.isFileExist(UserInfo.IMAGE_FILE_LOCATION)){
-			bitmap = BitmapFactory.decodeFile(UserInfo.IMAGE_FILE_LOCATION);
+			mHeadImgBitmap = BitmapFactory.decodeFile(UserInfo.IMAGE_FILE_LOCATION);
 		}
 		
-		if(bitmap != null){
-			headimgView.setImageBitmap(bitmap);
+		if(mHeadImgBitmap != null){
+			headimgView.setImageBitmap(mHeadImgBitmap);
 		}
 	}
 	
@@ -100,6 +127,8 @@ public class MeFragment extends Fragment implements OnClickListener{
 		TotalRecord totalRecord = MyTotalRecordDao.getInstance().getMyTotalRecordFromDb(Globle.gApplicationContext, mUserInfo.strAccountId);
 		tvTime.setText(DateUtil.secToHour(totalRecord.total_time));
 		tvDays.setText(String.valueOf(totalRecord.total_days));
+		
+		AccountMgr.getInstance().getHeadImg();
 	}
 
 	private void initView() {
@@ -170,14 +199,21 @@ public class MeFragment extends Fragment implements OnClickListener{
 		
 		if(resultCode == DialogActivity.RSP_CONFIRM){
 			Log.d(TAG, "onActivityResult, confirm resultCode = " + resultCode);
-			// TODO 退出帐号的操作
+			// 退出帐号的操作
 			AccountMgr.getInstance().logout(getActivity());
 			startActivity(new Intent(getActivity(), StartActivity.class));
 			getActivity().finish();
 		}
-		
 	}
 
+	@Override
+	public void onDestroy() {
+		if(mIGetHeadImgObserver != null){
+			AccountMgr.getInstance().removeIGetHeadImgObserver(mIGetHeadImgObserver);
+		}
+		super.onDestroy();
+	}
+	
 	// 不要删除，切换fragment用到
     @Override
 	public void setMenuVisibility(boolean menuVisible) {

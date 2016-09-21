@@ -5,7 +5,6 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.runrunfast.homegym.account.AccountMgr;
-import com.runrunfast.homegym.account.UserInfo;
 import com.runrunfast.homegym.bean.Action;
 import com.runrunfast.homegym.bean.Course;
 import com.runrunfast.homegym.bean.MyCourse;

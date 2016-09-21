@@ -285,8 +285,13 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 			mActionCurrentGroupCount++; // 当前组的次数
 			
 			speekFinishOnce(mActionCurrentGroupCount);
-			
-			mFinishedGroupDetail.kcal = CalculateUtil.calculateTotakKcal(mActionCurrentGroupCount, mTargetGroupDetail.weight, mAction.action_h, mAction.action_b); // 该动作消耗的kcal
+			// 对于重量为0的动作特殊处理
+			if(mTargetGroupDetail.weight == 0){
+				mFinishedGroupDetail.kcal = CalculateUtil.calculateTotakKcal(mActionCurrentGroupCount, CalculateUtil.DEFAULT_WEIGHT_VALUE_IF_ZERO, mAction.action_h, mAction.action_b);
+			}else{
+				mFinishedGroupDetail.kcal = CalculateUtil.calculateTotakKcal(mActionCurrentGroupCount, mTargetGroupDetail.weight, mAction.action_h, mAction.action_b);
+			}
+//			mFinishedGroupDetail.kcal = CalculateUtil.calculateTotakKcal(mActionCurrentGroupCount, mTargetGroupDetail.weight, mAction.action_h, mAction.action_b); // 该动作消耗的kcal
 			mFinishedGroupDetail.count = mFinishedGroupDetail.count + 1;
 			mFinishedGroupDetail.weight = mTargetGroupDetail.weight;
 			

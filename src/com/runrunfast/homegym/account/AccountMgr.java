@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.runrunfast.homegym.R;
+import com.runrunfast.homegym.course.CourseServerMgr.IGetCourseFromServerListener;
 import com.runrunfast.homegym.utils.ConstServer;
 import com.runrunfast.homegym.utils.Globle;
 import com.runrunfast.homegym.utils.PrefUtils;
@@ -18,13 +19,14 @@ import org.xutils.x;
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.http.cookie.DbCookieStore;
-import org.xutils.http.request.HttpRequest;
 
 import java.io.File;
 import java.net.HttpCookie;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 
 public class AccountMgr {
@@ -44,6 +46,13 @@ public class AccountMgr {
 	private IPersonalInfoListener iPersonalInfoListener;
 	private IUpdateHeadimgListener iUpdateHeadimgListener;
 	private IGetPersonalInfoListener iGetPersonalInfoListener;
+	
+	private HashSet<IGetHeadImgObserver> mSetOfIGetHeadImgObserver;
+	
+	public interface IGetHeadImgObserver {
+		void onSuccess();
+		void onFail();
+	}
 	
 	public interface IGetPersonalInfoListener{
 		void onSuccess();
@@ -78,6 +87,20 @@ public class AccountMgr {
 	public interface IResetPwdListener{
 		void onSuccess();
 		void onFail(String reason);
+	}
+	
+	public void addIGetHeadImgObserver(IGetHeadImgObserver iGetHeadImgObserver){
+		synchronized (mSetOfIGetHeadImgObserver) {
+			if( mSetOfIGetHeadImgObserver.contains(iGetHeadImgObserver) == false ){
+				mSetOfIGetHeadImgObserver.add(iGetHeadImgObserver);
+			}
+		}
+	}
+	
+	public void removeIGetHeadImgObserver(IGetHeadImgObserver iGetHeadImgObserver){
+		synchronized (mSetOfIGetHeadImgObserver) {
+			mSetOfIGetHeadImgObserver.remove(iGetHeadImgObserver);
+		}
 	}
 	
 	public void setOnGetPersonalInfoListener(IGetPersonalInfoListener iGetPersonalInfoListener){
@@ -138,6 +161,8 @@ public class AccountMgr {
 	private AccountMgr(){
 		mResources = Globle.gApplicationContext.getResources();
 		loadUserInfo();
+		
+		mSetOfIGetHeadImgObserver = new HashSet<AccountMgr.IGetHeadImgObserver>();
 	}
 	
 	public void loadUserInfo(){
@@ -360,7 +385,7 @@ public class AccountMgr {
 				notifyRegisterFail(mResources.getString(R.string.this_phone_had_bonded));
 				break;
 				
-			case ConstServer.RET_USER_NAME_EXIST:
+			case ConstServer.RET_USER_NAME_NOT_EXIST:
 				notifyRegisterFail(mResources.getString(R.string.this_account_had_exist));
 				break;
 			case ConstServer.RET_REGISTE_FAIL:
@@ -445,7 +470,7 @@ public class AccountMgr {
 				break;
 				
 			case ConstServer.RET_LOGIN_FAIL:
-				notifyLoginFail(mResources.getString(R.string.username_not_identified));
+				notifyLoginFail(mResources.getString(R.string.login_fail));
 				break;
 				
 			case ConstServer.RET_USER_NAME_EMPTY:
@@ -612,8 +637,8 @@ public class AccountMgr {
 			params.addHeader("Cookie", "JSESSIONID=" + cookie);
 		}
 		params.setMultipart(true);
-		params.addBodyParameter("type", "insertheadpicture");
-		params.addBodyParameter(UserInfo.IMAGE_FILE_LOCATION_TEMP.replace("/", ""), headImgFile);
+		params.addQueryStringParameter("type", "insertheadpicture");
+		params.addBodyParameter("custom", headImgFile);
 		
 		x.http().post(params, new Callback.CommonCallback<String>() {
 
@@ -661,6 +686,90 @@ public class AccountMgr {
 	private void notifyUpdateHeadImgFail() {
 		if(iUpdateHeadimgListener != null){
 			iUpdateHeadimgListener.onFail();
+		}
+	}
+	
+	public void getHeadImg(){
+		RequestParams params = new RequestParams(ConstServer.URL_GET_HEADIMG);
+		String cookie = PrefUtils.getCookie(Globle.gApplicationContext);
+		if(cookie != null){
+			params.addHeader("Cookie", "JSESSIONID=" + cookie);
+		}
+		params.addParameter("type", "getimg");
+		
+		x.http().get(params, new Callback.CommonCallback<String>() {
+
+			@Override
+			public void onSuccess(String result) {
+				handleGetHeadImgUrlSuccess(result);
+			}
+			@Override
+			public void onError(Throwable throwable, boolean arg1) {
+				notifyGetHeadImgUrlFail();
+			}
+			@Override
+			public void onCancelled(CancelledException arg0) { }
+			@Override
+			public void onFinished() { }
+		});
+	}
+
+	private void handleGetHeadImgUrlSuccess(String result) {
+		try {
+			JSONObject jsonObject = new JSONObject(result);
+			int retCode = (Integer) jsonObject.get("ret");
+			if(retCode == 1){
+				String imgName = jsonObject.getString("reg");
+				String imgUrl = ConstServer.URL_HEADIMG_HOST + imgName;
+				
+				downloadHeadImg(imgUrl);
+				
+			}else{
+				notifyGetHeadImgUrlFail();
+			}
+		} catch (JSONException e) {
+			notifyGetHeadImgUrlFail();
+			
+			e.printStackTrace();
+		}
+	}
+
+	private void downloadHeadImg(String imgUrl) {
+		RequestParams params = new RequestParams(imgUrl);
+		params.setAutoResume(true);
+		params.setSaveFilePath(UserInfo.IMAGE_FILE_DIR + UserInfo.IMG_FILE_NAME);
+		x.http().get(params, new Callback.CommonCallback<String>() {
+
+			@Override
+			public void onSuccess(String result) {
+				handleDownloadHeadImgSuccess(result);
+			}
+			@Override
+			public void onError(Throwable throwable, boolean arg1) {
+				notifyDownloadHeadImgFail();
+			}
+			@Override
+			public void onCancelled(CancelledException arg0) { }
+			@Override
+			public void onFinished() { }
+		});
+	}
+	
+	private void handleDownloadHeadImgSuccess(String result) {
+		
+	}
+
+	private void notifyDownloadHeadImgFail() {
+		notifyGetHeadImgUrlFail();
+	}
+
+	private void notifyGetHeadImgUrlFail() {
+		synchronized (mSetOfIGetHeadImgObserver) {
+			Iterator<IGetHeadImgObserver> it = mSetOfIGetHeadImgObserver.iterator();
+			while( it.hasNext() ){
+				IGetHeadImgObserver observer = it.next();
+				observer.onFail();
+			}
 		}
 	}
 

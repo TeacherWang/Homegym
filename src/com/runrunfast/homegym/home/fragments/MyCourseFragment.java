@@ -75,7 +75,7 @@ public class MyCourseFragment extends Fragment{
 			public void onGetCourseSucFromServer() {
 				Log.i(TAG, "MyCourseFragment, onGetCourseSucFromServer");
 				
-				getData();
+//				getData();
 			}
 			
 			@Override
@@ -109,26 +109,8 @@ public class MyCourseFragment extends Fragment{
 		Log.i(TAG, "onResume");
 		
 		getData();
-	}
-
-	private void getData() {
-		mMyCourseList = MyCourseDao.getInstance().getMyCourseListFromDb(Globle.gApplicationContext);
-		if(mMyCourseList.size() > 0){
-			// 根据当天日期保存课程是否过期
-			handleMyCourseExpireOrNot();
-			
-			mMyCourseList.add(new InvalidCourse(InvalidCourse.COURSE_TYPE_SHOW_RECOMMED_TEXT));
-			
-			mMyCourseList.addAll(mRecommedList);
-			mMyCourseAdapter.updateData(mMyCourseList);
-		}else{
-			mMyCourseList.add(new InvalidCourse(InvalidCourse.COURSE_TYPE_EMPTY));
-			
-			mMyCourseList.add(new InvalidCourse(InvalidCourse.COURSE_TYPE_SHOW_RECOMMED_TEXT));
-			
-			mMyCourseList.addAll(mRecommedList);
-			mMyCourseAdapter.updateData(mMyCourseList);
-		}
+		
+		initAddCourseListener();
 	}
 
 	private void handleMyCourseExpireOrNot() {
@@ -178,6 +160,13 @@ public class MyCourseFragment extends Fragment{
 
 		});
 		
+	}
+
+	private void initAddCourseListener() {
+		if(mICourseAdapterListener != null){
+			mICourseAdapterListener = null;
+		}
+		
 		mICourseAdapterListener = new ICourseAdapterListener() {
 			
 			@Override
@@ -208,20 +197,58 @@ public class MyCourseFragment extends Fragment{
 	private void initData() {
 		mUserInfo = AccountMgr.getInstance().mUserInfo;
 		
+//		mMyCourseList = MyCourseDao.getInstance().getMyCourseListFromDb(Globle.gApplicationContext);
+//		
+//		if(mMyCourseList.size() == 0){
+//			mMyCourseList.add(new InvalidCourse(InvalidCourse.COURSE_TYPE_EMPTY));
+//			mMyCourseAdapter = new CourseAdapter(getActivity(), mMyCourseList);
+//			AllCoursesFragment.setListViewHeightBasedOnChildren(mMyCourseListView);
+//			mMyCourseListView.setAdapter(mMyCourseAdapter);
+//		}else{
+//			mMyCourseAdapter = new CourseAdapter(getActivity(), mMyCourseList);
+//			AllCoursesFragment.setListViewHeightBasedOnChildren(mMyCourseListView);
+//			mMyCourseListView.setAdapter(mMyCourseAdapter);
+//		}
+//		
+//		mRecommedList = CourseDao.getInstance().getRecommedCourseListFromDb(Globle.gApplicationContext);
+	}
+	
+	private void getData() {
 		mMyCourseList = MyCourseDao.getInstance().getMyCourseListFromDb(Globle.gApplicationContext);
+		mRecommedList = CourseDao.getInstance().getRecommedCourseListFromDb(Globle.gApplicationContext);
 		
 		if(mMyCourseList.size() == 0){
 			mMyCourseList.add(new InvalidCourse(InvalidCourse.COURSE_TYPE_EMPTY));
-			mMyCourseAdapter = new CourseAdapter(getActivity(), mMyCourseList);
-			AllCoursesFragment.setListViewHeightBasedOnChildren(mMyCourseListView);
-			mMyCourseListView.setAdapter(mMyCourseAdapter);
+			mMyCourseList.add(new InvalidCourse(InvalidCourse.COURSE_TYPE_SHOW_RECOMMED_TEXT));
 		}else{
-			mMyCourseAdapter = new CourseAdapter(getActivity(), mMyCourseList);
-			AllCoursesFragment.setListViewHeightBasedOnChildren(mMyCourseListView);
-			mMyCourseListView.setAdapter(mMyCourseAdapter);
+			// 根据当天日期保存课程是否过期
+			handleMyCourseExpireOrNot();
 		}
 		
-		mRecommedList = CourseDao.getInstance().getRecommedCourseListFromDb(Globle.gApplicationContext);
+		mMyCourseList.add(new InvalidCourse(InvalidCourse.COURSE_TYPE_SHOW_RECOMMED_TEXT));
+		mMyCourseList.addAll(mRecommedList);
+		
+		mMyCourseAdapter = new CourseAdapter(getActivity(), mMyCourseList);
+//		AllCoursesFragment.setListViewHeightBasedOnChildren(mMyCourseListView);
+		mMyCourseListView.setAdapter(mMyCourseAdapter);
+		
+//		mMyCourseList = MyCourseDao.getInstance().getMyCourseListFromDb(Globle.gApplicationContext);
+//		if(mMyCourseList.size() > 0){
+//			// 根据当天日期保存课程是否过期
+//			handleMyCourseExpireOrNot();
+//			
+//			mMyCourseList.add(new InvalidCourse(InvalidCourse.COURSE_TYPE_SHOW_RECOMMED_TEXT));
+//			
+//			mMyCourseList.addAll(mRecommedList);
+//			mMyCourseAdapter.updateData(mMyCourseList);
+//		}else{
+//			mMyCourseList.add(new InvalidCourse(InvalidCourse.COURSE_TYPE_EMPTY));
+//			
+//			mMyCourseList.add(new InvalidCourse(InvalidCourse.COURSE_TYPE_SHOW_RECOMMED_TEXT));
+//			
+//			mMyCourseList.addAll(mRecommedList);
+//			mMyCourseAdapter.updateData(mMyCourseList);
+//		}
 	}
 
 	private void initView() {

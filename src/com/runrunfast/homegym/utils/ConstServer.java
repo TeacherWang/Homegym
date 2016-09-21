@@ -8,12 +8,14 @@ public class ConstServer {
 	public static final String LOGIN_SERVER = "http://bikeme.duapp.com/";
 	public static final String LOGIN_SERVER_TEST = "http://bikemetest.duapp.com/";
 	
-	public static final String URL_LOGIN = LOGIN_SERVER_TEST + "Login";
-	public static final String URL_IDENTIFY = LOGIN_SERVER_TEST + "servlet/PhoneRegisterServlet";
+	public static final String URL_LOGIN 				= LOGIN_SERVER + "Login";
+	public static final String URL_IDENTIFY 			= LOGIN_SERVER + "servlet/PhoneRegisterServlet";
 	
-	public static final String URL_UPDATE_PERSONAL_INFO = LOGIN_SERVER_TEST + "PersonalInfo";
-	public static final String URL_GET_PERSONAL_INFO = LOGIN_SERVER_TEST + "PersonalInfoCheckOut";
-	public static final String URL_UPDATE_HEADIMG = LOGIN_SERVER_TEST + "servlet/HeadPictureServlet";
+	public static final String URL_UPDATE_PERSONAL_INFO = LOGIN_SERVER + "PersonalInfo";
+	public static final String URL_GET_PERSONAL_INFO 	= LOGIN_SERVER + "PersonalInfoCheckOut";
+	public static final String URL_UPDATE_HEADIMG 		= LOGIN_SERVER + "servlet/HeadPictureServlet";
+	public static final String URL_GET_HEADIMG 			= LOGIN_SERVER + "servlet/HeadPictureServlet";
+	public static final String URL_HEADIMG_HOST = "http://bikeme-img-runrunfast.bceimg.com/UserDeFinedPicture/";
 	
 	// 用户信息
 	public static final String PERSONAL_USER_NAME = "username";
@@ -54,7 +56,7 @@ public class ConstServer {
 	public static final int RET_USER_NAME_EMPTY 		= -3; // 用户名为空
 	public static final int RET_PWD_EMPTY 				= -4; // 密码为空
 	public static final int RET_LOGIN_FAIL 				= -5; // 登录失败，未认证用户
-	public static final int RET_USER_NAME_EXIST 		= -6; // 用户名已存在
+	public static final int RET_USER_NAME_NOT_EXIST 	= -6; // 该手机号未注册
 	public static final int RET_REGISTE_FAIL 			= -7; // 注册失败，重新获取
 	public static final int RET_IDENTIFY_TIMEOUT 		= -8; // 验证码时间过长
 	public static final int RET_IDENTIFY_CODE_ERR 		= -9; // 验证码错误

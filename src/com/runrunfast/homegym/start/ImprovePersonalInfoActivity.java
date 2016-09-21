@@ -25,10 +25,10 @@ import android.widget.Toast;
 
 import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.account.AccountMgr;
+import com.runrunfast.homegym.account.AccountMgr.IPersonalInfoListener;
 import com.runrunfast.homegym.account.AccountMgr.IUpdateHeadimgListener;
 import com.runrunfast.homegym.account.DataTransferUtil;
 import com.runrunfast.homegym.account.UserInfo;
-import com.runrunfast.homegym.account.AccountMgr.IPersonalInfoListener;
 import com.runrunfast.homegym.home.HomeActivity;
 import com.runrunfast.homegym.utils.BitmapUtils;
 import com.runrunfast.homegym.utils.DateUtil;
@@ -513,7 +513,7 @@ public class ImprovePersonalInfoActivity extends Activity implements OnClickList
 		setSelectContainerWidth();
 		wheelOneLayout = (View)LayoutInflater.from(this).inflate(R.layout.wheel_one, null);
 		selectContainer.addView(wheelOneLayout);
-		tvPopTitle.setText(R.string.select_weight);
+		tvPopTitle.setText(R.string.select_sex);
 		wheelOneWheelView = (WheelView)wheelOneLayout.findViewById(R.id.select_wheelview);
 		wheelOneWheelView.setOnWheelViewListener(new OnWheelViewListener(){
 			@Override
@@ -549,10 +549,10 @@ public class ImprovePersonalInfoActivity extends Activity implements OnClickList
 		mUserInfo.strWeight = strWeight;
 		mUserInfo.strHeight = strHeight;
 		
-//		if(FileUtils.isFileExist(UserInfo.IMAGE_FILE_LOCATION_TEMP)){
-//			AccountMgr.getInstance().updateHeadImg(new File(UserInfo.IMAGE_FILE_LOCATION_TEMP));
-//			return;
-//		}
+		if(FileUtils.isFileExist(UserInfo.IMAGE_FILE_LOCATION_TEMP)){
+			AccountMgr.getInstance().updateHeadImg(new File(UserInfo.IMAGE_FILE_LOCATION_TEMP));
+			return;
+		}
 		
 		AccountMgr.getInstance().updatePersonalInfo(mUserInfo);
 	}
