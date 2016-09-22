@@ -20,6 +20,7 @@ import com.runrunfast.homegym.R;
 import com.runrunfast.homegym.account.AccountMgr;
 import com.runrunfast.homegym.account.AccountMgr.IIdentifyCodeListener;
 import com.runrunfast.homegym.account.AccountMgr.IRegisterListener;
+import com.runrunfast.homegym.utils.Const;
 import com.runrunfast.homegym.utils.PrefUtils;
 
 public class RegisterActivity extends Activity implements OnClickListener, TextWatcher{
@@ -124,8 +125,7 @@ public class RegisterActivity extends Activity implements OnClickListener, TextW
 	}
 	
 	private void handleRegisterSuc() {
-		AccountMgr.getInstance().saveLoginAccount(this, mUsername);
-		PrefUtils.setPwd(this, mPwd);
+		AccountMgr.getInstance().saveLoginAccount(this, mUsername, mPwd);
 		AccountMgr.getInstance().setLoginSuc(this, true);
 		dismissDialog();
 		jumpToImprovePersonalInfoActivity();
@@ -217,6 +217,7 @@ public class RegisterActivity extends Activity implements OnClickListener, TextW
 
 	private void jumpToImprovePersonalInfoActivity() {
 		Intent intent = new Intent(this, ImprovePersonalInfoActivity.class);
+		intent.putExtra(Const.FROM_LOGIN_REGISTER_TO_HOME_ACTIVITY, Const.FROM_LOGIN_REGISTER_TO_HOME_ACTIVITY_VALUE_CONFIRM);
 		startActivity(intent);
 		finish();
 	}

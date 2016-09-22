@@ -7,8 +7,9 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.runrunfast.homegym.R;
-import com.runrunfast.homegym.course.CourseServerMgr.IGetCourseFromServerListener;
+import com.runrunfast.homegym.utils.BitmapUtils;
 import com.runrunfast.homegym.utils.ConstServer;
+import com.runrunfast.homegym.utils.FileUtils;
 import com.runrunfast.homegym.utils.Globle;
 import com.runrunfast.homegym.utils.PrefUtils;
 
@@ -167,6 +168,7 @@ public class AccountMgr {
 	
 	public void loadUserInfo(){
 		String accountId = PrefUtils.getAccount(Globle.gApplicationContext);
+		String pwd = PrefUtils.getPwd(Globle.gApplicationContext);
 		if(TextUtils.isEmpty(accountId)){
 			Log.d(TAG, "loadUserInfo, accountId is empty");
 			mUserInfo = null;
@@ -192,6 +194,7 @@ public class AccountMgr {
 		mUserInfo.strBirthday = strBirthday;
 		mUserInfo.strWeight = strWeight;
 		mUserInfo.strHeight = strHeight;
+		mUserInfo.strPwd = pwd;
 	}
 	
 	public List<String> getHeightList(){
@@ -427,6 +430,9 @@ public class AccountMgr {
 			@Override
 			public void onSuccess(String result) {
 				saveCookies();
+				
+				Log.i(TAG, "login, onSuccess result = " + result);
+				
 				handleLoginOnSuccess(result);
 			}
 			@Override
@@ -734,29 +740,29 @@ public class AccountMgr {
 		}
 	}
 
-	private void downloadHeadImg(String imgUrl) {
-		RequestParams params = new RequestParams(imgUrl);
-		params.setAutoResume(true);
-		params.setSaveFilePath(UserInfo.IMAGE_FILE_DIR + UserInfo.IMG_FILE_NAME);
-		x.http().get(params, new Callback.CommonCallback<String>() {
-
+	private void downloadHeadImg(final String imgUrl) {
+		
+		new Thread() {
 			@Override
-			public void onSuccess(String result) {
-				handleDownloadHeadImgSuccess(result);
+			public void run() {
+				boolean downloadSuc = BitmapUtils.saveImgFileFromUrl(imgUrl, UserInfo.IMAGE_FILE_DIR, UserInfo.IMG_FILE_NAME);
+				if(downloadSuc){
+					notifyDownloadHeadImgSuccess();
+				}else{
+					notifyDownloadHeadImgFail();
+				}
 			}
-			@Override
-			public void onError(Throwable throwable, boolean arg1) {
-				notifyDownloadHeadImgFail();
-			}
-			@Override
-			public void onCancelled(CancelledException arg0) { }
-			@Override
-			public void onFinished() { }
-		});
+		}.start();
 	}
 	
-	private void handleDownloadHeadImgSuccess(String result) {
-		
+	private void notifyDownloadHeadImgSuccess() {
+		synchronized (mSetOfIGetHeadImgObserver) {
+			Iterator<IGetHeadImgObserver> it = mSetOfIGetHeadImgObserver.iterator();
+			while( it.hasNext() ){
+				IGetHeadImgObserver observer = it.next();
+				observer.onSuccess();
+			}
+		}
 	}
 
 	private void notifyDownloadHeadImgFail() {
@@ -848,8 +854,9 @@ public class AccountMgr {
 		}
 	}
 
-	public void saveLoginAccount(Context context, String userName){
+	public void saveLoginAccount(Context context, String userName, String pwd){
 		PrefUtils.setAccount(context, userName);
+		PrefUtils.setPwd(context, pwd);
 		loadUserInfo();
 	}
 	
@@ -886,7 +893,19 @@ public class AccountMgr {
 	
 	public void logout(Context context){
 		clearAccount(context);
+		
+		asyncDeleteHeadImg();
+		
 		setLoginSuc(context, false);
+	}
+	
+	public void asyncDeleteHeadImg(){
+		new Thread(new Runnable() {
+            public void run() {
+                // 删除头像
+                FileUtils.deleteFile(UserInfo.IMAGE_FILE_DIR + UserInfo.IMG_FILE_NAME);
+            }
+        }).start();
 	}
 	
 	public boolean checkLoginLegal(){

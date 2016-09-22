@@ -21,7 +21,7 @@ import com.runrunfast.homegym.account.AccountMgr;
 import com.runrunfast.homegym.account.AccountMgr.ILoginListener;
 import com.runrunfast.homegym.dao.CourseDao;
 import com.runrunfast.homegym.home.HomeActivity;
-import com.runrunfast.homegym.utils.PrefUtils;
+import com.runrunfast.homegym.utils.Const;
 
 public class LoginActivity extends Activity implements OnClickListener, TextWatcher{
 	private final String TAG = "LoginActivity";
@@ -73,8 +73,7 @@ public class LoginActivity extends Activity implements OnClickListener, TextWatc
 	}
 
 	private void handleLoginSuc() {
-		AccountMgr.getInstance().saveLoginAccount(this, mUsername);
-		PrefUtils.setPwd(this, mPwd);
+		AccountMgr.getInstance().saveLoginAccount(this, mUsername, mPwd);
 		AccountMgr.getInstance().setLoginSuc(this, true);
 		dismissDialog();
 		jumpToHomeActivity();
@@ -175,6 +174,7 @@ public class LoginActivity extends Activity implements OnClickListener, TextWatc
 
 	private void jumpToHomeActivity() {
 		Intent intent = new Intent(this, HomeActivity.class);
+		intent.putExtra(Const.FROM_LOGIN_REGISTER_TO_HOME_ACTIVITY, Const.FROM_LOGIN_REGISTER_TO_HOME_ACTIVITY_VALUE_CONFIRM);
 		startActivity(intent);
 	}
 

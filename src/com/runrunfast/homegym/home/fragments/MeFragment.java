@@ -1,10 +1,12 @@
 package com.runrunfast.homegym.home.fragments;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -37,6 +39,9 @@ import com.runrunfast.homegym.widget.DialogActivity;
 public class MeFragment extends Fragment implements OnClickListener{
 	private final String TAG = "MeFragment";
 	
+	private final static int MSG_UPDATE_HAEDIMG_SUC 	= 1;
+	private final static int MSG_UPDATE_HAEDIMG_FAIL 	= 2;
+	
 	private View rootView, personalInfoView, aboutView, feedbackView;
 	
 	private Resources mResources;
@@ -55,6 +60,8 @@ public class MeFragment extends Fragment implements OnClickListener{
 	private Bitmap mHeadImgBitmap;
 	
 	private IGetHeadImgObserver mIGetHeadImgObserver;
+	
+	private ProgressDialog dialog;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater,
@@ -72,17 +79,36 @@ public class MeFragment extends Fragment implements OnClickListener{
 		return rootView;
 	}
 	
+	private Handler mMainHandler = new Handler(){
+		public void handleMessage(android.os.Message msg) {
+			switch (msg.what) {
+			case MSG_UPDATE_HAEDIMG_SUC:
+				dismissDialog();
+				setHeadImg();
+				break;
+
+			case MSG_UPDATE_HAEDIMG_FAIL:
+				dismissDialog();
+				Toast.makeText(getActivity(), "获取头像失败", Toast.LENGTH_SHORT).show();
+				break;
+				
+			default:
+				break;
+			}
+		};
+	};
+	
 	private void initHeadImgObserver() {
 		mIGetHeadImgObserver = new IGetHeadImgObserver() {
 			
 			@Override
 			public void onSuccess() {
-				setHeadImg();
+				mMainHandler.sendEmptyMessage(MSG_UPDATE_HAEDIMG_SUC);
 			}
 			
 			@Override
 			public void onFail() {
-				Toast.makeText(getActivity(), "获取头像失败", Toast.LENGTH_SHORT).show();
+				mMainHandler.sendEmptyMessage(MSG_UPDATE_HAEDIMG_FAIL);
 			}
 		};
 		AccountMgr.getInstance().addIGetHeadImgObserver(mIGetHeadImgObserver);
@@ -128,7 +154,11 @@ public class MeFragment extends Fragment implements OnClickListener{
 		tvTime.setText(DateUtil.secToHour(totalRecord.total_time));
 		tvDays.setText(String.valueOf(totalRecord.total_days));
 		
-		AccountMgr.getInstance().getHeadImg();
+		if( !FileUtils.isFileExist(UserInfo.IMAGE_FILE_LOCATION) ){
+			showDialog();
+			
+			AccountMgr.getInstance().getHeadImg();
+		}
 	}
 
 	private void initView() {
@@ -206,6 +236,19 @@ public class MeFragment extends Fragment implements OnClickListener{
 		}
 	}
 
+	private void showDialog(){
+		dialog = new ProgressDialog(getActivity());
+		dialog.setMessage(getResources().getString(R.string.please_wait));
+		dialog.setCanceledOnTouchOutside(false);
+		dialog.show();
+	}
+	
+	private void dismissDialog(){
+		if(dialog != null && dialog.isShowing()){
+			dialog.dismiss();
+		}
+	}
+	
 	@Override
 	public void onDestroy() {
 		if(mIGetHeadImgObserver != null){

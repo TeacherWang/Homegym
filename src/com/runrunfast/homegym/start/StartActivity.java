@@ -70,6 +70,9 @@ public class StartActivity extends Activity{
 		initData();
 		
 		registerLoginSucReceiver();
+		
+		// 如果存在旧的账号头像，一并删掉
+		AccountMgr.getInstance().asyncDeleteHeadImg();
 	}
 	
 	private void registerLoginSucReceiver(){

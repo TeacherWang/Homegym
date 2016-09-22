@@ -118,4 +118,9 @@ public class Const {
 	
 	public static final String ACTION_VOLUME_CHANGED = "android.media.VOLUME_CHANGED_ACTION";
 	
+	// 从登陆或者注册界面进入主界面
+	public static final String FROM_LOGIN_REGISTER_TO_HOME_ACTIVITY = "key_from_login_register_to_home_activity";
+	public static final int FROM_LOGIN_REGISTER_TO_HOME_ACTIVITY_VALUE_CONFIRM 	= 1;
+	public static final int FROM_LOGIN_REGISTER_TO_HOME_ACTIVITY_VALUE_NEGATIVE = 0;
+	
 }

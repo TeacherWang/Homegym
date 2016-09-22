@@ -64,6 +64,18 @@ public class HomeActivity extends FragmentActivity{
 		BtDeviceMgr.getInstance().bindBLEService();
 		
 		switchFragment(FRAGMENT_MY_TRAINING);
+		
+		// 调用一下登录，保证获取到cookie
+		determineLogin();
+	}
+
+	private void determineLogin() {
+		int jumpValue = getIntent().getIntExtra(Const.FROM_LOGIN_REGISTER_TO_HOME_ACTIVITY, Const.FROM_LOGIN_REGISTER_TO_HOME_ACTIVITY_VALUE_NEGATIVE);
+		Log.i(TAG, "HomeActivity onCreate, jumpValue = " + jumpValue);
+		
+		if(jumpValue == Const.FROM_LOGIN_REGISTER_TO_HOME_ACTIVITY_VALUE_NEGATIVE){
+			AccountMgr.getInstance().login(mUserInfo.strAccountId, mUserInfo.strPwd);
+		}
 	}
 	
 	private void initListener() {

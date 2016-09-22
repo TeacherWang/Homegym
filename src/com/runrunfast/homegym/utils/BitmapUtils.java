@@ -6,19 +6,24 @@ import android.graphics.BitmapFactory;
 import android.graphics.BitmapFactory.Options;
 import android.os.Environment;
 import android.os.Handler;
+import android.util.Log;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
-import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.nostra13.universalimageloader.core.display.SimpleBitmapDisplayer;
 import com.runrunfast.homegym.R;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class BitmapUtils {
+	
+	private static final String TAG = "BitmapUtils";
 	
 	public static final DisplayImageOptions initCourseImageLoader() {
 		DisplayImageOptions options = new DisplayImageOptions.Builder()
@@ -109,6 +114,72 @@ public class BitmapUtils {
 			e.printStackTrace();
 		}
 	}
+	
+	public static final String IPAD_USERAGENT = "Mozilla/5.0 (iPad; U; CPU OS 5_1 like Mac OS X) AppleWebKit/531.21.10 (KHTML, like Gecko) Version/4.0.4 Mobile/7B367 Safari/531.21.10";
+	
+	public static boolean saveImgFileFromUrl(String url, String fileFolder, String fileName)
+    {
+        boolean saveSuc = false;
+        FileOutputStream fileOutputStream = null;
+        HttpURLConnection conn = null;
+        try
+        {
+            //          imageFile = File.createTempFile("image", null, mTempDirectory);
+
+            // Connects the http server.
+            conn = (HttpURLConnection) new URL(url).openConnection();
+            conn.setReadTimeout(60000);
+            conn.setConnectTimeout(60000);
+            conn.setInstanceFollowRedirects(true);
+            conn.setRequestProperty("Accept", "*/*");
+            conn.setRequestProperty("Connection", "keep-alive");
+            conn.setRequestProperty("User-Agent", IPAD_USERAGENT);
+            conn.connect();
+
+            if (conn.getResponseCode() == HttpURLConnection.HTTP_OK)
+            {
+                // Reads the image data from server.
+                InputStream inputStream = conn.getInputStream();
+                File dirFile = new File(fileFolder);
+                if (!dirFile.exists())
+                {
+                    dirFile.mkdirs();
+                }
+                File destFile = new File(fileFolder + fileName);
+                if (destFile.exists())
+                {
+                    destFile.delete();
+                }
+                destFile.createNewFile();
+                saveSuc = FileUtils.writeFile(destFile, inputStream);
+            } else
+            {
+                saveSuc = false;
+            }
+        } catch (Throwable e)
+        {
+            Log.e(TAG, "Couldn't from '" + url + "' to load image.", e);
+            saveSuc = false;
+        } finally
+        {
+            if (conn != null)
+            {
+                conn.disconnect();
+            }
+            if (fileOutputStream != null)
+            {
+                try
+                {
+                    fileOutputStream.close();
+                } catch (IOException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return saveSuc;
+    }
 
 	/**
 	 * 从指定路径 按规定收缩比例加载图片
