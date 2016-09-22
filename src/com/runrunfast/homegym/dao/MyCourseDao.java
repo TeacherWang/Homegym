@@ -9,7 +9,6 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.runrunfast.homegym.bean.Course;
-import com.runrunfast.homegym.bean.ServerMyCourse;
 import com.runrunfast.homegym.bean.Course.CourseDetail;
 import com.runrunfast.homegym.bean.MyCourse;
 import com.runrunfast.homegym.bean.MyCourse.DayProgress;
@@ -214,7 +213,7 @@ public class MyCourseDao {
 		}
 	}
 	
-	public synchronized ArrayList<Course> getMyCourseListFromDb(Context context){
+	public synchronized ArrayList<Course> getMyCourseListFromDb(Context context, String uid){
 		ArrayList<Course> myCourseList = new ArrayList<Course>();
 		SQLiteDatabase db = null;
 		Cursor c = null;
@@ -222,7 +221,7 @@ public class MyCourseDao {
 			DBOpenHelper dbHelper = new DBOpenHelper(context);
 			db = dbHelper.getWritableDatabase();
 			
-			c = db.query(true, Const.TABLE_MY_COURSE, null, null, null, Const.DB_KEY_COURSE_ID, null, Const.DB_KEY_START_DATE + " DESC", null);
+			c = db.query(true, Const.TABLE_MY_COURSE, null, Const.DB_KEY_UID + " = ? ", new String[]{ uid }, Const.DB_KEY_COURSE_ID, null, Const.DB_KEY_START_DATE + " DESC", null);
 			
 //			c = db.query(Const.TABLE_MY_COURSE, null, null, null, null, null, null);
 			if(null != c && c.getCount() > 0){
@@ -267,7 +266,7 @@ public class MyCourseDao {
 		return myCourseList;
 	}
 	
-	public synchronized MyCourse getMyCourseFromDb(Context context, String courseId){
+	public synchronized MyCourse getMyCourseFromDb(Context context, String uid, String courseId){
 		MyCourse myCourse = null;
 		SQLiteDatabase db = null;
 		Cursor c = null;
@@ -275,7 +274,7 @@ public class MyCourseDao {
 			DBOpenHelper dbHelper = new DBOpenHelper(context);
 			db = dbHelper.getWritableDatabase();
 			
-			c = db.query(Const.TABLE_MY_COURSE, null, Const.DB_KEY_COURSE_ID + "=?", new String[]{ courseId }, null, null, null);
+			c = db.query(Const.TABLE_MY_COURSE, null, Const.DB_KEY_UID + " = ? and " + Const.DB_KEY_COURSE_ID + " =?", new String[]{ uid, courseId }, null, null, null);
 			if(null != c && c.getCount() > 0){
 				Gson gson = new Gson();
 				Type typeCourseDetail = new TypeToken<Collection<CourseDetail>>(){}.getType();

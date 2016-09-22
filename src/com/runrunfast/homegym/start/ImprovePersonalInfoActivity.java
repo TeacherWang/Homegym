@@ -157,7 +157,7 @@ public class ImprovePersonalInfoActivity extends Activity implements OnClickList
 		strHeight = "165";
 		
 		iSexPosition = 0;
-		strSex = UserInfo.SEX_SERVER_MALE;
+		strSex = UserInfo.SEX_MAN;
 	}
 
 	private void initView() {
@@ -341,11 +341,7 @@ public class ImprovePersonalInfoActivity extends Activity implements OnClickList
 			break;
 			
 		case INPUT_TYPE_SEX:
-			if(strSex.equals(UserInfo.SEX_SERVER_MALE)){
-				tvSex.setText(UserInfo.SEX_MAN);
-			}else{
-				tvSex.setText(UserInfo.SEX_WOMAN);
-			}
+			tvSex.setText(strSex);
 			break;
 			
 		case INPUT_TYPE_BIRTH:
@@ -521,9 +517,9 @@ public class ImprovePersonalInfoActivity extends Activity implements OnClickList
 				Log.d(TAG, "onSelected, item = " + item);
 				iSexPosition = selectedIndex - 1;
 				if(selectedIndex == 1){
-					strSex = UserInfo.SEX_SERVER_MALE;
+					strSex = UserInfo.SEX_MAN;
 				}else{
-					strSex = UserInfo.SEX_SERVER_FEMALE;
+					strSex = UserInfo.SEX_WOMAN;
 				}
 			}
 		});

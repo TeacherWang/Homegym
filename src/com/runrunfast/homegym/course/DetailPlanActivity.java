@@ -286,7 +286,7 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 				btnJoin.setVisibility(View.GONE);
 			}
 		}else{
-			MyCourse myCourse = MyCourseDao.getInstance().getMyCourseFromDb(Globle.gApplicationContext, mCourse.course_id);
+			MyCourse myCourse = MyCourseDao.getInstance().getMyCourseFromDb(Globle.gApplicationContext, mUserInfo.strAccountId, mCourse.course_id);
 			if(myCourse == null){
 				isMyCourse = false;
 			}else{

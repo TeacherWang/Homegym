@@ -214,7 +214,7 @@ public class MyCourseFragment extends Fragment{
 	}
 	
 	private void getData() {
-		mMyCourseList = MyCourseDao.getInstance().getMyCourseListFromDb(Globle.gApplicationContext);
+		mMyCourseList = MyCourseDao.getInstance().getMyCourseListFromDb(Globle.gApplicationContext, mUserInfo.strAccountId);
 		mRecommedList = CourseDao.getInstance().getRecommedCourseListFromDb(Globle.gApplicationContext);
 		
 		if(mMyCourseList.size() == 0){

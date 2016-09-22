@@ -575,7 +575,11 @@ public class AccountMgr {
 		}
 		params.addParameter(ConstServer.PERSONAL_USER_NAME, userInfo.strAccountId);
 		params.addParameter(ConstServer.PERSONAL_NICK_NAME, userInfo.strNickName);
-		params.addParameter(ConstServer.PERSONAL_SEX, userInfo.strSex);
+		if(userInfo.strSex.equals(UserInfo.SEX_MAN)){
+			params.addParameter(ConstServer.PERSONAL_SEX, UserInfo.SEX_SERVER_MALE);
+		}else{
+			params.addParameter(ConstServer.PERSONAL_SEX, UserInfo.SEX_SERVER_FEMALE);
+		}
 		params.addParameter(ConstServer.PERSONAL_HEIGHT, Integer.parseInt(userInfo.strHeight));
 		params.addParameter(ConstServer.PERSONAL_WEIGHT, Integer.parseInt(userInfo.strWeight));
 		params.addParameter(ConstServer.PERSONAL_BIRTHDAY, userInfo.strBirthday);
@@ -832,6 +836,12 @@ public class AccountMgr {
 			String userWeight = userJsonObject.getString("userWeight");
 			String userSex = userJsonObject.getString("userSex");
 			String nickName = userJsonObject.getString("userNickName");
+			
+			if(userSex.equals(UserInfo.SEX_SERVER_MALE)){
+				userSex = UserInfo.SEX_MAN;
+			}else{
+				userSex = UserInfo.SEX_WOMAN;
+			}
 			
 			saveAccountInfo(nickName, userSex, userBirthday, userWeight, userHeight, "");
 			loadUserInfo();

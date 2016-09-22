@@ -213,12 +213,7 @@ public class PersonalInfoActivity extends Activity implements OnClickListener{
 		getBirthdayMonthAndDay();
 		
 		tvNick.setText(mUserInfo.strNickName);
-		if(mUserInfo.strSex.equals(UserInfo.SEX_SERVER_MALE)){
-			tvSex.setText(UserInfo.SEX_MAN);
-		}else{
-			tvSex.setText(UserInfo.SEX_WOMAN);
-		}
-		
+		tvSex.setText(mUserInfo.strSex);
 		tvBirth.setText(mUserInfo.strBirthday);
 		tvHeight.setText(mUserInfo.strHeight);
 		tvWeight.setText(mUserInfo.strWeight);
@@ -473,11 +468,7 @@ public class PersonalInfoActivity extends Activity implements OnClickListener{
 			break;
 			
 		case INPUT_TYPE_SEX:
-			if(strSex.equals(UserInfo.SEX_SERVER_MALE)){
-				tvSex.setText(UserInfo.SEX_MAN);
-			}else{
-				tvSex.setText(UserInfo.SEX_WOMAN);
-			}
+			tvSex.setText(strSex);
 			break;
 			
 		case INPUT_TYPE_BIRTH:
@@ -645,16 +636,16 @@ public class PersonalInfoActivity extends Activity implements OnClickListener{
 			public void onSelected(int selectedIndex, String item) {
 				Log.d(TAG, "onSelected, item = " + item);
 				if(selectedIndex == 1){
-					strSex = UserInfo.SEX_SERVER_MALE;
+					strSex = UserInfo.SEX_MAN;
 				}else{
-					strSex = UserInfo.SEX_SERVER_FEMALE;
+					strSex = UserInfo.SEX_WOMAN;
 				}
 			}
 		});
 		wheelOneWheelView.setTextSize(24);
 		wheelOneWheelView.setOffset(1);
 		int sexPosition = 0;
-		if(strSex.equals(UserInfo.SEX_SERVER_MALE)){
+		if(strSex.equals(UserInfo.SEX_MAN)){
 			sexPosition = 0;
 		}else{
 			sexPosition = 1;
