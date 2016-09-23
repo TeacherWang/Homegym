@@ -157,14 +157,19 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
     private int mFinishedGroupNum;
     private ArrayList<TextView> mProgressTVList;
     
+//    private WakeLock mWakeLock;
+    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,  WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		
 		mResources = getResources();
 		
 		setContentView(R.layout.activity_course_video);
+		
+		Log.i(TAG, "CourseVideoActivity, onCreate()");
 		
 		initView();
 		
@@ -175,12 +180,28 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 		initListener();
 		
 		initCourseServerListener();
+		
+//		initWakeLock();
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
+		
 	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		
+		mVideoView.pause();
+	}
+	
+//	private void initWakeLock() {
+//		PowerManager powerManager = (PowerManager)getSystemService(POWER_SERVICE);
+//		mWakeLock = powerManager.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.ON_AFTER_RELEASE, TAG);
+//		
+//	}
 	
 	private void initCourseServerListener() {
 		mIUpdateRecordListener = new IUpdateRecordListener() {
@@ -635,17 +656,9 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 		 * mVideoView.setVideoURI(Uri.parse(URLstring));
 		 */
 		mVideoView.setVideoPath(videoPath);
-		mVideoView.start();
+//		mVideoView.start();
 	}
 	
-	private void setVideoPath(String videoPath) {
-		mVideoView.setVideoPath(videoPath);
-	}
-	
-	private void startVideo(){
-		mVideoView.start();
-	}
-
 	/**
 	  * @Method: updateUi
 	  * @Description: 更新UI
