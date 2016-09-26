@@ -7,9 +7,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.net.Uri;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -31,6 +30,7 @@ import com.runrunfast.homegym.account.DataTransferUtil;
 import com.runrunfast.homegym.account.UserInfo;
 import com.runrunfast.homegym.home.HomeActivity;
 import com.runrunfast.homegym.utils.BitmapUtils;
+import com.runrunfast.homegym.utils.CameraUtils;
 import com.runrunfast.homegym.utils.DateUtil;
 import com.runrunfast.homegym.utils.FileUtils;
 import com.runrunfast.homegym.widget.CircleMaskImageView;
@@ -39,6 +39,7 @@ import com.runrunfast.homegym.widget.WheelView;
 import com.runrunfast.homegym.widget.WheelView.OnWheelViewListener;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.List;
 
 public class ImprovePersonalInfoActivity extends Activity implements OnClickListener{
@@ -246,29 +247,20 @@ public class ImprovePersonalInfoActivity extends Activity implements OnClickList
 			public void onClick(DialogInterface
 
 			dialog, int which) {
-				Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-				intent.putExtra(MediaStore.EXTRA_OUTPUT, UserInfo.CAMERA_IMG_URI);
-				intent.putExtra("return-data", false);
-				startActivityForResult(intent, UserInfo.REQ_CAMERA);
+				CameraUtils.selectImageFromCamera(ImprovePersonalInfoActivity.this);
 			}
 		});
 		builder.setNegativeButton(R.string.album, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				Intent intent = new Intent(
-						Intent.ACTION_PICK,
-						android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-				intent.putExtra("return-data", false);
-				startActivityForResult(intent, UserInfo.REQ_ALBUM);
+				CameraUtils.selectImageFromLocal(ImprovePersonalInfoActivity.this);
 			}
 		});
 		AlertDialog alert = builder.create();
 		alert.show();
 	}
 	
-	
-	
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		ContentResolver resolver = getContentResolver();
 		/**
 		 * 如果不拍照 或者不选择图片返回 不执行任何操作
@@ -289,40 +281,21 @@ public class ImprovePersonalInfoActivity extends Activity implements OnClickList
 			return;
 		}
 		if (requestCode == UserInfo.REQ_CAMERA) {// 拍照
-			startPhotoZoom(UserInfo.CAMERA_IMG_URI);
+			CameraUtils.startPhotoZoom(UserInfo.CAMERA_IMG_URI, ImprovePersonalInfoActivity.this);
 		} else if (requestCode == UserInfo.REQ_ALBUM) {// 相册
-			if (null != data) {
-				startPhotoZoom(data.getData());
-			}
+			CameraUtils.startPhotoZoom(intent.getData(), ImprovePersonalInfoActivity.this);
 		} else if (requestCode == UserInfo.REQ_ZOOM) { // 3--保存裁剪的图片
-			if (null != data) {
-				bmFromCamera = data.getParcelableExtra("data");
-				
-				BitmapUtils.saveBitmapToSDcard(bmFromCamera, UserInfo.IMAGE_FILE_DIR, UserInfo.IMG_FILE_NAME);
+			try {
+				bmFromCamera = BitmapFactory.decodeStream(getContentResolver().openInputStream(UserInfo.CAMERA_IMG_URI));
 				headImg.setImageBitmap(bmFromCamera);
-//				UserInfoSaveAsyncTask task = new UserInfoSaveAsyncTask(
-//						bmFromCamera, this, "正在修改用户信息，请耐心等候...");
-//				task.execute();
+				
+				BitmapUtils.saveBitmapToSDcard(bmFromCamera, UserInfo.IMAGE_FILE_DIR, UserInfo.IMG_FILE_NAME_TEMP);
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
 			}
 		}
 	}
 	
-	// 对相册或者拍照进行裁剪
-	public void startPhotoZoom(Uri uri) {
-		Intent intent = new Intent("com.android.camera.action.CROP");
-		intent.setDataAndType(uri, "image/*");
-		// 下面这个crop=true是设置在开启的Intent中设置显示的view可裁剪
-		intent.putExtra("crop", "true");
-		// aspectX,aspectY是宽高的比例
-		intent.putExtra("aspectX", 1);
-		intent.putExtra("aspectY", 1);
-		// outputX,outputY是裁剪图片宽高
-		intent.putExtra("outputX", 150);
-		intent.putExtra("outputY", 150);
-		intent.putExtra("return-data", true);
-		startActivityForResult(intent, UserInfo.REQ_ZOOM);
-	}
-
 	private void clickPopConfirm() {
 		if(popWindows == null){
 			Log.e(TAG, "clickPopConfirm, popWindows == null");

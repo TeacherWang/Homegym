@@ -18,6 +18,7 @@ public class UserInfo {
 	
 	private static final String IMAGE_FILE_LOCATION_CAMERA_TEMP = "file:///sdcard/temp.jpg";
 	public static final Uri CAMERA_IMG_URI = Uri.parse(IMAGE_FILE_LOCATION_CAMERA_TEMP);// The Uri to store
+	public static final String CAMERA_IMG_NAME = "temp.jpg";// The Uri to store
 	
 	public static final int REQ_CAMERA 	= 0;
 	public static final int REQ_ALBUM	= 1;

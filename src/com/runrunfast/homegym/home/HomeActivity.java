@@ -25,6 +25,7 @@ import com.runrunfast.homegym.home.fragments.AllCoursesFragment;
 import com.runrunfast.homegym.home.fragments.MeFragment;
 import com.runrunfast.homegym.home.fragments.MyCourseFragment;
 import com.runrunfast.homegym.record.RecordActivity;
+import com.runrunfast.homegym.start.ImprovePersonalInfoActivity;
 import com.runrunfast.homegym.utils.Const;
 import com.runrunfast.homegym.widget.DialogActivity;
 

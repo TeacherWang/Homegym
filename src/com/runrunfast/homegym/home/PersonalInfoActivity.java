@@ -1,5 +1,6 @@
 package com.runrunfast.homegym.home;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
@@ -9,7 +10,9 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.provider.MediaStore;
@@ -32,6 +35,7 @@ import com.runrunfast.homegym.account.AccountMgr.IUpdateHeadimgListener;
 import com.runrunfast.homegym.account.DataTransferUtil;
 import com.runrunfast.homegym.account.UserInfo;
 import com.runrunfast.homegym.utils.BitmapUtils;
+import com.runrunfast.homegym.utils.CameraUtils;
 import com.runrunfast.homegym.utils.FileUtils;
 import com.runrunfast.homegym.widget.CircleMaskImageView;
 import com.runrunfast.homegym.widget.PopupWindows;
@@ -39,6 +43,8 @@ import com.runrunfast.homegym.widget.WheelView;
 import com.runrunfast.homegym.widget.WheelView.OnWheelViewListener;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 
 public class PersonalInfoActivity extends Activity implements OnClickListener{
@@ -372,26 +378,20 @@ public class PersonalInfoActivity extends Activity implements OnClickListener{
 			public void onClick(DialogInterface
 
 			dialog, int which) {
-				Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-				intent.putExtra(MediaStore.EXTRA_OUTPUT, UserInfo.CAMERA_IMG_URI);
-				startActivityForResult(intent, UserInfo.REQ_CAMERA);
+				CameraUtils.selectImageFromCamera(PersonalInfoActivity.this);
 			}
 		});
 		builder.setNegativeButton(R.string.album, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				Intent intent = new Intent(
-						Intent.ACTION_PICK,
-						android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-				startActivityForResult(intent, UserInfo.REQ_ALBUM);
+				CameraUtils.selectImageFromLocal(PersonalInfoActivity.this);
 			}
 		});
 		AlertDialog alert = builder.create();
 		alert.show();
 	}
-	
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		ContentResolver resolver = getContentResolver();
+
+	protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		/**
 		 * 如果不拍照 或者不选择图片返回 不执行任何操作
 		 */
@@ -411,42 +411,39 @@ public class PersonalInfoActivity extends Activity implements OnClickListener{
 			return;
 		}
 		if (requestCode == UserInfo.REQ_CAMERA) {// 拍照
-			startPhotoZoom(UserInfo.CAMERA_IMG_URI);
+			CameraUtils.startPhotoZoom(UserInfo.CAMERA_IMG_URI, PersonalInfoActivity.this);
 		} else if (requestCode == UserInfo.REQ_ALBUM) {// 相册
-			Log.d(TAG, "onActivityResult, data = " + data);
-			if (null != data) {
-				Log.d(TAG, "onActivityResult, data.getData() = " + data.getData());
-				Log.d(TAG, "onActivityResult, data.getExtras(); = " + data.getExtras());
-				startPhotoZoom(data.getData());
-			}
+			CameraUtils.startPhotoZoom(intent.getData(), PersonalInfoActivity.this);
 		} else if (requestCode == UserInfo.REQ_ZOOM) { // 3--保存裁剪的图片
-			if (null != data) {
-				bmFromCamera = data.getParcelableExtra("data");
+			try {
+				bmFromCamera = BitmapFactory.decodeStream(getContentResolver().openInputStream(UserInfo.CAMERA_IMG_URI));
+				headimgView.setImageBitmap(bmFromCamera);
 				
 				BitmapUtils.saveBitmapToSDcard(bmFromCamera, UserInfo.IMAGE_FILE_DIR, UserInfo.IMG_FILE_NAME_TEMP);
-				headimgView.setImageBitmap(bmFromCamera);
-//				UserInfoSaveAsyncTask task = new UserInfoSaveAsyncTask(
-//						bmFromCamera, this, "正在修改用户信息，请耐心等候...");
-//				task.execute();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
 			}
 		}
 	}
 	
 	// 对相册或者拍照进行裁剪
-	public void startPhotoZoom(Uri uri) {
-		Intent intent = new Intent("com.android.camera.action.CROP");
-		intent.setDataAndType(uri, "image/*");
-		// 下面这个crop=true是设置在开启的Intent中设置显示的view可裁剪
-		intent.putExtra("crop", "true");
-		// aspectX,aspectY是宽高的比例
-		intent.putExtra("aspectX", 1);
-		intent.putExtra("aspectY", 1);
-		// outputX,outputY是裁剪图片宽高
-		intent.putExtra("outputX", 150);
-		intent.putExtra("outputY", 150);
-		intent.putExtra("return-data", true);
-		startActivityForResult(intent, UserInfo.REQ_ZOOM);
-	}
+//	private void startPhotoZoom(Uri uri) {
+//		Intent intent = new Intent("com.android.camera.action.CROP");
+//		intent.setDataAndType(uri, "image/*");
+//		// 下面这个crop=true是设置在开启的Intent中设置显示的view可裁剪
+//		intent.putExtra("crop", "true");
+//		// aspectX,aspectY是宽高的比例
+//		intent.putExtra("aspectX", 1);
+//		intent.putExtra("aspectY", 1);
+//		// outputX,outputY是裁剪图片宽高
+//		intent.putExtra("outputX", 150);
+//		intent.putExtra("outputY", 150);
+//		intent.putExtra("scale", true);
+//		intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+//		intent.putExtra("return-data", false);
+//		intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG);
+//		intent.putExtra("noFaceDetection", true);
+//	}
 
 	private void clickPopConfirm() {
 		if(popWindows == null){
