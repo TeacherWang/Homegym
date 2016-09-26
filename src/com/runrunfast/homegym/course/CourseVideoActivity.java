@@ -180,14 +180,13 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 		initListener();
 		
 		initCourseServerListener();
-		
-//		initWakeLock();
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
 		
+		mVideoView.start();
 	}
 	
 	@Override
@@ -195,13 +194,9 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 		super.onPause();
 		
 		mVideoView.pause();
+		MediaPlayerMgr.getInstance().stopPlaying();
+		mSpeechSynthesizer.stop();
 	}
-	
-//	private void initWakeLock() {
-//		PowerManager powerManager = (PowerManager)getSystemService(POWER_SERVICE);
-//		mWakeLock = powerManager.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.ON_AFTER_RELEASE, TAG);
-//		
-//	}
 	
 	private void initCourseServerListener() {
 		mIUpdateRecordListener = new IUpdateRecordListener() {
@@ -573,11 +568,13 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 	
 	private void speekFinishOnce(int count){
 		Log.i(TAG, "speekFinishOnce, count = " + count);
-		MediaPlayerMgr.getInstance().stopPlaying();
+		if(MediaPlayerMgr.getInstance().isPlaying()){
+			MediaPlayerMgr.getInstance().stopPlaying();
+		}
 		
-		mSpeechSynthesizer.stop();
+//		mSpeechSynthesizer.stop();
 		
-		mSpeechSynthesizer.speak(count + "次");
+		mSpeechSynthesizer.speak(String.valueOf(count));
 	}
 	
 	private void speekFirstGroup(String actionName, int count, int weight){
