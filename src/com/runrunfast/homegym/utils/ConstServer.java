@@ -56,7 +56,7 @@ public class ConstServer {
 	public static final int RET_USER_NAME_EMPTY 		= -3; // 用户名为空
 	public static final int RET_PWD_EMPTY 				= -4; // 密码为空
 	public static final int RET_LOGIN_FAIL 				= -5; // 登录失败，未认证用户
-	public static final int RET_USER_NAME_NOT_EXIST 	= -6; // 该手机号未注册
+	public static final int RET_USER_NAME_HAD_EXIST 	= -6; // 该手机号已注册
 	public static final int RET_REGISTE_FAIL 			= -7; // 注册失败，重新获取
 	public static final int RET_IDENTIFY_TIMEOUT 		= -8; // 验证码时间过长
 	public static final int RET_IDENTIFY_CODE_ERR 		= -9; // 验证码错误

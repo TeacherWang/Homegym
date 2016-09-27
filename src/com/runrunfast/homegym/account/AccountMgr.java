@@ -388,7 +388,7 @@ public class AccountMgr {
 				notifyRegisterFail(mResources.getString(R.string.this_phone_had_bonded));
 				break;
 				
-			case ConstServer.RET_USER_NAME_NOT_EXIST:
+			case ConstServer.RET_USER_NAME_HAD_EXIST:
 				notifyRegisterFail(mResources.getString(R.string.this_account_had_exist));
 				break;
 			case ConstServer.RET_REGISTE_FAIL:
