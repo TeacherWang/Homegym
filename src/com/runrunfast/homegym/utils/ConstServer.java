@@ -15,7 +15,8 @@ public class ConstServer {
 	public static final String URL_GET_PERSONAL_INFO 	= LOGIN_SERVER + "PersonalInfoCheckOut";
 	public static final String URL_UPDATE_HEADIMG 		= LOGIN_SERVER + "servlet/HeadPictureServlet";
 	public static final String URL_GET_HEADIMG 			= LOGIN_SERVER + "servlet/HeadPictureServlet";
-	public static final String URL_HEADIMG_HOST = "http://bikeme-img-runrunfast.bceimg.com/UserDeFinedPicture/";
+	public static final String URL_HEADIMG_HOST 		= "http://bikeme-img-runrunfast.bceimg.com/UserDeFinedPicture/";
+	public static final String URL_FEEDBACK 			= LOGIN_SERVER + "servlet/feedback";
 	
 	// 用户信息
 	public static final String PERSONAL_USER_NAME = "username";
@@ -34,7 +35,17 @@ public class ConstServer {
 	public static final String PERSONAL_PLAN = "plan";
 	public static final String PERSONAL_USER_DECLARATION = "user_declaration";
 	
-	public static final String PERSONAL_TYPE = "type";
+	public static final String TYPE = "type";
+	
+	public static final String FEEDBACK_TYPE_VALUE 	= "inderInformationFeedback";
+	public static final String FEEDBACK_PHONE_NUM 	= "phone_number";
+	public static final String FEEDBACK_QQ_NUM 		= "QQ_number";
+	public static final String FEEDBACK_ADVICE 		= "advice";
+	public static final String FEEDBACK_SYSTEM 		= "system";
+	public static final String FEEDBACK_EQUIPENT	= "equipment";	
+	public static final String FEEDBACK_TYPE_NUMBER	= "type_number";
+	public static final String FEEDBACK_APP_VERSION	= "app_version";
+	public static final String FEEDBACK_APP_NAME	= "appname";
 	
 	// 登录类型
 	public static final String KEY_TYPE = "type";

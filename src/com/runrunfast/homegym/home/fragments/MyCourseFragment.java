@@ -65,6 +65,8 @@ public class MyCourseFragment extends Fragment{
 		
 		initCourseServerListener();
 		
+		initAddCourseListener();
+		
 		return rootView;
 	}
 	
@@ -91,7 +93,9 @@ public class MyCourseFragment extends Fragment{
 			public void onDownloadTrainPlanSuc() {
 				Log.i(TAG, "onDownloadTrainPlanSuc");
 				
-				getData();
+//				getData();
+				
+				updateData();
 			}
 			
 			@Override
@@ -107,10 +111,6 @@ public class MyCourseFragment extends Fragment{
 		super.onResume();
 		
 		Log.i(TAG, "onResume");
-		
-		getData();
-		
-		initAddCourseListener();
 	}
 
 	private void handleMyCourseExpireOrNot() {
@@ -197,6 +197,8 @@ public class MyCourseFragment extends Fragment{
 	private void initData() {
 		mUserInfo = AccountMgr.getInstance().mUserInfo;
 		
+		getData();
+		
 //		mMyCourseList = MyCourseDao.getInstance().getMyCourseListFromDb(Globle.gApplicationContext);
 //		
 //		if(mMyCourseList.size() == 0){
@@ -213,13 +215,26 @@ public class MyCourseFragment extends Fragment{
 //		mRecommedList = CourseDao.getInstance().getRecommedCourseListFromDb(Globle.gApplicationContext);
 	}
 	
+	private void updateData(){
+		mMyCourseList.clear();
+		
+		mMyCourseList = MyCourseDao.getInstance().getMyCourseListFromDb(Globle.gApplicationContext, mUserInfo.strAccountId);
+		
+		if(mMyCourseList.size() == 0){
+			mMyCourseList.add(new InvalidCourse(InvalidCourse.COURSE_TYPE_EMPTY));
+		}
+		
+		mMyCourseList.add(new InvalidCourse(InvalidCourse.COURSE_TYPE_SHOW_RECOMMED_TEXT));
+		mMyCourseList.addAll(mRecommedList);
+		mMyCourseAdapter.updateData(mMyCourseList);
+	}
+	
 	private void getData() {
 		mMyCourseList = MyCourseDao.getInstance().getMyCourseListFromDb(Globle.gApplicationContext, mUserInfo.strAccountId);
 		mRecommedList = CourseDao.getInstance().getRecommedCourseListFromDb(Globle.gApplicationContext);
 		
 		if(mMyCourseList.size() == 0){
 			mMyCourseList.add(new InvalidCourse(InvalidCourse.COURSE_TYPE_EMPTY));
-			mMyCourseList.add(new InvalidCourse(InvalidCourse.COURSE_TYPE_SHOW_RECOMMED_TEXT));
 		}else{
 			// 根据当天日期保存课程是否过期
 			handleMyCourseExpireOrNot();
@@ -253,7 +268,6 @@ public class MyCourseFragment extends Fragment{
 
 	private void initView() {
 		mMyCourseListView = (ListView)rootView.findViewById(R.id.my_course_listview);
-//		mRecommedCourseListView = (ListView)rootView.findViewById(R.id.course_recommed_listview);
 	}
 	
 	@Override

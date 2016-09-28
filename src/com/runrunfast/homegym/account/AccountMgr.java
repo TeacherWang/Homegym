@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.runrunfast.homegym.R;
+import com.runrunfast.homegym.utils.ApplicationUtil;
 import com.runrunfast.homegym.utils.BitmapUtils;
 import com.runrunfast.homegym.utils.ConstServer;
 import com.runrunfast.homegym.utils.FileUtils;
@@ -47,8 +48,13 @@ public class AccountMgr {
 	private IPersonalInfoListener iPersonalInfoListener;
 	private IUpdateHeadimgListener iUpdateHeadimgListener;
 	private IGetPersonalInfoListener iGetPersonalInfoListener;
-	
 	private HashSet<IGetHeadImgObserver> mSetOfIGetHeadImgObserver;
+	private IFeedbackListener mIFeedbackListener;
+	
+	public interface IFeedbackListener{
+		void onSuccess();
+		void onFail();
+	}
 	
 	public interface IGetHeadImgObserver {
 		void onSuccess();
@@ -88,6 +94,10 @@ public class AccountMgr {
 	public interface IResetPwdListener{
 		void onSuccess();
 		void onFail(String reason);
+	}
+	
+	public void setIFeedbackListener(IFeedbackListener iFeedbackListener){
+		this.mIFeedbackListener = iFeedbackListener;
 	}
 	
 	public void addIGetHeadImgObserver(IGetHeadImgObserver iGetHeadImgObserver){
@@ -864,6 +874,68 @@ public class AccountMgr {
 		}
 	}
 
+	public void sendFeedback(String uid, String phoneNum, String qqNum, String advice){
+		RequestParams params = new RequestParams(ConstServer.URL_FEEDBACK);
+		String cookie = PrefUtils.getCookie(Globle.gApplicationContext);
+		if(cookie != null){
+			params.addHeader("Cookie", "JSESSIONID=" + cookie);
+		}
+		params.addParameter(ConstServer.TYPE, ConstServer.FEEDBACK_TYPE_VALUE);
+		params.addParameter(ConstServer.PERSONAL_USER_NAME, uid);
+		params.addParameter(ConstServer.FEEDBACK_PHONE_NUM, phoneNum);
+		params.addParameter(ConstServer.FEEDBACK_QQ_NUM, qqNum);
+		params.addParameter(ConstServer.FEEDBACK_ADVICE, advice);
+		params.addParameter(ConstServer.FEEDBACK_SYSTEM, android.os.Build.VERSION.RELEASE);
+		params.addParameter(ConstServer.FEEDBACK_EQUIPENT, android.os.Build.MODEL);
+		params.addParameter(ConstServer.FEEDBACK_TYPE_NUMBER, "");
+		params.addParameter(ConstServer.FEEDBACK_APP_VERSION, "android:" + ApplicationUtil.getVersionCode(Globle.gApplicationContext));
+		params.addParameter(ConstServer.FEEDBACK_APP_NAME, "homegym");
+		
+		x.http().get(params, new Callback.CommonCallback<String>() {
+
+			@Override
+			public void onSuccess(String result) {
+				handleFeedbackSuccess(result);
+			}
+			@Override
+			public void onError(Throwable throwable, boolean arg1) {
+				notifyFeedbackFail();
+			}
+			@Override
+			public void onCancelled(CancelledException arg0) { }
+			@Override
+			public void onFinished() { }
+		});
+	}
+	
+	private void handleFeedbackSuccess(String result) {
+		JSONObject jsonObject;
+		try {
+			jsonObject = new JSONObject(result);
+			int retCode = (Integer) jsonObject.get("ret");
+			if(retCode == 1){
+				notifyFeedbackSuccess();
+			}else{
+				notifyFeedbackFail();
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+			notifyFeedbackFail();
+		}
+	}
+
+	private void notifyFeedbackSuccess(){
+		if(mIFeedbackListener != null){
+			mIFeedbackListener.onSuccess();
+		}
+	}
+	
+	private void notifyFeedbackFail(){
+		if(mIFeedbackListener != null){
+			mIFeedbackListener.onFail();
+		}
+	}
+	
 	public void saveLoginAccount(Context context, String userName, String pwd){
 		PrefUtils.setAccount(context, userName);
 		PrefUtils.setPwd(context, pwd);

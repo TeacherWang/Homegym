@@ -26,9 +26,10 @@
         <EditText 
             android:id="@+id/feedback_content_edit"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/feedback_content_height"
             android:layout_marginLeft="@dimen/feedback_content_margin_left"
             android:background="@null"
+            android:gravity="top"
             android:hint="@string/feedback_hint"
             android:textSize="@dimen/feedback_content_text_size"
             android:textColor="@color/black"/>
