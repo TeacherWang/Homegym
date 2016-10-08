@@ -243,6 +243,9 @@ public class MyCourseFragment extends Fragment{
 		
 		if(mMyCourseList.size() == 0){
 			mMyCourseList.add(new InvalidCourse(InvalidCourse.COURSE_TYPE_EMPTY));
+		}else{
+			// 根据当天日期保存课程是否过期
+			handleMyCourseExpireOrNot();
 		}
 		
 		mMyCourseList.add(new InvalidCourse(InvalidCourse.COURSE_TYPE_SHOW_RECOMMED_TEXT));
