@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
@@ -19,6 +20,7 @@ import com.runrunfast.homegym.bean.MyCourse;
 import com.runrunfast.homegym.bean.MyCourse.DayProgress;
 import com.runrunfast.homegym.course.CourseAdapter;
 import com.runrunfast.homegym.course.CourseAdapter.ICourseAdapterListener;
+import com.runrunfast.homegym.course.CourseServerMgr.IDeleteCourseToServerListener;
 import com.runrunfast.homegym.course.CourseServerMgr.IDownloadTrainPlanLister;
 import com.runrunfast.homegym.course.CourseServerMgr.IGetCourseFromServerListener;
 import com.runrunfast.homegym.course.CourseServerMgr;
@@ -52,6 +54,7 @@ public class MyCourseFragment extends Fragment{
 	
 	private IGetCourseFromServerListener mIGetCourseFromServerListener;
 	private IDownloadTrainPlanLister mIDownloadTrainPlanLister;
+	private IDeleteCourseToServerListener mIDeleteCourseToServerListener;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -65,9 +68,27 @@ public class MyCourseFragment extends Fragment{
 		
 		initCourseServerListener();
 		
+		initDeleteCourseListener();
+		
 		initAddCourseListener();
 		
 		return rootView;
+	}
+	
+	private void initDeleteCourseListener(){
+		mIDeleteCourseToServerListener = new IDeleteCourseToServerListener() {
+			
+			@Override
+			public void onDeleteCourseToServerSuc() {
+				updateData();
+			}
+			
+			@Override
+			public void onDeleteCourseToServerFail() {
+				
+			}
+		};
+		CourseServerMgr.getInstance().addDeleteCourseToServerObserver(mIDeleteCourseToServerListener);
 	}
 	
 	private void initCourseServerListener() {
@@ -278,6 +299,10 @@ public class MyCourseFragment extends Fragment{
 		
 		if(mIDownloadTrainPlanLister != null){
 			CourseServerMgr.getInstance().removeDownloadTrainPlanObserver(mIDownloadTrainPlanLister);
+		}
+		
+		if(mIDeleteCourseToServerListener != null){
+			CourseServerMgr.getInstance().removeDeleteCourseToServerObserver(mIDeleteCourseToServerListener);
 		}
 		
 		super.onDestroyView();

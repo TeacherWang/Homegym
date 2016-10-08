@@ -1,5 +1,6 @@
 package com.runrunfast.homegym.course;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -370,6 +371,10 @@ public class CourseServerMgr {
 		for(int i=0; i<videoSize; i++){
 			String strUrl = action.action_video_url.get(i);
 			
+			if(TextUtils.isEmpty(strUrl)){
+				continue;
+			}
+			
 			String videoSaveName = FileUtils.getFileName(strUrl);
 			String videoLocalAddress = ConstServer.SDCARD_HOMEGYM_ROOT + videoSaveName;
 			videoLocalList.add(videoLocalAddress);
@@ -378,8 +383,12 @@ public class CourseServerMgr {
 		
 		action.action_audio_url = baseCourseData.action_audio_url;
 		
-		String audioSaveName = FileUtils.getFileName(baseCourseData.action_audio_url);
-		action.action_audio_local = ConstServer.SDCARD_HOMEGYM_ROOT + audioSaveName;
+		if( !TextUtils.isEmpty(action.action_audio_url) ){
+			String audioSaveName = FileUtils.getFileName(baseCourseData.action_audio_url);
+			action.action_audio_local = ConstServer.SDCARD_HOMEGYM_ROOT + audioSaveName;
+		}else{
+			action.action_audio_local = "";
+		}
 		
 		action.action_img_local = "";
 		

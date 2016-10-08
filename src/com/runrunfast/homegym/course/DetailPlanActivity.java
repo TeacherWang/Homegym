@@ -662,7 +662,6 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 			taskList = new ArrayList<String>();
 			
 			Action action = mAllActionList.get(i);
-//			ArrayList<String> videoLocalList = new ArrayList<String>();
 			// 处理视频video
 			if( action.action_video_local == null || action.action_video_local.isEmpty()){
 				needDownload = true;
@@ -670,20 +669,13 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 				for(int k=0; k<videoSize; k++){
 					String strUrl = action.action_video_url.get(k);
 					
-//					String saveName = FileUtils.getFileName(strUrl);
-//					String localAddress = ConstServer.SDCARD_HOMEGYM_ROOT + saveName;
-//					videoLocalList.add(localAddress);
 					taskList.add(strUrl);
 				}
-//				ActionDao.getInstance().saveActionVideoLocalToDb(Globle.gApplicationContext, action.action_id, videoLocalList);
 			}else{
 				int videoSize = action.action_video_local.size();
 				for(int k=0; k<videoSize; k++){
 					String strUrl = action.action_video_url.get(k);
 					
-//					String saveName = FileUtils.getFileName(strUrl);
-//					String localAddress = ConstServer.SDCARD_HOMEGYM_ROOT + saveName;
-//					videoLocalList.add(localAddress);
 					if( !FileUtils.isFileExist(action.action_video_local.get(k)) ){
 						needDownload = true;
 						taskList.add(strUrl);
@@ -697,10 +689,6 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 				if( !TextUtils.isEmpty(audioUrlLocation) ){
 					needDownload = true;
 					taskList.add(audioUrlLocation);
-					
-//					String saveName = FileUtils.getFileName(audioUrlLocation);
-//					String localAddress = ConstServer.SDCARD_HOMEGYM_ROOT + saveName;
-//					ActionDao.getInstance().saveActionAudioLocalToDb(Globle.gApplicationContext, action.action_id, localAddress);
 				}
 			}
 			
