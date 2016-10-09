@@ -418,6 +418,12 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 	  */
 	private void prepareNextGroup() {
 		if(mAction.action_left_right == Action.ACTION_ONE_SIDE){
+			Log.i(TAG, "prepareNextGroup, this action is one side");
+			return;
+		}
+		
+		if(mAction.action_video_local.size() == 1){
+			Log.i(TAG, "prepareNextGroup, this action is two side but videos only have one");
 			return;
 		}
 		
