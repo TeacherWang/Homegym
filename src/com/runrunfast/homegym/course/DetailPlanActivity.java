@@ -656,6 +656,7 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 		ArrayList<String> taskList = null;
 		HashMap<String, ArrayList<String>> hashActionUrl= null;;
 		mUrlStrTotalList = new ArrayList<String>();
+		mActionUrlHashMapList = new ArrayList<HashMap<String,ArrayList<String>>>();
 		
 		int actionSize = mAllActionList.size();
 		for(int i=0; i<actionSize; i++){

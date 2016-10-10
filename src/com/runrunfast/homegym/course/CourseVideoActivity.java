@@ -56,6 +56,8 @@ import com.runrunfast.homegym.widget.DialogActivity;
 import com.runrunfast.homegym.widget.HorizonDialogActivity;
 
 import io.vov.vitamio.MediaPlayer;
+import io.vov.vitamio.MediaPlayer.OnCompletionListener;
+import io.vov.vitamio.MediaPlayer.OnSeekCompleteListener;
 import io.vov.vitamio.widget.MediaController;
 import io.vov.vitamio.widget.VideoView;
 
@@ -301,13 +303,12 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 			mActionCurrentGroupCount++; // 当前组的次数
 			
 			speekFinishOnce(mActionCurrentGroupCount);
-			// 对于重量为0的动作特殊处理
+			// // 该动作消耗的kcal。对于重量为0的动作特殊处理
 			if(mTargetGroupDetail.weight == 0){
 				mFinishedGroupDetail.kcal = CalculateUtil.calculateTotakKcal(mActionCurrentGroupCount, CalculateUtil.DEFAULT_WEIGHT_VALUE_IF_ZERO, mAction.action_h, mAction.action_b);
 			}else{
 				mFinishedGroupDetail.kcal = CalculateUtil.calculateTotakKcal(mActionCurrentGroupCount, mTargetGroupDetail.weight, mAction.action_h, mAction.action_b);
 			}
-//			mFinishedGroupDetail.kcal = CalculateUtil.calculateTotakKcal(mActionCurrentGroupCount, mTargetGroupDetail.weight, mAction.action_h, mAction.action_b); // 该动作消耗的kcal
 			mFinishedGroupDetail.count = mFinishedGroupDetail.count + 1;
 			mFinishedGroupDetail.weight = mTargetGroupDetail.weight;
 			
@@ -336,7 +337,6 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 			mActionCurrentGroupCount = 0;
 			// 做完一组休息一下
 			prepareNextGroup();
-//			showRest();
 			mHandler.sendEmptyMessageDelayed(MSG_SHOW_REST_AND_PLAY, DELAY_SECOND);
 		}else{ // 当前为最后一组的最后一次
 			Toast.makeText(CourseVideoActivity.this, "该动作结束", Toast.LENGTH_SHORT).show();
@@ -350,7 +350,6 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 				mAction = ActionDao.getInstance().getActionFromDb(Globle.gApplicationContext, mTargetActionDetail.action_id);
 				prepareNextAction();
 				// 做下个动作之前休息一下
-//				showRest();
 				mHandler.sendEmptyMessageDelayed(MSG_SHOW_REST_AND_PLAY, DELAY_SECOND);
 				
 				tvActionName.setText( (mCurrentActionPosition + 1) + "." + mAction.action_name);
@@ -398,17 +397,6 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 			// 更新ui
 			updateUi(0, actionCurrentGroupTotalCount, mActionGroupIndex);
 		}
-//		else{
-//			// 下一个动作
-//			speekFirstGroup(mAction.action_name, mTargetGroupDetail.count, mTargetGroupDetail.weight);
-//			
-//			ActionDetail targetActionDetail = mActionDetailList.get(mCurrentActionPosition);
-//			List<GroupDetail> targetActionGroupDetailList = targetActionDetail.group_detail;
-//			GroupDetail targetGroupDetail = targetActionGroupDetailList.get(0);
-//			int actionCurrentGroupTotalCount = targetGroupDetail.count;
-//			// 更新ui
-//			updateUi(0, actionCurrentGroupTotalCount, 0);
-//		}
 	};
 
 	/**
@@ -441,7 +429,6 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 	private void prepareNextAction() {
 		Log.i(TAG, "prepareNextAction");
 		
-//		needExplainAction = true;
 		mActionSide = ACTION_SIDE_LEFT;
 		mVideoPath = mAction.action_video_local.get(0);
 	}
@@ -450,7 +437,6 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 		Log.i(TAG, "handleRestAudio, play rest audio");
 		
 		MediaPlayerMgr.getInstance().startPlaying(Globle.gApplicationContext, R.raw.rest);
-		
 	}
 	
 	private void showRest(){
@@ -598,6 +584,8 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 		mSpeechSynthesizer.speak("换另一边，继续：" + actionName + count + "次，" + weight + "公斤");
 	}
 
+	private long mLastMills = 0;
+	
 	private void initVideo() {
 		mMediaController = new MediaController(this);
 		mVideoView.requestFocus();
@@ -609,6 +597,33 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 				// optional need Vitamio 4.0
 				mediaPlayer.setPlaybackSpeed(1.0f);
 				mediaPlayer.setLooping(true);
+			}
+		});
+		
+		mVideoView.setOnSeekCompleteListener(new OnSeekCompleteListener() {
+			
+			@Override
+			public void onSeekComplete(MediaPlayer mp) {
+				Log.i(TAG, "initVideo, onSeekComplete!!!");
+				
+				if(mTargetGroupDetail.weight != 0){
+					return;
+				}
+				
+				long currentMills = System.currentTimeMillis();
+				if( (currentMills - mLastMills) < 5000 ){
+					mLastMills = currentMills;
+					return;
+				}
+				mLastMills = currentMills;
+				
+				runOnUiThread(new Runnable() {
+					
+					@Override
+					public void run() {
+						handleFinishOnce();
+					}
+				});
 			}
 		});
 	}

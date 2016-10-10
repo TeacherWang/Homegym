@@ -290,10 +290,7 @@ public class MyDownloadMgr {
 				+ ", mCurrentActionUrlList size = " + mCurrentActionUrlList.size());
 		
 		try {
-			String saveName = FileUtils.getFileName(strUrl);
 			String saveNameWithoutExtension = FileUtils.getFileNameWithoutExtension(strUrl);
-			String localAddress = ConstServer.SDCARD_HOMEGYM_ROOT + saveName;
-//			ActionDao.getInstance().saveActionAudioLocalToDb(Globle.gApplicationContext, mCurrentActionId, localAddress);
 			
 			mCurrentTaskId = mDownloadManagerPro.addTask(saveNameWithoutExtension, strUrl, true, true);
 			mDownloadManagerPro.startDownload(mCurrentTaskId);

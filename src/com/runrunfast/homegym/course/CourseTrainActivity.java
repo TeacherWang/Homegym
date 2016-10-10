@@ -176,10 +176,12 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 		if(mMyCourse.progress == MyCourse.COURSE_PROGRESS_REST){
 			mActionLayout.setVisibility(View.GONE);
 			mRestDayLayout.setVisibility(View.VISIBLE);
+			btnRejoinTrain.setVisibility(View.GONE);
 			tvRestDay.setText("今天是休息日！");
 		}else if(mMyCourse.progress == MyCourse.COURSE_PROGRESS_EXPIRED){
 			mActionLayout.setVisibility(View.GONE);
 			mRestDayLayout.setVisibility(View.VISIBLE);
+			btnRejoinTrain.setVisibility(View.VISIBLE);
 			tvRestDay.setText("课程已过期！");
 		}else{
 			mActionLayout.setVisibility(View.VISIBLE);
