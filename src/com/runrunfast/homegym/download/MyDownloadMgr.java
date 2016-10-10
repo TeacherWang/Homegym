@@ -5,8 +5,6 @@ import android.util.Log;
 import com.golshadi.majid.core.DownloadManagerPro;
 import com.golshadi.majid.report.ReportStructure;
 import com.golshadi.majid.report.listener.DownloadManagerListener;
-import com.runrunfast.homegym.dao.ActionDao;
-import com.runrunfast.homegym.utils.ConstServer;
 import com.runrunfast.homegym.utils.FileUtils;
 import com.runrunfast.homegym.utils.Globle;
 
@@ -29,7 +27,7 @@ public class MyDownloadMgr {
 	
 	private DownloadManagerPro mDownloadManagerPro;
 	
-	private ArrayList<HashMap<String, ArrayList<String>>> mActionUrlHashMapList;
+//	private ArrayList<HashMap<String, ArrayList<String>>> mActionUrlHashMapList;
 	private ArrayList<String> mCurrentActionUrlList;
 	private int mRemainTaskSize; // 剩余任务数
 	private int mTotalTaskSize; // 总任务数
@@ -41,7 +39,7 @@ public class MyDownloadMgr {
 	
 	private HashSet<IDownloadListener> mSetOfIDownloadObserver;
 	private String mCourseId;
-	private String mCurrentActionId;
+//	private String mCurrentActionId;
 
 	public interface IDownloadListener{
 		void onDownloadStart(String courseId, int finishNum, int totalNum);
@@ -91,7 +89,7 @@ public class MyDownloadMgr {
 	}
 
 	private void initDownload() {
-		mActionUrlHashMapList = new ArrayList<HashMap<String,ArrayList<String>>>();
+//		mActionUrlHashMapList = new ArrayList<HashMap<String,ArrayList<String>>>();
 		mCurrentActionUrlList = new ArrayList<String>();
 		mDownloadManagerPro = new DownloadManagerPro(Globle.gApplicationContext);
 		
@@ -100,17 +98,6 @@ public class MyDownloadMgr {
 			@Override
 			public void onDownloadProcess(long taskId, double percent,
 					long downloadedLength) {
-//				int currentProgress = (int) (percent / mTaskSize);
-//				
-//				if(currentProgress == mPreProgress){
-//					return;
-//				}
-//				
-//				mPreProgress = currentProgress;
-//				
-//				mTotalPercent = mTotalPercent + currentProgress;
-//				Log.i(TAG, "onDownloadProcess, taskId = " + taskId + ", percent = " + percent + ", downloadedLength = " + downloadedLength + ", progress = " + currentProgress + ", mTotalPercent = " + mTotalPercent);
-				
 				int progress = (int) percent;
 				
 				notifyDownloadProgress(mCourseId, progress);
@@ -251,15 +238,16 @@ public class MyDownloadMgr {
 		}
 	}
 	
-	public void addDownloadUrlList(ArrayList<HashMap<String, ArrayList<String>>> actionUrlHashMapList, ArrayList<String> urlList){
-		mActionUrlHashMapList = actionUrlHashMapList;
+	public void addDownloadUrlList(ArrayList<String> urlList){
+//		mActionUrlHashMapList = actionUrlHashMapList;
 		
+		mCurrentActionUrlList = urlList;
 		mTotalTaskSize = urlList.size();
 		mRemainTaskSize = mTotalTaskSize;
 	}
 	
 	public void clearUrlList(){
-		mActionUrlHashMapList = new ArrayList<HashMap<String,ArrayList<String>>>();
+//		mActionUrlHashMapList = new ArrayList<HashMap<String,ArrayList<String>>>();
 		mCurrentActionUrlList = new ArrayList<String>();
 		mTotalTaskSize = 0;
 		mRemainTaskSize = 0;
@@ -273,26 +261,26 @@ public class MyDownloadMgr {
 			return;
 		}
 		
-		if(mActionUrlHashMapList.size() <= 0){
-			Log.e(TAG, "startDownload, mActionUrlHashMapList size <= 0");
-			return;
-		}
+//		if(mActionUrlHashMapList.size() <= 0){
+//			Log.e(TAG, "startDownload, mActionUrlHashMapList size <= 0");
+//			return;
+//		}
 		
 		mCourseId = courseId;
 		
-		HashMap<String, ArrayList<String>> currentActionUrlMap = mActionUrlHashMapList.get(0);
-		mCurrentActionId = currentActionUrlMap.keySet().iterator().next();
-		mCurrentActionUrlList = currentActionUrlMap.get(mCurrentActionId);
+//		HashMap<String, ArrayList<String>> currentActionUrlMap = mActionUrlHashMapList.get(0);
+//		mCurrentActionId = currentActionUrlMap.keySet().iterator().next();
+//		mCurrentActionUrlList = currentActionUrlMap.get(mCurrentActionId);
 		
 		String strUrl = mCurrentActionUrlList.get(0);
-		Log.i(TAG, "startDownload, mTotalTaskSize " + mTotalTaskSize + " mCurrentActionId = " + mCurrentActionId
-				+ ", strUrl = " + strUrl
+		Log.i(TAG, "startDownload, mTotalTaskSize " + mTotalTaskSize + ", strUrl = " + strUrl
 				+ ", mCurrentActionUrlList size = " + mCurrentActionUrlList.size());
 		
 		try {
-			String saveNameWithoutExtension = FileUtils.getFileNameWithoutExtension(strUrl);
+//			String saveNameWithoutExtension = FileUtils.getFileNameWithoutExtension(strUrl);
+			String saveName = FileUtils.getFileName(strUrl);
 			
-			mCurrentTaskId = mDownloadManagerPro.addTask(saveNameWithoutExtension, strUrl, true, true);
+			mCurrentTaskId = mDownloadManagerPro.addTask(saveName, strUrl, true, true);
 			mDownloadManagerPro.startDownload(mCurrentTaskId);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -307,28 +295,25 @@ public class MyDownloadMgr {
 		String strUrl = "";
 		mCurrentActionUrlList.remove(0);
 		if(mCurrentActionUrlList.size() <= 0){
-			mActionUrlHashMapList.remove(0);
-			
-			HashMap<String, ArrayList<String>> currentActionUrlMap = mActionUrlHashMapList.get(0);
-			mCurrentActionId = currentActionUrlMap.keySet().iterator().next();
-			mCurrentActionUrlList = currentActionUrlMap.get(mCurrentActionId);
-			
-			strUrl = mCurrentActionUrlList.get(0);
-		}else{
-			strUrl = mCurrentActionUrlList.get(0);
+			return;
+//			mActionUrlHashMapList.remove(0);
+//			
+//			HashMap<String, ArrayList<String>> currentActionUrlMap = mActionUrlHashMapList.get(0);
+//			mCurrentActionId = currentActionUrlMap.keySet().iterator().next();
+//			mCurrentActionUrlList = currentActionUrlMap.get(mCurrentActionId);
+//			
+//			strUrl = mCurrentActionUrlList.get(0);
 		}
 		
-		Log.i(TAG, "continueDownload, mCurrentActionId = " + mCurrentActionId
-				+ ", strUrl = " + strUrl
-				+ ", mCurrentActionUrlList size = " + mCurrentActionUrlList.size());
+		strUrl = mCurrentActionUrlList.get(0);
+		
+		Log.i(TAG, "continueDownload, strUrl = " + strUrl + ", mCurrentActionUrlList size = " + mCurrentActionUrlList.size());
 		
 		try {
+//			String saveNameWithoutExtension = FileUtils.getFileNameWithoutExtension(strUrl);
 			String saveName = FileUtils.getFileName(strUrl);
-			String saveNameWithoutExtension = FileUtils.getFileNameWithoutExtension(strUrl);
-			String localAddress = ConstServer.SDCARD_HOMEGYM_ROOT + saveName;
-//			ActionDao.getInstance().saveActionAudioLocalToDb(Globle.gApplicationContext, mCurrentActionId, localAddress);
 			
-			mCurrentTaskId = mDownloadManagerPro.addTask(saveNameWithoutExtension, strUrl, true, true);
+			mCurrentTaskId = mDownloadManagerPro.addTask(saveName, strUrl, true, true);
 			mDownloadManagerPro.startDownload(mCurrentTaskId);
 		} catch (IOException e) {
 			e.printStackTrace();

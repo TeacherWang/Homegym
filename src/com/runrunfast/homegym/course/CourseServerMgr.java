@@ -376,7 +376,9 @@ public class CourseServerMgr {
 			}
 			
 			String videoSaveName = FileUtils.getFileName(strUrl);
-			String videoLocalAddress = ConstServer.SDCARD_HOMEGYM_ROOT + videoSaveName;
+			String videoExtension = FileUtils.getFileExtension(strUrl);
+			
+			String videoLocalAddress = ConstServer.SDCARD_HOMEGYM_ROOT + videoSaveName + "." + videoExtension;
 			videoLocalList.add(videoLocalAddress);
 		}
 		action.action_video_local = videoLocalList;
@@ -385,7 +387,9 @@ public class CourseServerMgr {
 		
 		if( !TextUtils.isEmpty(action.action_audio_url) ){
 			String audioSaveName = FileUtils.getFileName(baseCourseData.action_audio_url);
-			action.action_audio_local = ConstServer.SDCARD_HOMEGYM_ROOT + audioSaveName;
+			String audeoExtension = FileUtils.getFileExtension(baseCourseData.action_audio_url);
+			
+			action.action_audio_local = ConstServer.SDCARD_HOMEGYM_ROOT + audioSaveName + "." + audeoExtension;
 		}else{
 			action.action_audio_local = "";
 		}

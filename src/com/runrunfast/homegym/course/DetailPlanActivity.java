@@ -632,7 +632,7 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 				return;
 			}
 			MyDownloadMgr.getInstance().clearUrlList();
-			MyDownloadMgr.getInstance().addDownloadUrlList(mActionUrlHashMapList, mUrlStrTotalList);
+			MyDownloadMgr.getInstance().addDownloadUrlList(mUrlStrTotalList);
 			MyDownloadMgr.getInstance().startDownload(mCourseId);
 			// 显示进度条
 			btnJoin.setVisibility(View.INVISIBLE);
@@ -649,14 +649,14 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 	}
 	
 	private ArrayList<String> mUrlStrTotalList = new ArrayList<String>();
-	private ArrayList<HashMap<String, ArrayList<String>>> mActionUrlHashMapList = new ArrayList<HashMap<String,ArrayList<String>>>();
+//	private ArrayList<HashMap<String, ArrayList<String>>> mActionUrlHashMapList = new ArrayList<HashMap<String,ArrayList<String>>>();
 	
 	private boolean needDownload(){
 		boolean needDownload = false;
 		ArrayList<String> taskList = null;
-		HashMap<String, ArrayList<String>> hashActionUrl= null;;
+//		HashMap<String, ArrayList<String>> hashActionUrl= null;
 		mUrlStrTotalList = new ArrayList<String>();
-		mActionUrlHashMapList = new ArrayList<HashMap<String,ArrayList<String>>>();
+//		mActionUrlHashMapList = new ArrayList<HashMap<String,ArrayList<String>>>();
 		
 		int actionSize = mAllActionList.size();
 		for(int i=0; i<actionSize; i++){
@@ -694,9 +694,9 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 			}
 			
 			if(taskList.size() > 0){
-				hashActionUrl = new HashMap<String, ArrayList<String>>();
-				hashActionUrl.put(action.action_id, taskList);
-				mActionUrlHashMapList.add(hashActionUrl);
+//				hashActionUrl = new HashMap<String, ArrayList<String>>();
+//				hashActionUrl.put(action.action_id, taskList);
+//				mActionUrlHashMapList.add(hashActionUrl);
 				mUrlStrTotalList.addAll(taskList);
 			}
 		}
