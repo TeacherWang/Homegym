@@ -142,6 +142,7 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 	
 	// 语音合成
 	private SpeechSynthesizer mSpeechSynthesizer; 
+	private boolean isSpeechingGroupHead = false;
 	private String mSampleDirPath;
 	private static final String SAMPLE_DIR_NAME = "baiduTTS";
     private static final String SPEECH_FEMALE_MODEL_NAME = "bd_etts_speech_female.dat";
@@ -198,6 +199,10 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 		mVideoView.pause();
 		MediaPlayerMgr.getInstance().stopPlaying();
 		mSpeechSynthesizer.stop();
+		
+		if(isSpeechingGroupHead){
+			isSpeechingGroupHead = false;
+		}
 	}
 	
 	private void initCourseServerListener() {
@@ -571,16 +576,22 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 	
 	private void speekFirstGroup(String actionName, int count, int weight){
 		Log.i(TAG, "speekFirstGroup");
+		
+		isSpeechingGroupHead = true;
 		mSpeechSynthesizer.speak("第一组动作：" + actionName + count + "次，" + weight + "公斤");
 	}
 	
 	private void speekNextGroup(String actionName, int count, int weight){
 		Log.i(TAG, "speekNextGroup");
+		
+		isSpeechingGroupHead = true;
 		mSpeechSynthesizer.speak("下一组动作：" + actionName + count + "次，" + weight + "公斤");
 	}
 	
 	private void speekTurnRound(String actionName, int count, int weight){
 		Log.i(TAG, "speekTurnRound");
+		
+		isSpeechingGroupHead = true;
 		mSpeechSynthesizer.speak("换另一边，继续：" + actionName + count + "次，" + weight + "公斤");
 	}
 
@@ -605,8 +616,12 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 			@Override
 			public void onSeekComplete(MediaPlayer mp) {
 				Log.i(TAG, "initVideo, onSeekComplete!!!");
-				
+				// 只有满足器械重量为0，才会进行下面的判断
 				if(mTargetGroupDetail.weight != 0){
+					return;
+				}
+				
+				if(MediaPlayerMgr.getInstance().isPlaying() || isSpeechingGroupHead){
 					return;
 				}
 				
@@ -995,6 +1010,11 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 						+ ", mActionCurrentGroupCount = " + mActionCurrentGroupCount
 						+ ", mActionGroupIndex = " + mActionGroupIndex
 						+ ", isRest = " + isRest);
+				
+				if(isSpeechingGroupHead){
+					isSpeechingGroupHead = false;
+				}
+				
 				if( mActionCurrentGroupCount !=0 || mActionGroupIndex !=0 || isRest){
 					return;
 				}
