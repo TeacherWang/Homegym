@@ -29,10 +29,10 @@ public class DataTransferUtil {
 	private static final List<String> list_big = Arrays.asList(months_big);
 	private static final List<String> list_little = Arrays.asList(months_little);
 	
-	public static HashMap numMap;
+	public static HashMap<Integer, String> numMap;
 	
 	static{
-		numMap = new HashMap();
+		numMap = new HashMap<Integer, String>();
 		numMap.put(1,"一");
 		numMap.put(2,"二");
 		numMap.put(3,"三");

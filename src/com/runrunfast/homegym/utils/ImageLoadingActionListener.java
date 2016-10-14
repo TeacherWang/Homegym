@@ -1,5 +1,9 @@
 package com.runrunfast.homegym.utils;
 
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -11,11 +15,6 @@ import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.runrunfast.homegym.dao.ActionDao;
-import com.runrunfast.homegym.dao.CourseDao;
-
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
 
 public class ImageLoadingActionListener extends SimpleImageLoadingListener {
 	private final String TAG = "ImageLoadingActionListener";

@@ -19,7 +19,50 @@
 #   public *;
 #}
 
+-keep public class * extends android.app.Activity
+-keep public class * extends android.app.Application
+-keep public class * extends android.app.Service
+-keep public class * extends android.content.BroadcastReceiver
+-keep public class * extends android.content.ContentProvider
+
 -dontwarn com.tencent.bugly.**
 -keep public class com.tencent.bugly.**{*;}
 
 -keep public class com.baidu.**{*;}
+
+################### region for xUtils
+-keepattributes Exceptions,InnerClasses,Signature,Deprecated,Annotation,Synthetic,EnclosingMethod
+-keep public class org.xutils.** {
+    public protected *;
+}
+-keep public interface org.xutils.** {
+    public protected *;
+}
+-keepclassmembers class * extends org.xutils.** {
+    public protected *;
+}
+-keepclassmembers class * extends org.xutils.http.RequestParams {*;}
+-keepclassmembers @org.xutils.db.annotation.* class * {*;}
+-keepclassmembers @org.xutils.http.annotation.* class * {*;}
+-keepclassmembers class * {
+    @org.xutils.view.annotation.Event <methods>;
+}
+-keepclassmembers class * {
+void *(android.view.View);
+*** *Click(...);
+*** *Event(...);
+}
+#################### end region
+
+-libraryjars libs/universal-image-loader-1.8.5.jar
+
+-dontwarn com.handmark.pulltorefresh.library.**
+
+# For Vitamio classes
+-keep public class io.vov.vitamio.MediaPlayer { *; }
+-keep public class io.vov.vitamio.IMediaScannerService { *; }
+-keep public class io.vov.vitamio.MediaScanner { *; }
+-keep public class io.vov.vitamio.MediaScannerClient { *; }
+-keep public class io.vov.vitamio.VitamioLicense { *; }
+-keep public class io.vov.vitamio.Vitamio { *; }
+-keep public class io.vov.vitamio.MediaMetadataRetriever { *; }

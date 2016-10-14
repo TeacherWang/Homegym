@@ -142,7 +142,7 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 	
 	// 语音合成
 	private SpeechSynthesizer mSpeechSynthesizer; 
-	private boolean isSpeechingGroupHead = false;
+	private boolean isSpeechingGroupHeadWhileWeightZero = false;
 	private String mSampleDirPath;
 	private static final String SAMPLE_DIR_NAME = "baiduTTS";
     private static final String SPEECH_FEMALE_MODEL_NAME = "bd_etts_speech_female.dat";
@@ -200,8 +200,8 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 		MediaPlayerMgr.getInstance().stopPlaying();
 		mSpeechSynthesizer.stop();
 		
-		if(isSpeechingGroupHead){
-			isSpeechingGroupHead = false;
+		if(isSpeechingGroupHeadWhileWeightZero){
+			isSpeechingGroupHeadWhileWeightZero = false;
 		}
 	}
 	
@@ -577,22 +577,35 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 	private void speekFirstGroup(String actionName, int count, int weight){
 		Log.i(TAG, "speekFirstGroup");
 		
-		isSpeechingGroupHead = true;
-		mSpeechSynthesizer.speak("第一组动作：" + actionName + count + "次，" + weight + "公斤");
+		if(mTargetGroupDetail.weight != 0){
+			mSpeechSynthesizer.speak("第一组动作：" + actionName + count + "次，" + weight + "公斤");
+		}else{
+			isSpeechingGroupHeadWhileWeightZero = true;
+			mSpeechSynthesizer.speak("第一组动作：" + actionName + count + "次");
+		}
 	}
 	
 	private void speekNextGroup(String actionName, int count, int weight){
 		Log.i(TAG, "speekNextGroup");
 		
-		isSpeechingGroupHead = true;
-		mSpeechSynthesizer.speak("下一组动作：" + actionName + count + "次，" + weight + "公斤");
+		if(mTargetGroupDetail.weight != 0){
+			mSpeechSynthesizer.speak("下一组动作：" + actionName + count + "次，" + weight + "公斤");
+		}else{
+			isSpeechingGroupHeadWhileWeightZero = true;
+			mSpeechSynthesizer.speak("下一组动作：" + actionName + count + "次");
+		}
+		
 	}
 	
 	private void speekTurnRound(String actionName, int count, int weight){
 		Log.i(TAG, "speekTurnRound");
 		
-		isSpeechingGroupHead = true;
-		mSpeechSynthesizer.speak("换另一边，继续：" + actionName + count + "次，" + weight + "公斤");
+		if(mTargetGroupDetail.weight != 0){
+			mSpeechSynthesizer.speak("换另一边，继续：" + actionName + count + "次，" + weight + "公斤");
+		}else{
+			isSpeechingGroupHeadWhileWeightZero = true;
+			mSpeechSynthesizer.speak("换另一边，继续：" + actionName + count + "次");
+		}
 	}
 
 	private long mLastMills = 0;
@@ -621,7 +634,7 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 					return;
 				}
 				
-				if(MediaPlayerMgr.getInstance().isPlaying() || isSpeechingGroupHead){
+				if(MediaPlayerMgr.getInstance().isPlaying() || isSpeechingGroupHeadWhileWeightZero){
 					return;
 				}
 				
@@ -1011,8 +1024,8 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 						+ ", mActionGroupIndex = " + mActionGroupIndex
 						+ ", isRest = " + isRest);
 				
-				if(isSpeechingGroupHead){
-					isSpeechingGroupHead = false;
+				if(isSpeechingGroupHeadWhileWeightZero){
+					isSpeechingGroupHeadWhileWeightZero = false;
 				}
 				
 				if( mActionCurrentGroupCount !=0 || mActionGroupIndex !=0 || isRest){

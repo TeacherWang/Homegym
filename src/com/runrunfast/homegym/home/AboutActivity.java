@@ -1,12 +1,11 @@
 package com.runrunfast.homegym.home;
 
-import com.runrunfast.homegym.R;
-
 import android.app.Activity;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+
+import com.runrunfast.homegym.R;
 
 public class AboutActivity extends Activity {
 	

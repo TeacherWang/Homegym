@@ -1,21 +1,19 @@
 package com.runrunfast.homegym.home;
 
-import android.annotation.TargetApi;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.List;
+
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -41,11 +39,6 @@ import com.runrunfast.homegym.widget.CircleMaskImageView;
 import com.runrunfast.homegym.widget.PopupWindows;
 import com.runrunfast.homegym.widget.WheelView;
 import com.runrunfast.homegym.widget.WheelView.OnWheelViewListener;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.List;
 
 public class PersonalInfoActivity extends Activity implements OnClickListener{
 	private final String TAG = "PersonalInfoActivity";

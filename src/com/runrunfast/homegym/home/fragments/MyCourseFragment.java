@@ -1,5 +1,8 @@
 package com.runrunfast.homegym.home.fragments;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
@@ -20,10 +22,10 @@ import com.runrunfast.homegym.bean.MyCourse;
 import com.runrunfast.homegym.bean.MyCourse.DayProgress;
 import com.runrunfast.homegym.course.CourseAdapter;
 import com.runrunfast.homegym.course.CourseAdapter.ICourseAdapterListener;
+import com.runrunfast.homegym.course.CourseServerMgr;
 import com.runrunfast.homegym.course.CourseServerMgr.IDeleteCourseToServerListener;
 import com.runrunfast.homegym.course.CourseServerMgr.IDownloadTrainPlanLister;
 import com.runrunfast.homegym.course.CourseServerMgr.IGetCourseFromServerListener;
-import com.runrunfast.homegym.course.CourseServerMgr;
 import com.runrunfast.homegym.course.CourseTrainActivity;
 import com.runrunfast.homegym.course.DetailPlanActivity;
 import com.runrunfast.homegym.dao.CourseDao;
@@ -32,9 +34,6 @@ import com.runrunfast.homegym.home.HomeActivity;
 import com.runrunfast.homegym.utils.Const;
 import com.runrunfast.homegym.utils.DateUtil;
 import com.runrunfast.homegym.utils.Globle;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MyCourseFragment extends Fragment{
 	private final String TAG = "MyTrainingFragment";

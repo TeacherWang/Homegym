@@ -2,17 +2,16 @@ package com.runrunfast.homegym.record;
 
 import java.util.ArrayList;
 
-import com.runrunfast.homegym.R;
-import com.runrunfast.homegym.account.DataTransferUtil;
-import com.runrunfast.homegym.utils.DateUtil;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.runrunfast.homegym.R;
+import com.runrunfast.homegym.account.DataTransferUtil;
+import com.runrunfast.homegym.utils.DateUtil;
 
 public class RecordAdapter extends BaseAdapter {
 	private static final int LIST_SHOW_DATE 		= 0;

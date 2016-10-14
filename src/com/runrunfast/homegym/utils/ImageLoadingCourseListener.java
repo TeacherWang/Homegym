@@ -1,6 +1,9 @@
 package com.runrunfast.homegym.utils;
 
-import android.accounts.Account;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -14,10 +17,6 @@ import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.runrunfast.homegym.account.AccountMgr;
 import com.runrunfast.homegym.dao.CourseDao;
 import com.runrunfast.homegym.dao.MyCourseDao;
-
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
 
 public class ImageLoadingCourseListener extends SimpleImageLoadingListener {
 	private final String TAG = "ImageLoadingCourseListener";

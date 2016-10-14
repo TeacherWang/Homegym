@@ -77,7 +77,7 @@ public class QueueModerator
     public void pause(){
         pauseFlag = true;
         
-        for (Map.Entry entry : downloaderList.entrySet()) {
+        for (Map.Entry<Integer, Thread> entry : downloaderList.entrySet()) {
             Integer id = (Integer) entry.getKey();
             moderator.pause(id);
         }

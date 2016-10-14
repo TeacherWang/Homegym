@@ -21,7 +21,6 @@ import com.runrunfast.homegym.account.AccountMgr;
 import com.runrunfast.homegym.account.AccountMgr.IIdentifyCodeListener;
 import com.runrunfast.homegym.account.AccountMgr.IRegisterListener;
 import com.runrunfast.homegym.utils.Const;
-import com.runrunfast.homegym.utils.PrefUtils;
 
 public class RegisterActivity extends Activity implements OnClickListener, TextWatcher{
 	
