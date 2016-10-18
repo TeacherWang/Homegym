@@ -24,7 +24,8 @@ public class TheApplication extends Application{
 		Globle.gApplicationContext = this;
 		
 		x.Ext.init(this);
-	    x.Ext.setDebug(BuildConfig.DEBUG); // 是否输出debug日志, 开启debug会影响性能.
+//	    x.Ext.setDebug(BuildConfig.DEBUG); // 是否输出debug日志, 开启debug会影响性能.
+		x.Ext.setDebug(false);
 	    
 	    Vitamio.isInitialized(getApplicationContext());
 	    
@@ -34,7 +35,7 @@ public class TheApplication extends Application{
 	    
 	    initImageLoader();
 	    // 建议在测试阶段建议设置成true，发布时设置为false。
-	    CrashReport.initCrashReport(getApplicationContext(), "900051312", true); 
+	    CrashReport.initCrashReport(getApplicationContext(), "900051312", false); 
 	}
 
 	private void initImageLoader() {

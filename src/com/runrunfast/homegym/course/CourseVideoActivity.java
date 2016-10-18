@@ -640,7 +640,6 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 				
 				long currentMills = System.currentTimeMillis();
 				if( (currentMills - mLastMills) < 2000 ){
-					mLastMills = currentMills;
 					return;
 				}
 				mLastMills = currentMills;

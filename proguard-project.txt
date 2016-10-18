@@ -30,8 +30,55 @@
 
 -keep public class com.baidu.**{*;}
 
+-libraryjars libs/ble_service2016092001.jar
+-libraryjars libs/bugly_crash_release.jar
+-libraryjars libs/classes.jar
+-libraryjars libs/com.baidu.tts_2.2.8.20160824_83a9ca4_release.jar
+-libraryjars libs/galaxy-v2.0.jar
+-libraryjars libs/gson-2.2.2.jar
+-libraryjars libs/universal-image-loader-1.8.5.jar
+
+-libraryjars libs/arm64-v8a/libbd_etts.so
+-libraryjars libs/arm64-v8a/libBDSpeechDecoder_V1.so
+-libraryjars libs/arm64-v8a/libbdtts.so
+-libraryjars libs/arm64-v8a/libBugly.so
+-libraryjars libs/arm64-v8a/libgnustl_shared.so
+
+-libraryjars libs/armeabi/libbd_etts.so
+-libraryjars libs/armeabi/libBDSpeechDecoder_V1.so
+-libraryjars libs/armeabi/libbdtts.so
+-libraryjars libs/armeabi/libBugly.so
+-libraryjars libs/armeabi/libgnustl_shared.so
+-libraryjars libs/armeabi/libwebpbackport.so
+
+-libraryjars libs/armeabi-v7a/libbd_etts.so
+-libraryjars libs/armeabi-v7a/libBDSpeechDecoder_V1.so
+-libraryjars libs/armeabi-v7a/libbdtts.so
+-libraryjars libs/armeabi-v7a/libBugly.so
+-libraryjars libs/armeabi-v7a/libgnustl_shared.so
+-libraryjars libs/armeabi-v7a/libwebpbackport.so
+
+-libraryjars libs/mips/libbd_etts.so
+-libraryjars libs/mips/libBDSpeechDecoder_V1.so
+-libraryjars libs/mips/libbdtts.so
+-libraryjars libs/armeabi-v7a/libgnustl_shared.so
+
+-libraryjars libs/x86/libbd_etts.so
+-libraryjars libs/x86/libBDSpeechDecoder_V1.so
+-libraryjars libs/x86/libbdtts.so
+-libraryjars libs/x86/libBugly.so
+-libraryjars libs/x86/libgnustl_shared.so
+-libraryjars libs/x86/libwebpbackport.so
+
+-libraryjars libs/x86_64/libbd_etts.so
+-libraryjars libs/x86_64/libBDSpeechDecoder_V1.so
+-libraryjars libs/x86_64/libbdtts.so
+-libraryjars libs/x86_64/libBugly.so
+-libraryjars libs/x86_64/libgnustl_shared.so
+
+
 ################### region for xUtils
--keepattributes Exceptions,InnerClasses,Signature,Deprecated,Annotation,Synthetic,EnclosingMethod
+-keepattributes Signature,*Annotation*
 -keep public class org.xutils.** {
     public protected *;
 }
@@ -41,20 +88,12 @@
 -keepclassmembers class * extends org.xutils.** {
     public protected *;
 }
--keepclassmembers class * extends org.xutils.http.RequestParams {*;}
 -keepclassmembers @org.xutils.db.annotation.* class * {*;}
 -keepclassmembers @org.xutils.http.annotation.* class * {*;}
 -keepclassmembers class * {
     @org.xutils.view.annotation.Event <methods>;
 }
--keepclassmembers class * {
-void *(android.view.View);
-*** *Click(...);
-*** *Event(...);
-}
 #################### end region
-
--libraryjars libs/universal-image-loader-1.8.5.jar
 
 -dontwarn com.handmark.pulltorefresh.library.**
 

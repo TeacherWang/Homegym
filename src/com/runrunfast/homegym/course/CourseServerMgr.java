@@ -666,7 +666,7 @@ public class CourseServerMgr {
 		}
 		
 		int resultCode = resultJsonObject.optInt("result_code");
-		Log.i(TAG, "handleDownloadTrainPlanResult, resultCode = " + resultCode);
+		Log.i(TAG, "handleDownloadTrainPlanResult, resultCode = " + resultCode + ", resultJsonObject = " + resultJsonObject.toString());
 		if(resultCode == 0){
 			JSONArray courseJsonArray;
 			try {
