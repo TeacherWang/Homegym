@@ -104,5 +104,5 @@
     <color name="course_expire_text">#c60505</color>
     
     <color name="course_video_progress_default">#333333</color>
-    <color name="course_video_progress_finished">#01401c</color>
+    <color name="course_video_progress_finished">#1E975A</color>
 </resources>

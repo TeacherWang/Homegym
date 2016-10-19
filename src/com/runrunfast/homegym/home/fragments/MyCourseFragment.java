@@ -30,6 +30,7 @@ import com.runrunfast.homegym.course.CourseTrainActivity;
 import com.runrunfast.homegym.course.DetailPlanActivity;
 import com.runrunfast.homegym.dao.CourseDao;
 import com.runrunfast.homegym.dao.MyCourseDao;
+import com.runrunfast.homegym.dao.MyCourseDao.IUpdateProgressOfMyCourseListener;
 import com.runrunfast.homegym.home.HomeActivity;
 import com.runrunfast.homegym.utils.Const;
 import com.runrunfast.homegym.utils.DateUtil;
@@ -54,6 +55,7 @@ public class MyCourseFragment extends Fragment{
 	private IGetCourseFromServerListener mIGetCourseFromServerListener;
 	private IDownloadTrainPlanLister mIDownloadTrainPlanLister;
 	private IDeleteCourseToServerListener mIDeleteCourseToServerListener;
+	private IUpdateProgressOfMyCourseListener mIUpdateProgressOfMyCourseListener;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -71,9 +73,22 @@ public class MyCourseFragment extends Fragment{
 		
 		initAddCourseListener();
 		
+		initUpdateProgressOfMyCourseListener();
+		
 		return rootView;
 	}
 	
+	private void initUpdateProgressOfMyCourseListener() {
+		mIUpdateProgressOfMyCourseListener = new IUpdateProgressOfMyCourseListener() {
+			
+			@Override
+			public void onUpdateProgressOfMyCourse() {
+				updateData();
+			}
+		};
+		MyCourseDao.getInstance().setOnIUpdateProgressOfMyCourseListener(mIUpdateProgressOfMyCourseListener);
+	}
+
 	private void initDeleteCourseListener(){
 		mIDeleteCourseToServerListener = new IDeleteCourseToServerListener() {
 			
@@ -305,6 +320,10 @@ public class MyCourseFragment extends Fragment{
 		
 		if(mIDeleteCourseToServerListener != null){
 			CourseServerMgr.getInstance().removeDeleteCourseToServerObserver(mIDeleteCourseToServerListener);
+		}
+		
+		if(mIUpdateProgressOfMyCourseListener != null){
+			MyCourseDao.getInstance().removeIUpdateProgressOfMyCourseListener();
 		}
 		
 		super.onDestroyView();

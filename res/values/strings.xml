@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Homegym</string>
+    <string name="app_name">21天综合训练</string>
     
     <string name="start_text1_first">Fitness</string>
     <string name="start_text1_second">改变从坚持健身开始</string>
@@ -157,7 +157,7 @@
 	<string name="account_exit_or_not">您是否要退出本账号？</string>
 	<string name="about">关于</string>
 	<string name="email">邮箱</string>
-	<string name="email_content">1232123213@163.com</string>
+	<string name="email_content">zhengshida@runrunfast.com</string>
 	<string name="company_name">深圳21天健康科技有限公司</string>
 	<string name="company_copyright">2016 All Rights Reserved</string>
 	<string name="feedback">用户反馈</string>

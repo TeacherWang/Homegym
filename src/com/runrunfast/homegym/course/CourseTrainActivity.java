@@ -119,9 +119,11 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 	}
 
 	private void prepareToSaveMyCourse() {
+		MyCourseDao.getInstance().deleteMyCourseFromDb(Globle.gApplicationContext, mUserInfo.strAccountId, mMyCourse.course_id);
+		
 		recreateMyCourse();
 		
-		MyCourseDao.getInstance().saveMyCourseToDb(Globle.gApplicationContext, AccountMgr.getInstance().mUserInfo.strAccountId, mMyCourse);
+		MyCourseDao.getInstance().updateProgressOfMyCourseToDb(Globle.gApplicationContext, mUserInfo.strAccountId, mMyCourse);
 	}
 
 	private void recreateMyCourse() {

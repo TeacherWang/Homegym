@@ -711,9 +711,11 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 	}
 
 	private void prepareToSaveMyCourse() {
+		MyCourseDao.getInstance().deleteMyCourseFromDb(Globle.gApplicationContext, mUserInfo.strAccountId, mMyCourse.course_id);
+		
 		mMyCourse = createMyCourseFromCourse();
 		
-		MyCourseDao.getInstance().saveMyCourseToDb(Globle.gApplicationContext, AccountMgr.getInstance().mUserInfo.strAccountId, mMyCourse);
+		MyCourseDao.getInstance().updateProgressOfMyCourseToDb(Globle.gApplicationContext, AccountMgr.getInstance().mUserInfo.strAccountId, mMyCourse);
 	}
 	
 	private MyCourse createMyCourseFromCourse(){
