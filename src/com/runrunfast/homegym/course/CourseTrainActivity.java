@@ -24,6 +24,7 @@ import com.runrunfast.homegym.bean.Course.CourseDetail;
 import com.runrunfast.homegym.bean.Course.GroupDetail;
 import com.runrunfast.homegym.bean.MyCourse;
 import com.runrunfast.homegym.bean.MyCourse.DayProgress;
+import com.runrunfast.homegym.course.CourseServerMgr.IDeleteCourseToServerListener;
 import com.runrunfast.homegym.course.CourseServerMgr.IJoinCourseToServerListener;
 import com.runrunfast.homegym.dao.ActionDao;
 import com.runrunfast.homegym.dao.MyCourseDao;
@@ -62,6 +63,7 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 	private ProgressDialog dialog;
 	
 	private IJoinCourseToServerListener mIJoinCourseToServerListener;
+	private IDeleteCourseToServerListener mIDeleteCourseToServerListener;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +78,30 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 		initListener();
 		
 		initJoinCourseListener();
+		
+		initDeleteCourseToServerObserver();
+	}
+
+	private void initDeleteCourseToServerObserver() {
+		mIDeleteCourseToServerListener = new IDeleteCourseToServerListener() {
+			
+			@Override
+			public void onDeleteCourseToServerSuc() {
+				// 删除本地数据
+				MyCourseDao.getInstance().deleteMyCourseFromDb(Globle.gApplicationContext, mUserInfo.strAccountId, mMyCourse.course_id);
+				
+				mCurrentDate = DateUtil.getCurrentDate();
+				CourseServerMgr.getInstance().joinCourseToServer(mUserInfo.strAccountId, mMyCourse.course_id, mCurrentDate);
+			}
+			
+			@Override
+			public void onDeleteCourseToServerFail() {
+				dismissDialog();
+				Toast.makeText(CourseTrainActivity.this, "参加失败", Toast.LENGTH_SHORT).show();
+			}
+		};
+		
+		CourseServerMgr.getInstance().addDeleteCourseToServerObserver(mIDeleteCourseToServerListener);
 	}
 
 	private void initListener() {
@@ -298,10 +324,12 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 	}
 
 	private void rejoinTrain() {
-		mCurrentDate = DateUtil.getCurrentDate();
-		CourseServerMgr.getInstance().joinCourseToServer(mUserInfo.strAccountId, mMyCourse.course_id, mCurrentDate);
-		
+		CourseServerMgr.getInstance().deleteCourseToServer(mUserInfo.strAccountId, mMyCourse.course_id, mMyCourse.start_date);
 		showDialog();
+//		mCurrentDate = DateUtil.getCurrentDate();
+//		CourseServerMgr.getInstance().joinCourseToServer(mUserInfo.strAccountId, mMyCourse.course_id, mCurrentDate);
+//		
+//		showDialog();
 	}
 
 	private void startTrain() {
@@ -344,8 +372,13 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 	
 	@Override
 	protected void onDestroy() {
+		if(mIJoinCourseToServerListener != null){
+			CourseServerMgr.getInstance().removeJoinCourseToServerObserver(mIJoinCourseToServerListener);
+		}
 		
-		CourseServerMgr.getInstance().removeJoinCourseToServerObserver(mIJoinCourseToServerListener);
+		if(mIDeleteCourseToServerListener != null){
+			CourseServerMgr.getInstance().removeDeleteCourseToServerObserver(mIDeleteCourseToServerListener);
+		}
 		
 		super.onDestroy();
 	}

@@ -1,5 +1,8 @@
 package com.runrunfast.homegym.course;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
@@ -41,10 +44,6 @@ import com.runrunfast.homegym.widget.DialogActivity;
 import com.runrunfast.homegym.widget.KCalendar;
 import com.runrunfast.homegym.widget.KCalendar.OnCalendarClickListener;
 import com.runrunfast.homegym.widget.KCalendar.OnCalendarDateChangedListener;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 public class DetailPlanActivity extends Activity implements OnClickListener{
 	private final String TAG = "DetailPlanActivity";
@@ -601,7 +600,7 @@ public class DetailPlanActivity extends Activity implements OnClickListener{
 			@Override
 			public void onDeleteCourseToServerSuc() {
 				// 删除本地数据
-				MyCourseDao.getInstance().deleteMyCourseFromDb(Globle.gApplicationContext, mUserInfo.strAccountId, mCourseId, mMyCourse.start_date);
+				MyCourseDao.getInstance().deleteMyCourseFromDb(Globle.gApplicationContext, mUserInfo.strAccountId, mCourseId);
 				// 退出界面
 				exitTrain();
 			}
