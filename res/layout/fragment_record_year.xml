@@ -15,7 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
-        android:text="@string/kcal_cn"
+        android:text="@string/kg_cn"
         android:textColor="@color/record_detail_text_color"
         android:textSize="@dimen/chat_date_size" />
     

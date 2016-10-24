@@ -838,7 +838,7 @@ public class CourseServerMgr {
 			}
 			@Override
 			public void onError(Throwable throwable, boolean arg1) {
-				Log.e(TAG, "uploadTrainPlan, onError, throwable is : " + throwable);
+				Log.e(TAG, "requestTotalData, onError, throwable is : " + throwable);
 				
 				notifyRequestTotalDataFail();
 			}

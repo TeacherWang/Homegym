@@ -84,7 +84,7 @@ public class CourseTrainAdapter extends BaseAdapter {
 		holder.tvTrainName.setText(action.action_name);
 		holder.tvTrainPosition.setText(action.action_position);
 		holder.tvTrainActionNum.setText("动作" + DataTransferUtil.numMap.get(position + 1));
-		holder.tvKcal.setText( DataTransferUtil.getInstance().getTwoDecimalData(actionTotalData.totalKcal) + mContext.getResources().getString(R.string.kg_cn) );
+		holder.tvKcal.setText( actionTotalData.totalKcal + mContext.getResources().getString(R.string.kg_cn) );
 		holder.tvDiffcult.setText(R.string.difficult);
 		
 		if(action.action_difficult == 1){

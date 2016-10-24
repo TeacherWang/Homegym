@@ -80,7 +80,7 @@ public class FinishActivity extends Activity {
 		tvFinishCourseName.setText(mCourseName);
 		tvFinishActionTime.setText(DateUtil.secToTime(mTotalTime));
 		tvFinishActionCount.setText(String.valueOf(mTotalCount));
-		tvFinishActionBurning.setText(DataTransferUtil.getInstance().getTwoDecimalData(mTotalKcal));
+		tvFinishActionBurning.setText(String.valueOf(mTotalKcal));
 		
 		mActionList = new ArrayList<Action>();
 		int actionSize = mActionIdList.size();

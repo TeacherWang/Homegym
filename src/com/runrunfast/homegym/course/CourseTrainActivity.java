@@ -78,10 +78,29 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 		initListener();
 		
 		initJoinCourseListener();
-		
-		initDeleteCourseToServerObserver();
 	}
 
+	@Override
+	protected void onResume() {
+		super.onResume();
+		
+		initDeleteCourseToServerObserver();
+		
+		MyCourse myCourse = MyCourseDao.getInstance().getMyCourseFromDb(Globle.gApplicationContext, mUserInfo.strAccountId, mMyCourse.course_id);
+		if(myCourse == null){
+			finish();
+		}
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		
+		if(mIDeleteCourseToServerListener != null){
+			CourseServerMgr.getInstance().removeDeleteCourseToServerObserver(mIDeleteCourseToServerListener);
+		}
+	}
+	
 	private void initDeleteCourseToServerObserver() {
 		mIDeleteCourseToServerListener = new IDeleteCourseToServerListener() {
 			
@@ -90,14 +109,21 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 				// 删除本地数据
 				MyCourseDao.getInstance().deleteMyCourseFromDb(Globle.gApplicationContext, mUserInfo.strAccountId, mMyCourse.course_id);
 				
-				mCurrentDate = DateUtil.getCurrentDate();
-				CourseServerMgr.getInstance().joinCourseToServer(mUserInfo.strAccountId, mMyCourse.course_id, mCurrentDate);
+				if(isRejoin){
+					mCurrentDate = DateUtil.getCurrentDate();
+					CourseServerMgr.getInstance().joinCourseToServer(mUserInfo.strAccountId, mMyCourse.course_id, mCurrentDate);
+					isRejoin = false;
+				}
 			}
 			
 			@Override
 			public void onDeleteCourseToServerFail() {
 				dismissDialog();
-				Toast.makeText(CourseTrainActivity.this, "参加失败", Toast.LENGTH_SHORT).show();
+				if(isRejoin){
+					Toast.makeText(CourseTrainActivity.this, "参加失败", Toast.LENGTH_SHORT).show();
+					isRejoin = false;
+				}
+				
 			}
 		};
 		
@@ -271,7 +297,7 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 	}
 
 	public static class ActionTotalData implements Serializable{
-		float totalKcal;
+		int totalKcal;
 	}
 
 	private void initView() {
@@ -323,7 +349,10 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 		}
 	}
 
+	private boolean isRejoin = false;
+	
 	private void rejoinTrain() {
+		isRejoin = true;
 		CourseServerMgr.getInstance().deleteCourseToServer(mUserInfo.strAccountId, mMyCourse.course_id, mMyCourse.start_date);
 		showDialog();
 //		mCurrentDate = DateUtil.getCurrentDate();
@@ -374,10 +403,6 @@ public class CourseTrainActivity extends Activity implements OnClickListener{
 	protected void onDestroy() {
 		if(mIJoinCourseToServerListener != null){
 			CourseServerMgr.getInstance().removeJoinCourseToServerObserver(mIJoinCourseToServerListener);
-		}
-		
-		if(mIDeleteCourseToServerListener != null){
-			CourseServerMgr.getInstance().removeDeleteCourseToServerObserver(mIDeleteCourseToServerListener);
 		}
 		
 		super.onDestroy();

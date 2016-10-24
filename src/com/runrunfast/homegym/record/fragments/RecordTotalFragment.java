@@ -70,7 +70,7 @@ public class RecordTotalFragment extends Fragment {
 
 	private void setUiData(TotalRecord totalRecord) {
 //		tvTotalKcal.setText(String.valueOf(DataTransferUtil.getFloatTwoDecimalData((totalRecord.total_kcal))));
-		tvTotalKcal.setText(totalRecord.total_kcal);
+		tvTotalKcal.setText(String.valueOf(totalRecord.total_kcal));
 		tvTotalDays.setText(String.valueOf(totalRecord.total_days));
 		tvTotalTimeHour.setText(DateUtil.secToHour(totalRecord.total_time));
 		tvFood.setText(totalRecord.total_food + "个卡车轮胎");

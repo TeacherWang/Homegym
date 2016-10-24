@@ -826,7 +826,7 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 			mFinishedActionDetailList.add(mFinishedActionDetail);
 		}
 		
-		float totalKcal = 0;
+		int totalKcal = 0;
 		int finishedActionSize = mFinishedActionDetailList.size();
 		for(int i=0; i<finishedActionSize; i++){
 			ActionDetail actionDetail = mFinishedActionDetailList.get(i);
@@ -888,7 +888,7 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 	}
 
 	private void handleCourseFinished() {
-		float totalKcal = 0;
+		int totalKcal = 0;
 		int finishedActionSize = mFinishedActionDetailList.size();
 		for(int i=0; i<finishedActionSize; i++){
 			ActionDetail actionDetail = mFinishedActionDetailList.get(i);

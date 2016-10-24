@@ -39,7 +39,7 @@ public class MyTrainRecordDao {
 				+ Const.DB_KEY_COURSE_ID + " TEXT,"
 				+ Const.DB_KEY_COURSE_NAME + " TEXT,"
 				+ Const.DB_KEY_FINISH_COUNT + " INTEGER,"
-				+ Const.DB_KEY_FINISH_KCAL + " FLOAT,"
+				+ Const.DB_KEY_FINISH_KCAL + " INTEGER,"
 				+ Const.DB_KEY_FINISH_TIME + " INTEGER,"
 				+ Const.DB_KEY_ACTION_DETAIL + " TEXT,"
 				+ Const.DB_KEY_ACTUAL_DATE + " TEXT,"
@@ -176,7 +176,7 @@ public class MyTrainRecordDao {
 					if(cSum.moveToNext()){
 						StatisticalData statisticalData = new StatisticalData();
 						statisticalData.strDate = strDate;
-						statisticalData.totalKcal = cSum.getFloat(0);
+						statisticalData.totalKcal = cSum.getInt(0);
 						statisticalDataList.add(statisticalData);
 					}
 				}
@@ -216,7 +216,7 @@ public class MyTrainRecordDao {
 					if(cSum.moveToNext()){
 						StatisticalData statisticalData = new StatisticalData();
 						statisticalData.strDate = strYearMonth;
-						statisticalData.totalKcal = cSum.getFloat(0);
+						statisticalData.totalKcal = cSum.getInt(0);
 						statisticalDataList.add(statisticalData);
 					}
 				}

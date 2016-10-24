@@ -364,7 +364,7 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 			
 			actionTotalData = getTotalTimeOfActionInMyCourse(mActionDetail);
 			
-			tvBurning.setText( DataTransferUtil.getInstance().getTwoDecimalData(actionTotalData.totalKcal) );
+			tvBurning.setText( actionTotalData.totalKcal );
 			
 			mTrainActionSetAdapter.updateData(mGroupDetailList);
 			break;

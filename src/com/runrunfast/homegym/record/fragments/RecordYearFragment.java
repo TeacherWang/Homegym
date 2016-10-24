@@ -173,7 +173,7 @@ public class RecordYearFragment extends Fragment implements OnClickListener{
 				mHistogramView.setSelectPosition(i);
 			}
 			
-			Bar bar = mHistogramView.new Bar(i+1, ratio, color, bootomText, DataTransferUtil.getInstance().getTwoDecimalData(statisticalData.totalKcal));
+			Bar bar = mHistogramView.new Bar(i+1, ratio, color, bootomText, String.valueOf(statisticalData.totalKcal));
 			barList.add(bar);
 		}
 		

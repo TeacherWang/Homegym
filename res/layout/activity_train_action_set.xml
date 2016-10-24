@@ -172,7 +172,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/train_action_set_consume_margin_top"
-                android:text="@string/burning"
+                android:text="@string/burning_train"
                 android:textSize="@dimen/train_action_set_consume_size"
                 android:textColor="@color/record_date_color" />
             <TextView
