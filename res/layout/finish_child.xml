@@ -148,7 +148,7 @@
                     android:id="@+id/finish_descrp_burning_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/burning"
+                    android:text="@string/burning_train_no_unit"
                     android:layout_centerHorizontal="true"
                     android:textColor="@color/about_version_text_color"
                     android:textSize="@dimen/finish_time_descp_text_size"/>
@@ -167,7 +167,7 @@
 	                 android:layout_width="wrap_content"
 	                 android:layout_height="wrap_content"
 	                 android:layout_alignBottom="@id/finish_buring_text"
-	                 android:text="@string/kcal_cn"
+	                 android:text="@string/kg_cn"
 	                 android:textSize="@dimen/finish_unit_size"
 	                 android:textColor="@color/about_version_text_color"/>
                 

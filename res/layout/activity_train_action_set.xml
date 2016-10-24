@@ -281,7 +281,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_horizontal"
-            android:text="@string/burning_kcal"
+            android:text="@string/burning_train"
             android:textColor="@color/black"
             android:textSize="@dimen/train_action_set_group_num_decr_size" />
     </LinearLayout>

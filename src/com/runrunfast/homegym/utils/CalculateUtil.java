@@ -3,6 +3,8 @@ package com.runrunfast.homegym.utils;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+import com.runrunfast.homegym.account.AccountMgr;
+
 
 public class CalculateUtil {
 	public static final int DEFAULT_WEIGHT_VALUE_IF_ZERO = 5; // 服务器返回重量为0时，为不可编辑重量，默认5
@@ -20,4 +22,17 @@ public class CalculateUtil {
 		
 		return bg.floatValue();
 	}
+	
+	public static int calculateTotalTrain(int count, int weight, float action_h, float action_b){
+		int train = 0;
+		
+		if(weight == 1){
+			train = (int) (count * 60 * action_h);
+		}else{
+			train = count * weight;
+		}
+		
+		return train;
+	}
+	
 }

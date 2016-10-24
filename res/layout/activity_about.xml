@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/about_version_margin_bottom"
         android:layout_gravity="center_horizontal"
-        android:text="版本1.01"
+        android:text=""
         android:textSize="@dimen/about_version_text_size"
         android:textColor="@color/about_version_text_color"/>
     
@@ -49,6 +49,18 @@
             android:textSize="@dimen/about_email_content_text_size"
             android:textColor="@color/about_email_content_text_color"/>
     </RelativeLayout>
+    
+    <Button 
+        android:id="@+id/check_update_btn"
+        android:layout_width="214dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="85dp"
+        android:layout_gravity="center_horizontal"
+        android:text="检查更新"
+        android:textSize="16sp"
+        android:textColor="#333333"
+        android:onClick="onClick"
+        android:background="@drawable/bt_check_update_corner_rect"/>
     
     <RelativeLayout
         android:layout_width="wrap_content"

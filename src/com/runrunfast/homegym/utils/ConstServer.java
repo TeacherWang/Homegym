@@ -130,6 +130,11 @@ public class ConstServer {
 	  */
 	public static final String URL_REQUEST_DETAIL_DATA = COURSE_SERVER + "requestDetailData";
 	
+	/**
+	  * @Fields URL_REQUEST_DETAIL_DATA : app检查更新接口
+	  */
+	public static final String URL_CHECK_UPDATE = COURSE_SERVER + "downloadUrl";
+	
 	
 	public static final String SDCARD_ROOT = Environment.getExternalStorageDirectory().getAbsolutePath();
 	public static final String SDCARD_HOMEGYM_ROOT = SDCARD_ROOT + File.separator + "runrunfast" + File.separator + "homegym" + File.separator;

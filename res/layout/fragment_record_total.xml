@@ -31,7 +31,7 @@
 	            android:layout_toRightOf="@id/record_total_consume_number_text"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:text="@string/kcal"
+	            android:text="@string/kg_cn"
 	            android:layout_alignBottom="@id/record_total_consume_number_text"
 	            android:layout_marginBottom="@dimen/record_total_consume_number_unit_bottom"
 	            android:textSize="@dimen/record_total_consume_unit_text_size"
@@ -207,14 +207,14 @@
         android:layout_height="@dimen/record_total_equal_img_height"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/record_total_equal_img_margin_top"
-        android:background="@drawable/hamburger"/>
+        android:background="@drawable/luntai"/>
     <TextView 
         android:id="@+id/record_total_equal_result_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/record_total_equal_img_margin_bottom"
-        android:text="10个汉堡包"
+        android:text="10个卡车轮胎"
         android:textColor="@color/black"
         android:textSize="@dimen/record_total_equal_text_size"/>
     

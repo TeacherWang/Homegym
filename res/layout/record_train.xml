@@ -34,7 +34,7 @@
 	        android:layout_centerVertical="true"
 	        android:layout_alignParentRight="true"
 	        android:layout_marginRight="@dimen/record_detail_train_kcal_margin_right"
-	        android:text="49千卡"
+	        android:text="49公斤"
 	        android:textSize="@dimen/record_detail_train_group_count"
 	        android:textColor="@color/black" />
 	    

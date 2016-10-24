@@ -100,7 +100,7 @@ public class ActionSetAdapter extends BaseAdapter {
 		}else{
 			holder.tvWeight.setText(String.valueOf(groupDetail.weight));
 		}
-		holder.tvKcal.setText(DataTransferUtil.getInstance().getTwoDecimalData(groupDetail.kcal));
+		holder.tvKcal.setText(String.valueOf(groupDetail.kcal));
 		
 		holder.tvCount.setOnClickListener(new OnClickListener() {
 			

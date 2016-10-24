@@ -127,6 +127,8 @@
 	<string name="bt_all_devices">全部设备</string>
 	<string name="bt_last_connected_no">无</string>
 	<string name="ask_open_bt">是否为您开启蓝牙</string>
+	
+	<string name="new_version">新版本 V</string>
     
 	<string name="month">月</string>
 	<string name="year">年</string>
@@ -148,6 +150,7 @@
 	<string name="group_num">组数</string>
 	<string name="weight_tool">重量(kg)</string>
 	<string name="burning_kcal">燃脂(kcal)</string>
+	<string name="burning_train">训练量(kg)</string>
 	
 	<string name="detail_record">详细记录</string>
 	<string name="account_personal_info">个人信息</string>
@@ -173,11 +176,14 @@
 	<string name="this_train">本次训练</string>
 	<string name="finish_time">时长</string>
 	<string name="burning">燃脂</string>
+	<string name="burning_train_no_unit">训练量</string>
 	<string name="minute">min</string>
 	<string name="ge">个</string>
 	<string name="minute_cn">分钟</string>
 	<string name="kcal_cn">千卡</string>
 	<string name="count_number">次数</string>
+	<string name="kg_cn">公斤</string>
+	<string name="kg">kg</string>
 	<string name="had_finished_train">已完成训练</string>
 	
 	<string name="rest_day">今天休息！\n可适当增加有氧运动，如使用动感单车/跑步机30分钟</string>

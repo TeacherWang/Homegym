@@ -154,7 +154,7 @@ public class RecordAdapter extends BaseAdapter {
 			RecordDataAction recordDataUnit = (RecordDataAction)baseRecordData;
 			recordTrainViewHolder.tvTrainName.setText(recordDataUnit.actionName);
 			recordTrainViewHolder.tvTrainCount.setText(String.valueOf(recordDataUnit.groupCount) + "组");
-			recordTrainViewHolder.tvTrainKcal.setText(DataTransferUtil.getInstance().getTwoDecimalData(recordDataUnit.totalKcal) + "千卡");
+			recordTrainViewHolder.tvTrainKcal.setText(recordDataUnit.totalKcal + "公斤");
 			break;
 
 		default:

@@ -31,8 +31,6 @@ public class TheApplication extends Application{
 	    
 	    AccountMgr.getInstance().loadUserInfo();
 	    
-	    DataIniter.getInstance().initData();
-	    
 	    initImageLoader();
 	    // 建议在测试阶段建议设置成true，发布时设置为false。
 	    CrashReport.initCrashReport(getApplicationContext(), "900051312", false); 

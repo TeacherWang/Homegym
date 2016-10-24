@@ -60,13 +60,13 @@ public class Course implements Serializable{
 	public static class GroupDetail implements Serializable{
 		public int count;
 		public int weight;
-		public float kcal;
+		public int kcal;
 		
 		public GroupDetail(){
 			
 		}
 		
-		public GroupDetail(int count, int weight, float kcal){
+		public GroupDetail(int count, int weight, int kcal){
 			this.count = count;
 			this.weight = weight;
 			this.kcal = kcal;

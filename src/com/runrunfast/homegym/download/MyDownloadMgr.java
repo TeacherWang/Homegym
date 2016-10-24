@@ -1,5 +1,11 @@
 package com.runrunfast.homegym.download;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+
 import android.util.Log;
 
 import com.golshadi.majid.core.DownloadManagerPro;
@@ -7,13 +13,6 @@ import com.golshadi.majid.report.ReportStructure;
 import com.golshadi.majid.report.listener.DownloadManagerListener;
 import com.runrunfast.homegym.utils.FileUtils;
 import com.runrunfast.homegym.utils.Globle;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
 
 public class MyDownloadMgr {
 	private final String TAG = "MyDownloadMgr";

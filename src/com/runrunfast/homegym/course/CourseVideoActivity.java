@@ -1,5 +1,20 @@
 package com.runrunfast.homegym.course;
 
+import io.vov.vitamio.MediaPlayer;
+import io.vov.vitamio.MediaPlayer.OnSeekCompleteListener;
+import io.vov.vitamio.widget.MediaController;
+import io.vov.vitamio.widget.VideoView;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import android.app.Activity;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
@@ -54,22 +69,6 @@ import com.runrunfast.homegym.utils.FileUtils;
 import com.runrunfast.homegym.utils.Globle;
 import com.runrunfast.homegym.widget.DialogActivity;
 import com.runrunfast.homegym.widget.HorizonDialogActivity;
-
-import io.vov.vitamio.MediaPlayer;
-import io.vov.vitamio.MediaPlayer.OnCompletionListener;
-import io.vov.vitamio.MediaPlayer.OnSeekCompleteListener;
-import io.vov.vitamio.widget.MediaController;
-import io.vov.vitamio.widget.VideoView;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class CourseVideoActivity extends Activity implements OnClickListener{
 	private final String TAG = "CourseVideoActivity";
@@ -309,11 +308,14 @@ public class CourseVideoActivity extends Activity implements OnClickListener{
 			
 			speekFinishOnce(mActionCurrentGroupCount);
 			// // 该动作消耗的kcal。对于重量为0的动作特殊处理
-			if(mTargetGroupDetail.weight == 0){
-				mFinishedGroupDetail.kcal = CalculateUtil.calculateTotakKcal(mActionCurrentGroupCount, CalculateUtil.DEFAULT_WEIGHT_VALUE_IF_ZERO, mAction.action_h, mAction.action_b);
-			}else{
-				mFinishedGroupDetail.kcal = CalculateUtil.calculateTotakKcal(mActionCurrentGroupCount, mTargetGroupDetail.weight, mAction.action_h, mAction.action_b);
-			}
+//			if(mTargetGroupDetail.weight == 0){
+//				mFinishedGroupDetail.kcal = CalculateUtil.calculateTotakKcal(mActionCurrentGroupCount, CalculateUtil.DEFAULT_WEIGHT_VALUE_IF_ZERO, mAction.action_h, mAction.action_b);
+//			}else{
+//				mFinishedGroupDetail.kcal = CalculateUtil.calculateTotakKcal(mActionCurrentGroupCount, mTargetGroupDetail.weight, mAction.action_h, mAction.action_b);
+//			}
+			
+			mFinishedGroupDetail.kcal = CalculateUtil.calculateTotalTrain(mActionCurrentGroupCount, mTargetGroupDetail.weight, mAction.action_h, mAction.action_b);
+			
 			mFinishedGroupDetail.count = mFinishedGroupDetail.count + 1;
 			mFinishedGroupDetail.weight = mTargetGroupDetail.weight;
 			

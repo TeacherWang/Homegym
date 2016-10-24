@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/new_version_layout"
+    android:background="@color/black_30_transparent" >
+
+    <RelativeLayout
+        android:id="@+id/new_version_ll_popup"
+        android:layout_width="230dp"
+        android:layout_height="280dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/pop_new_version_corner_rect" >
+	
+        <TextView 
+            android:id="@+id/new_version_title_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:text="新版本 V1.0.0"
+            android:textColor="@color/black"
+            android:textSize="20sp"/>
+        
+        <TextView 
+            android:id="@+id/new_version_descript_text"
+            android:layout_below="@id/new_version_title_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_centerHorizontal="true"
+            android:text="1.修复了。。修复了。修复了。修复了。"
+            android:textColor="#626262"
+            android:textSize="16sp"/>
+        
+        <TextView 
+            android:id="@+id/ignore_text"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="忽略此版本"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"/>
+        
+        <View 
+            android:id="@+id/ignore_divider"
+            android:layout_above="@id/ignore_text"
+	        android:layout_width="match_parent"
+	        android:layout_height="1px"
+	        android:background="@color/divider_1"/>
+        
+        <TextView 
+            android:id="@+id/update_text"
+            android:layout_above="@id/ignore_divider"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="现在升级"
+            android:textColor="#157efb"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:layout_centerHorizontal="true"/>
+        
+        <View 
+            android:id="@+id/update_divider"
+            android:layout_above="@id/update_text"
+	        android:layout_width="match_parent"
+	        android:layout_height="1px"
+	        android:background="@color/divider_1"/>
+        
+    </RelativeLayout>
+
+</RelativeLayout>

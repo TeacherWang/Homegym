@@ -354,11 +354,13 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 		case INPUT_TYPE_COUNT:
 			mGroupDetail.count = mCount;
 			// 要计算次数跟重量对应的燃脂，公式？
-			if(mGroupDetail.weight == 0){
-				mGroupDetail.kcal = CalculateUtil.calculateTotakKcal(mGroupDetail.count, CalculateUtil.DEFAULT_WEIGHT_VALUE_IF_ZERO, mAction.action_h, mAction.action_b);
-			}else{
-				mGroupDetail.kcal = CalculateUtil.calculateTotakKcal(mGroupDetail.count, mGroupDetail.weight, mAction.action_h, mAction.action_b);
-			}
+//			if(mGroupDetail.weight == 0){
+//				mGroupDetail.kcal = CalculateUtil.calculateTotakKcal(mGroupDetail.count, CalculateUtil.DEFAULT_WEIGHT_VALUE_IF_ZERO, mAction.action_h, mAction.action_b);
+//			}else{
+//				mGroupDetail.kcal = CalculateUtil.calculateTotakKcal(mGroupDetail.count, mGroupDetail.weight, mAction.action_h, mAction.action_b);
+//			}
+			
+			mGroupDetail.kcal = CalculateUtil.calculateTotalTrain(mGroupDetail.count, mGroupDetail.weight, mAction.action_h, mAction.action_b);
 			
 			actionTotalData = getTotalTimeOfActionInMyCourse(mActionDetail);
 			
@@ -370,19 +372,17 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 		case INPUT_TYPE_TOOL_WEIGHT:
 			mGroupDetail.weight = mToolWeight;
 			// 要计算次数跟重量对应的燃脂，公式？还有时间
-			if(mGroupDetail.weight == 0){
-				mGroupDetail.kcal = CalculateUtil.calculateTotakKcal(mGroupDetail.count, CalculateUtil.DEFAULT_WEIGHT_VALUE_IF_ZERO, mAction.action_h, mAction.action_b);
-			}else{
-				mGroupDetail.kcal = CalculateUtil.calculateTotakKcal(mGroupDetail.count, mGroupDetail.weight, mAction.action_h, mAction.action_b);
-			}
+//			if(mGroupDetail.weight == 0){
+//				mGroupDetail.kcal = CalculateUtil.calculateTotakKcal(mGroupDetail.count, CalculateUtil.DEFAULT_WEIGHT_VALUE_IF_ZERO, mAction.action_h, mAction.action_b);
+//			}else{
+//				mGroupDetail.kcal = CalculateUtil.calculateTotakKcal(mGroupDetail.count, mGroupDetail.weight, mAction.action_h, mAction.action_b);
+//			}
+			
+			mGroupDetail.kcal = CalculateUtil.calculateTotalTrain(mGroupDetail.count, mGroupDetail.weight, mAction.action_h, mAction.action_b);
 			
 			actionTotalData = getTotalTimeOfActionInMyCourse(mActionDetail);
 			
 			tvBurning.setText( DataTransferUtil.getInstance().getTwoDecimalData(actionTotalData.totalKcal) );
-//			mTrainActionInfo.iBurning = 公式？
-//			mTotalBurning = mTotalBurning + trainActionInfo.iBurning;
-//			tvTimeConsume.setText(DateUtil.secToTime(mConsumeSecond));
-//			tvBurning.setText(String.valueOf(mTotalBurning));
 			
 			mTrainActionSetAdapter.updateData(mGroupDetailList);
 			break;
@@ -500,16 +500,15 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 		// 随便取一组，看下器械重量是不是0
 		mGroupDetail = mGroupDetailList.get(0);
 		// 修改动作重量为0时的特殊处理
-		if(mGroupDetail.weight == 0){
-			GroupDetail groupDetail = new GroupDetail(8, 10, CalculateUtil.calculateTotakKcal(8, CalculateUtil.DEFAULT_WEIGHT_VALUE_IF_ZERO, mAction.action_h, mAction.action_b));
-			mGroupDetailList.add(groupDetail);
-		}else{
-			GroupDetail groupDetail = new GroupDetail(8, 10, CalculateUtil.calculateTotakKcal(8, 10, mAction.action_h, mAction.action_b));
-			mGroupDetailList.add(groupDetail);
-		}
+//		if(mGroupDetail.weight == 0){
+//			GroupDetail groupDetail = new GroupDetail(8, 10, CalculateUtil.calculateTotakKcal(8, CalculateUtil.DEFAULT_WEIGHT_VALUE_IF_ZERO, mAction.action_h, mAction.action_b));
+//			mGroupDetailList.add(groupDetail);
+//		}else{
+//			GroupDetail groupDetail = new GroupDetail(8, 10, CalculateUtil.calculateTotakKcal(8, 10, mAction.action_h, mAction.action_b));
+//			mGroupDetailList.add(groupDetail);
+//		}
 		
-//		GroupDetail groupDetail = new GroupDetail(8, 10, CalculateUtil.calculateTotakKcal(8, 10, mAction.action_h, mAction.action_b));
-//		mGroupDetailList.add(groupDetail);
+		mGroupDetail.kcal = CalculateUtil.calculateTotalTrain(mGroupDetail.count, mGroupDetail.weight, mAction.action_h, mAction.action_b);
 		
 		mActionDetail.group_num = mGroupDetailList.size();
 		mActionDetail.group_detail = mGroupDetailList;
