@@ -39,7 +39,7 @@ public class ActionDao {
 				+ Const.DB_KEY_ACTION_DESCRIPT + " TEXT,"
 				+ Const.DB_KEY_ACTION_DIFFICULT + " INTEGER,"
 				+ Const.DB_KEY_ACTION_H + " FLOAT,"
-				+ Const.DB_KEY_ACTION_B + " FLOAT,"
+				+ Const.DB_KEY_ACTION_B + " INTEGER,"
 				+ Const.DB_KEY_ACTION_IMG_URL + " TEXT,"
 				+ Const.DB_KEY_ACTION_IMG_LOCAL + " TEXT,"
 				+ Const.DB_KEY_ACTION_LEFT_RIGHT + " TEXT,"
@@ -212,7 +212,7 @@ public class ActionDao {
 				action.action_descript = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_DESCRIPT));
 				action.action_difficult = c.getInt(c.getColumnIndex(Const.DB_KEY_ACTION_DIFFICULT));
 				action.action_h = c.getFloat(c.getColumnIndex(Const.DB_KEY_ACTION_H));
-				action.action_b = c.getFloat(c.getColumnIndex(Const.DB_KEY_ACTION_B));
+				action.action_b = c.getInt(c.getColumnIndex(Const.DB_KEY_ACTION_B));
 				action.action_img_url = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_IMG_URL));
 				action.action_img_local = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_IMG_LOCAL));
 				action.action_left_right = c.getInt(c.getColumnIndex(Const.DB_KEY_ACTION_LEFT_RIGHT));
@@ -292,7 +292,7 @@ public class ActionDao {
 					action.action_descript = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_DESCRIPT));
 					action.action_difficult = c.getInt(c.getColumnIndex(Const.DB_KEY_ACTION_DIFFICULT));
 					action.action_h = c.getFloat(c.getColumnIndex(Const.DB_KEY_ACTION_H));
-					action.action_b = c.getFloat(c.getColumnIndex(Const.DB_KEY_ACTION_B));
+					action.action_b = c.getInt(c.getColumnIndex(Const.DB_KEY_ACTION_B));
 					action.action_img_url = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_IMG_URL));
 					action.action_img_local = c.getString(c.getColumnIndex(Const.DB_KEY_ACTION_IMG_LOCAL));
 					action.action_left_right = c.getInt(c.getColumnIndex(Const.DB_KEY_ACTION_LEFT_RIGHT));

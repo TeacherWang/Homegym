@@ -233,7 +233,7 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 		tvGroupNum.setText(String.valueOf(mGroupDetailList.size()));
 //		tvTimeConsume.setText(DateUtil.secToTime(mActionTotalData.totalTime));
 //		mTotalBurning = mActionTotalData.totalKcal;
-		tvBurning.setText( DataTransferUtil.getInstance().getTwoDecimalData(mActionTotalData.totalKcal) );
+		tvBurning.setText( String.valueOf(mActionTotalData.totalKcal) );
 		
 		String strImgLocal = ActionDao.getInstance().getActionImgLocalFromDb(Globle.gApplicationContext, mAction.action_id);
 		
@@ -501,14 +501,15 @@ public class ActionSetActivity extends Activity implements OnClickListener{
 		mGroupDetail = mGroupDetailList.get(0);
 		// 修改动作重量为0时的特殊处理
 //		if(mGroupDetail.weight == 0){
-//			GroupDetail groupDetail = new GroupDetail(8, 10, CalculateUtil.calculateTotakKcal(8, CalculateUtil.DEFAULT_WEIGHT_VALUE_IF_ZERO, mAction.action_h, mAction.action_b));
+//			GroupDetail groupDetail = new GroupDetail(8, 10, CalculateUtil.calculateTotalTrain(8, mGroupDetail.weight, mAction.action_h, mAction.action_b));
 //			mGroupDetailList.add(groupDetail);
 //		}else{
-//			GroupDetail groupDetail = new GroupDetail(8, 10, CalculateUtil.calculateTotakKcal(8, 10, mAction.action_h, mAction.action_b));
+//			GroupDetail groupDetail = new GroupDetail(8, 10, CalculateUtil.calculateTotalTrain(8, mGroupDetail.weight, mAction.action_h, mAction.action_b));
 //			mGroupDetailList.add(groupDetail);
 //		}
 		
-		mGroupDetail.kcal = CalculateUtil.calculateTotalTrain(mGroupDetail.count, mGroupDetail.weight, mAction.action_h, mAction.action_b);
+		GroupDetail groupDetail = new GroupDetail(8, 10, CalculateUtil.calculateTotalTrain(8, mGroupDetail.weight, mAction.action_h, mAction.action_b));
+		mGroupDetailList.add(groupDetail);
 		
 		mActionDetail.group_num = mGroupDetailList.size();
 		mActionDetail.group_detail = mGroupDetailList;

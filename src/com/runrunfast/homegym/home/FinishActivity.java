@@ -39,7 +39,7 @@ public class FinishActivity extends Activity {
 	
 	private int mTotalTime;
 	private int mTotalCount;
-	private float mTotalKcal;
+	private int mTotalKcal;
 	private String mCourseName;
 	private ArrayList<String> mActionIdList;
 	
@@ -73,7 +73,7 @@ public class FinishActivity extends Activity {
 		Intent intent = getIntent();
 		mTotalTime = intent.getIntExtra(Const.KEY_COURSE_TOTAL_TIME, 0);
 		mTotalCount = intent.getIntExtra(Const.KEY_COURSE_TOTAL_COUNT, 0);
-		mTotalKcal = intent.getFloatExtra(Const.KEY_COURSE_TOTAL_BURNING, 0);
+		mTotalKcal = intent.getIntExtra(Const.KEY_COURSE_TOTAL_BURNING, 0);
 		mCourseName = intent.getStringExtra(Const.KEY_COURSE_NAME);
 		mActionIdList = intent.getStringArrayListExtra(Const.KEY_ACTION_IDS);
 		

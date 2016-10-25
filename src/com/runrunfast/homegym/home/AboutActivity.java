@@ -1,6 +1,8 @@
 package com.runrunfast.homegym.home;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -112,7 +114,9 @@ public class AboutActivity extends Activity {
 	private void prepareToUpdate() {
 		mUpdatePopupWindows.dismiss();
 		// 下载
-		
+		Uri uri = Uri.parse(mUpdateUrl);
+		Intent downloadIntent = new Intent(Intent.ACTION_VIEW, uri);
+		startActivity(downloadIntent);
 	}
 
 	public void onClick(View view){

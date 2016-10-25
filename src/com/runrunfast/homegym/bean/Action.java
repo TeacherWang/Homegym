@@ -13,7 +13,7 @@ public class Action implements Serializable{
 	public String action_descript; // 简单描述
 	public int action_difficult; // 难度等级
 	public float action_h; // 动作的铁块上升高度
-	public float action_b; // 动作的初始阻力
+	public int action_b; // 动作的初始阻力
 	public String action_img_url; // 图片下载地址
 	public String action_img_local; // 图片本地路径
 	public int action_left_right; // 动作是否分左右：0是不区分；1是区分

@@ -16,17 +16,17 @@ public class CalculateUtil {
 	  * @return	
 	  * 返回类型：float 
 	  */
-	public static float calculateTotakKcal(int count, int weight, float actionH, float actionB){
+	public static float calculateTotakKcal(int count, int weight, float actionH, int actionB){
 		float kcal = count * ((weight - 5) + actionB) * actionH / 133.89f;
 		BigDecimal bg = new BigDecimal(kcal).setScale(2, RoundingMode.UP);
 		
 		return bg.floatValue();
 	}
 	
-	public static int calculateTotalTrain(int count, int weight, float action_h, float action_b){
+	public static int calculateTotalTrain(int count, int weight, float action_h, int action_b){
 		int train = 0;
 		
-		if(weight == 1){
+		if(weight == 0){
 			train = (int) (count * 60 * action_h);
 		}else{
 			train = count * weight;
