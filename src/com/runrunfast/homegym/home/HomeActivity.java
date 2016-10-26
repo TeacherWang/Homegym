@@ -3,12 +3,15 @@ package com.runrunfast.homegym.home;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -25,8 +28,11 @@ import com.runrunfast.homegym.home.fragments.AllCoursesFragment;
 import com.runrunfast.homegym.home.fragments.MeFragment;
 import com.runrunfast.homegym.home.fragments.MyCourseFragment;
 import com.runrunfast.homegym.record.RecordActivity;
+import com.runrunfast.homegym.update.UpdateMgr;
+import com.runrunfast.homegym.update.UpdateMgr.ICheckUpdateResultObserver;
 import com.runrunfast.homegym.utils.Const;
 import com.runrunfast.homegym.widget.DialogActivity;
+import com.runrunfast.homegym.widget.PopupWindows;
 
 public class HomeActivity extends FragmentActivity{
 	private final String TAG = "HomeActivity";
@@ -50,6 +56,12 @@ public class HomeActivity extends FragmentActivity{
 	
 	private BLEServiceListener mBLEServiceListener;
 	
+	private PopupWindows mUpdatePopupWindows;
+	private View mUpdateContentView;
+	private TextView tvNewVersion, tvDescription, tvUpdateNow, tvIgnore;
+	private ICheckUpdateResultObserver mICheckUpdateResultObserver;
+	private String mUpdateUrl;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -67,6 +79,60 @@ public class HomeActivity extends FragmentActivity{
 		
 		// 调用一下登录，保证获取到cookie
 		determineLogin();
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		
+		addUpdateCheckObserver();
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		
+		if(mICheckUpdateResultObserver != null){
+			UpdateMgr.getInstance().removeGetCourseFromServerObserver(mICheckUpdateResultObserver);
+		}
+	}
+	
+	private void addUpdateCheckObserver() {
+		mICheckUpdateResultObserver = new ICheckUpdateResultObserver() {
+			
+			@Override
+			public void onNotNewerVersion() {
+				
+			}
+			
+			@Override
+			public void onHaveNewerVersion(String version, String description, String url) {
+				handleHaveNewerVersion(version, description, url);
+			}
+			
+			@Override
+			public void onFail() {
+				
+			}
+		};
+		UpdateMgr.getInstance().addICheckUpdateResultObserver(mICheckUpdateResultObserver);
+	}
+	
+	private void handleHaveNewerVersion(String version, String description, String url) {
+		mUpdateUrl = url;
+		showUpdateView(version, description, url);
+	}
+	
+	private void showUpdateView(String version, String description, String url) {
+		if(mUpdatePopupWindows == null){
+			mUpdatePopupWindows = new PopupWindows(this, mUpdateContentView);
+			mUpdatePopupWindows.setLayout(mUpdateContentView);
+		}
+		
+		tvNewVersion.setText("新版本 V" + version);
+		tvDescription.setText(description);
+		
+		mUpdatePopupWindows.show();
 	}
 
 	private void determineLogin() {
@@ -160,6 +226,8 @@ public class HomeActivity extends FragmentActivity{
 		
 		CourseServerMgr.getInstance().getActionInfoFromServer();
 		
+		UpdateMgr.getInstance().checkUpdate();
+		
 //		ArrayList<Course> courseList = CourseDao.getInstance().getCourseListFromDb(Globle.gApplicationContext);
 //		if(courseList == null || courseList.size() <=0 ){
 //			CourseServerMgr.getInstance().getCourseInfoFromServer();
@@ -192,6 +260,36 @@ public class HomeActivity extends FragmentActivity{
 		tvMe = (TextView)findViewById(R.id.bottom_me_text);
 		
 		mFrameLayout = (FrameLayout)findViewById(R.id.home_content_layout);
+		
+		mUpdateContentView = LayoutInflater.from(this).inflate(R.layout.popupwindow_new_version_layout, null);
+		tvNewVersion = (TextView)mUpdateContentView.findViewById(R.id.new_version_title_text);
+		tvDescription = (TextView)mUpdateContentView.findViewById(R.id.new_version_descript_text);
+		tvUpdateNow = (TextView)mUpdateContentView.findViewById(R.id.update_text);
+		tvIgnore = (TextView)mUpdateContentView.findViewById(R.id.ignore_text);
+		
+		tvUpdateNow.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				prepareToUpdate();
+			}
+		});
+		
+		tvIgnore.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				mUpdatePopupWindows.dismiss();
+			}
+		});
+	}
+	
+	private void prepareToUpdate() {
+		mUpdatePopupWindows.dismiss();
+		// 下载
+		Uri uri = Uri.parse(mUpdateUrl);
+		Intent downloadIntent = new Intent(Intent.ACTION_VIEW, uri);
+		startActivity(downloadIntent);
 	}
 
 	public void onClick(View view){
