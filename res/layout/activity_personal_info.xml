@@ -170,7 +170,8 @@
     <RelativeLayout
 	    android:layout_width="match_parent"
 	    android:layout_height="@dimen/personal_decrip_height"
-	    android:background="@color/login_num_bg" >
+	    android:background="@color/login_num_bg"
+	    android:visibility="gone" >
         <ImageView 
             android:id="@+id/city_img"
             android:layout_width="wrap_content"
